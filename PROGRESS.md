@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thursday 19:50.
+Last full update: Thursday 20:05.
 
 ## What must be delivered
 
@@ -25,7 +25,7 @@ Last full update: Thursday 19:50.
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 71 hits against 42 at the same number of flags, season 2026 |
 | Director rules, US director elections | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; simple rule 36 and 37 (2019-2026) |
-| Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 29 of 29; 20 hits and 0 false alarms on shareholder proposals |
+| Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 73 of 73; 66 against-votes found with no false alarms, 21 of them first-time items |
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
@@ -112,3 +112,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 18:55 Iftikhar: merged into `main`, this file added.
 - Thu 19:20 Iftikhar: wording rules for shareholder proposals (declassify, written consent, simple majority and so on): 22 of 22.
 - Thu 19:50 Iftikhar: NBIM's 12 position papers loaded and tested. Good for citations, no gain for prediction.
+- Thu 20:05 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.

@@ -115,6 +115,8 @@ def general_decisions():
             guide = ", ".join(c for c, _ in d["rules"])
             if active and not hits:
                 band = "likely AGAINST board"
+                # A written rule with its fact does not depend on the company's vote history.
+                flags = [f for f in flags if not f.startswith("low information")]
             else:
                 flags.append("rule suspended: NBIM supported the board the last two times " +
                              ", ".join(c for c, _ in d["rules"]) + " applied")

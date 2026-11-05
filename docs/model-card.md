@@ -138,34 +138,53 @@ covered. The monitor uses NBIM's own earlier votes, which NBIM would have.
 ## Proposals whose wording decides the vote: written rules applied to the title
 
 `src/agent/proposal_rules.py`. No training and no AI model. Some of NBIM's
-clear-cut rules are about what a proposal asks for, and the title says it:
-declassify the board (3.1.2), majority voting in director elections (3.1.5),
-proxy access (3.1.8), the right to act by written consent (4.2.2), separate
-chair and CEO (1.3.3), abolish an anti-takeover measure such as a
-supermajority requirement (6.2-AT.3), and no support for a new poison pill
-(6.2-AT.2).
+rules are about what a proposal asks for, and the title says it: declassify
+the board (3.1.2), majority voting in director elections (3.1.5), proxy
+access (3.1.8), the right to act by written consent (4.2.2), separate chair
+and CEO (1.3.3), abolish an anti-takeover measure such as a supermajority
+requirement (6.2-AT.3), no support for a new poison pill (6.2-AT.2), and no
+support for the agenda item "other business" (5.2.2, which names that item in
+its own text).
 
-Scored on every proposal in file A, all countries, 2019-2026. 29 proposals
-fall under one of these rules, and NBIM voted as the rule says on all 29.
-The rule means a vote against the board on 22 of them (the board recommended
-the opposite), and all 22 were against-votes, including 3 of 3 in 2026.
+Scored on every proposal in file A, all countries, 2019-2026. 73 proposals
+fall under one of these rules, and NBIM voted as the rule says on all 73.
+The rule means a vote against the board on 66 of them (the board recommended
+the opposite), and all 66 were against-votes, including 9 of 9 in 2026.
 
-On the 150 shareholder proposals (50 against the board):
+| Rule | Proposals | NBIM voted as the rule says |
+|---|---|---|
+| 5.2.2, "other business" | 44 | 44 |
+| 6.2-AT.3, abolish supermajority or takeover defence | 11 | 11 |
+| 4.2.2, written consent | 6 | 6 |
+| 3.1.2, declassify the board | 5 | 5 |
+| 1.3.3, separate chair and CEO | 3 | 3 |
+| 6.2-AT.2, poison pill | 2 | 2 |
+| 3.1.5 and 3.1.8, majority voting and proxy access | 2 | 2 |
+
+"Same as last time" already covers 45 of the 66, because the same item comes
+back each year. The other 21 are first-time items it cannot flag, and all 21
+were against-votes. On the 150 shareholder proposals (50 against the board):
 
 | Method | Flags | Hits | False alarms | Precision | Recall |
 |---|---|---|---|---|---|
 | Same as last time | 12 | 11 | 1 | 92% | 22% |
-| Clear-cut rules from the wording | 20 | 20 | 0 | 100% | 40% |
+| Rules from the wording | 20 | 20 | 0 | 100% | 40% |
 | Same as last time, or a rule | 25 | 24 | 1 | 96% | 48% |
 
-The tool cites the same guideline section as NBIM in 19 of the 19 hits where
+The tool cites the same guideline section as NBIM in 58 of the 58 hits where
 NBIM gave a reason.
 
-Limits: small numbers. The wording patterns were written after looking at the
-proposal titles in the file, so they were not written blind; the rules
-themselves are NBIM's. 21 of the 30 uncovered against-votes on shareholder
-proposals cite sustainability reporting (section 5.3), where every rule needs
-judgement, so those stay with a person.
+Tested and left out: "auditor not named" (rule 5.1.2). Auditor proposals with
+no firm in the title are opposed 3.2% of the time, against 1.7% where a firm
+is named, so the title does not show whether the name was disclosed. Director
+items that name nobody ("Elect Directors") are opposed 10 times out of 24,
+which is not consistent enough for a rule.
+
+Limits: small numbers outside "other business". The wording patterns were
+written after looking at the proposal titles in the file, so they were not
+written blind; the rules themselves are NBIM's. 21 of the 30 uncovered
+against-votes on shareholder proposals cite sustainability reporting (section
+5.3), where every rule needs judgement, so those stay with a person.
 
 ## NBIM's position papers
 

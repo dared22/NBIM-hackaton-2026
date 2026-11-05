@@ -13,9 +13,10 @@ Idea
     votes for it, which is a vote against the board. No training is needed, so
     every year in the file is a test year.
 
-Only rules that the guidelines mark as clear-cut are used. Rules that need
-judgement (sustainability reporting, "best interest of shareholders") are left
-to a person.
+Only rules whose condition can be read from the title are used: the ones the
+guidelines mark as clear-cut, plus rule 5.2.2, which names the agenda item
+"other business" in its own text. Rules that need judgement (sustainability
+reporting, "best interest of shareholders") are left to a person.
 
 Honest note: the rules are NBIM's. The wording patterns that recognise them
 were written after looking at the list of proposal titles in the file, so they
@@ -59,6 +60,9 @@ RULES = [
     ("3.1.1", "GVG 3.1", "MOT", "classify (stagger) the board", r"\bclassify the board|stagger\w* board"),
     ("6.2-AT.2", "GVG 6.2", "MOT", "introduce or renew an anti-takeover measure (poison pill)",
      r"poison pill|shareholder rights plan|takeover defen[cs]e"),
+    # The guidelines mark 5.2.2 as needing judgement, but the rule names this agenda item itself:
+    # "insufficient to make an informed decision, e.g. the agenda item 'other business'".
+    ("5.2.2", "GVG 5.2", "MOT", "vote on unspecified \"other business\"", r"^(transact )?other business\b"),
 ]
 
 
@@ -124,6 +128,14 @@ def main():
                     f"{hits / len(shy):.0%}"])
     print(f"   {len(sh)} shareholder proposals with an answer, {len(shy)} against the board")
     bm.table(["Method", "Flags", "Hits", "False alarms", "Precision", "Recall"], out)
+
+    print("\n   All proposals where a rule means 'against the board' (management and shareholder proposals)")
+    fired_all = [r for r in rows if r["rules"]]
+    same_last = [r for r in fired_all if r["prev_same_item"] == 1]
+    new_items = [r for r in fired_all if r["prev_same_item"] != 1]
+    print(f"   {len(fired_all)} proposals, {sum(r['y'] for r in fired_all)} against the board. 'Same as last time' covers "
+          f"{len(same_last)} of them; the other {len(new_items)} are first-time items it cannot flag, and "
+          f"{sum(r['y'] for r in new_items)} of those were against-votes.")
 
     print("\n3. By period, with the drift monitor")
     out = []

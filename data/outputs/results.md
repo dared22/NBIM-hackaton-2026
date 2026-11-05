@@ -17,9 +17,9 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1157 (75%). Sent to a person: 382 (25%).
-- Automatic 'against the board' suggestions: 35, of which 24 were right (precision 69%, recall 36%).
-- Against-votes inside the pile sent to a person: 27 (41% of all against-votes).
+- Decided automatically: 1158 (75%). Sent to a person: 381 (25%).
+- Automatic 'against the board' suggestions: 36, of which 25 were right (precision 69%, recall 38%).
+- Against-votes inside the pile sent to a person: 26 (39% of all against-votes).
 - Against-votes the tool waved through with the board: 15 (23% of all against-votes).
 - With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
 - Low-information gate: 31 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
@@ -232,7 +232,7 @@ Wrote 1742 nominees to data/outputs/director_rules.csv
 
 ```text
 All proposals in NBIM's file: 13324, 744 against the board, 2019-2026
-Proposals whose wording falls under a clear-cut rule: 29 (20 from shareholders, 9 from management)
+Proposals whose wording falls under a clear-cut rule: 73 (20 from shareholders, 53 from management)
 
 1. Does NBIM vote as its rule says?
   Rule     |                                 The proposal asks to | Rule says | Proposals | NBIM voted so | Share | Board said the opposite | of which NBIM against the board
@@ -244,6 +244,7 @@ Proposals whose wording falls under a clear-cut rule: 29 (20 from shareholders, 
   4.2.2    |                      right to act by written consent |       FOR |         6 |             6 |  100% |                       6 |                               6
   6.2-AT.3 | abolish an anti-takeover measure (supermajority requ |       FOR |        11 |            11 |  100% |                       5 |                               5
   6.2-AT.2 | introduce or renew an anti-takeover measure (poison  |       MOT |         2 |             2 |  100% |                       2 |                               2
+  5.2.2    |                 vote on unspecified "other business" |       MOT |        44 |            44 |  100% |                      44 |                              44
 
 2. As a predictor of 'against the board' on shareholder proposals (no training, all years)
    150 shareholder proposals with an answer, 50 against the board
@@ -254,21 +255,24 @@ Proposals whose wording falls under a clear-cut rule: 29 (20 from shareholders, 
   Clear-cut rules from the wording |    20 |   20 |            0 |      100% |    40%
   Same as last time, or a rule     |    25 |   24 |            1 |       96% |    48%
 
+   All proposals where a rule means 'against the board' (management and shareholder proposals)
+   66 proposals, 66 against the board. 'Same as last time' covers 45 of them; the other 21 are first-time items it cannot flag, and 21 of those were against-votes.
+
 3. By period, with the drift monitor
   Years     | Rules alone: hits/flags | Monitor: automatic hits/flags | Monitor: sent to a person, against/total
   ----------+-------------------------+-------------------------------+-----------------------------------------
-  2019-2025 |                   19/19 |                         19/19 |                                      0/0
-  2026      |                     3/3 |                           3/3 |                                      0/0
-  all years |                   22/22 |                         22/22 |                                      0/0
+  2019-2025 |                   57/57 |                         57/57 |                                      0/0
+  2026      |                     9/9 |                           9/9 |                                      0/0
+  all years |                   66/66 |                         66/66 |                                      0/0
 
 4. Does the tool cite the section NBIM itself gave?
-   Of 19 rule hits where NBIM gave a reason, the tool's section matches NBIM's in 19: {('GVG 4.2', 'GVG 4.2'): 5, ('GVG 6.2', 'GVG 6.2'): 6, ('GVG 3.1', 'GVG 3.1'): 6, ('GVG 1.3', 'GVG 1.3'): 2}
+   Of 58 rule hits where NBIM gave a reason, the tool's section matches NBIM's in 58: {('GVG 4.2', 'GVG 4.2'): 5, ('GVG 5.2', 'GVG 5.2'): 39, ('GVG 6.2', 'GVG 6.2'): 6, ('GVG 3.1', 'GVG 3.1'): 6, ('GVG 1.3', 'GVG 1.3'): 2}
 
 5. Against-votes on shareholder proposals that no clear-cut rule covers, by NBIM's stated reason
     {'GVG 5.3': 21, 'none given': 4, 'GVG 4.3': 2, 'GVG 3.1': 2, 'GVG 1.1': 1}
     GVG 5.3 is sustainability reporting, where every rule needs judgement.
 
-Wrote 29 proposals to data/outputs/proposal_rules.csv
+Wrote 73 proposals to data/outputs/proposal_rules.csv
 ```
 
 ## Experiment: do ballot details improve the history model? (test years 2022-2025)
@@ -377,7 +381,7 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   Rules             | Rule hits | NBIM named a paper | Tool names the same paper | NBIM named none | Tool also names none
   ------------------+-----------+--------------------+---------------------------+-----------------+---------------------
   US director rules |        38 |                 31 |                        28 |               7 |                    0
-  wording rules     |        22 |                  3 |                         3 |              19 |                   18
+  wording rules     |        66 |                  3 |                         3 |              63 |                   62
    NBIM's own pairing of guideline section and paper, all against-votes: GVG 1.1 -> Board independence (84); GVG 1.3 -> Separation of chairperson and CEO (50); GVG 2.1 -> Time commitment of board members (49); GVG 1.2 -> Board independence (46); GVG 3.3 -> CEO remuneration (43); GVG 5.3 -> Corporate sustainability reporting (21); GVG 2.3 -> Board diversity (17); GVG 3.2 -> Corporate sustainability reporting (16)
 
 4. Decision model on the proposal wording, 2026, with and without the papers

@@ -230,6 +230,7 @@ class ProposalRuleTests(unittest.TestCase):
                            ("Adopt Proxy Access Right", "3.1.8"),
                            ("Require a Majority Vote for the Election of Directors", "3.1.5"),
                            ("Approve Takeover Defense Plan (Poison Pill)", "6.2-AT.2"),
+                           ("Other Business", "5.2.2"), ("Transact Other Business (Voting)", "5.2.2"),
                            ("Amend Articles to Amend Business Lines - Remove Provisions on Takeover Defense", "6.2-AT.3")):
             self.assertEqual(self.rule(text), rule, text)
 
