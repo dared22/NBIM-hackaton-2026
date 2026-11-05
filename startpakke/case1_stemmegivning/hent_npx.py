@@ -5,11 +5,12 @@ Hver stemmepost inneholder utsteder, CUSIP, forslagstekst ordrett fra
 stemmeseddelen, kategori, stemmeretning og antall aksjer.
 
 Bruk:
-    python hent_npx.py --cik 1364742 --inspect     # se hvilke tagger filen bruker
-    python hent_npx.py --cik 1364742 --ut votes.csv
+    python hent_npx.py --cik 1374170 --inspect     # se hvilke tagger filen bruker
+    python hent_npx.py --cik 1374170 --ut votes.csv   # alle aar i en tabell
+    python hent_npx.py --cik 1374170 --siste          # bare nyeste innsending
 
 CIK finner du via https://www.sec.gov/cgi-bin/browse-edgar?company=<navn>&action=getcompany
-Eksempel: 1364742 = BlackRock Inc.
+Eksempler: 1374170 = Norges Bank (NBIM), 1364742 = BlackRock Inc.
 
 MERK: SEC krever en User-Agent med kontaktinfo. Sett din egen e-post nedenfor.
 """
@@ -19,88 +20,109 @@ import collections
 import csv
 import io
 import json
+import re
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
 
-USER_AGENT = "Hackathon 2026 student <din.epost@skole.no>"  # <-- endre denne
+USER_AGENT = "Hackathon 2026 student <iftikhar.amiri@nmbu.no>"  # <-- endre denne
 
 
 def hent(url):
+    time.sleep(0.2)  # SEC tillater maks 10 kall i sekundet
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req) as r:
         return r.read()
 
 
 def finn_npx_filer(cik):
-    """Returner (accession, primaerdokument) for alle N-PX-innsendinger."""
+    """Returner (accession, innsendt_dato, skjema) for alle N-PX, eldste foerst."""
     url = f"https://data.sec.gov/submissions/CIK{int(cik):010d}.json"
     data = json.loads(hent(url))
     nylige = data["filings"]["recent"]
     treff = []
-    for form, acc, doc in zip(
-        nylige["form"], nylige["accessionNumber"], nylige["primaryDocument"]
+    for form, acc, dato in zip(
+        nylige["form"], nylige["accessionNumber"], nylige["filingDate"]
     ):
         if form.startswith("N-PX"):
-            treff.append((acc.replace("-", ""), doc))
-    return treff
+            treff.append((acc.replace("-", ""), dato, form))
+    return sorted(treff, key=lambda t: t[1])
 
 
-def hent_xml(cik, accession, dokument):
+def hent_xml(cik, accession):
+    """Hent stemmetabellen. primary_doc.xml er bare forsiden, saa den hoppes over."""
     base = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession}"
-    if dokument.lower().endswith(".xml"):
-        return hent(f"{base}/{dokument}")
-    # Noen innsendinger pakker XML-en i en ZIP eller har den under et annet navn.
     indeks = json.loads(hent(f"{base}/index.json"))
-    for post in indeks["directory"]["item"]:
-        navn = post["name"]
-        if navn.lower().endswith(".xml") and "npx" in navn.lower():
-            return hent(f"{base}/{navn}")
-        if navn.lower().endswith(".zip"):
-            z = zipfile.ZipFile(io.BytesIO(hent(f"{base}/{navn}")))
+    navn = [post["name"] for post in indeks["directory"]["item"]]
+    for n in navn:
+        if n.lower().endswith(".xml") and n.lower() != "primary_doc.xml":
+            return hent(f"{base}/{n}")
+    for n in navn:
+        if n.lower().endswith(".zip"):
+            z = zipfile.ZipFile(io.BytesIO(hent(f"{base}/{n}")))
             for indre in z.namelist():
-                if indre.lower().endswith(".xml"):
+                if indre.lower().endswith(".xml") and "primary_doc" not in indre.lower():
                     return z.read(indre)
-    raise SystemExit(f"Fant ingen XML i {base}")
+    raise SystemExit(f"Fant ingen stemmetabell i {base}")
+
+
+def lokal(el):
+    """Tagnavn uten XML-navnerom."""
+    return el.tag.split("}")[-1]
 
 
 def inspiser(xml_bytes):
-    """Skriv ut hvilke tagger som finnes og hvor mange av hver.
-
-    Kjoer denne foerst. Skjemaet er stort, og du trenger bare 5-6 felter.
-    Bruk utskriften til aa fylle inn FELTER nedenfor.
-    """
+    """Skriv ut hvilke tagger som finnes og hvor mange av hver."""
     rot = ET.fromstring(xml_bytes)
     teller = collections.Counter(
-        el.tag.split("}")[-1] for el in rot.iter() if el.text and el.text.strip()
+        lokal(el) for el in rot.iter() if el.text and el.text.strip()
     )
     for tag, n in teller.most_common(60):
         print(f"{n:8d}  {tag}")
 
 
-# Fyll inn etter --inspect. Nokkel = kolonnenavn du vil ha, verdi = tagnavn i XML.
+# Nokkel = kolonnenavn i CSV-en, verdi = tagnavn i XML.
+# for_eller_mot_ledelsen sier om stemmen var FOR eller AGAINST ledelsens
+# anbefaling. Det er maalvariabelen, ikke "stemme" alene.
 FELTER = {
     "utsteder": "issuerName",
     "cusip": "cusip",
+    "isin": "isin",
     "moetedato": "meetingDate",
     "forslag": "voteDescription",
-    "kategori": "voteCategory",
-    "stemme": "voteRecord",
+    "kategori": "categoryType",
+    "stemme": "howVoted",
+    "for_eller_mot_ledelsen": "managementRecommendation",
 }
 
 
+def iso_dato(tekst):
+    """MM/DD/YYYY -> YYYY-MM-DD, saa datoene kan sorteres."""
+    m = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(\d{4})", tekst)
+    return f"{m[3]}-{int(m[1]):02d}-{int(m[2]):02d}" if m else tekst
+
+
 def parse(xml_bytes, felter=FELTER):
-    """Plukk ut alle noder som inneholder utsteder-tagen, og les feltene under dem."""
+    """En rad per stemme. Hvert forslag ligger i en <proxyTable>, og selve
+    stemmen i en eller flere <voteRecord> under den."""
     rot = ET.fromstring(xml_bytes)
-    utsteder_tag = felter["utsteder"]
     rader = []
-    for node in rot.iter():
-        barn = {el.tag.split("}")[-1]: (el.text or "").strip() for el in node.iter()}
-        if utsteder_tag not in barn:
+    for tabell in rot.iter():
+        if lokal(tabell) != "proxyTable":
             continue
-        rad = {kol: barn.get(tag, "") for kol, tag in felter.items()}
-        if rad["forslag"]:
-            rader.append(rad)
+        felles, stemmer = {}, []
+        for el in tabell.iter():
+            if lokal(el) == "voteRecord":
+                stemmer.append({lokal(b): (b.text or "").strip() for b in el})
+            elif el.text and el.text.strip():
+                felles.setdefault(lokal(el), el.text.strip())
+        for stemme in stemmer or [{}]:
+            verdier = {**felles, **stemme}
+            rad = {kol: verdier.get(tag, "") for kol, tag in felter.items()}
+            rad["moetedato"] = iso_dato(rad["moetedato"])
+            if rad["forslag"]:
+                rader.append(rad)
     return rader
 
 
@@ -108,20 +130,27 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--cik", required=True)
     p.add_argument("--inspect", action="store_true")
+    p.add_argument("--siste", action="store_true", help="bare nyeste innsending")
     p.add_argument("--ut", default="votes.csv")
     a = p.parse_args()
 
     filer = finn_npx_filer(a.cik)
     if not filer:
         raise SystemExit("Ingen N-PX-innsendinger funnet for denne CIK-en.")
-    print(f"Fant {len(filer)} N-PX-innsendinger. Bruker den nyeste: {filer[0][0]}")
+    print(f"Fant {len(filer)} N-PX-innsendinger.")
 
-    xml_bytes = hent_xml(a.cik, *filer[0])
     if a.inspect:
-        inspiser(xml_bytes)
+        inspiser(hent_xml(a.cik, filer[-1][0]))
         return
 
-    rader = parse(xml_bytes)
+    rader = []
+    for accession, innsendt, skjema in filer[-1:] if a.siste else filer:
+        nye = parse(hent_xml(a.cik, accession))
+        for rad in nye:
+            rad.update(innsendt=innsendt, skjema=skjema, accession=accession)
+        print(f"  {innsendt} {skjema}: {len(nye)} stemmeposter")
+        rader.extend(nye)
+
     if not rader:
         raise SystemExit(
             "Ingen rader. Kjoer med --inspect og oppdater FELTER i denne filen."
