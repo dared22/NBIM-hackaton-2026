@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thursday 19:48.
+Last full update: Thu 20:23.
 
 ## What must be delivered
 
@@ -30,10 +30,10 @@ Last full update: Thursday 19:48.
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
 | Low-information gate and drift monitor | `src/run.py`, `src/agent/director_rules.py` | Done | The tool never follows the board alone when it has no facts |
-| One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, evidence link |
+| One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 32 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 33 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -78,7 +78,7 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
 | Branch | Who | What | Note |
 |---|---|---|---|
 | `llm_search` | dared22 | AI model reads proxies for director facts (independence, committees, chair, CEO), with a quote for each fact | Pilot on 5 meetings, no accuracy number yet. Adds `src/policy.py` |
-| `policy-retrieval` | M03ZGH | Finds guideline sections that match a proposal | Also adds `src/policy.py`: will conflict with `llm_search` |
+| `policy-retrieval` | M03ZGH | Finds guideline rules that match a proposal by keywords | Reviewed, not needed in `main`. Valid JSON, but NBIM's own section is among its candidates for 27 of 63 against-votes in 2026; the picker in `main` gets 45. Its good idea, quoting each rule's text and page, is now in `decisions_2026.csv` |
 | `marie` | marie | Jev decision model on NBIM votes; new guidelines file | Very large: 249 files changed. Check what should go into `main` |
 | `rule-check` | Iftikhar | Same as `main` | Can be deleted |
 
@@ -114,3 +114,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 19:20 Iftikhar: NBIM's 12 position papers loaded and tested. Good for citations, no gain for prediction.
 - Thu 19:30 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.
 - Thu 19:48 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.
+- Thu 20:23 Iftikhar: reviewed `policy-retrieval`. Every cited guideline in `decisions_2026.csv` now carries its own words and page number (new column `guideline_text`), with a check that the quotes are word for word.

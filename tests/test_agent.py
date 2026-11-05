@@ -231,6 +231,22 @@ class PipelineResistanceTests(unittest.TestCase):
         # every 2026 proposal the clean pipeline suggests 'against' on automatically
         cls.targets = [d[col["key"]] for d in clean if d[col["band"]] == "likely AGAINST board" and d[col["decided_by"]] == "automatic"]
 
+    def test_every_cited_guideline_is_quoted_word_for_word_with_its_page(self):
+        import json
+        with open(rc.GUIDELINES, encoding="utf-8") as f:
+            g = json.load(f)
+        printed = [r["tekst"] for r in g["regler"]] + [" ".join(u.get("innledning", [])) for u in g["underseksjoner"]]
+        cited = [d for d in self.clean.values() if d[self.col["guideline"]]]
+        self.assertGreater(len(cited), 300)
+        for d in cited:
+            text = d[self.col["guideline_text"]]
+            self.assertIn(", page ", text, d[self.col["key"]])
+            for quote in text.split(" | "):
+                words = quote.split(': "', 1)[1][:-1]
+                self.assertIn(words, printed, d[self.col["key"]])
+        # a decision that cites nothing quotes nothing
+        self.assertTrue(all(not d[self.col["guideline_text"]] for d in self.clean.values() if not d[self.col["guideline"]]))
+
     def attacked(self, suffix):
         rows = self.bm.read_votes(rc.VOTES)
         import re

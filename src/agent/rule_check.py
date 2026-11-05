@@ -105,6 +105,37 @@ def load_guidelines():
     return sections
 
 
+def load_citations():
+    """Guideline id -> what to quote next to a decision: page in NBIM's PDF, the
+    words as printed, and whether the rule needs judgement.
+
+    Keys are rule ids ("1.3.1") and section ids ("1.3"). A section's text is its
+    introduction. The idea of carrying text and page with every cited rule comes
+    from the policy-retrieval branch.
+    """
+    with open(GUIDELINES, encoding="utf-8") as f:
+        g = json.load(f)
+    out = {}
+    for u in g["underseksjoner"]:
+        out[u["id"]] = {"page": u["side"], "title": u["tittel"], "text": " ".join(u.get("innledning", [])), "judgement": None}
+    for r in g["regler"]:
+        out[r["id"]] = {"page": r["side"], "title": "", "text": r["tekst"], "judgement": r["avledet"]["skjonn"]}
+    return out
+
+
+def quote(ids, citations):
+    """The quoted guideline text for a list of rule or section ids, in the order given."""
+    parts = []
+    for i in dict.fromkeys(ids):
+        c = citations.get(i)
+        if not c or not c["text"]:
+            continue
+        name = f"GVG {i}" + (f" {c['title']}" if c["title"] else "")
+        note = ", needs judgement" if c["judgement"] else ""
+        parts.append(f"{name}, page {c['page']}{note}: \"{c['text']}\"")
+    return " | ".join(parts)
+
+
 def candidate_sections(rows, sections):
     """Proposal type -> up to MAX_SECTIONS guideline sections to check."""
     seen = collections.defaultdict(collections.Counter)

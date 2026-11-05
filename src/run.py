@@ -6,6 +6,7 @@ Run from the repo root (about three minutes, no internet, no API key):
 It writes two files in data/outputs/
     decisions_2026.csv  one row per 2026 proposal: suggested vote, probability,
                         band, whether a person must decide, reasons, guideline,
+                        the guideline's own words with its page number,
                         evidence link, and what NBIM actually did
     results.md          the full printed output of every evaluation script
 
@@ -36,6 +37,7 @@ in at the very end, for scoring only.
 import collections
 import csv
 import os
+import re
 import subprocess
 import sys
 
@@ -66,7 +68,9 @@ SCRIPTS = [
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
         "probability_against_board", "band", "decided_by", "review_reason", "model", "reasons",
-        "guideline", "evidence_url", "actual_against_board", "actual_vote"]
+        "guideline", "guideline_text", "evidence_url", "actual_against_board", "actual_vote"]
+RULE_ID = re.compile(r"\brule (\d+\.\d+(?:-AT)?\.\d+)")
+GVG_ID = re.compile(r"GVG (\d+\.\d+(?:-AT)?(?:\.\d+)?)")
 
 
 def opposite(vote):
@@ -99,6 +103,7 @@ def general_decisions(rows=None):
     train, test, w, thr = bm.run_year(rows, YEAR)
     known_companies = {r["company_id"] for r in train}
     papers = rc.load_papers()
+    citations = rc.load_citations()
     cache = rc.load_cache()
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
@@ -139,6 +144,9 @@ def general_decisions(rows=None):
             guide = ""
         evidence = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
                     if d and d["rules"] and "f" in d else "")
+        # The words of the guideline and the page they are on. A rule that fired is quoted
+        # itself; otherwise the cited section's introduction is quoted.
+        quoted = rc.quote((RULE_ID.findall(reasons) if d and d["rules"] else []) or GVG_ID.findall(guide), citations)
         if guide:   # name NBIM's position paper for the cited section, as NBIM does in its own rationales
             rule_id = d["rule"][0] if d and d["rules"] and d.get("rule") else ""
             paper = rc.paper_for(papers, guide.split(" (")[0].split(",")[0], rule_id)
@@ -146,7 +154,7 @@ def general_decisions(rows=None):
                 guide += f"; position paper: {paper['title']} ({paper['url']})"
         out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
                     r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, model,
-                    reasons, guide, evidence, r["y"], r["nbim_vote"]])
+                    reasons, guide, quoted, evidence, r["y"], r["nbim_vote"]])
     return out
 
 
@@ -155,6 +163,7 @@ def pay_decisions():
     rows, _ = pm.load_rows()
     _, test, w, ps, thr = pm.score_test_season(rows)
     pay_paper = rc.paper_for(rc.load_papers(), "GVG 3.3")
+    citations = rc.load_citations()
     out = []
     for r, p in zip(test, ps):
         flags = [("low information: " if "no pay figure" in f else "check the figures: ") + f for f in pm.warnings_for(r)]
@@ -165,11 +174,12 @@ def pay_decisions():
         # Every say-on-pay proposal is recommended FOR by the board.
         vote, who, why = decide("FOR", band, flags)
         why_pay = pm.reasons(r, w)
+        codes = ", ".join(sorted({c for _, c in why_pay if c}))
         out.append(["NBIM pay votes, US filers", f"{r['cusip']}-{r['moetedato']}", r["moetedato"], r["utsteder"],
                     r["forslag"], "FOR", vote, f"{p:.3f}", band, who, why, "vote history + company facts",
                     " | ".join(t for t, _ in why_pay),
-                    ", ".join(sorted({c for _, c in why_pay if c})) + (
-                        f"; position paper: {pay_paper['title']} ({pay_paper['url']})" if why_pay and pay_paper else ""),
+                    codes + (f"; position paper: {pay_paper['title']} ({pay_paper['url']})" if why_pay and pay_paper else ""),
+                    rc.quote(GVG_ID.findall(codes), citations),
                     r["c"].get("url", ""), r["y"], "MOT" if r["stemme"] in ("AGAINST", "WITHHOLD") else "FOR"])
     return out
 

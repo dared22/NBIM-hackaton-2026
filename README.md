@@ -96,7 +96,8 @@ python3 -m unittest discover -s tests     # 32 checks, including leakage audits 
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
-probability, band, who decides, reasons, guideline, evidence link) and
+probability, band, who decides, reasons, guideline with its own words and page
+number, evidence link) and
 `data/outputs/results.md` (the full output of every script below).
 
 The two models are scored on two different files, so their counts do not add up
