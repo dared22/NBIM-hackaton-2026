@@ -5,7 +5,8 @@ to the holdout year, so the holdout numbers are not tuned on the holdout.
 
     python evaluate_jev.py --dev 2025                  # choose level and thresholds
     python evaluate_jev.py --dev 2025 --test 2026 --level history   # final comparison
-    python evaluate_jev.py --dev 2025 --tag ""         # the saved runs of the earlier design
+    python evaluate_jev.py --dev 2025 --test 2026 --level history --tag _v2  # the clean holdout
+    python evaluate_jev.py --dev 2025 --tag ""         # the saved runs of the first design
 
 The human-review band is:
     p(MOT) >= high         recommend MOT automatically
@@ -106,7 +107,7 @@ def f1_difference_ci(rows, threshold, draws=2000, seed=42):
 
 
 def show_routing(rows, actual):
-    """What the pipeline itself recommended and routed. Its thresholds came from earlier years."""
+    """What the pipeline itself recommended and routed."""
     print("\nThe pipeline as run:")
     show("  Recommendation", metrics([r["vote"] == "MOT" for r in rows], actual))
     automatic = [r["vote"] == "MOT" and r["route"] == "automatic" for r in rows]
@@ -162,7 +163,7 @@ def main():
     p.add_argument("--dev", type=int, required=True)
     p.add_argument("--test", type=int)
     p.add_argument("--level", choices=LEVELS)
-    p.add_argument("--tag", default="_v2", help="suffix of the result files. Use \"\" for the earlier design")
+    p.add_argument("--tag", default="_v3", help="suffix of the result files. _v2 is the clean 2026 holdout, \"\" the first design")
     a = p.parse_args()
 
     levels = [a.level] if a.level else [l for l in LEVELS if load(a.dev, l, a.tag)]
@@ -178,7 +179,8 @@ def main():
             test = load(a.test, level, a.tag)
             if test is None:
                 raise SystemExit(f"No full run for {a.test} at level {level}.")
-            report(test, threshold, band, f"HOLDOUT {a.test}, level {level} (thresholds fixed on {a.dev})")
+            note = "design chosen after this holdout was seen" if a.tag == "_v3" else f"thresholds fixed on {a.dev}"
+            report(test, threshold, band, f"HOLDOUT {a.test}, level {level} ({note})")
 
 
 if __name__ == "__main__":

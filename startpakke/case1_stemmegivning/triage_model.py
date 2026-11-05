@@ -1,6 +1,6 @@
 """Scores how likely NBIM is to vote MOT, from past votes and basic proposal fields. No LLM.
 
-This decides what gets flagged and what goes to a person. Jev explains the result.
+Its score feeds the recommendation and the review routing in jev_mvp.py.
 
 Every history feature uses strictly earlier meetings. The model for a year trains on
 earlier years only, and its review thresholds come from earlier years too, so nothing
@@ -24,11 +24,11 @@ COUNTS = (
     "company_votes", "company_mot", "company_type_votes", "company_type_mot",
     "item_votes", "item_mot", "country_type_votes", "country_type_mot", "type_votes", "type_mot",
 )
-FEATURES = (*CATEGORICAL, "country", *COUNTS, "last_meeting_mot", "items_in_meeting", "text_length")
+# No text length: padding a proposal must not move its score.
+FEATURES = (*CATEGORICAL, "country", *COUNTS, "last_meeting_mot", "items_in_meeting")
 SEEDS = 3
 THRESHOLD_YEARS = 3  # Thresholds are chosen on this many earlier years, pooled.
-TARGET_RECALL = 0.9  # low: scores below this are not reviewed. Keeps this share of MOT votes.
-TARGET_PRECISION = 0.8  # high: automatic MOT should be right at least this often.
+TARGET_RECALL = 0.9  # low keeps this share of MOT votes.
 
 
 def groups_for(row):
@@ -69,7 +69,7 @@ def build_features(rows):
             counts = [n for key in groups_for(r) for n in history[key]]
             out[i] = [
                 *(codes[c][r[c]] for c in CATEGORICAL), codes["country"][r["country"]], *counts,
-                last_meeting.get(r["company_id"], -1), items_in_meeting[r["meeting_id"]], len(r["proposal_text"]),
+                last_meeting.get(r["company_id"], -1), items_in_meeting[r["meeting_id"]],
             ]
         mot_this_date = defaultdict(int)
         for i in batch:
@@ -98,17 +98,11 @@ def fit_and_score(X, y, train, score):
 
 
 def choose_thresholds(scores, actual):
-    """low keeps TARGET_RECALL of MOT votes. flag has the best F1. high is the first score reaching TARGET_PRECISION.
-
-    Below low: FOR, unreviewed. From flag up: recommend MOT. From high up: MOT without review.
-    On 2022-2024 held out, precision reached 80% only at the very top, so high rarely fires
-    and people see almost every recommended MOT. That is what the evidence supports.
-    """
+    """low keeps TARGET_RECALL of MOT votes. flag has the best F1. Both are for this model alone."""
     grid = np.unique(scores)
     low = max(t for t in grid if actual[scores >= t].sum() >= TARGET_RECALL * actual.sum())
     flag = max(grid, key=lambda t: mot_metrics(list(scores >= t), list(actual))["f1"])
-    high = next((t for t in grid if t >= low and actual[scores >= t].mean() >= TARGET_PRECISION), None)
-    return float(low), float(flag), float(high) if high is not None else float("inf")
+    return float(low), float(flag)
 
 
 @dataclass
@@ -116,10 +110,6 @@ class Triage:
     scores: dict  # (meeting_id, item_no) -> p(MOT)
     low: float
     flag: float
-    high: float
-
-    def for_row(self, row):
-        return {"p_model": self.scores[row["meeting_id"], row["item_no"]], "low": self.low, "flag": self.flag, "high": self.high}
 
 
 def score_year(rows, year):
@@ -132,12 +122,12 @@ def score_year(rows, year):
     if not earlier:
         raise SystemExit(f"The triage model needs at least two earlier years of votes to score {year}.")
     held_out = [(fit_and_score(X, y, years < t, years == t), y[years == t]) for t in earlier]
-    low, flag, high = choose_thresholds(np.concatenate([s for s, _ in held_out]), np.concatenate([a for _, a in held_out]))
+    low, flag = choose_thresholds(np.concatenate([s for s, _ in held_out]), np.concatenate([a for _, a in held_out]))
 
     target = years == year
     scores = fit_and_score(X, y, years < year, target)
     keys = [(r["meeting_id"], r["item_no"]) for r, t in zip(voted, target) if t]
-    return Triage(dict(zip(keys, map(float, scores))), low, flag, high)
+    return Triage(dict(zip(keys, map(float, scores))), low, flag)
 
 
 def main():
@@ -151,13 +141,12 @@ def main():
     scores = np.array([triage.scores[r["meeting_id"], r["item_no"]] for r in picked])
     actual = [r["nbim_vote"] == "MOT" for r in picked]
 
-    print(f"{a.year}: {len(picked)} proposals, {sum(actual)} MOT. Thresholds from earlier years: low {triage.low:.3f}, flag {triage.flag:.3f}, high {triage.high:.3f}.")
+    print(f"{a.year}: {len(picked)} proposals, {sum(actual)} MOT. Thresholds from earlier years: low {triage.low:.3f}, flag {triage.flag:.3f}.")
     print(f"Average precision {average_precision_score(actual, scores):.3f} (base rate {np.mean(actual):.3f})")
     flagged = mot_metrics(list(scores >= triage.flag), actual)
     print(f"Recommended MOT:  precision {flagged['precision']:.1%}  recall {flagged['recall']:.1%}  F1 {flagged['f1']:.1%}  hits {flagged['tp']}  false alarms {flagged['fp']}")
-    print(f"Automatic MOT:    {(scores >= triage.high).sum()} proposals")
     kept = mot_metrics(list(scores >= triage.low), actual)
-    review = ((scores >= triage.low) & (scores < triage.high)).mean()
+    review = (scores >= triage.low).mean()
     print(f"Sent to a person: {review:.1%} of proposals. Above low: recall {kept['recall']:.1%}, so {kept['fn']} MOT votes pass unreviewed.")
 
 
