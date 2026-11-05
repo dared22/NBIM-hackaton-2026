@@ -2,6 +2,8 @@
 
 Use these modules to prepare sourced evidence for US director elections.
 The output is evidence for the decision module, not a voting recommendation.
+For the full flow, known limitations, and proposed Jev integration steps, read
+[how director evidence reaches a Jev decision](../director-evidence-pipeline.md).
 
 ## Run retrieval
 

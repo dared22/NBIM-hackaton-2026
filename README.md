@@ -104,3 +104,7 @@ For the full case requirements and source scripts, see the
 
 For evidence commands, offline replay, and the downstream contract, see the
 [director evidence reference](docs/reference/director-evidence.md).
+
+For the full pipeline explanation, evidence limitations, and proposed steps
+toward reliable Jev decisions, see the
+[director evidence pipeline](docs/director-evidence-pipeline.md).
