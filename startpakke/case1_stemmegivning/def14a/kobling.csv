@@ -1,4 +1,4 @@
-moete_id,selskap_id,moetedato,utsteder,land,kilde,har_mot,cik,koblet_via,status,leveringsdato,accession,url,fil
+meeting_id,company_id,meeting_date,company,country,source_file,has_against_board,cik,matched_via,status,filing_date,accession,url,file
 1274240,510172,2019-09-25,Colruyt Group NV,Belgium,real_votes.csv,1,,,ingen_cik,,,,
 1276975,510171,2019-04-12,Arbonia AG,Switzerland,real_votes.csv,0,,,ingen_cik,,,,
 1278457,47824,2019-04-10,Electrolux AB,Sweden,real_votes.csv,0,,,ingen_cik,,,,

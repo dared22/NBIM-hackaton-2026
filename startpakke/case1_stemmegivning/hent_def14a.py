@@ -11,10 +11,10 @@ For hvert moete:
   2. Velg siste DEF 14A levert 0-120 dager foer moetet. Dokumenter etter moetet
      brukes aldri, siden de ville vaert framtidig informasjon.
   3. Last ned dokumentet til <ut>/ og skriv resultatet til <ut>/kobling.csv.
-     Bruk moete_id til aa koble tilbake til meeting_id i stemmefilen.
+     Kolonnen meeting_id er den samme som i stemmefilen.
 
 Utenlandske selskaper leverer sjelden DEF 14A, men noen gjoer det (for eksempel
-irske og bermudiske). De proeves derfor ogsaa, og kolonnen land viser hvilke de er.
+irske og bermudiske). De proeves derfor ogsaa, og kolonnen country viser hvilke de er.
 
 Avbrutt kjoering kan startes paa nytt. Ferdige moeter hoppes over, og rader med
 status "feil" proeves igjen.
@@ -42,9 +42,15 @@ MOT = {"AGAINST", "WITHHOLD"}
 USA = {"UNITED STATES", "USA", "US"}
 MAKS_DAGER_FOER_MOETE = 120
 KOLONNER = [
-    "moete_id", "selskap_id", "moetedato", "utsteder", "land", "kilde", "har_mot",
-    "cik", "koblet_via", "status", "leveringsdato", "accession", "url", "fil",
+    "meeting_id", "company_id", "meeting_date", "company", "country", "source_file", "has_against_board",
+    "cik", "matched_via", "status", "filing_date", "accession", "url", "file",
 ]
+# Kolonnenavn i logger skrevet av eldre versjoner av dette skriptet.
+GAMLE_KOLONNER = {
+    "moete_id": "meeting_id", "selskap_id": "company_id", "moetedato": "meeting_date", "utsteder": "company",
+    "land": "country", "kilde": "source_file", "har_mot": "has_against_board", "koblet_via": "matched_via",
+    "leveringsdato": "filing_date", "fil": "file",
+}
 
 # Selskapsformer som skrives ulikt i stemmefilene og EDGAR.
 SELSKAPSFORMER = {"INC", "INCORPORATED", "CORP", "CORPORATION", "CO", "COMPANY", "LTD", "LIMITED", "PLC", "LLC", "LP", "THE"}
@@ -89,14 +95,14 @@ def hent_med_cache(url, sti):
 
 
 def finn_cik(moete, navn, tickere, historiske):
-    """Returner (cik, koblet_via, status). status er ok, ingen_cik eller tvetydig_navn."""
-    noekkel = normaliser(moete["utsteder"])
+    """Returner (cik, matched_via, status). status er ok, ingen_cik eller tvetydig_navn."""
+    noekkel = normaliser(moete["company"])
     treff = navn.get(noekkel, set())
     if len(treff) == 1:
         return next(iter(treff)), "navn", "ok"
 
     # Utenlandske tickere kan vaere like amerikanske uten aa vaere samme selskap.
-    if moete["land"].upper() in USA:
+    if moete["country"].upper() in USA:
         cik = tickere.get(normaliser_ticker(moete["ticker"]))
         if cik:
             return cik, "ticker", "ok"
@@ -143,27 +149,28 @@ def tolk_rad(r):
     """Gjoer en rad fra et av formatene om til felles felter."""
     if "meeting_id" in r:
         return {
-            "moete_id": r["meeting_id"],
-            "selskap_id": r["company_id"],
-            "moetedato": r["meeting_date"],
-            "utsteder": r["company"],
+            "meeting_id": r["meeting_id"],
+            "company_id": r["company_id"],
+            "meeting_date": r["meeting_date"],
+            "company": r["company"],
             "ticker": r["ticker"],
-            "land": r["country"],
-            "har_mot": r["against_board"] in ("1", "1.0"),
+            "country": r["country"],
+            "has_against_board": r["against_board"] in ("1", "1.0"),
         }
+    # votes.csv har norske kolonnenavn.
     return {
-        "moete_id": f"{r['cusip']}_{r['moetedato']}",
-        "selskap_id": r["cusip"],
-        "moetedato": r["moetedato"],
-        "utsteder": r["utsteder"],
+        "meeting_id": f"{r['cusip']}_{r['moetedato']}",
+        "company_id": r["cusip"],
+        "meeting_date": r["moetedato"],
+        "company": r["utsteder"],
         "ticker": "",
-        "land": "",
-        "har_mot": r["stemme"].upper() in MOT,
+        "country": "",
+        "has_against_board": r["stemme"].upper() in MOT,
     }
 
 
 def les_moeter(stier):
-    """Ett moete per moete_id, merket med om det har en MOT-stemme."""
+    """Ett moete per meeting_id, merket med om det har en MOT-stemme."""
     moeter = {}
     for sti in stier:
         with open(sti, encoding="utf-8-sig", newline="") as f:
@@ -172,45 +179,47 @@ def les_moeter(stier):
                 raise SystemExit(f"Kjenner ikke igjen formatet i {sti}. Kolonner: {leser.fieldnames}")
             for r in leser:
                 rad = tolk_rad(r)
-                if not rad["moetedato"]:
+                if not rad["meeting_date"]:
                     continue
-                m = moeter.setdefault(rad["moete_id"], {**rad, "kilde": Path(sti).name})
-                m["har_mot"] = m["har_mot"] or rad["har_mot"]
+                m = moeter.setdefault(rad["meeting_id"], {**rad, "source_file": Path(sti).name})
+                m["has_against_board"] = m["has_against_board"] or rad["has_against_board"]
                 # Samme moete kan finnes i flere filer, og bare noen har land og ticker.
-                m["land"] = m["land"] or rad["land"]
+                m["country"] = m["country"] or rad["country"]
                 m["ticker"] = m["ticker"] or rad["ticker"]
     return moeter
 
 
 def trekk_utvalg(moeter, seed=42):
     """Alle moeter med MOT-stemme, pluss like mange tilfeldige uten."""
-    med_mot = sorted(k for k, m in moeter.items() if m["har_mot"])
-    uten = sorted(k for k, m in moeter.items() if not m["har_mot"])
+    med_mot = sorted(k for k, m in moeter.items() if m["has_against_board"])
+    uten = sorted(k for k, m in moeter.items() if not m["has_against_board"])
     random.Random(seed).shuffle(uten)
     return med_mot + uten[: len(med_mot)]
 
 
-def les_ferdige(sti):
-    """Rader fra forrige kjoering, uten de som feilet. Godtar ogsaa eldre logger."""
+def les_logg(sti):
+    """Rader fra forrige kjoering. Godtar ogsaa logger med eldre kolonnenavn."""
     if not sti.exists():
         return []
-    with open(sti, encoding="utf-8", newline="") as f:
-        rader = [r for r in csv.DictReader(f) if r["status"] != "feil"]
+    with open(sti, encoding="utf-8-sig", newline="") as f:  # Excel kan legge til BOM
+        rader = list(csv.DictReader(f))
     for r in rader:
         if "cusip" in r:
             r["moete_id"] = f"{r['cusip']}_{r['moetedato']}"
             r["selskap_id"] = r["cusip"]
+        for gammel, ny in GAMLE_KOLONNER.items():
+            if gammel in r:
+                r[ny] = r[gammel]
     return [{k: r.get(k, "") for k in KOLONNER} for r in rader]
 
 
 def skriv_oppsummering(logg):
-    with open(logg, encoding="utf-8", newline="") as f:
-        alle = list(csv.DictReader(f))
+    alle = les_logg(logg)
     print(f"\nStatus per moete ({len(alle)} totalt):")
     for status in sorted({r["status"] for r in alle}):
         rader = [r for r in alle if r["status"] == status]
-        mot = sum(r["har_mot"] == "1" for r in rader)
-        usa = sum(r["land"].upper() in USA for r in rader)
+        mot = sum(r["has_against_board"] == "1" for r in rader)
+        usa = sum(r["country"].upper() in USA for r in rader)
         print(f"  {status:16s} {len(rader):5d}  (herav {mot} med MOT, {usa} fra USA)")
     print(f"Logg: {logg}")
 
@@ -233,15 +242,15 @@ def main():
         noekler = noekler[: a.maks]
 
     logg = ut / "kobling.csv"
-    ferdige = les_ferdige(logg)
-    gjort = {r["moete_id"] for r in ferdige}
+    ferdige = [r for r in les_logg(logg) if r["status"] != "feil"]
+    gjort = {r["meeting_id"] for r in ferdige}
     gjenstaar = [k for k in noekler if k not in gjort]
     print(f"{len(moeter)} moeter i stemmefilene, {len(noekler)} valgt, {len(gjenstaar)} gjenstaar.")
     if not gjenstaar:
         skriv_oppsummering(logg)
         return
 
-    datoer = [moeter[k]["moetedato"] for k in gjenstaar]
+    datoer = [moeter[k]["meeting_date"] for k in gjenstaar]
     fra, til = tidligst_levert(min(datoer)), max(datoer)
 
     navn, tickere, historiske = bygg_indekser(ut)
@@ -250,16 +259,16 @@ def main():
         w = csv.DictWriter(f, fieldnames=KOLONNER)
         w.writeheader()
         w.writerows(ferdige)
-        for i, moete_id in enumerate(gjenstaar, 1):
-            m = moeter[moete_id]
+        for i, meeting_id in enumerate(gjenstaar, 1):
+            m = moeter[meeting_id]
             rad = dict.fromkeys(KOLONNER, "")
-            rad.update({k: m[k] for k in ("moete_id", "selskap_id", "moetedato", "utsteder", "land", "kilde")})
-            rad["har_mot"] = int(m["har_mot"])
-            cik, rad["koblet_via"], rad["status"] = finn_cik(m, navn, tickere, historiske)
+            rad.update({k: m[k] for k in ("meeting_id", "company_id", "meeting_date", "company", "country", "source_file")})
+            rad["has_against_board"] = int(m["has_against_board"])
+            cik, rad["matched_via"], rad["status"] = finn_cik(m, navn, tickere, historiske)
             if cik:
                 rad["cik"] = cik
                 try:
-                    valgt = velg_filing(def14a_for(cik, cache, fra, til), m["moetedato"])
+                    valgt = velg_filing(def14a_for(cik, cache, fra, til), m["meeting_date"])
                     if not valgt:
                         rad["status"] = "ingen_def14a"
                     else:
@@ -268,10 +277,10 @@ def main():
                         fil = ut / f"{cik}_{lev}{Path(dok).suffix or '.htm'}"
                         if not fil.exists():
                             fil.write_bytes(hent(url))
-                        rad.update(leveringsdato=lev, accession=acc, url=url, fil=fil.name)
+                        rad.update(filing_date=lev, accession=acc, url=url, file=fil.name)
                 except (urllib.error.URLError, TimeoutError) as e:
                     rad["status"] = "feil"
-                    print(f"  feil for {m['utsteder']}: {e}")
+                    print(f"  feil for {m['company']}: {e}")
             w.writerow(rad)
             f.flush()
             if i % 100 == 0:
