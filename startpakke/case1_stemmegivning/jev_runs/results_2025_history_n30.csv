@@ -1,0 +1,49 @@
+meeting_id,item_no,company,proposal_text,mgmt_rec,vote,p_mot,confidence,citation,route,review_reason,nbim_vote
+1949282,1,Arbonia AG,Approve Management Report,FOR,FOR,0.0,1.0,P.1,human_review,insufficient_evidence,FOR
+1949282,2,Arbonia AG,Approve Annual Financial Statements,FOR,FOR,0.01,0.97,P.1,human_review,insufficient_evidence,FOR
+1949282,3,Arbonia AG,Accept Consolidated Financial Statements,FOR,FOR,0.01,0.97,P.1,human_review,insufficient_evidence,FOR
+1949282,4,Arbonia AG,Approve Non-Financial Report,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1949282,5,Arbonia AG,Approve Discharge of Board and Senior Management,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1949282,6,Arbonia AG,Approve Allocation of Income,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1949282,7,Arbonia AG,Approve Dividends of CHF 0.165 per Share from Capital Contribution Reserves; Dividends of CHF 0.15 per Share for Fiscal Year 2023 and Special Dividend of CHF 0.60 per Share in Connection with the Sale of Climate Division,FOR,FOR,0.4,0.24,P.1,human_review,low_confidence;insufficient_evidence,FOR
+1949282,8,Arbonia AG,"Reelect Alexander von Witzleben as Director, Board Chair, and Member of the Nomination and Compensation Committee",FOR,FOR,0.27,0.48,P.1,human_review,low_confidence;insufficient_evidence,MOT
+1949282,9,Arbonia AG,Reelect Peter Barandun as Director and Member of the Nomination and Compensation Committee,FOR,FOR,0.13,0.7,P.1,human_review,insufficient_evidence,MOT
+1949282,10,Arbonia AG,Reelect Markus Oppliger as Director and Member of the Nomination and Compensation Committee,FOR,FOR,0.1,0.76,P.1,human_review,insufficient_evidence,MOT
+1949282,11,Arbonia AG,Reelect Michael Pieper as Director,FOR,FOR,0.03,0.94,P.1,human_review,insufficient_evidence,FOR
+1949282,12,Arbonia AG,Reelect Thomas Lozser as Director,FOR,FOR,0.02,0.96,P.1,human_review,insufficient_evidence,FOR
+1949282,13,Arbonia AG,Designate Roland Keller as Independent Proxy,FOR,FOR,0.0,1.0,P.1,human_review,insufficient_evidence,FOR
+1949282,14,Arbonia AG,Ratify KPMG AG as Auditors,FOR,FOR,0.01,0.97,P.1,human_review,insufficient_evidence,FOR
+1949282,15,Arbonia AG,Approve CHF 278 Million Reduction in Share Capital via Reduction of Nominal Value and Repayment of CHF 4.00 per Share,FOR,FOR,0.09,0.8,P.1,human_review,insufficient_evidence,FOR
+1949282,16,Arbonia AG,Approve Creation of Capital Band with or without Exclusion of Preemptive Rights,FOR,FOR,0.06,0.89,P.1,human_review,insufficient_evidence,FOR
+1949282,17,Arbonia AG,Approve Remuneration Report (Non-Binding),FOR,MOT,0.74,0.61,,human_review,insufficient_evidence;no_citation,MOT
+1949282,18,Arbonia AG,Approve Remuneration of Directors in the Amount of CHF 2.4 Million,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1949282,19,Arbonia AG,Approve Remuneration of Executive Committee in the Amount of CHF 2.2 Million,FOR,FOR,0.16,0.73,P.1,human_review,insufficient_evidence,FOR
+1949282,20,Arbonia AG,Transact Other Business (Voting),FOR,MOT,0.98,0.97,5.2.2,automatic,,MOT
+1939041,1,DocMorris Ltd.,Share Re-registration Consent,FOR,FOR,0.0,1.0,P.1,human_review,insufficient_evidence,FOR
+1926546,1,Draegerwerk AG & Co. KGaA,Accept Financial Statements and Statutory Reports for Fiscal Year 2024,FOR,FOR,0.02,0.96,P.1,human_review,insufficient_evidence,FOR
+1926546,2,Draegerwerk AG & Co. KGaA,Approve Allocation of Income and Dividends of EUR 1.97 per Ordinary Share and EUR 2.03 per Preferred Share,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1926546,3,Draegerwerk AG & Co. KGaA,Approve Discharge of Personally Liable Partner for Fiscal Year 2024,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1926546,4,Draegerwerk AG & Co. KGaA,Approve Discharge of Supervisory Board for Fiscal Year 2024,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1926546,5,Draegerwerk AG & Co. KGaA,Approve Remuneration Report,FOR,MOT,0.7,0.55,,human_review,insufficient_evidence;no_citation,MOT
+1926546,6,Draegerwerk AG & Co. KGaA,Approve Remuneration Policy,FOR,FOR,0.3,0.5,P.1,human_review,insufficient_evidence,MOT
+1926546,7,Draegerwerk AG & Co. KGaA,Approve Remuneration of Supervisory Board,FOR,FOR,0.01,0.97,P.1,human_review,insufficient_evidence,FOR
+1926546,8,Draegerwerk AG & Co. KGaA,Ratify KPMG AG as Auditors for Fiscal Year 2025 and as Auditor for Sustainability Reporting for Fiscal Year 2025,FOR,FOR,0.01,0.98,P.1,human_review,insufficient_evidence,FOR
+1926546,9,Draegerwerk AG & Co. KGaA,Elect Peter Bartels to the Supervisory Board,FOR,FOR,0.09,0.82,P.1,human_review,insufficient_evidence,FOR
+1926546,10,Draegerwerk AG & Co. KGaA,Approve Virtual-Only Shareholder Meetings Until 2027,FOR,FOR,0.05,0.91,P.1,human_review,insufficient_evidence,FOR
+1926546,11,Draegerwerk AG & Co. KGaA,Amend Articles Re: General Meeting Chair,FOR,FOR,0.08,0.82,P.1,human_review,insufficient_evidence,FOR
+1964459,1,Fortrea Holdings Inc.,Elect Director Amrit Ray,FOR,FOR,0.05,0.88,P.1,human_review,insufficient_evidence,FOR
+1964459,2,Fortrea Holdings Inc.,Elect Director Erin L. Russell,FOR,FOR,0.04,0.91,P.1,human_review,insufficient_evidence,FOR
+1964459,3,Fortrea Holdings Inc.,Elect Director Machelle Sanders,FOR,FOR,0.05,0.89,P.1,human_review,insufficient_evidence,FOR
+1964459,4,Fortrea Holdings Inc.,Ratify Deloitte & Touche LLP as Auditors,FOR,FOR,0.01,0.97,P.1,human_review,insufficient_evidence,FOR
+1964459,5,Fortrea Holdings Inc.,Advisory Vote to Ratify Named Executive Officers' Compensation,FOR,MOT,0.54,0.31,,human_review,low_confidence;insufficient_evidence;no_citation,FOR
+1964459,6,Fortrea Holdings Inc.,Amend Omnibus Stock Plan,FOR,FOR,0.08,0.74,P.1,human_review,insufficient_evidence,FOR
+1977813,1,"Marui Group Co., Ltd.","Approve Allocation of Income, with a Final Dividend of JPY 53",FOR,FOR,0.0,1.0,P.1,human_review,insufficient_evidence,FOR
+1977813,2,"Marui Group Co., Ltd.",Approve Accounting Transfers,FOR,FOR,0.02,0.89,P.1,human_review,insufficient_evidence,FOR
+1977813,3,"Marui Group Co., Ltd.","Elect Director Aoi, Hiroshi",FOR,FOR,0.07,0.83,P.1,human_review,insufficient_evidence,FOR
+1977813,4,"Marui Group Co., Ltd.","Elect Director Okajima, Etsuko",FOR,FOR,0.09,0.8,P.1,human_review,insufficient_evidence,FOR
+1977813,5,"Marui Group Co., Ltd.","Elect Director Nakagami, Yasunori",FOR,FOR,0.1,0.8,P.1,human_review,insufficient_evidence,FOR
+1977813,6,"Marui Group Co., Ltd.",Elect Director Peter D. Pedersen,FOR,FOR,0.02,0.96,P.1,human_review,insufficient_evidence,FOR
+1977813,7,"Marui Group Co., Ltd.","Elect Director Kato, Hirotsugu",FOR,FOR,0.03,0.94,P.1,human_review,insufficient_evidence,FOR
+1977813,8,"Marui Group Co., Ltd.","Elect Director Kojima, Reiko",FOR,FOR,0.02,0.96,P.1,human_review,insufficient_evidence,FOR
+1977813,9,"Marui Group Co., Ltd.","Appoint Alternate Statutory Auditor Nozaki, Akira",FOR,FOR,0.0,1.0,P.1,human_review,insufficient_evidence,FOR
+1977813,10,"Marui Group Co., Ltd.",Approve Donation of Treasury Shares to Social Intrapreneur Development Foundation,FOR,FOR,0.31,0.38,P.1,human_review,low_confidence;insufficient_evidence,FOR
