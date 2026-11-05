@@ -14,8 +14,7 @@ nominees with the second reader's facts?
 
 Two things this is not. It is not accuracy: both readers can be wrong in the
 same way, and nobody checked the answers by hand. And it is a small sample:
-13 of the 16 meetings drawn were read (the last three were refused by the
-account's credit check), 3 of 36 companies appear twice.
+16 of 214 meetings.
 """
 
 import collections

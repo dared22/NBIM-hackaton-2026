@@ -211,19 +211,28 @@ in 2019-2020 (0 of 6) and is from 2021 (4 of 6). Rules 1.1.1 and 1.2.3 never
 fire: every US board in the file states a majority of independent directors.
 
 How reliable the reader is (`src/agent/board_reader_check.py`). A second,
-stronger model (Claude Sonnet 5.5) read a random sample of 13 meetings again,
-with exactly the same passages, names and questions: 97 nominees. Where both
-answered, the two models gave the same answer on 1,143 of 1,164 facts
-(98.2%): independence 92 of 92, CEO 97 of 97, chair 97 of 97, audit and pay
-committee 97 of 97 each. NBIM's rules would fire on the same nominees for 95
-of 97. The two that differ are a count of other boards (the first reader
-counted private companies) and a count of women on one board. The check also
-exposed a third reader mistake, now corrected in code: "founder" was answered
-yes for people who founded some other firm, so the quote must now name this
-company. After the corrections the two readers do not disagree on any fact a
-rule rests on in the sample. Agreement between two models is not the same as
-being right, nobody checked the answers by hand, and 13 meetings is a small
-sample (16 were drawn; the account's credit check refused the last three).
+stronger model (Claude Sonnet 5.5) read a random sample of 16 meetings again,
+with exactly the same passages, names and questions: 122 nominees. Where both
+answered, the two models gave the same answer on 1,442 of 1,469 facts
+(98.2%): independence 117 of 117, CEO 122 of 122, chair 121 of 121, audit and
+pay committee 122 of 122 each. NBIM's rules would fire on the same nominees
+for 120 of 122. The two that differ are a count of other boards (the first
+reader counted private companies) and a count of women on one board. The
+check also exposed a third reader mistake, now corrected in code: "founder"
+was answered yes for people who founded some other firm, so the quote must
+now name this company. After the corrections the two readers do not disagree
+on any fact a rule rests on in the sample. Agreement between two models is
+not the same as being right, nobody checked the answers by hand, and 16
+meetings is a small sample.
+
+The link between the pay vote and the director votes was tested too (rule
+3.2.2: no support for pay committee members when the board has not answered
+concerns about pay). At the 16 US meetings in file A where NBIM voted against
+pay, it also voted against 2 of the 8 pay committee chairs and 2 of the 16
+other members. Where it supported pay it opposed 1% and 3% of them. So there
+is a link, but 8 chairs is too few to act on, and the pay vote at the same
+meeting is not known beforehand. The reviewer is shown the fact; the tool
+does not act on it.
 
 When the tool acts on its own. A signal has to earn trust: the tool suggests
 "against" by itself only when NBIM followed that signal at the last two
@@ -532,7 +541,7 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
-Claude Sonnet 5.5 through OpenRouter read 13 meetings a second time, to
+Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
 measure how often two models agree on the facts. Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by
 the director rules, which are plain code) and how CEO pay is built (675

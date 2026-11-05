@@ -341,41 +341,41 @@ Wrote 1742 nominees to data/outputs/board_rules.csv
 `python3 src/agent/board_reader_check.py`
 
 ```text
-Meetings read by both models: 13 (12 companies), 97 nominees.
+Meetings read by both models: 16 (15 companies), 122 nominees.
 First reader anthropic/claude-haiku-5.5, second reader anthropic/claude-sonnet-5.5. Same passages, names and questions.
 
 1. Facts about each nominee
   Fact                  | Both answered | Same answer | Share | Only the first answered | Only the second answered
   ----------------------+---------------+-------------+-------+-------------------------+-------------------------
-  independent           |            92 |          92 |  100% |                       0 |                        2
-  executive             |            97 |          95 |   98% |                       0 |                        0
-  ceo                   |            97 |          97 |  100% |                       0 |                        0
-  executive_elsewhere   |            87 |          83 |   95% |                       5 |                        3
-  board_chair           |            97 |          97 |  100% |                       0 |                        0
-  audit_committee       |            97 |          97 |  100% |                       0 |                        0
-  pay_committee         |            97 |          97 |  100% |                       0 |                        0
-  nomination_committee  |            95 |          93 |   98% |                       0 |                        2
-  other_public_boards   |            65 |          63 |   97% |                      11 |                        3
-  chairs_other_board    |            15 |          14 |   93% |                      42 |                        6
-  director_since        |            94 |          90 |   96% |                       0 |                        0
-  gender                |            97 |          97 |  100% |                       0 |                        0
-  attended_under_75_pct |            57 |          57 |  100% |                       0 |                       38
-  founder               |            77 |          71 |   92% |                       2 |                       17
-   Over all facts: the same answer on 1143 of 1164 (98.2%) where both answered.
+  independent           |           117 |         117 |  100% |                       0 |                        2
+  executive             |           122 |         120 |   98% |                       0 |                        0
+  ceo                   |           122 |         122 |  100% |                       0 |                        0
+  executive_elsewhere   |           112 |         106 |   95% |                       5 |                        3
+  board_chair           |           121 |         121 |  100% |                       0 |                        1
+  audit_committee       |           122 |         122 |  100% |                       0 |                        0
+  pay_committee         |           122 |         122 |  100% |                       0 |                        0
+  nomination_committee  |           120 |         118 |   98% |                       0 |                        2
+  other_public_boards   |            89 |          84 |   94% |                      11 |                        4
+  chairs_other_board    |            23 |          22 |   96% |                      54 |                        7
+  director_since        |           119 |         115 |   97% |                       0 |                        0
+  gender                |           122 |         122 |  100% |                       0 |                        0
+  attended_under_75_pct |            77 |          77 |  100% |                       1 |                       42
+  founder               |            81 |          74 |   91% |                       2 |                       38
+   Over all facts: the same answer on 1442 of 1469 (98.2%) where both answered.
    'other_public_boards' counts as the same when both list the same number of companies.
 
 2. Facts about the board
   Fact                           | Both answered | Same answer | Share | Only the first answered | Only the second answered
   -------------------------------+---------------+-------------+-------+-------------------------+-------------------------
-  board_size                     |            13 |          12 |   92% |                       0 |                        0
-  independent_directors          |            11 |          10 |   91% |                       1 |                        0
-  women_directors                |             8 |           7 |   88% |                       1 |                        3
-  controlled_company             |             5 |           5 |  100% |                       1 |                        3
-  largest_holder_voting_pct      |             8 |           6 |   75% |                       0 |                        1
-  classified_board               |            12 |          12 |  100% |                       0 |                        1
-  audit_committee_members        |            13 |          13 |  100% |                       0 |                        0
-  audit_committee_independent    |            13 |          12 |   92% |                       0 |                        0
-  prior_pay_support_pct          |             6 |           6 |  100% |                       0 |                        0
+  board_size                     |            16 |          15 |   94% |                       0 |                        0
+  independent_directors          |            14 |          13 |   93% |                       1 |                        0
+  women_directors                |            10 |           9 |   90% |                       1 |                        4
+  controlled_company             |             6 |           6 |  100% |                       2 |                        3
+  largest_holder_voting_pct      |            10 |           8 |   80% |                       0 |                        1
+  classified_board               |            15 |          15 |  100% |                       0 |                        1
+  audit_committee_members        |            16 |          16 |  100% |                       0 |                        0
+  audit_committee_independent    |            16 |          15 |   94% |                       0 |                        0
+  prior_pay_support_pct          |             9 |           9 |  100% |                       0 |                        0
   majority_proposal_not_acted_on |             0 |           0 |     - |                       0 |                        1
   bylaws_changed_without_vote    |             0 |           0 |     - |                       0 |                        0
 
@@ -383,8 +383,8 @@ First reader anthropic/claude-haiku-5.5, second reader anthropic/claude-sonnet-5
                              | Second reader: a rule fires | Second reader: none
   ---------------------------+-----------------------------+--------------------
   First reader: a rule fires |                           3 |                   2
-  First reader: none         |                           0 |                  92
-   The same rules fire, or none, for 95 of 97 nominees (97.9%).
+  First reader: none         |                           0 |                 117
+   The same rules fire, or none, for 120 of 122 nominees (98.4%).
    differs: PACCAR Inc 2023-04-25, Dame Alison J. Carnwath: first reader ['2.1.1'], second reader none
    differs: First Financial Bankshares, Inc. 2021-04-27, Tucker S. Bridwell: first reader ['2.3.1'], second reader none
 

@@ -336,8 +336,8 @@ def second_reader(n_meetings, seed=7):
                 with open(CHECK_CACHE, "a", encoding="utf-8") as f:
                     f.write(json.dumps(out, sort_keys=True, ensure_ascii=False) + "\n")
 
-    with concurrent.futures.ThreadPoolExecutor(4) as pool:
-        list(pool.map(work, todo))
+    for k in todo:        # one at a time: the stronger model reserves a large budget per call
+        work(k)
     print(f"Second reader done, ${spent[0]:.2f}. {len(load_cache(CHECK_CACHE))} meetings in {os.path.relpath(CHECK_CACHE, ROOT)}")
 
 
