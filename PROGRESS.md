@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 23:33.
+Last full update: Fri 00:11.
 
 ## What must be delivered
 
@@ -132,3 +132,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 23:05 Iftikhar: wording rule for appointing one person as chair and managing director or CEO (rule 1.3.1, India): 6 of 6, none in 2026. Changes to governing documents looked at and left with a person.
 - Thu 23:18 Iftikhar: a second, stronger model re-read 13 meetings to check the proxy reader: 98.2% the same answers. It exposed a 'founder of another company' mistake, now fixed in code. OpenRouter key: about 3 dollars left of 10, and new calls are being refused by its credit check.
 - Thu 23:33 Iftikhar: reader check completed to 16 meetings (the key works again). Pay vote and director votes at the same meeting tested: a link, but too few cases to act on.
+- Fri 00:11 Iftikhar: added the one-line rule 'against if CEO pay is 25 million dollars or more' as a baseline for the pay model. It finds 83 of 114 with 72 false alarms; the model finds 79 with 31.

@@ -80,13 +80,16 @@ Company facts for the test votes: 1170 from the meeting's own proxy, 3 from the 
 Proxies were filed 21 to 90 days before the meeting (median 43).
 
 Results on season 2026 (95% intervals from resampling votes)
-  Method                             | Precision |     95% | Recall |     95% |    F1 | Flagged | Hits | False alarms | Missed
-  -----------------------------------+-----------+---------+--------+---------+-------+---------+------+--------------+-------
-  Always with board                  |      0.0% |   0%-0% |   0.0% |   0%-0% |  0.0% |       0 |    0 |            0 |    114
-  Same as last season                |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
-  History only, top 97               |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
-  History + company facts, top 97    |     74.2% | 65%-83% |  63.2% | 55%-71% | 68.2% |      97 |   72 |           25 |     42
-  History + company facts, p >= 0.37 |     71.8% | 63%-80% |  69.3% | 61%-77% | 70.5% |     110 |   79 |           31 |     35
+  Method                                            | Precision |     95% | Recall |     95% |    F1 | Flagged | Hits | False alarms | Missed
+  --------------------------------------------------+-----------+---------+--------+---------+-------+---------+------+--------------+-------
+  Always with board                                 |      0.0% |   0%-0% |   0.0% |   0%-0% |  0.0% |       0 |    0 |            0 |    114
+  Same as last season                               |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
+  History only, top 97                              |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
+  History + company facts, top 97                   |     74.2% | 65%-83% |  63.2% | 55%-71% | 68.2% |      97 |   72 |           25 |     42
+  History + company facts, p >= 0.37                |     71.8% | 63%-80% |  69.3% | 61%-77% | 70.5% |     110 |   79 |           31 |     35
+  One-line rule: against if CEO pay is $25m or more |     53.5% | 46%-61% |  72.8% | 64%-81% | 61.7% |     155 |   83 |           72 |     31
+  History + company facts, top 155                  |     56.1% | 48%-64% |  76.3% | 68%-83% | 64.7% |     155 |   87 |           68 |     27
+  The one-line rule is a strong baseline. With as many flags (155) the model finds a few more against-votes; at its own cut-off it finds about as many with far fewer false alarms.
 
   'top 97' rows flag exactly as many votes as the same-as-last-season baseline, so they compare like for like.
   Average precision: history + company facts 0.698, history only 0.246, random 0.095

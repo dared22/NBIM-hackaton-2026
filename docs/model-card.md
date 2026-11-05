@@ -59,6 +59,16 @@ baseline at the same number of flags.
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
 | B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
+| B | One-line rule: against if CEO pay is 25 million dollars or more | 155 | 83 | 72 | 54% | 73% |
+| B | Pay model, as many flags as the one-line rule | 155 | 87 | 68 | 56% | 76% |
+| B | Pay model at its own cut-off | 110 | 79 | 31 | 72% | 69% |
+
+The one-line rule is the strongest simple comparison, and it needs the same
+pay figure the model uses. Against it the model's gain is in precision, not
+in how many against-votes it finds: with as many flags it finds 87 against
+83, and at its own cut-off it finds 79 with 31 false alarms where the rule
+has 72. The larger gap, 72 against 42, is against "same as last season",
+which uses no company facts.
 
 Brackets are 95% intervals from resampling votes.
 

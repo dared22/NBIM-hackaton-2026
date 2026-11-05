@@ -684,12 +684,17 @@ def main():
     n = sum(base)
 
     print(f"Results on season {TEST_SEASON} (95% intervals from resampling votes)")
+    big = [bool(r["pay"] and r["pay"] >= STRICT_LEVEL) for r in test]   # the simplest fact-based rule
     bm.table(["Method", "Precision", "95%", "Recall", "95%", "F1", "Flagged", "Hits", "False alarms", "Missed"],
              [metric("Always with board", [False] * len(test), ys),
               metric("Same as last season", base, ys),
               metric(f"History only, top {n}", top_flags(ps_hist, n), ys),
               metric(f"History + company facts, top {n}", top_flags(ps, n), ys),
-              metric(f"History + company facts, p >= {thr:.2f}", [p >= thr for p in ps], ys)])
+              metric(f"History + company facts, p >= {thr:.2f}", [p >= thr for p in ps], ys),
+              metric("One-line rule: against if CEO pay is $25m or more", big, ys),
+              metric(f"History + company facts, top {sum(big)}", top_flags(ps, sum(big)), ys)])
+    print(f"  The one-line rule is a strong baseline. With as many flags ({sum(big)}) the model finds a few more "
+          f"against-votes; at its own cut-off it finds about as many with far fewer false alarms.")
     print(f"\n  'top {n}' rows flag exactly as many votes as the same-as-last-season baseline, so they compare like for like.")
     print(f"  Average precision: history + company facts {bm.average_precision(ps, ys):.3f}, "
           f"history only {bm.average_precision(ps_hist, ys):.3f}, random {sum(ys) / len(ys):.3f}")
