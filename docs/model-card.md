@@ -73,9 +73,9 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 |---|---|---|
 | Decided automatically | 76% | 75% |
 | Sent to a person | 24% | 25% |
-| Against-votes suggested by the tool or sent to a person | 77% | 89% |
-| Against-votes the tool followed the board on by itself | 23% | 11% |
-| Precision of the automatic "against" suggestions | 69% | 70% |
+| Against-votes suggested by the tool or sent to a person | 79% | 89% |
+| Against-votes the tool followed the board on by itself | 21% | 11% |
+| Precision of the automatic "against" suggestions | 71% | 70% |
 
 One answer per proposal. The annual pay vote of 36 US companies is in both
 files. The tool used to answer those twice, and the two answers could differ.
@@ -155,6 +155,95 @@ votes. A title is what the company wrote on the form, so a CEO who chairs the
 board but is titled only "CEO" is missed (3 of NBIM's 28). Independence and
 committee membership are not in this data, so rules 1.1 and 1.2 are not
 covered. The monitor uses NBIM's own earlier votes, which NBIM would have.
+
+## Director elections at US companies: an AI model reads the facts, code applies the rules
+
+`src/agent/fetch_board_facts.py` and `src/agent/board_rules.py`. This is the
+method the industry is moving to (JPMorgan's Proxy IQ, ISS PolicySteward,
+Tumelo's ProxyBeacon): the company's own filing goes in, facts with citations
+come out. Ours keeps two things apart:
+
+1. **An AI model only reads.** For each US meeting it gets the board passages
+   of the proxy filed before the meeting, the names on the ballot and fixed
+   questions: is the nominee independent, an executive of this company, its
+   CEO, its chair, on which committees, on which other listed boards, a
+   founder; how many independent directors and women the board has. It never
+   sees NBIM's rules or votes. Every answer needs a quote, and the quote is
+   checked against the text. Model: Claude Haiku 5.5, about 1.50 dollars for
+   all 214 meetings.
+2. **Code applies NBIM's rules** to those facts (1.1.1, 1.1.2, 1.2.1, 1.2.2,
+   1.2.3, 1.3.1, 2.1.1, 2.1.2, 2.3.1), so the same facts always give the same
+   answer and each answer names its rule.
+
+What the reader delivered: the proxy was found for 214 of 218 meetings, and
+1,706 of 1,742 nominees (98%). Independence is answered for 98% of them, and
+90% of those answers have a quote that was found in the text. On "chair and
+CEO" the proxy and the SEC's insider filings, two independent sources, agree
+on 98.9% of nominees.
+
+Two reader mistakes were found by checking its answers against NBIM's votes
+and fixed. It took an executive of another company (a director who is CEO
+elsewhere) for an executive of this one: the question was sharpened, and code
+now overrules "executive" when the company calls the same person independent.
+It also applied an attendance sentence about one director to another: an
+attendance quote must now contain the nominee's surname.
+
+What NBIM does when each rule's condition is met, all years:
+
+| Signal | Fires | NBIM against | Share |
+|---|---|---|---|
+| 1.3.1 chair who is also CEO, not a founder (proxy) | 36 | 32 | 89% |
+| 1.3.1 chair and CEO (SEC filings) | 38 | 32 | 84% |
+| 1.3.1 chair and CEO who founded the company (proxy) | 11 | 4 | 36% |
+| 2.1.1 chairs this board and another company's board (proxy) | 18 | 10 | 56% |
+| 2.1.1 more than five boards (SEC filings) | 12 | 6 | 50% |
+| 2.1.1 more than five boards (proxy) | 8 | 3 | 38% |
+| 1.2.1 executive on the pay committee (proxy) | 3 | 2 | 67% |
+| 2.3.1 nomination chair, fewer than two women on the board (proxy) | 12 | 4 | 33% |
+| 2.1.2 attended under 75 percent (proxy) | 8 | 1 | 12% |
+
+NBIM votes against 5.3% of all US director nominees, so every one of these is
+a real signal, but only the first is close to a rule in practice. The founder
+exception is in the guidelines' own text ("we may support this for a limited
+period"), and it shows in the votes. Attendance is applied with exceptions
+(illness, a director who joined mid-year). "Two women" was not NBIM's practice
+in 2019-2020 (0 of 6) and is from 2021 (4 of 6). Rules 1.1.1 and 1.2.3 never
+fire: every US board in the file states a majority of independent directors.
+
+When the tool acts on its own. A signal has to earn trust: the tool suggests
+"against" by itself only when NBIM followed that signal at the last two
+meetings where it fired. Before that, and after any miss, the nominee goes to
+a person with the fact and its quote. Only votes at earlier meetings are used.
+
+| Method, all years (93 against-votes) | Flags | Hits | False alarms | Precision |
+|---|---|---|---|---|
+| Same as last time | 73 | 36 | 37 | 49% |
+| Before: two rules on SEC filings, with the drift monitor | 43 | 37 | 6 | 86% |
+| Now: trusted signals, the tool acts alone | 45 | 39 | 6 | 87% |
+
+Another 50 nominees go to a person because a signal fired without trust, and
+12 of them are against-votes. So 51 of the 93 against-votes (55%) are either
+suggested or put in front of a person with the fact, the rule and the quote.
+In 2026 the tool makes no automatic suggestion on directors and sends 11
+nominees to a person, one of them the year's only against-vote among US
+directors (Franklin Myers, who chairs two boards). The earlier version made
+one wrong automatic suggestion that year.
+
+The honest size of this: the gain in automatic hits is small, 39 against 37.
+What changed is that every US director nominee now comes with checked facts
+and quotes, the tool no longer acts on a written rule NBIM has stopped
+following, and 42 against-votes remain that no signal points at. 24 of those
+cite "board decisions and conduct" (14 at one company in one year), which is a
+reaction to something the company did and is not stated in a proxy.
+
+Limits: 36 companies and 93 against-votes, so every share above rests on few
+cases. Which facts to ask for, and which two judgement facts may earn trust,
+was decided after looking at all years, 2026 included; the trust rule itself
+was not tuned. "Developed market, large or mid cap" is assumed for every
+company. "Independent" is the company's own statement, and NBIM makes its own
+assessment: at Fluence Energy in 2025 it opposed eight directors citing board
+independence, one of whom the company calls independent, on a board that
+states exactly the one third the guidelines ask of a controlled company.
 
 ## Proposals whose wording decides the vote: written rules applied to the title
 
@@ -395,5 +484,8 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
-Claude Haiku 5.5 through OpenRouter for the pay structure pilot (reads proxy
-passages, 299 proxies). Its answers are not used by any model.
+Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
+nominee facts for US director elections (214 meetings; the facts are used by
+the director rules, which are plain code) and the pay structure pilot (299
+proxies; not used by any model). The model only reads. It never sees NBIM's
+votes or rules, and it does not decide a vote.

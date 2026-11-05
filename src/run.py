@@ -12,8 +12,10 @@ It writes two files in data/outputs/
 
 Three sources feed the decisions
     US executive pay votes   src/agent/pay_model.py       vote history + company facts
-    US director elections    src/agent/director_rules.py  NBIM's written rules + SEC role data,
-                                                          on top of the history model
+    US director elections    src/agent/board_rules.py     NBIM's written rules + facts read from the
+                                                          proxy (with quotes) and SEC role data, on
+                                                          top of the history model. A rule acts alone
+                                                          only after NBIM followed it twice in a row
     proposals whose wording  src/agent/proposal_rules.py  NBIM's written rules + the proposal
     decides the vote                                      title, on top of the history model
     all other proposals      src/benchmark/model.py       vote history only
@@ -52,6 +54,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 
 from benchmark import model as bm  # noqa: E402
+import board_rules as br  # noqa: E402
 import director_rules as dr  # noqa: E402
 import pay_overlap as po  # noqa: E402
 import pay_model as pm  # noqa: E402
@@ -69,6 +72,7 @@ SCRIPTS = [
     ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
     ("The same US pay proposals in both files: which model should answer?", ["src/agent/pay_overlap.py"]),
     ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
+    ("Director elections at US companies: facts read from the proxy, and rules that must earn trust", ["src/agent/board_rules.py"]),
     ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
@@ -132,7 +136,7 @@ def general_decisions(rows=None, pay=None):
     cache = rc.load_cache()
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
-    directors = {(r["meeting_id"], r["item_no"]): r for r in dr.load_scored()}
+    directors = {(r["meeting_id"], r["item_no"]): r for r in br.load_scored()}
     worded = {(r["meeting_id"], r["item_no"]): r for r in pr.load_scored() if r["rules"]}
     scored = [r for r in val if r["rule_p"] is not None]
     rule_thr = bm.best_f1_threshold([r["rule_p"] for r in scored], [r["y"] for r in scored]) if scored else 1.0
@@ -148,13 +152,15 @@ def general_decisions(rows=None, pay=None):
         d = directors.get(key) if directors.get(key, {}).get("rules") else worded.get(key)
         if d and d["rules"]:
             active = [(c, t) for c, t in d["rules"] if d["rule_state"][c] == "active"]
-            model = "NBIM rule + SEC role data" if key in directors and directors[key]["rules"] else "NBIM rule + proposal wording"
+            model = "NBIM rule + facts from the proxy and SEC filings" if key in directors and directors[key]["rules"] else "NBIM rule + proposal wording"
             reasons = " | ".join(t for _, t in d["rules"])
-            guide = ", ".join(c for c, _ in d["rules"])
+            guide = ", ".join(dict.fromkeys(c for c, _ in d["rules"]))
             if active and not hits:
                 band = "likely AGAINST board"
                 # A written rule with its fact does not depend on the company's vote history.
                 flags = [f for f in flags if not f.startswith("low information")]
+            elif d.get("hold_reason"):
+                flags.append("a rule applies but the tool does not act on it alone: " + d["hold_reason"])
             else:
                 flags.append("rule suspended: NBIM supported the board the last two times " +
                              ", ".join(c for c, _ in d["rules"]) + " applied")
@@ -182,8 +188,11 @@ def general_decisions(rows=None, pay=None):
             guide = f"GVG {r['candidates'][0]} (NBIM's most common stated reason for this proposal type before 2025)"
         else:
             guide = ""
-        evidence = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
-                    if d and d["rules"] and "f" in d else "")
+        evidence = ""
+        if d and d["rules"] and "f" in d:
+            evidence = d.get("evidence_url") or (
+                f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
+                if d["f"] and d["f"].get("matched") else "")
         # The words of the guideline and the page they are on. A rule that fired is quoted
         # itself; otherwise the cited section's introduction is quoted.
         quoted = rc.quote((RULE_ID.findall(reasons) if d and d["rules"] else []) or GVG_ID.findall(guide), citations)
@@ -249,8 +258,8 @@ def summary(rows, name):
              f"({hit([r for r in auto if r[col['band']] == 'likely WITH board']) / len(against):.0%} of all against-votes).",
              f"- With a person reading the review pile, {hit(auto_against) + hit(review)} of {len(against)} against-votes "
              f"are either suggested or seen ({(hit(auto_against) + hit(review)) / len(against):.0%}).",
-             f"- Low-information gate: {len(gated)} proposals the model would have waved through were sent to a person "
-             f"instead; {hit(gated)} of them were against-votes."]
+             f"- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that "
+             f"the tool does not act on alone): {len(gated)} proposals; {hit(gated)} of them were against-votes."]
     return "\n".join(lines)
 
 

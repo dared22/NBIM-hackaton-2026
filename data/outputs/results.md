@@ -13,16 +13,16 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 - Against-votes inside the pile sent to a person: 31 (27% of all against-votes).
 - Against-votes the tool waved through with the board: 12 (11% of all against-votes).
 - With a person reading the review pile, 102 of 114 against-votes are either suggested or seen (89%).
-- Low-information gate: 75 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 75 proposals; 3 of them were against-votes.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1163 (76%). Sent to a person: 376 (24%).
-- Automatic 'against the board' suggestions: 36, of which 25 were right (precision 69%, recall 38%).
-- Against-votes inside the pile sent to a person: 26 (39% of all against-votes).
-- Against-votes the tool waved through with the board: 15 (23% of all against-votes).
-- With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
-- Low-information gate: 33 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
+- Decided automatically: 1159 (75%). Sent to a person: 380 (25%).
+- Automatic 'against the board' suggestions: 35, of which 25 were right (precision 71%, recall 38%).
+- Against-votes inside the pile sent to a person: 27 (41% of all against-votes).
+- Against-votes the tool waved through with the board: 14 (21% of all against-votes).
+- With a person reading the review pile, 52 of 66 against-votes are either suggested or seen (79%).
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 36 proposals; 4 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -242,6 +242,98 @@ Nominees matched to a person in the SEC data: 1660 (95%); of the against-votes: 
     {'GVG 3.2': 24, 'none given': 9, 'GVG 1.1': 8, 'GVG 2.3': 5, 'GVG 2.1': 4, 'GVG 1.3': 3, 'GVG 1.2': 2}
 
 Wrote 1742 nominees to data/outputs/director_rules.csv
+```
+
+## Director elections at US companies: facts read from the proxy, and rules that must earn trust
+
+`python3 src/agent/board_rules.py`
+
+```text
+US director nominees in NBIM's file: 1742, 93 against the board, 2019-2026
+Proxy read for 1707 of them (98%); the nominee was found in the proxy for 1706.
+
+1. How much did the reader find, and was the quote in the text?
+  Fact about the nominee | Answered | Share | of which with a quote found
+  -----------------------+----------+-------+----------------------------
+  independent            |     1673 |   98% |                        1501
+  executive              |     1706 |  100% |                         734
+  ceo                    |     1704 |  100% |                         489
+  board_chair            |     1669 |   98% |                         272
+  executive_elsewhere    |     1672 |   98% |                        1067
+  other_public_boards    |     1431 |   84% |                        1428
+  audit_committee        |     1705 |  100% |                from a table
+  pay_committee          |     1704 |  100% |                from a table
+  nomination_committee   |     1701 |  100% |                from a table
+  gender                 |     1688 |   99% |                from a table
+
+2. Two sources, one question: chair and CEO, from the proxy and from SEC insider filings
+                       | SEC filings: chair and CEO | SEC filings: not
+  ---------------------+----------------------------+-----------------
+  Proxy: chair and CEO |                         33 |               13
+  Proxy: not           |                          5 |             1575
+   The two sources agree on 1608 of 1626 nominees (98.9%).
+   On 'is an executive of this company' they agree on 1609 of 1626 (99.0%): both yes 198, proxy only 8, SEC filings only 9.
+
+3. Each rule on its own, all years (no training)
+  Rule  | Fires | NBIM against | Share | With every quote found: against/fires | NBIM named the same section
+  ------+-------+--------------+-------+---------------------------------------+----------------------------
+  1.2.1 |     3 |            2 |   67% |                                   2/3 |                           1
+  1.3.1 |    36 |           32 |   89% |                                 32/35 |                          27
+  2.1.1 |     8 |            3 |   38% |                                   3/8 |                           3
+  2.1.2 |     8 |            1 |   12% |                                   1/8 |                           1
+  2.3.1 |    12 |            4 |   33% |                                   3/9 |                           4
+   For comparison, NBIM votes against 5.3% of all US director nominees.
+
+4. Facts for rules that the guidelines say need judgement
+  Rule  |                                                                  Fact | Nominees | NBIM against | Share
+  ------+-----------------------------------------------------------------------+----------+--------------+------
+  1.3.1 |                                 chair and CEO who founded the company |       11 |            4 |   36%
+  2.1.1 |                         chairs this board and another company's board |       18 |           10 |   56%
+  2.1.1 |              executive elsewhere with two or more other listed boards |       86 |           11 |   13%
+  3.2.1 | nomination committee member, majority-supported proposal not acted on |        2 |            0 |    0%
+  3.1.3 |                                         nominee to a classified board |      219 |           19 |    9%
+  3.2.2 |        pay committee member, NBIM opposed pay at the previous meeting |       23 |            3 |   13%
+  3.2.2 |                 pay committee member, last pay vote under 70% support |       30 |            0 |    0%
+   The first two can earn trust like a rule (section 5). The others are shown to the reviewer only.
+
+5. Every signal from both sources, all years: how often NBIM voted against when it fired
+  Signal                   | Fires | NBIM against | Share | While trusted: against/fires
+  -------------------------+-------+--------------+-------+-----------------------------
+  1.2.1 (proxy)            |     3 |            2 |   67% |                          0/1
+  1.3.1 (SEC filings)      |    38 |           32 |   84% |                        29/30
+  1.3.1 (proxy)            |    36 |           32 |   89% |                        29/29
+  1.3.1 founder (proxy)    |    11 |            4 |   36% |                          1/2
+  2.1.1 (SEC filings)      |    12 |            6 |   50% |                          3/4
+  2.1.1 (proxy)            |     8 |            3 |   38% |                          0/0
+  2.1.1 two chairs (proxy) |    18 |           10 |   56% |                          6/8
+  2.1.2 (proxy)            |     8 |            1 |   12% |                          0/0
+  2.3.1 (proxy)            |    12 |            4 |   33% |                          1/1
+   A signal is trusted once NBIM has followed it at 2 meetings in a row, and loses the trust at the first miss.
+
+6. As a predictor of 'against the board', all years
+  Method                                                     | Flags | Hits | False alarms | Precision | Recall
+  -----------------------------------------------------------+-------+------+--------------+-----------+-------
+  Always with board                                          |     0 |    0 |            0 |         - |     0%
+  Same as last time                                          |    73 |   36 |           37 |       49% |    39%
+  Before: rules on SEC insider filings, with the old monitor |    43 |   37 |            6 |       86% |    40%
+  Any signal fires (no trust rule)                           |    95 |   51 |           44 |       54% |    55%
+  Trusted signals only: the tool acts alone                  |    45 |   39 |            6 |       87% |    42%
+  Trusted signals, or same as last time                      |    86 |   46 |           40 |       53% |    49%
+   Signals that fired without trust send 50 more nominees to a person, 12 of them against-votes. So 51 of the 93 against-votes are either suggested or put in front of a person with the fact and its quote.
+
+7. By period
+  Years     | Against-votes | Same as last time: hits/flags | Tool acts alone: hits/flags | Sent to a person with the fact: against/total
+  ----------+---------------+-------------------------------+-----------------------------+----------------------------------------------
+  2019-2024 |            76 |                         30/59 |                       34/39 |                                         11/32
+  2025      |            16 |                           6/9 |                         5/6 |                                           0/7
+  2026      |             1 |                           0/5 |                         0/0 |                                          1/11
+  all years |            93 |                         36/73 |                       39/45 |                                         12/50
+
+8. The against-votes no signal points at, by NBIM's stated reason
+   42 of 93: GVG 3.2 24, none given 8, GVG 1.1 8, GVG 2.1 1, GVG 1.3 1
+   GVG 3.2 is 'board decisions and conduct': a reaction to something the company did, which a proxy does not state.
+
+Wrote 1742 nominees to data/outputs/board_rules.csv
 ```
 
 ## Proposals whose wording decides the vote: NBIM's written rules applied to the title
