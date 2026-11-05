@@ -58,7 +58,7 @@ baseline at the same number of flags.
 | A | History model | 38 | 24 | 14 | 63% | 36% |
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
-| B | Pay model | 97 | 71 | 26 | 73% (63-82%) | 62% (54-70%) |
+| B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
 
 Brackets are 95% intervals from resampling votes.
 
@@ -71,21 +71,31 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 
 | | File A | File B |
 |---|---|---|
-| Decided automatically | 75% | 69% |
-| Sent to a person | 25% | 31% |
-| Against-votes suggested by the tool or sent to a person | 77% | 92% |
-| Against-votes the tool followed the board on by itself | 23% | 8% |
-| Precision of the automatic "against" suggestions | 61% | 67% |
+| Decided automatically | 76% | 75% |
+| Sent to a person | 24% | 25% |
+| Against-votes suggested by the tool or sent to a person | 77% | 89% |
+| Against-votes the tool followed the board on by itself | 23% | 11% |
+| Precision of the automatic "against" suggestions | 68% | 70% |
 
 Low-information gate: the tool never follows the board on its own when it has
 nothing to go on. A pay vote with no pay figure, a company it has never seen,
 a missing board recommendation and figures that look wrong all go to a person.
-On file B this moved 130 votes from the automatic pile to a person, and 10 of
-them were against-votes. Without the gate, votes with no pay figure sat in the
-automatic pile with a 10% against rate, against 1% where the figure was known.
+When 88 test votes had no pay figure, they sat in the automatic pile with a
+10% against rate, against 1% where the figure was known, and the gate caught
+them. After more companies were linked (see below) only 27 test votes lack a
+figure. The gate now moves 75 votes on file B to a person, 3 of them
+against-votes.
 
-Confidence, pay model: where it says 83%, 80% were against. Where it says 24%,
-13% were against, so it is too confident in that range.
+Company coverage. 239 companies in the pay votes were first left without a
+link to the SEC, because the SEC's current ticker list only holds companies
+listed today and writes some names differently (LOWES, HORTON D R). They were
+linked through the company names in insider filings
+(`src/agent/link_companies.py`). CEO pay is now known for 98% of the test
+votes, up from 93%. This raised the comparison scores on the training seasons
+and gave 72 hits at 97 flags on 2026, against 71 before.
+
+Confidence, pay model: where it says 84%, 78% were against. Where it says 24%,
+14% were against, so it is too confident in that range.
 
 ## Director elections at US companies: written rules applied to facts
 
@@ -217,6 +227,11 @@ any company.
 - A decision model (Microsoft-Decision-1) checking guideline sections against
   the proposal wording: found nothing the history model had not.
 - Word-level text features in the history model.
+- Giving recent years more weight in the history model (half-lives of one to
+  six years). Slightly worse at every setting on test years 2022-2025.
+- Merger payout votes (123 in file B, 37 against). Neither NBIM's last regular
+  pay vote at the company nor the pay figures separate them, so they stay
+  with a person.
 - What the ballot itself reveals (the director's place on the ballot, how many
   directors are up, independence labels, wording, finer proposal types, the
   company's previous meeting). The data audit shows strong patterns, for
@@ -228,7 +243,8 @@ any company.
   awards. Tested on the training seasons and left out.
 - The last pay model change (pay against similar companies, pay against
   returns) improved the training-season comparisons but did not move the 2026
-  result beyond noise: 71 hits against 73 before, at 97 flags.
+  result beyond noise: 71 hits against 73 before, at 97 flags. Linking more
+  companies afterwards gave 72.
 
 ## Checks against leakage
 
@@ -238,8 +254,9 @@ any company.
 - Every proxy used was filed 21 to 90 days before its meeting. An automatic
   test fails if one is filed on or after the meeting date.
 - Inputs for the pay model were chosen on the training seasons. The 2026
-  season was scored three times, once per model version; all three results
-  are in the commit history.
+  season was scored four times: once for each of three model versions, and
+  once more after 239 more companies were linked with no change to the model.
+  All four results are in the commit history.
 - The decision model never receives the company name, NBIM's vote or NBIM's
   rationale. An automatic test checks the request.
 
@@ -256,6 +273,11 @@ persuasion text without trigger words, one harmless sentence.
   go to a person; no false alarms on 66,663 real ballot texts. Persuasion
   without trigger words gets past the keyword check. Only appended text was
   tested.
+- The appended-text defence is part of the decision pipeline, not only of the
+  test script. Two end-to-end checks run on every 2026 proposal the tool
+  suggests "against" on automatically: with an instruction appended, every one
+  ends in human review with a security flag; with a harmless sentence
+  appended, none is waved through.
 - Text cannot move the pay score. The pay model's inputs are tagged figures
   and NBIM's earlier votes; nothing is built from the prose of a company's
   filing. A sentence in a proxy claiming the package meets NBIM's guidelines
@@ -266,14 +288,14 @@ persuasion text without trigger words, one harmless sentence.
 - The pay model covers US pay votes only: about 4% of proposals and 9% of
   against-votes in the organisers' file. For other countries and proposal
   types there is no open source of company facts in machine-readable form.
-- 88 of 1,200 test votes have no pay figure; the model finds none of the 9
-  against-votes among them.
+- 27 of 1,200 test votes have no pay figure (1 against-vote among them); 66
+  companies are still not linked to the SEC.
 - Three filings tag pay a thousand or a million times too large. Values of a
   billion dollars or more are scaled down when read. Other tagging errors may
   remain; votes with implausible figures are sent to a person.
 - The 2025 guidelines are used for all years.
 - Two training seasons for the pay model. A second check (train on 2024, test
-  on 2025, company facts only) gives 69 hits against 46 for the baseline.
+  on 2025, company facts only) gives 76 hits against 46 for the baseline.
 - The 25 million dollar level is from NBIM's first-half 2025 voting review. We
   found no statement for 2026.
 

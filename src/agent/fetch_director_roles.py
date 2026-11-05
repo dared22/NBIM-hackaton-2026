@@ -20,6 +20,9 @@ Output
                                             role and title
     data/evidence/director_issuer_link.csv  which company in the vote file was
                                             linked to which SEC company number
+    data/evidence/sec_issuer_names.csv      every company name seen in these
+                                            filings with its SEC number, also
+                                            companies that no longer exist
 
 Companies are linked by name, not by ticker: several tickers in the vote file
 belong to other companies (BLK is BlackRock, not Blackbaud).
@@ -41,6 +44,7 @@ from fetch_proxy_pay import get  # noqa: E402
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
 OUT_ROLES = os.path.join(ROOT, "data", "evidence", "director_roles.csv")
 OUT_LINK = os.path.join(ROOT, "data", "evidence", "director_issuer_link.csv")
+OUT_NAMES = os.path.join(ROOT, "data", "evidence", "sec_issuer_names.csv")
 BASE = "https://www.sec.gov/files/structureddata/data/insider-transactions-data-sets"
 QUARTERS = [f"{y}q{q}" for y in range(2017, 2027) for q in (1, 2, 3, 4)]
 DROP = {"INC", "INCORPORATED", "CORP", "CORPORATION", "CO", "COMPANY", "LTD", "LIMITED", "PLC", "LLC", "THE",
@@ -93,6 +97,18 @@ def main():
                             date[:7], r["RPTOWNER_RELATIONSHIP"], (r.get("RPTOWNER_TITLE") or "").strip()))
             n += 1
         print(f"  {q}: {n} reports", flush=True)
+
+    # Every issuer name seen, with the months it was in use. Companies that were later
+    # acquired or delisted are in here, which the SEC's current ticker list is not.
+    span = {}
+    for _, _, issuer, issuer_name, month, *_ in reports:
+        first, last = span.get((issuer, issuer_name), (month, month))
+        span[(issuer, issuer_name)] = (min(first, month), max(last, month))
+    with open(OUT_NAMES, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["issuer_cik", "issuer_name", "first_month", "last_month"])
+        w.writerows(sorted((cik, name, a, b) for (cik, name), (a, b) in span.items()))
+    print(f"Wrote {len(span)} issuer names to {os.path.relpath(OUT_NAMES, ROOT)}")
 
     # Link our companies to SEC issuers by name. A company may have had several names.
     names = collections.defaultdict(set)

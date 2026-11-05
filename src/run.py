@@ -19,7 +19,8 @@ Three sources feed the decisions
 
 How a decision is made
     1. Guardrail. Instruction-like wording in the proposal text sends it to a
-       person with a security flag.
+       person with a security flag. Extra words added to a known item do not
+       break the lookup of that item's history.
     2. The model gives the probability that NBIM votes against the board.
     3. Band. Below 5%: follow the board. At or above the model's cut-off:
        vote against the board. In between: a person decides.
@@ -82,9 +83,16 @@ def decide(board, band, flags):
     return vote, ("human review" if flags else "automatic"), "; ".join(flags)
 
 
-def general_decisions():
-    """All proposal types from NBIM's published votes, history model."""
-    rows = bm.read_votes(rc.VOTES)
+def general_decisions(rows=None):
+    """All proposal types from NBIM's published votes: history model plus NBIM's written rules.
+
+    `rows` can be passed in to score altered proposals (the resistance check in tests).
+    """
+    rows = bm.read_votes(rc.VOTES) if rows is None else rows
+    # Guardrail, part 2: if a proposal's text is an item this company has voted on
+    # before plus extra words, the known item is used for the history lookup.
+    year = lambda r: int(r["meeting_date"][:4])
+    rb.restore_known_items([r for r in rows if year(r) == YEAR], [r for r in rows if year(r) < YEAR])
     sections = rc.load_guidelines()
     cand = rc.candidate_sections(rows, sections)
     _, val, _, _ = bm.run_year(rows, YEAR - 1)

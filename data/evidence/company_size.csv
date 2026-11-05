@@ -162,6 +162,7 @@ cik,sic,industry,period_end,revenue_usd
 9326,2800,Chemicals & Allied Products,2024-12-31,953684000
 9326,2800,Chemicals & Allied Products,2025-12-31,1037161000
 9389,3411,Metal Cans,,
+9984,3490,Miscellaneous Fabricated Metal Products,,
 10456,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,11673000000
 10456,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,12146000000
 10456,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,10057000000
@@ -174,6 +175,12 @@ cik,sic,industry,period_end,revenue_usd
 10795,3841,Surgical & Medical Instruments & Apparatus,2023-09-30,19372000000
 10795,3841,Surgical & Medical Instruments & Apparatus,2024-09-30,20178000000
 10795,3841,Surgical & Medical Instruments & Apparatus,2025-09-30,21840000000
+11544,6331,"Fire, Marine & Casualty Insurance",2020-12-31,8098925000
+11544,6331,"Fire, Marine & Casualty Insurance",2021-12-31,9455466000
+11544,6331,"Fire, Marine & Casualty Insurance",2022-12-31,11166499000
+11544,6331,"Fire, Marine & Casualty Insurance",2023-12-31,12142938000
+11544,6331,"Fire, Marine & Casualty Insurance",2024-12-31,13638752000
+11544,6331,"Fire, Marine & Casualty Insurance",2025-12-31,14707856000
 12208,3826,Laboratory Analytical Instruments,2020-12-31,2545600000
 12208,3826,Laboratory Analytical Instruments,2021-12-31,2922500000
 12208,3826,Laboratory Analytical Instruments,2022-12-31,2802200000
@@ -229,6 +236,13 @@ cik,sic,industry,period_end,revenue_usd
 16160,0200,Agricultural Prod-Livestock & Animal Specialties,2024-06-01,2326443000
 16160,0200,Agricultural Prod-Livestock & Animal Specialties,2025-05-31,4261885000
 16160,0200,Agricultural Prod-Livestock & Animal Specialties,2026-05-30,2911632000
+16732,2000,Food and Kindred Products,2020-08-02,8691000000
+16732,2000,Food and Kindred Products,2021-08-01,8476000000
+16732,2000,Food and Kindred Products,2022-07-31,8562000000
+16732,2000,Food and Kindred Products,2023-07-30,9357000000
+16732,2000,Food and Kindred Products,2024-07-28,9636000000
+16732,2000,Food and Kindred Products,2025-08-03,10253000000
+16732,2000,Food and Kindred Products,2026-08-02,9744000000
 16918,2080,Beverages,2021-02-28,8614900000
 16918,2080,Beverages,2022-02-28,8820700000
 16918,2080,Beverages,2023-02-28,9452600000
@@ -248,6 +262,10 @@ cik,sic,industry,period_end,revenue_usd
 18230,3531,Construction Machinery & Equip,2023-12-31,67060000000
 18230,3531,Construction Machinery & Equip,2024-12-31,64809000000
 18230,3531,Construction Machinery & Equip,2025-12-31,67589000000
+18349,6021,National Commercial Banks,2020-12-31,839687000
+18349,6021,National Commercial Banks,2021-12-31,883109000
+18349,6021,National Commercial Banks,2022-12-31,1048730000
+18349,6021,National Commercial Banks,2023-12-31,885241000
 18926,4813,Telephone Communications (No Radiotelephone),2020-12-31,20712000000
 18926,4813,Telephone Communications (No Radiotelephone),2021-12-31,19687000000
 18926,4813,Telephone Communications (No Radiotelephone),2022-12-31,17478000000
@@ -284,6 +302,10 @@ cik,sic,industry,period_end,revenue_usd
 20286,6331,"Fire, Marine & Casualty Insurance",2023-12-31,10013000000
 20286,6331,"Fire, Marine & Casualty Insurance",2024-12-31,11337000000
 20286,6331,"Fire, Marine & Casualty Insurance",2025-12-31,12631000000
+20520,4813,Telephone Communications (No Radiotelephone),2020-12-31,7155000000
+20520,4813,Telephone Communications (No Radiotelephone),2022-12-31,5787000000
+20520,4813,Telephone Communications (No Radiotelephone),2023-12-31,5751000000
+20520,4813,Telephone Communications (No Radiotelephone),2024-12-31,5937000000
 21076,2842,"Specialty Cleaning, Polishing and Sanitation Preparations",2020-06-30,6721000000
 21076,2842,"Specialty Cleaning, Polishing and Sanitation Preparations",2021-06-30,7341000000
 21076,2842,"Specialty Cleaning, Polishing and Sanitation Preparations",2022-06-30,7107000000
@@ -308,6 +330,7 @@ cik,sic,industry,period_end,revenue_usd
 21665,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2023-12-31,19457000000
 21665,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2024-12-31,20101000000
 21665,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2025-12-31,20382000000
+22356,6022,State Commercial Banks,,
 22444,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",,
 23217,2000,Food and Kindred Products,2021-05-30,11184700000
 23217,2000,Food and Kindred Products,2022-05-29,11535900000
@@ -321,6 +344,12 @@ cik,sic,industry,period_end,revenue_usd
 24545,2082,Malt Beverages,2023-12-31,13884600000
 24545,2082,Malt Beverages,2024-12-31,13734300000
 24545,2082,Malt Beverages,2025-12-31,13040300000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2020-12-31,11303000000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2021-12-31,14082000000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2022-12-31,14189000000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2023-12-31,12588000000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2024-12-31,13118000000
+24741,3357,Drawing & Insulating of  Nonferrous Wire,2025-12-31,15629000000
 25232,6798,Real Estate Investment Trusts,2020-12-31,740340000
 25232,6798,Real Estate Investment Trusts,2021-12-31,755073000
 25232,6798,Real Estate Investment Trusts,2022-12-31,762290000
@@ -369,12 +398,23 @@ cik,sic,industry,period_end,revenue_usd
 27996,2780,"Blankbooks, Looseleaf Binders & Bookbindg & Relatd Work",2023-12-31,2192300000
 27996,2780,"Blankbooks, Looseleaf Binders & Bookbindg & Relatd Work",2024-12-31,2121800000
 27996,2780,"Blankbooks, Looseleaf Binders & Bookbindg & Relatd Work",2025-12-31,2133200000
+28412,6021,National Commercial Banks,2020-12-31,758000000
+28412,6021,National Commercial Banks,2021-12-31,796000000
+28412,6021,National Commercial Banks,2022-12-31,788000000
+28412,6021,National Commercial Banks,2023-12-31,798000000
+28412,6021,National Commercial Banks,2024-12-31,772000000
 28917,5311,Retail-Department Stores,2021-01-30,4433185000
 28917,5311,Retail-Department Stores,2022-01-29,6624267000
 28917,5311,Retail-Department Stores,2023-01-28,6996215000
 28917,5311,Retail-Department Stores,2024-02-03,6874420000
 28917,5311,Retail-Department Stores,2025-02-01,6590231000
 28917,5311,Retail-Department Stores,2026-01-31,6563336000
+29002,3674,Semiconductors & Related Devices,2020-12-31,1229215000
+29002,3674,Semiconductors & Related Devices,2021-12-31,1805162000
+29002,3674,Semiconductors & Related Devices,2022-12-31,2000580000
+29002,3674,Semiconductors & Related Devices,2023-12-31,1661739000
+29002,3674,Semiconductors & Related Devices,2024-12-31,1311120000
+29002,3674,Semiconductors & Related Devices,2025-12-31,1482073000
 29534,5331,Retail-Variety Stores,2021-01-29,33746839000
 29534,5331,Retail-Variety Stores,2022-01-28,34220449000
 29534,5331,Retail-Variety Stores,2023-02-03,37844863000
@@ -445,6 +485,10 @@ cik,sic,industry,period_end,revenue_usd
 34903,6798,Real Estate Investment Trusts,2025-12-31,1278975000
 35527,6022,State Commercial Banks,,
 36029,6022,State Commercial Banks,,
+36104,6021,National Commercial Banks,2022-12-31,24302000000
+36104,6021,National Commercial Banks,2023-12-31,28144000000
+36104,6021,National Commercial Banks,2024-12-31,27455000000
+36104,6021,National Commercial Banks,2025-12-31,28656000000
 36146,6021,National Commercial Banks,,
 36270,6022,State Commercial Banks,2020-12-31,5954761000
 36270,6022,State Commercial Banks,2021-12-31,5992000000
@@ -468,6 +512,7 @@ cik,sic,industry,period_end,revenue_usd
 37785,2800,Chemicals & Allied Products,2023-12-31,4486800000
 37785,2800,Chemicals & Allied Products,2024-12-31,4246100000
 37785,2800,Chemicals & Allied Products,2025-12-31,3467400000
+37808,6021,National Commercial Banks,,
 37996,3711,Motor Vehicles & Passenger Car Bodies,2020-12-31,127144000000
 37996,3711,Motor Vehicles & Passenger Car Bodies,2021-12-31,136341000000
 37996,3711,Motor Vehicles & Passenger Car Bodies,2022-12-31,158057000000
@@ -480,12 +525,25 @@ cik,sic,industry,period_end,revenue_usd
 38725,3621,Motors & Generators,2023-12-31,2065133000
 38725,3621,Motors & Generators,2024-12-31,2021341000
 38725,3621,Motors & Generators,2025-12-31,2131250000
+38777,6282,Investment Advice,2020-09-30,5566500000
+38777,6282,Investment Advice,2021-09-30,8425500000
+38777,6282,Investment Advice,2022-09-30,8275300000
+38777,6282,Investment Advice,2023-09-30,7849400000
+38777,6282,Investment Advice,2024-09-30,8478000000
+38777,6282,Investment Advice,2025-09-30,8770700000
 39263,6021,National Commercial Banks,2020-12-31,1441455000
 39263,6021,National Commercial Banks,2021-12-31,1371595000
 39263,6021,National Commercial Banks,2022-12-31,1696101000
 39263,6021,National Commercial Banks,2023-12-31,1987206000
 39263,6021,National Commercial Banks,2024-12-31,2063710000
 39263,6021,National Commercial Banks,2025-12-31,2235244000
+39368,2891,Adhesives & Sealants,,
+39899,4833,Television Broadcasting Stations,2020-12-31,2937780000
+39899,4833,Television Broadcasting Stations,2021-12-31,2991093000
+39899,4833,Television Broadcasting Stations,2022-12-31,3279245000
+39899,4833,Television Broadcasting Stations,2023-12-31,2910930000
+39899,4833,Television Broadcasting Stations,2024-12-31,3101971000
+39899,4833,Television Broadcasting Stations,2025-12-31,2711998000
 39911,5651,Retail-Family Clothing Stores,2021-01-30,13800000000
 39911,5651,Retail-Family Clothing Stores,2022-01-29,16670000000
 39911,5651,Retail-Family Clothing Stores,2023-01-28,15616000000
@@ -528,6 +586,12 @@ cik,sic,industry,period_end,revenue_usd
 40987,5013,Wholesale-Motor Vehicle Supplies & New Parts,2023-12-31,23090610000
 40987,5013,Wholesale-Motor Vehicle Supplies & New Parts,2024-12-31,23486569000
 40987,5013,Wholesale-Motor Vehicle Supplies & New Parts,2025-12-31,24300141000
+42582,3011,Tires & Inner Tubes,2020-12-31,12321000000
+42582,3011,Tires & Inner Tubes,2021-12-31,17478000000
+42582,3011,Tires & Inner Tubes,2022-12-31,20805000000
+42582,3011,Tires & Inner Tubes,2023-12-31,20066000000
+42582,3011,Tires & Inner Tubes,2024-12-31,18878000000
+42582,3011,Tires & Inner Tubes,2025-12-31,18280000000
 42888,3561,Pumps & Pumping Equipment,2020-12-25,1650115000
 42888,3561,Pumps & Pumping Equipment,2021-12-31,1987608000
 42888,3561,Pumps & Pumping Equipment,2022-12-30,2143521000
@@ -642,12 +706,22 @@ cik,sic,industry,period_end,revenue_usd
 51434,2621,Paper Mills,2023-12-31,16033000000
 51434,2621,Paper Mills,2024-12-31,15835000000
 51434,2621,Paper Mills,2025-12-31,23634000000
+51644,7311,Services-Advertising Agencies,2020-12-31,9061000000
+51644,7311,Services-Advertising Agencies,2021-12-31,10240700000
+51644,7311,Services-Advertising Agencies,2022-12-31,10927800000
+51644,7311,Services-Advertising Agencies,2023-12-31,10889300000
+51644,7311,Services-Advertising Agencies,2024-12-31,10691700000
 52827,6798,Real Estate Investment Trusts,2020-12-31,859154000
 52827,6798,Real Estate Investment Trusts,2021-12-31,1109597000
 52827,6798,Real Estate Investment Trusts,2022-12-31,577183000
 52827,6798,Real Estate Investment Trusts,2023-12-31,788373000
 52827,6798,Real Estate Investment Trusts,2024-12-31,987929000
 52827,6798,Real Estate Investment Trusts,2025-12-31,484485000
+55067,2040,Grain Mill Products,2021-01-02,13770000000
+55067,2040,Grain Mill Products,2022-01-01,11747000000
+55067,2040,Grain Mill Products,2022-12-31,12653000000
+55067,2040,Grain Mill Products,2023-12-30,13122000000
+55067,2040,Grain Mill Products,2024-12-28,12749000000
 55242,3541,"Machine Tools, Metal Cutting Types",2020-06-30,1885305000
 55242,3541,"Machine Tools, Metal Cutting Types",2021-06-30,1841441000
 55242,3541,"Machine Tools, Metal Cutting Types",2022-06-30,2012456000
@@ -727,6 +801,12 @@ cik,sic,industry,period_end,revenue_usd
 60519,2400,Lumber & Wood Products (No Furniture),2023-12-31,2581000000
 60519,2400,Lumber & Wood Products (No Furniture),2024-12-31,2941000000
 60519,2400,Lumber & Wood Products (No Furniture),2025-12-31,2708000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2021-01-29,89597000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2022-01-28,96250000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2023-02-03,97059000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2024-02-02,86377000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2025-01-31,83674000000
+60667,5211,Retail-Lumber & Other Building Materials Dealers,2026-01-30,86286000000
 62709,6411,"Insurance Agents, Brokers & Service",2022-12-31,20720000000
 62709,6411,"Insurance Agents, Brokers & Service",2023-12-31,22736000000
 62709,6411,"Insurance Agents, Brokers & Service",2024-12-31,24458000000
@@ -868,12 +948,18 @@ cik,sic,industry,period_end,revenue_usd
 72331,3569,"General Industrial Machinery & Equipment, NEC",2023-10-31,2628632000
 72331,3569,"General Industrial Machinery & Equipment, NEC",2024-10-31,2689921000
 72331,3569,"General Industrial Machinery & Equipment, NEC",2025-10-31,2791687000
+72333,5651,Retail-Family Clothing Stores,2021-01-30,10715000000
+72333,5651,Retail-Family Clothing Stores,2022-01-29,14789000000
+72333,5651,Retail-Family Clothing Stores,2023-01-28,15530000000
+72333,5651,Retail-Family Clothing Stores,2024-02-03,14693000000
+72333,5651,Retail-Family Clothing Stores,2025-02-01,15016000000
 72741,4911,Electric Services,2020-12-31,8904430000
 72741,4911,Electric Services,2021-12-31,9863085000
 72741,4911,Electric Services,2022-12-31,12289336000
 72741,4911,Electric Services,2023-12-31,11910705000
 72741,4911,Electric Services,2024-12-31,11900809000
 72741,4911,Electric Services,2025-12-31,13547244000
+72971,6021,National Commercial Banks,,
 73124,6022,State Commercial Banks,2020-12-31,6100800000
 73124,6022,State Commercial Banks,2021-12-31,6464500000
 73124,6022,State Commercial Banks,2022-12-31,6761200000
@@ -910,6 +996,12 @@ cik,sic,industry,period_end,revenue_usd
 74303,2800,Chemicals & Allied Products,2023-12-31,6833000000
 74303,2800,Chemicals & Allied Products,2024-12-31,6540100000
 74303,2800,Chemicals & Allied Products,2025-12-31,6780800000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2020-12-31,8480177000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2021-12-31,9785315000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2022-12-31,9955475000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2023-12-31,2552572000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2024-12-31,2680112000
+75252,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2025-12-31,2762032000
 75288,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2021-01-30,748833000
 75288,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2022-01-29,1142079000
 75288,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2023-01-28,1411528000
@@ -965,6 +1057,12 @@ cik,sic,industry,period_end,revenue_usd
 78128,4941,Water Supply,2023-12-31,4217000000
 78128,4941,Water Supply,2024-12-31,4653000000
 78128,4941,Water Supply,2025-12-31,5121000000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2020-12-31,3690900000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2021-12-31,4200200000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2022-12-31,4535500000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2023-12-31,4874600000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2024-12-31,5011900000
+78890,4731,Arrangement of  Transportation of  Freight & Cargo,2025-12-31,5261200000
 79282,6411,"Insurance Agents, Brokers & Service",2020-12-31,2613400000
 79282,6411,"Insurance Agents, Brokers & Service",2021-12-31,3051400000
 79282,6411,"Insurance Agents, Brokers & Service",2022-12-31,3573000000
@@ -990,6 +1088,12 @@ cik,sic,industry,period_end,revenue_usd
 80424,2840,"Soap, Detergents, Cleang Preparations, Perfumes, Cosmetics",2024-06-30,84039000000
 80424,2840,"Soap, Detergents, Cleang Preparations, Perfumes, Cosmetics",2025-06-30,84284000000
 80424,2840,"Soap, Detergents, Cleang Preparations, Perfumes, Cosmetics",2026-06-30,87032000000
+80661,6331,"Fire, Marine & Casualty Insurance",2020-12-31,42658100000
+80661,6331,"Fire, Marine & Casualty Insurance",2021-12-31,47702000000
+80661,6331,"Fire, Marine & Casualty Insurance",2022-12-31,49611000000
+80661,6331,"Fire, Marine & Casualty Insurance",2023-12-31,62109000000
+80661,6331,"Fire, Marine & Casualty Insurance",2024-12-31,75372000000
+80661,6331,"Fire, Marine & Casualty Insurance",2025-12-31,87671000000
 82811,3569,"General Industrial Machinery & Equipment, NEC",2021-01-02,2907000000
 82811,3569,"General Industrial Machinery & Equipment, NEC",2022-01-01,3810300000
 82811,3569,"General Industrial Machinery & Equipment, NEC",2022-12-31,5217900000
@@ -1061,6 +1165,18 @@ cik,sic,industry,period_end,revenue_usd
 89800,5200,"Retail-Building Materials, Hardware, Garden Supply",2024-12-31,23098500000
 89800,5200,"Retail-Building Materials, Hardware, Garden Supply",2025-12-31,23574300000
 90498,6021,National Commercial Banks,,
+90896,2451,Mobile Homes,2021-04-03,1420881000
+90896,2451,Mobile Homes,2022-04-02,2207229000
+90896,2451,Mobile Homes,2023-04-01,2606560000
+90896,2451,Mobile Homes,2024-03-30,2024823000
+90896,2451,Mobile Homes,2025-03-29,2483448000
+90896,2451,Mobile Homes,2026-03-28,2663639000
+91142,3630,Household Appliances,2020-12-31,2895300000
+91142,3630,Household Appliances,2021-12-31,3538900000
+91142,3630,Household Appliances,2022-12-31,3753900000
+91142,3630,Household Appliances,2023-12-31,3852800000
+91142,3630,Household Appliances,2024-12-31,3818100000
+91142,3630,Household Appliances,2025-12-31,3830200000
 91388,2011,Meat Packing Plants,2023-01-01,16199000000
 91388,2011,Meat Packing Plants,2023-12-31,14640000000
 91388,2011,Meat Packing Plants,2024-12-29,14142000000
@@ -1223,6 +1339,12 @@ cik,sic,industry,period_end,revenue_usd
 102729,3440,Fabricated Structural Metal Products,2023-12-30,4174598000
 102729,3440,Fabricated Structural Metal Products,2024-12-28,4075034000
 102729,3440,Fabricated Structural Metal Products,2025-12-27,4104102000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2021-04-03,9238830000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2022-04-02,11841840000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2023-04-01,11089359000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2024-03-30,9915678000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2025-03-29,9504691000
+103379,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2026-03-28,9605207000
 103730,3670,Electronic Components & Accessories,2020-12-31,2501898000
 103730,3670,Electronic Components & Accessories,2021-12-31,3240487000
 103730,3670,Electronic Components & Accessories,2022-12-31,3497401000
@@ -1314,6 +1436,12 @@ cik,sic,industry,period_end,revenue_usd
 108312,3620,Electrical Industrial Apparatus,2023-09-30,2914566000
 108312,3620,Electrical Industrial Apparatus,2024-09-30,3324249000
 108312,3620,Electrical Industrial Apparatus,2025-09-30,3567064000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2021-05-31,3171429000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2022-05-31,5242219000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2023-05-31,4916392000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2024-05-31,1245703000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2025-05-31,1153762000
+108516,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2026-05-31,1381292000
 109177,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2020-09-30,2622100000
 109177,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2021-09-30,2998100000
 109177,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2022-09-30,3132500000
@@ -1460,6 +1588,12 @@ cik,sic,industry,period_end,revenue_usd
 315293,6411,"Insurance Agents, Brokers & Service",2024-12-31,15698000000
 315293,6411,"Insurance Agents, Brokers & Service",2025-12-31,17181000000
 315709,6022,State Commercial Banks,,
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2020-12-31,11691000000
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2021-12-31,18520000000
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2022-12-31,20762000000
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2023-12-31,18837000000
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2024-12-31,19606000000
+316709,6211,"Security Brokers, Dealers & Flotation Companies",2025-12-31,23921000000
 317540,2086,Bottled & Canned Soft Drinks & Carbonated Waters,2020-12-31,5007357000
 317540,2086,Bottled & Canned Soft Drinks & Carbonated Waters,2021-12-31,5562714000
 317540,2086,Bottled & Canned Soft Drinks & Carbonated Waters,2022-12-31,6200957000
@@ -1536,6 +1670,12 @@ cik,sic,industry,period_end,revenue_usd
 354950,5211,Retail-Lumber & Other Building Materials Dealers,2024-01-28,152669000000
 354950,5211,Retail-Lumber & Other Building Materials Dealers,2025-02-02,159514000000
 354950,5211,Retail-Lumber & Other Building Materials Dealers,2026-02-01,164683000000
+354963,4813,Telephone Communications (No Radiotelephone),2020-12-31,220775000
+354963,4813,Telephone Communications (No Radiotelephone),2021-12-31,245239000
+354963,4813,Telephone Communications (No Radiotelephone),2022-12-31,248911000
+354963,4813,Telephone Communications (No Radiotelephone),2023-12-31,269131000
+354963,4813,Telephone Communications (No Radiotelephone),2024-12-31,328058000
+354963,4813,Telephone Communications (No Radiotelephone),2025-12-31,357854000
 355811,3714,Motor Vehicle Parts & Accessories,2020-12-31,1688189405
 355811,3714,Motor Vehicle Parts & Accessories,2021-12-31,1731169929
 355811,3714,Motor Vehicle Parts & Accessories,2022-12-31,1918958043
@@ -1572,11 +1712,16 @@ cik,sic,industry,period_end,revenue_usd
 704532,3829,"Measuring & Controlling Devices, NEC",2023-12-30,815868000
 704532,3829,"Measuring & Controlling Devices, NEC",2024-12-28,987321000
 704532,3829,"Measuring & Controlling Devices, NEC",2026-01-03,1005263000
+707179,6021,National Commercial Banks,2020-12-31,118433000
+707179,6021,National Commercial Banks,2021-12-31,125616000
 707549,3559,"Special Industry Machinery, NEC",2021-06-27,14626150000
 707549,3559,"Special Industry Machinery, NEC",2022-06-26,17227039000
 707549,3559,"Special Industry Machinery, NEC",2023-06-25,17428516000
 707549,3559,"Special Industry Machinery, NEC",2025-06-29,18435591000
 707549,3559,"Special Industry Machinery, NEC",2026-06-28,23232690000
+708818,7373,Services-Computer Integrated Systems Design,2021-03-31,556821000
+708818,7373,Services-Computer Integrated Systems Design,2022-03-31,596350000
+708818,7373,Services-Computer Integrated Systems Design,2023-03-31,653172000
 708955,6021,National Commercial Banks,,
 711377,2835,In Vitro & In Vivo Diagnostic Substances,2021-05-31,468459000
 711377,2835,In Vitro & In Vivo Diagnostic Substances,2022-05-31,527159000
@@ -1597,6 +1742,11 @@ cik,sic,industry,period_end,revenue_usd
 712515,7372,Services-Prepackaged Software,2025-03-31,7463000000
 712515,7372,Services-Prepackaged Software,2026-03-31,7531000000
 712534,6021,National Commercial Banks,,
+712537,6021,National Commercial Banks,,
+713425,7372,Services-Prepackaged Software,2021-04-30,111408000
+713425,7372,Services-Prepackaged Software,2022-04-30,106521000
+713425,7372,Services-Prepackaged Software,2023-04-30,108252000
+713425,7372,Services-Prepackaged Software,2024-04-30,102515000
 713676,6021,National Commercial Banks,2020-12-31,16901000000
 713676,6021,National Commercial Banks,2021-12-31,19211000000
 713676,6021,National Commercial Banks,2022-12-31,21120000000
@@ -1664,6 +1814,10 @@ cik,sic,industry,period_end,revenue_usd
 723125,3674,Semiconductors & Related Devices,2024-08-29,25111000000
 723125,3674,Semiconductors & Related Devices,2025-08-28,37378000000
 723125,3674,Semiconductors & Related Devices,2026-09-03,133188000000
+723188,6021,National Commercial Banks,2022-12-31,679355000
+723188,6021,National Commercial Banks,2023-12-31,652119000
+723188,6021,National Commercial Banks,2024-12-31,746303000
+723188,6021,National Commercial Banks,2025-12-31,818007000
 723254,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2021-05-31,7116340000
 723254,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2022-05-31,7854459000
 723254,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2023-05-31,8815769000
@@ -1695,6 +1849,10 @@ cik,sic,industry,period_end,revenue_usd
 726958,5500,Retail-Auto Dealers & Gasoline Stations,2024-04-30,14862913000
 726958,5500,Retail-Auto Dealers & Gasoline Stations,2025-04-30,15940899000
 726958,5500,Retail-Auto Dealers & Gasoline Stations,2026-04-30,17561101000
+728535,4213,Trucking (No Local),,
+729986,6022,State Commercial Banks,2020-12-31,263249000
+729986,6022,State Commercial Banks,2021-12-31,330958000
+729986,6022,State Commercial Banks,2022-12-31,311957000
 730263,3716,Motor Homes,2020-07-31,8167933000
 730263,3716,Motor Homes,2021-07-31,12317380000
 730263,3716,Motor Homes,2022-07-31,16312525000
@@ -1703,6 +1861,13 @@ cik,sic,industry,period_end,revenue_usd
 730263,3716,Motor Homes,2025-07-31,9579490000
 730263,3716,Motor Homes,2026-07-31,9608145000
 730272,2836,"Biological Products, (No Diagnostic Substances)",,
+730464,8200,Services-Educational Services,2020-06-30,866427000
+730464,8200,Services-Educational Services,2021-06-30,899248000
+730464,8200,Services-Educational Services,2022-06-30,1381842000
+730464,8200,Services-Educational Services,2023-06-30,1450826000
+730464,8200,Services-Educational Services,2024-06-30,1584652000
+730464,8200,Services-Educational Services,2025-06-30,1788290000
+730464,8200,Services-Educational Services,2026-06-30,1954085000
 731012,8050,Services-Nursing & Personal Care Facilities,2020-12-31,1760303000
 731012,8050,Services-Nursing & Personal Care Facilities,2021-12-31,1641959000
 731012,8050,Services-Nursing & Personal Care Facilities,2022-12-31,1690176000
@@ -1789,6 +1954,13 @@ cik,sic,industry,period_end,revenue_usd
 752714,7359,"Services-Equipment Rental & Leasing, NEC",2024-12-31,910942000
 752714,7359,"Services-Equipment Rental & Leasing, NEC",2025-12-31,944235000
 753308,4911,Electric Services,,
+759944,6022,State Commercial Banks,2020-12-31,6905000000
+759944,6022,State Commercial Banks,2021-12-31,6647000000
+759944,6022,State Commercial Banks,2022-12-31,8021000000
+759944,6022,State Commercial Banks,2023-12-31,8224000000
+759944,6022,State Commercial Banks,2024-12-31,7809000000
+759944,6022,State Commercial Banks,2025-12-31,8247000000
+760498,6021,National Commercial Banks,,
 763744,3714,Motor Vehicle Parts & Accessories,2020-12-31,2796166000
 763744,3714,Motor Vehicle Parts & Accessories,2021-12-31,4472697000
 763744,3714,Motor Vehicle Parts & Accessories,2022-12-31,5207143000
@@ -1833,6 +2005,12 @@ cik,sic,industry,period_end,revenue_usd
 766704,6798,Real Estate Investment Trusts,2023-12-31,6637995000
 766704,6798,Real Estate Investment Trusts,2024-12-31,7991118000
 766704,6798,Real Estate Investment Trusts,2025-12-31,10838034000
+766829,4941,Water Supply,2020-12-31,564526000
+766829,4941,Water Supply,2021-12-31,573686000
+766829,4941,Water Supply,2022-12-31,620698000
+766829,4941,Water Supply,2023-12-31,678168000
+766829,4941,Water Supply,2024-12-31,748439000
+766829,4941,Water Supply,2025-12-31,805594000
 769397,7372,Services-Prepackaged Software,2021-01-31,3790000000
 769397,7372,Services-Prepackaged Software,2022-01-31,4386000000
 769397,7372,Services-Prepackaged Software,2023-01-31,5005000000
@@ -1857,6 +2035,7 @@ cik,sic,industry,period_end,revenue_usd
 772406,3674,Semiconductors & Related Devices,2024-03-30,1788890000
 772406,3674,Semiconductors & Related Devices,2025-03-29,1896077000
 772406,3674,Semiconductors & Related Devices,2026-03-28,1997379000
+773141,1531,Operative Builders,,
 775158,3711,Motor Vehicles & Passenger Car Bodies,2020-09-30,6856800000
 775158,3711,Motor Vehicles & Passenger Car Bodies,2021-09-30,7737300000
 775158,3711,Motor Vehicles & Passenger Car Bodies,2022-12-31,8282000000
@@ -1883,6 +2062,12 @@ cik,sic,industry,period_end,revenue_usd
 780571,3825,Instruments For Meas & Testing of  Electricity & Elec Signals,2023-12-31,2173633000
 780571,3825,Instruments For Meas & Testing of  Electricity & Elec Signals,2024-12-31,2440837000
 780571,3825,Instruments For Meas & Testing of  Electricity & Elec Signals,2025-12-31,2367194000
+784977,4911,Electric Services,2020-12-31,2145000000
+784977,4911,Electric Services,2021-12-31,2396000000
+784977,4911,Electric Services,2022-12-31,2647000000
+784977,4911,Electric Services,2023-12-31,2923000000
+784977,4911,Electric Services,2024-12-31,3440000000
+784977,4911,Electric Services,2025-12-31,3576000000
 785161,8060,Services-Hospitals,2020-12-31,3566300000
 785161,8060,Services-Hospitals,2021-12-31,4014900000
 785161,8060,Services-Hospitals,2022-12-31,4348600000
@@ -1970,6 +2155,11 @@ cik,sic,industry,period_end,revenue_usd
 794367,5311,Retail-Department Stores,2024-02-03,23866000000
 794367,5311,Retail-Department Stores,2025-02-01,23006000000
 794367,5311,Retail-Department Stores,2026-01-31,22621000000
+794619,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2021-04-30,1744014000
+794619,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2022-04-30,1857186000
+794619,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2023-04-30,2066200000
+794619,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2024-04-30,1847502000
+794619,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2025-04-30,1709585000
 795266,1531,Operative Builders,2020-11-30,4183174000
 795266,1531,Operative Builders,2021-11-30,5724930000
 795266,1531,Operative Builders,2022-11-30,6903776000
@@ -2016,6 +2206,27 @@ cik,sic,industry,period_end,revenue_usd
 799233,4213,Trucking (No Local),2023-12-31,1207458000
 799233,4213,Trucking (No Local),2024-12-31,1047511000
 799233,4213,Trucking (No Local),2025-12-31,805709000
+800240,5940,Retail-Miscellaneous Shopping Goods Stores,2020-12-26,8872000000
+800240,5940,Retail-Miscellaneous Shopping Goods Stores,2021-12-25,8465000000
+800240,5940,Retail-Miscellaneous Shopping Goods Stores,2022-12-31,8484000000
+800240,5940,Retail-Miscellaneous Shopping Goods Stores,2023-12-30,7823000000
+800240,5940,Retail-Miscellaneous Shopping Goods Stores,2024-12-28,6990000000
+801337,6021,National Commercial Banks,2020-12-31,198737000
+801337,6021,National Commercial Banks,2021-12-31,212406000
+801337,6021,National Commercial Banks,2022-12-31,2475069000
+801337,6021,National Commercial Banks,2023-12-31,2651606000
+801337,6021,National Commercial Banks,2024-12-31,2590286000
+801337,6021,National Commercial Banks,2025-12-31,2899413000
+802481,2015,Poultry Slaughtering and Processing,2020-12-27,12091901000
+802481,2015,Poultry Slaughtering and Processing,2021-12-26,14777458000
+802481,2015,Poultry Slaughtering and Processing,2022-12-25,17468377000
+802481,2015,Poultry Slaughtering and Processing,2023-12-31,17362217000
+802481,2015,Poultry Slaughtering and Processing,2024-12-29,17878291000
+802481,2015,Poultry Slaughtering and Processing,2025-12-28,18497553000
+803649,6798,Real Estate Investment Trusts,2020-12-31,66278000
+803649,6798,Real Estate Investment Trusts,2021-12-31,58002000
+803649,6798,Real Estate Investment Trusts,2022-12-31,63140000
+803649,6798,Real Estate Investment Trusts,2023-12-31,60524000
 804328,3663,Radio & Tv Broadcasting & Communications Equipment,2020-09-27,23531000000
 804328,3663,Radio & Tv Broadcasting & Communications Equipment,2021-09-26,33566000000
 804328,3663,Radio & Tv Broadcasting & Communications Equipment,2022-09-25,44200000000
@@ -2035,6 +2246,10 @@ cik,sic,industry,period_end,revenue_usd
 807882,5812,Retail-Eating  Places,2023-10-01,1692306000
 807882,5812,Retail-Eating  Places,2024-09-29,1571306000
 807882,5812,Retail-Eating  Places,2025-09-28,1465314000
+809248,5812,Retail-Eating  Places,2021-01-03,1547502000
+809248,5812,Retail-Eating  Places,2022-01-02,1652370000
+809248,5812,Retail-Eating  Places,2023-01-01,1730440000
+809248,5812,Retail-Eating  Places,2023-12-31,1876504000
 811156,4931,Electric & Other Services Combined,2020-12-31,6418000000
 811156,4931,Electric & Other Services Combined,2021-12-31,7329000000
 811156,4931,Electric & Other Services Combined,2022-12-31,8596000000
@@ -2143,6 +2358,16 @@ cik,sic,industry,period_end,revenue_usd
 820318,3827,Optical Instruments & Lenses,2025-06-30,5810115000
 820318,3827,Optical Instruments & Lenses,2026-06-30,7118181000
 821002,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,,
+822416,1531,Operative Builders,2020-12-31,11036082000
+822416,1531,Operative Builders,2021-12-31,13736995000
+822416,1531,Operative Builders,2022-12-31,16002979000
+822416,1531,Operative Builders,2023-12-31,16061578000
+822416,1531,Operative Builders,2024-12-31,17946950000
+822416,1531,Operative Builders,2025-12-31,17311953000
+822663,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2020-12-31,539000000
+822663,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2021-12-31,879500000
+822663,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2022-12-31,1086700000
+822663,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2023-12-31,1317700000
 822818,4955,Hazardous Waste Management,2020-12-31,3144097000
 822818,4955,Hazardous Waste Management,2021-12-31,3805566000
 822818,4955,Hazardous Waste Management,2022-12-31,5166605000
@@ -2156,6 +2381,7 @@ cik,sic,industry,period_end,revenue_usd
 823768,4953,Refuse Systems,2024-12-31,22063000000
 823768,4953,Refuse Systems,2025-12-31,25204000000
 824142,3585,Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip,,
+824410,6021,National Commercial Banks,,
 825542,2870,Agricultural Chemicals,2020-09-30,4131600000
 825542,2870,Agricultural Chemicals,2021-09-30,4925000000
 825542,2870,Agricultural Chemicals,2022-09-30,3924100000
@@ -2234,6 +2460,12 @@ cik,sic,industry,period_end,revenue_usd
 836157,3523,Farm Machinery & Equipment,2024-08-31,607074000
 836157,3523,Farm Machinery & Equipment,2025-08-31,676368000
 836157,3523,Farm Machinery & Equipment,2026-08-31,635863000
+837465,3949,"Sporting & Athletic Goods, NEC",2020-12-31,1589500000
+837465,3949,"Sporting & Athletic Goods, NEC",2021-12-31,3133400000
+837465,3949,"Sporting & Athletic Goods, NEC",2022-12-31,3995700000
+837465,3949,"Sporting & Athletic Goods, NEC",2023-12-31,2132700000
+837465,3949,"Sporting & Athletic Goods, NEC",2024-12-31,2077700000
+837465,3949,"Sporting & Athletic Goods, NEC",2025-12-31,2060100000
 842023,2836,"Biological Products, (No Diagnostic Substances)",2020-06-30,738691000
 842023,2836,"Biological Products, (No Diagnostic Substances)",2021-06-30,931032000
 842023,2836,"Biological Products, (No Diagnostic Substances)",2022-06-30,1105599000
@@ -2247,6 +2479,9 @@ cik,sic,industry,period_end,revenue_usd
 842162,3714,Motor Vehicle Parts & Accessories,2023-12-31,23466900000
 842162,3714,Motor Vehicle Parts & Accessories,2024-12-31,23306000000
 842162,3714,Motor Vehicle Parts & Accessories,2025-12-31,23259100000
+842183,6798,Real Estate Investment Trusts,2020-12-31,191712000
+842183,6798,Real Estate Investment Trusts,2021-12-31,213488000
+842183,6798,Real Estate Investment Trusts,2022-12-31,217656000
 842633,3460,Metal Forgings & Stampings,2020-12-31,769970000
 842633,3460,Metal Forgings & Stampings,2021-12-31,857110000
 842633,3460,Metal Forgings & Stampings,2022-12-31,883830000
@@ -2271,6 +2506,15 @@ cik,sic,industry,period_end,revenue_usd
 850141,6331,"Fire, Marine & Casualty Insurance",2023-12-31,1491900000
 850141,6331,"Fire, Marine & Casualty Insurance",2024-12-31,1595200000
 850141,6331,"Fire, Marine & Casualty Insurance",2025-12-31,1701400000
+850209,5661,Retail-Shoe Stores,2021-01-30,7554000000
+850209,5661,Retail-Shoe Stores,2022-01-29,8968000000
+850209,5661,Retail-Shoe Stores,2023-01-28,8759000000
+850209,5661,Retail-Shoe Stores,2024-02-03,8168000000
+850209,5661,Retail-Shoe Stores,2025-02-01,7988000000
+850460,3350,Rolling Drawing & Extruding of  Nonferrous Metals,2020-12-31,1276948000
+850460,3350,Rolling Drawing & Extruding of  Nonferrous Metals,2021-12-31,2592721000
+850460,3350,Rolling Drawing & Extruding of  Nonferrous Metals,2022-12-31,3017555000
+850460,3350,Rolling Drawing & Extruding of  Nonferrous Metals,2023-12-31,2567722000
 851205,3823,"Industrial Instruments For Measurement, Display, and Control",2020-12-31,811020000
 851205,3823,"Industrial Instruments For Measurement, Display, and Control",2021-12-31,1037098000
 851205,3823,"Industrial Instruments For Measurement, Display, and Control",2022-12-31,1006090000
@@ -2301,6 +2545,7 @@ cik,sic,industry,period_end,revenue_usd
 853816,4213,Trucking (No Local),2023-12-30,5303322000
 853816,4213,Trucking (No Local),2024-12-28,4819245000
 853816,4213,Trucking (No Local),2025-12-27,4743760000
+855654,2834,Pharmaceutical Preparations,,
 855658,3674,Semiconductors & Related Devices,2021-01-02,408120000
 855658,3674,Semiconductors & Related Devices,2022-01-01,515327000
 855658,3674,Semiconductors & Related Devices,2022-12-31,660356000
@@ -2332,6 +2577,12 @@ cik,sic,industry,period_end,revenue_usd
 858877,3576,Computer Communications Equipment,2024-07-27,53803000000
 858877,3576,Computer Communications Equipment,2025-07-26,56654000000
 858877,3576,Computer Communications Equipment,2026-07-25,63325000000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2020-09-26,3776400000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2021-09-25,5632300000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2022-09-24,4862800000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2023-09-30,4030400000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2024-09-28,4030300000
+859737,3844,X-Ray Apparatus & Tubes & Related Irradiation Apparatus,2025-09-27,4100500000
 860413,6022,State Commercial Banks,,
 860546,6798,Real Estate Investment Trusts,2020-12-31,582354000
 860546,6798,Real Estate Investment Trusts,2021-12-31,664446000
@@ -2466,6 +2717,12 @@ cik,sic,industry,period_end,revenue_usd
 874716,2835,In Vitro & In Vivo Diagnostic Substances,2023-12-31,3660953000
 874716,2835,In Vitro & In Vivo Diagnostic Substances,2024-12-31,3897504000
 874716,2835,In Vitro & In Vivo Diagnostic Substances,2025-12-31,4303702000
+874766,6331,"Fire, Marine & Casualty Insurance",2020-12-31,20523000000
+874766,6331,"Fire, Marine & Casualty Insurance",2021-12-31,22390000000
+874766,6331,"Fire, Marine & Casualty Insurance",2022-12-31,22362000000
+874766,6331,"Fire, Marine & Casualty Insurance",2023-12-31,24527000000
+874766,6331,"Fire, Marine & Casualty Insurance",2024-12-31,26535000000
+874766,6331,"Fire, Marine & Casualty Insurance",2025-12-31,28368000000
 874866,6411,"Insurance Agents, Brokers & Service",2021-03-31,552644000
 874866,6411,"Insurance Agents, Brokers & Service",2022-03-31,646230000
 874866,6411,"Insurance Agents, Brokers & Service",2023-03-31,718562000
@@ -2479,6 +2736,12 @@ cik,sic,industry,period_end,revenue_usd
 875045,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,9675900000
 875045,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,9890600000
 875357,6021,National Commercial Banks,,
+876167,7372,Services-Prepackaged Software,2020-11-30,442150000
+876167,7372,Services-Prepackaged Software,2021-11-30,531313000
+876167,7372,Services-Prepackaged Software,2022-11-30,602013000
+876167,7372,Services-Prepackaged Software,2023-11-30,694439000
+876167,7372,Services-Prepackaged Software,2024-11-30,753409000
+876167,7372,Services-Prepackaged Software,2025-11-30,977831000
 876427,7500,"Services-Automotive Repair, Services & Parking",2021-03-27,1125721000
 876427,7500,"Services-Automotive Repair, Services & Parking",2022-03-26,1359328000
 876427,7500,"Services-Automotive Repair, Services & Parking",2023-03-25,1325382000
@@ -2539,6 +2802,12 @@ cik,sic,industry,period_end,revenue_usd
 882095,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,27116000000
 882095,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,28754000000
 882095,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,29443000000
+882184,1531,Operative Builders,2020-09-30,20311100000
+882184,1531,Operative Builders,2021-09-30,27774200000
+882184,1531,Operative Builders,2022-09-30,33480000000
+882184,1531,Operative Builders,2023-09-30,35460400000
+882184,1531,Operative Builders,2024-09-30,36801400000
+882184,1531,Operative Builders,2025-09-30,34250400000
 882796,2836,"Biological Products, (No Diagnostic Substances)",,
 882835,3823,"Industrial Instruments For Measurement, Display, and Control",2020-12-31,4022400000
 882835,3823,"Industrial Instruments For Measurement, Display, and Control",2021-12-31,4833800000
@@ -2565,6 +2834,12 @@ cik,sic,industry,period_end,revenue_usd
 883984,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,2259126000
 883984,3841,Surgical & Medical Instruments & Apparatus,2024-12-31,2382046000
 883984,3841,Surgical & Medical Instruments & Apparatus,2025-12-31,2231262000
+884614,4932,Gas & Other Services Combined,2020-09-30,6559000000
+884614,4932,Gas & Other Services Combined,2021-09-30,7447000000
+884614,4932,Gas & Other Services Combined,2022-09-30,10106000000
+884614,4932,Gas & Other Services Combined,2023-09-30,8928000000
+884614,4932,Gas & Other Services Combined,2024-09-30,7210000000
+884614,4932,Gas & Other Services Combined,2025-09-30,7287000000
 884887,4400,Water Transportation,2020-12-31,2208805000
 884887,4400,Water Transportation,2021-12-31,1532000000
 884887,4400,Water Transportation,2022-12-31,8840000000
@@ -2577,6 +2852,12 @@ cik,sic,industry,period_end,revenue_usd
 885590,2834,Pharmaceutical Preparations,2023-12-31,8757000000
 885590,2834,Pharmaceutical Preparations,2024-12-31,9625000000
 885590,2834,Pharmaceutical Preparations,2025-12-31,10266000000
+885639,5311,Retail-Department Stores,2021-01-30,15955000000
+885639,5311,Retail-Department Stores,2022-01-29,19433000000
+885639,5311,Retail-Department Stores,2023-01-28,18098000000
+885639,5311,Retail-Department Stores,2024-02-03,17476000000
+885639,5311,Retail-Department Stores,2025-02-01,16221000000
+885639,5311,Retail-Department Stores,2026-01-31,15527000000
 885725,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,9913000000
 885725,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,11888000000
 885725,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,12682000000
@@ -2642,6 +2923,12 @@ cik,sic,industry,period_end,revenue_usd
 889900,1381,Drilling Oil & Gas Wells,2023-12-31,4146456000
 889900,1381,Drilling Oil & Gas Wells,2024-12-31,5377911000
 889900,1381,Drilling Oil & Gas Wells,2025-12-31,4826624000
+890564,7363,Services-Help Supply Services,2020-12-31,3502100000
+890564,7363,Services-Help Supply Services,2021-12-31,4009500000
+890564,7363,Services-Help Supply Services,2022-12-31,4581100000
+890564,7363,Services-Help Supply Services,2023-12-31,4450600000
+890564,7363,Services-Help Supply Services,2024-12-31,4099700000
+890564,7363,Services-Help Supply Services,2025-12-31,3980400000
 890926,6351,Surety Insurance,2020-12-31,1438617000
 890926,6351,Surety Insurance,2021-12-31,1329932000
 890926,6351,Surety Insurance,2022-12-31,1190726000
@@ -2654,19 +2941,43 @@ cik,sic,industry,period_end,revenue_usd
 891014,2810,Industrial Inorganic Chemicals,2023-12-31,2169900000
 891014,2810,Industrial Inorganic Chemicals,2024-12-31,2118500000
 891014,2810,Industrial Inorganic Chemicals,2025-12-31,2072600000
+891024,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2021-04-24,5912066000
+891024,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2022-04-30,6499405000
+891024,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2023-04-29,6471471000
+891024,5047,"Wholesale-Medical, Dental & Hospital Equipment & Supplies",2024-04-27,6568272000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2020-12-31,2391269000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2021-12-31,2983277000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2022-12-31,3188843000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2023-12-31,3364504000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2024-12-31,3479373000
 891103,7370,"Services-Computer Programming, Data Processing, Etc.",2025-12-31,3487197000
+892553,3443,Fabricated Plate Work (Boiler Shops),2020-12-31,1177100000
+892553,3443,Fabricated Plate Work (Boiler Shops),2021-12-31,1317700000
+892553,3443,Fabricated Plate Work (Boiler Shops),2022-12-31,1612400000
+892553,3443,Fabricated Plate Work (Boiler Shops),2023-12-31,3352500000
+892553,3443,Fabricated Plate Work (Boiler Shops),2024-12-31,4160300000
+892553,3443,Fabricated Plate Work (Boiler Shops),2025-12-31,4264000000
+893691,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2021-01-03,2257075000
+893691,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2022-01-02,2596920000
+893691,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2023-01-01,2891687000
+893691,2430,"Millwood, Veneer, Plywood, & Structural Wood Members",2023-12-31,2830695000
 893949,8060,Services-Hospitals,,
+894081,4513,Air Courier Services,2020-12-31,1570575000
+894081,4513,Air Courier Services,2021-12-31,1734282000
+894081,4513,Air Courier Services,2022-12-31,2045469000
+894081,4513,Air Courier Services,2023-12-31,2070611000
 894315,6798,Real Estate Investment Trusts,2020-12-31,460333000
 894315,6798,Real Estate Investment Trusts,2021-12-31,532864000
 894315,6798,Real Estate Investment Trusts,2022-12-31,479218000
 894315,6798,Real Estate Investment Trusts,2023-12-31,452615000
 894315,6798,Real Estate Investment Trusts,2024-12-31,277467000
 894315,6798,Real Estate Investment Trusts,2025-12-31,123649000
+894405,4213,Trucking (No Local),2020-12-31,2940163000
+894405,4213,Trucking (No Local),2021-12-31,3766185000
+894405,4213,Trucking (No Local),2022-12-31,5029008000
+894405,4213,Trucking (No Local),2023-12-31,4427443000
+894405,4213,Trucking (No Local),2024-12-31,4179019000
+894405,4213,Trucking (No Local),2025-12-31,4010158000
 895417,6798,Real Estate Investment Trusts,2020-12-31,1118803000
 895417,6798,Real Estate Investment Trusts,2021-12-31,1316403000
 895417,6798,Real Estate Investment Trusts,2022-12-31,1447080000
@@ -2691,6 +3002,9 @@ cik,sic,industry,period_end,revenue_usd
 896159,6331,"Fire, Marine & Casualty Insurance",2023-12-31,49735000000
 896159,6331,"Fire, Marine & Casualty Insurance",2024-12-31,55753000000
 896159,6331,"Fire, Marine & Casualty Insurance",2025-12-31,59402000000
+896262,8082,Services-Home Health Care Services,2022-12-31,2223199000
+896262,8082,Services-Home Health Care Services,2023-12-31,2236382000
+896262,8082,Services-Home Health Care Services,2024-12-31,2348324000
 896264,2833,Medicinal Chemicals & Botanical Products,2021-01-02,1134644000
 896264,2833,Medicinal Chemicals & Botanical Products,2022-01-01,1186464000
 896264,2833,Medicinal Chemicals & Botanical Products,2022-12-31,998601000
@@ -2755,6 +3069,12 @@ cik,sic,industry,period_end,revenue_usd
 899689,6798,Real Estate Investment Trusts,2025-12-31,1810425000
 899715,6798,Real Estate Investment Trusts,,
 900075,5500,Retail-Auto Dealers & Gasoline Stations,,
+901491,5812,Retail-Eating  Places,2020-12-27,1813234000
+901491,5812,Retail-Eating  Places,2021-12-26,2068421000
+901491,5812,Retail-Eating  Places,2022-12-25,2102103000
+901491,5812,Retail-Eating  Places,2023-12-31,2135713000
+901491,5812,Retail-Eating  Places,2024-12-29,2059387000
+901491,5812,Retail-Eating  Places,2025-12-28,2053808000
 903129,3714,Motor Vehicle Parts & Accessories,2020-12-31,913098000
 903129,3714,Motor Vehicle Parts & Accessories,2021-12-31,1046150000
 903129,3714,Motor Vehicle Parts & Accessories,2022-12-31,1204656000
@@ -2803,6 +3123,9 @@ cik,sic,industry,period_end,revenue_usd
 909832,5331,Retail-Variety Stores,2024-09-01,254453000000
 909832,5331,Retail-Variety Stores,2025-08-31,275235000000
 909832,5331,Retail-Variety Stores,2026-08-30,303154000000
+910073,6036,"Savings Institutions, Not Federally Chartered",2020-12-31,22000000
+910073,6036,"Savings Institutions, Not Federally Chartered",2021-12-31,23000000
+910073,6036,"Savings Institutions, Not Federally Chartered",2022-12-31,27000000
 910108,6798,Real Estate Investment Trusts,2020-12-31,330448000
 910108,6798,Real Estate Investment Trusts,2021-12-31,343997000
 910108,6798,Real Estate Investment Trusts,2022-12-31,321245000
@@ -2851,6 +3174,11 @@ cik,sic,industry,period_end,revenue_usd
 912242,6798,Real Estate Investment Trusts,2023-12-31,884068000
 912242,6798,Real Estate Investment Trusts,2024-12-31,918204000
 912242,6798,Real Estate Investment Trusts,2025-12-31,1013983000
+912463,2340,"Women's, Misses':  Children's & Infants' Undergarments",2021-01-30,1876529000
+912463,2340,"Women's, Misses':  Children's & Infants' Undergarments",2022-01-29,2591631000
+912463,2340,"Women's, Misses':  Children's & Infants' Undergarments",2023-01-28,2687350000
+912463,2340,"Women's, Misses':  Children's & Infants' Undergarments",2024-02-03,2776530000
+912463,2340,"Women's, Misses':  Children's & Infants' Undergarments",2025-02-01,2995273000
 912562,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2020-12-31,1032578000
 912562,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2021-12-31,1339783000
 912562,3310,"Steel Works, Blast Furnaces & Rolling & Finishing Mills",2022-12-31,1389966000
@@ -2986,6 +3314,16 @@ cik,sic,industry,period_end,revenue_usd
 919012,5651,Retail-Family Clothing Stores,2024-02-03,5261770000
 919012,5651,Retail-Family Clothing Stores,2025-02-01,5328652000
 919012,5651,Retail-Family Clothing Stores,2026-01-31,5547236000
+920112,6022,State Commercial Banks,2020-12-31,71085000
+920112,6022,State Commercial Banks,2021-12-31,87666000
+920112,6022,State Commercial Banks,2022-12-31,93587000
+920112,6022,State Commercial Banks,2023-12-31,97533000
+920148,8071,Services-Medical Laboratories,2020-12-31,13978500000
+920148,8071,Services-Medical Laboratories,2021-12-31,13136100000
+920148,8071,Services-Medical Laboratories,2022-12-31,11863900000
+920148,8071,Services-Medical Laboratories,2023-12-31,12161600000
+920148,8071,Services-Medical Laboratories,2024-12-31,13008900000
+920148,8071,Services-Medical Laboratories,2025-12-31,13951700000
 920371,3420,"Cutlery, Handtools & General Hardware",2020-12-31,1267945000
 920371,3420,"Cutlery, Handtools & General Hardware",2021-12-31,1573217000
 920371,3420,"Cutlery, Handtools & General Hardware",2022-12-31,2116087000
@@ -3010,6 +3348,12 @@ cik,sic,industry,period_end,revenue_usd
 921082,6798,Real Estate Investment Trusts,2023-12-31,833997000
 921082,6798,Real Estate Investment Trusts,2024-12-31,825862000
 921082,6798,Real Estate Investment Trusts,2025-12-31,806112000
+921557,6022,State Commercial Banks,2020-12-31,319368000
+921557,6022,State Commercial Banks,2021-12-31,309315000
+921557,6022,State Commercial Banks,2022-12-31,326501000
+921557,6022,State Commercial Banks,2023-12-31,360235000
+921557,6022,State Commercial Banks,2024-12-31,384804000
+921557,6022,State Commercial Banks,2025-12-31,417495000
 921582,3861,Photographic Equipment & Supplies,2020-12-31,137003000
 921582,3861,Photographic Equipment & Supplies,2021-12-31,254883000
 921582,3861,Photographic Equipment & Supplies,2022-12-31,300805000
@@ -3051,6 +3395,12 @@ cik,sic,industry,period_end,revenue_usd
 923120,3743,Railroad Equipment,2024-08-31,3544700000
 923120,3743,Railroad Equipment,2025-08-31,3240200000
 923120,3743,Railroad Equipment,2026-08-31,2461100000
+924901,6798,Real Estate Investment Trusts,2020-12-31,307476000
+924901,6798,Real Estate Investment Trusts,2021-12-31,194645000
+924901,6798,Real Estate Investment Trusts,2022-12-31,213355000
+924901,6798,Real Estate Investment Trusts,2023-12-31,260295000
+924901,6798,Real Estate Investment Trusts,2024-12-31,271074000
+924901,6798,Real Estate Investment Trusts,2025-12-31,288434000
 926326,3571,Electronic Computers,2020-12-31,892208000
 926326,3571,Electronic Computers,2021-12-31,1132018000
 926326,3571,Electronic Computers,2022-12-31,1295947000
@@ -3087,6 +3437,11 @@ cik,sic,industry,period_end,revenue_usd
 929008,5063,"Wholesale-Electrical Apparatus & Equipment, Wiring Supplies ",2023-12-31,22385200000
 929008,5063,"Wholesale-Electrical Apparatus & Equipment, Wiring Supplies ",2024-12-31,21818800000
 929008,5063,"Wholesale-Electrical Apparatus & Equipment, Wiring Supplies ",2025-12-31,23510900000
+929351,7812,Services-Motion Picture & Video Tape Production,2021-03-31,3271500000
+929351,7812,Services-Motion Picture & Video Tape Production,2022-03-31,3604300000
+929351,7812,Services-Motion Picture & Video Tape Production,2023-03-31,1422500000
+929351,7812,Services-Motion Picture & Video Tape Production,2024-03-31,1392400000
+929351,7812,Services-Motion Picture & Video Tape Production,2025-03-31,1369600000
 930236,6798,Real Estate Investment Trusts,,
 931015,3790,Miscellaneous Transportation Equipment,2020-12-31,6281400000
 931015,3790,Miscellaneous Transportation Equipment,2021-12-31,7439200000
@@ -3112,6 +3467,11 @@ cik,sic,industry,period_end,revenue_usd
 933036,7359,"Services-Equipment Rental & Leasing, NEC",2023-12-31,3992413000
 933036,7359,"Services-Equipment Rental & Leasing, NEC",2024-12-31,4320564000
 933036,7359,"Services-Equipment Rental & Leasing, NEC",2025-12-31,4695061000
+933136,6199,Finance Services,2020-12-31,2689000000
+933136,6199,Finance Services,2021-12-31,3318000000
+933136,6199,Finance Services,2022-12-31,2464000000
+933136,6199,Finance Services,2023-12-31,1794000000
+933136,6199,Finance Services,2024-12-31,2225000000
 933974,3559,"Special Industry Machinery, NEC",2020-09-30,388537000
 933974,3559,"Special Industry Machinery, NEC",2021-09-30,513703000
 933974,3559,"Special Industry Machinery, NEC",2022-09-30,555498000
@@ -3148,6 +3508,12 @@ cik,sic,industry,period_end,revenue_usd
 937098,7389,"Services-Business Services, NEC",2023-12-31,4994000000
 937098,7389,"Services-Business Services, NEC",2024-12-31,5053000000
 937098,7389,"Services-Business Services, NEC",2025-12-31,5010000000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2021-01-02,1143744000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2022-01-01,1239200000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2022-12-31,2035800000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2023-12-30,1275500000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2024-12-28,1395200000
+937556,3845,Electromedical & Electrotherapeutic Apparatus,2026-01-03,1526900000
 939767,2836,"Biological Products, (No Diagnostic Substances)",2021-01-01,987538000
 939767,2836,"Biological Products, (No Diagnostic Substances)",2021-12-31,1434970000
 939767,2836,"Biological Products, (No Diagnostic Substances)",2022-12-30,1611062000
@@ -3184,6 +3550,9 @@ cik,sic,industry,period_end,revenue_usd
 944148,7389,"Services-Business Services, NEC",2023-12-31,1591194000
 944148,7389,"Services-Business Services, NEC",2024-12-31,1813472000
 944148,7389,"Services-Business Services, NEC",2025-12-31,2757991000
+944314,6798,Real Estate Investment Trusts,2020-12-31,616771000
+944314,6798,Real Estate Investment Trusts,2021-12-31,788565000
+944314,6798,Real Estate Investment Trusts,2022-12-31,1038166000
 944695,6331,"Fire, Marine & Casualty Insurance",2020-12-31,4824800000
 944695,6331,"Fire, Marine & Casualty Insurance",2021-12-31,5227800000
 944695,6331,"Fire, Marine & Casualty Insurance",2022-12-31,5468600000
@@ -3307,6 +3676,18 @@ cik,sic,industry,period_end,revenue_usd
 1005284,3670,Electronic Components & Accessories,2023-12-31,576429000
 1005284,3670,Electronic Components & Accessories,2024-12-31,647684000
 1005284,3670,Electronic Components & Accessories,2025-12-31,650611000
+1005757,7374,Services-Computer Processing & Data Preparation,2020-12-31,990533000
+1005757,7374,Services-Computer Processing & Data Preparation,2021-12-31,1046487000
+1005757,7374,Services-Computer Processing & Data Preparation,2022-12-31,1089752000
+1005757,7374,Services-Computer Processing & Data Preparation,2023-12-31,1169258000
+1005757,7374,Services-Computer Processing & Data Preparation,2024-12-31,1197248000
+1005757,7374,Services-Computer Processing & Data Preparation,2025-12-31,1223289000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2020-12-31,4903200000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2021-12-31,5533800000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2022-12-31,5641900000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2023-12-31,5488900000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2024-12-31,5392600000
+1012100,2820,"Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",2025-12-31,5359800000
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2020-08-31,1494111000
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2021-08-31,1591445000
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2022-08-31,1843892000
@@ -3314,6 +3695,11 @@ cik,sic,industry,period_end,revenue_usd
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2024-08-31,2203056000
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2025-08-31,2321748000
 1013237,7370,"Services-Computer Programming, Data Processing, Etc.",2026-08-31,2476256000
+1013462,7372,Services-Prepackaged Software,2020-12-31,1681297000
+1013462,7372,Services-Prepackaged Software,2021-12-31,1906715000
+1013462,7372,Services-Prepackaged Software,2022-12-31,2065553000
+1013462,7372,Services-Prepackaged Software,2023-12-31,2269949000
+1013462,7372,Services-Prepackaged Software,2024-12-31,2544809000
 1013857,7374,Services-Computer Processing & Data Preparation,2020-12-31,1017517000
 1013857,7374,Services-Computer Processing & Data Preparation,2021-12-31,1211653000
 1013857,7374,Services-Computer Processing & Data Preparation,2022-12-31,1317845000
@@ -3326,6 +3712,12 @@ cik,sic,industry,period_end,revenue_usd
 1013934,8200,Services-Educational Services,2023-12-31,1132924000
 1013934,8200,Services-Educational Services,2024-12-31,1219930000
 1013934,8200,Services-Educational Services,2025-12-31,1268220000
+1014473,7371,Services-Computer Programming Services,2020-12-31,1265100000
+1014473,7371,Services-Computer Programming Services,2021-12-31,1327600000
+1014473,7371,Services-Computer Programming Services,2022-12-31,1424900000
+1014473,7371,Services-Computer Programming Services,2023-12-31,1493100000
+1014473,7371,Services-Computer Programming Services,2024-12-31,1557400000
+1014473,7371,Services-Computer Programming Services,2025-12-31,1656600000
 1014739,8082,Services-Home Health Care Services,2020-12-31,3032610000
 1014739,8082,Services-Home Health Care Services,2021-12-31,3438640000
 1014739,8082,Services-Home Health Care Services,2022-12-31,3944735000
@@ -3442,12 +3834,16 @@ cik,sic,industry,period_end,revenue_usd
 1025996,6798,Real Estate Investment Trusts,2023-12-31,1129694000
 1025996,6798,Real Estate Investment Trusts,2024-12-31,1135629000
 1025996,6798,Real Estate Investment Trusts,2025-12-31,1112667000
+1028918,6022,State Commercial Banks,,
 1029199,6099,"Functions Related To Depository Banking, NEC",2020-12-31,2482700000
 1029199,6099,"Functions Related To Depository Banking, NEC",2021-12-31,2995500000
 1029199,6099,"Functions Related To Depository Banking, NEC",2022-12-31,3358800000
 1029199,6099,"Functions Related To Depository Banking, NEC",2023-12-31,3688000000
 1029199,6099,"Functions Related To Depository Banking, NEC",2024-12-31,3989800000
 1029199,6099,"Functions Related To Depository Banking, NEC",2025-12-31,4244200000
+1029800,6798,Real Estate Investment Trusts,2020-10-31,126745000
+1029800,6798,Real Estate Investment Trusts,2021-10-31,135581000
+1029800,6798,Real Estate Investment Trusts,2022-10-31,143103000
 1030894,3672,Printed Circuit Boards,2022-12-31,7250000000
 1030894,3672,Printed Circuit Boards,2023-12-31,7961000000
 1030894,3672,Printed Circuit Boards,2024-12-31,9646000000
@@ -3495,6 +3891,7 @@ cik,sic,industry,period_end,revenue_usd
 1034670,3714,Motor Vehicle Parts & Accessories,2023-12-31,10475000000
 1034670,3714,Motor Vehicle Parts & Accessories,2024-12-31,10390000000
 1034670,3714,Motor Vehicle Parts & Accessories,2025-12-31,10815000000
+1035002,2911,Petroleum Refining,,
 1035201,4941,Water Supply,2020-12-31,697577000
 1035201,4941,Water Supply,2021-12-31,765704000
 1035201,4941,Water Supply,2022-12-31,772616000
@@ -3520,6 +3917,12 @@ cik,sic,industry,period_end,revenue_usd
 1037038,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2024-03-30,6631400000
 1037038,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2025-03-29,7079000000
 1037038,2320,"Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",2026-03-28,8114500000
+1037540,6798,Real Estate Investment Trusts,2020-12-31,2765686000
+1037540,6798,Real Estate Investment Trusts,2021-12-31,2888621000
+1037540,6798,Real Estate Investment Trusts,2022-12-31,3108581000
+1037540,6798,Real Estate Investment Trusts,2023-12-31,3273569000
+1037540,6798,Real Estate Investment Trusts,2024-12-31,3407719000
+1037540,6798,Real Estate Investment Trusts,2025-12-31,3482279000
 1037646,3826,Laboratory Analytical Instruments,2020-12-31,3085177000
 1037646,3826,Laboratory Analytical Instruments,2021-12-31,3717930000
 1037646,3826,Laboratory Analytical Instruments,2022-12-31,3919709000
@@ -3555,6 +3958,12 @@ cik,sic,industry,period_end,revenue_usd
 1039684,4923,Natural Gas Transmisison & Distribution,2023-12-31,17677000000
 1039684,4923,Natural Gas Transmisison & Distribution,2024-12-31,21698000000
 1039684,4923,Natural Gas Transmisison & Distribution,2025-12-31,33629000000
+1039828,6311,Life Insurance,2020-12-31,2424649000
+1039828,6311,Life Insurance,2021-12-31,3689961000
+1039828,6311,Life Insurance,2022-12-31,1413825000
+1039828,6311,Life Insurance,2023-12-31,3395000000
+1039828,6311,Life Insurance,2024-12-31,7519000000
+1039828,6311,Life Insurance,2025-12-31,7487000000
 1040829,6798,Real Estate Investment Trusts,2020-12-31,524475000
 1040829,6798,Real Estate Investment Trusts,2021-12-31,939373000
 1040829,6798,Real Estate Investment Trusts,2022-12-31,1805969000
@@ -3586,6 +3995,12 @@ cik,sic,industry,period_end,revenue_usd
 1042046,6331,"Fire, Marine & Casualty Insurance",2023-12-31,7827000000
 1042046,6331,"Fire, Marine & Casualty Insurance",2024-12-31,8324000000
 1042046,6331,"Fire, Marine & Casualty Insurance",2025-12-31,8174000000
+1042776,6512,Opeators of  Nonresidential Buildings,2020-12-31,535024000
+1042776,6512,Opeators of  Nonresidential Buildings,2021-12-31,528710000
+1042776,6512,Opeators of  Nonresidential Buildings,2022-12-31,563766000
+1042776,6512,Opeators of  Nonresidential Buildings,2023-12-31,577756000
+1042776,6512,Opeators of  Nonresidential Buildings,2024-12-31,570324000
+1042776,6512,Opeators of  Nonresidential Buildings,2025-12-31,564994000
 1043219,6798,Real Estate Investment Trusts,,
 1043277,4731,Arrangement of  Transportation of  Freight & Cargo,2020-12-31,16207106000
 1043277,4731,Arrangement of  Transportation of  Freight & Cargo,2021-12-31,23102138000
@@ -3593,6 +4008,11 @@ cik,sic,industry,period_end,revenue_usd
 1043277,4731,Arrangement of  Transportation of  Freight & Cargo,2023-12-31,17596443000
 1043277,4731,Arrangement of  Transportation of  Freight & Cargo,2024-12-31,17724956000
 1043277,4731,Arrangement of  Transportation of  Freight & Cargo,2025-12-31,16232763000
+1043604,3576,Computer Communications Equipment,2020-12-31,4445100000
+1043604,3576,Computer Communications Equipment,2021-12-31,4735400000
+1043604,3576,Computer Communications Equipment,2022-12-31,5301200000
+1043604,3576,Computer Communications Equipment,2023-12-31,5564500000
+1043604,3576,Computer Communications Equipment,2024-12-31,5073600000
 1045450,6798,Real Estate Investment Trusts,2020-12-31,414661000
 1045450,6798,Real Estate Investment Trusts,2021-12-31,531680000
 1045450,6798,Real Estate Investment Trusts,2022-12-31,658031000
@@ -3671,12 +4091,19 @@ cik,sic,industry,period_end,revenue_usd
 1048911,4513,Air Courier Services,2024-05-31,87693000000
 1048911,4513,Air Courier Services,2025-05-31,87926000000
 1048911,4513,Air Courier Services,2026-05-31,94720000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2020-12-31,2330000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2021-12-31,2950000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2022-12-31,3547000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2023-12-31,3622000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2024-12-31,3586000000
+1049502,3823,"Industrial Instruments For Measurement, Display, and Control",2025-12-31,3931000000
 1049521,3670,Electronic Components & Accessories,2020-07-03,796610000
 1049521,3670,Electronic Components & Accessories,2021-07-02,923996000
 1049521,3670,Electronic Components & Accessories,2022-07-01,988197000
 1049521,3670,Electronic Components & Accessories,2024-06-28,835275000
 1049521,3670,Electronic Components & Accessories,2025-06-27,912020000
 1049521,3670,Electronic Components & Accessories,2026-07-03,983622000
+1049782,6035,"Savings Institution, Federally Chartered",,
 1050446,6199,Finance Services,2020-12-31,480735000
 1050446,6199,Finance Services,2021-12-31,510762000
 1050446,6199,Finance Services,2022-12-31,499264000
@@ -3689,6 +4116,11 @@ cik,sic,industry,period_end,revenue_usd
 1050797,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2023-12-31,3487203000
 1050797,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2024-12-31,3368582000
 1050797,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2025-12-31,3397351000
+1050825,2522,Office Furniture (No Wood),2021-02-26,2596200000
+1050825,2522,Office Furniture (No Wood),2022-02-25,2772700000
+1050825,2522,Office Furniture (No Wood),2023-02-24,3232600000
+1050825,2522,Office Furniture (No Wood),2024-02-23,3159600000
+1050825,2522,Office Furniture (No Wood),2025-02-28,3166000000
 1050915,1731,Electrical Work,2020-12-31,11202672000
 1050915,1731,Electrical Work,2021-12-31,12980213000
 1050915,1731,Electrical Work,2022-12-31,17073903000
@@ -3713,6 +4145,12 @@ cik,sic,industry,period_end,revenue_usd
 1052752,6500,Real Estate,2023-12-31,185846000
 1052752,6500,Real Estate,2024-12-31,203391000
 1052752,6500,Real Estate,2025-12-31,221727000
+1053507,6798,Real Estate Investment Trusts,2020-12-31,8041500000
+1053507,6798,Real Estate Investment Trusts,2021-12-31,9356900000
+1053507,6798,Real Estate Investment Trusts,2022-12-31,9645400000
+1053507,6798,Real Estate Investment Trusts,2023-12-31,10012200000
+1053507,6798,Real Estate Investment Trusts,2024-12-31,10127200000
+1053507,6798,Real Estate Investment Trusts,2025-12-31,10644600000
 1054905,2800,Chemicals & Allied Products,2020-12-31,1193100000
 1054905,2800,Chemicals & Allied Products,2021-12-31,1483400000
 1054905,2800,Chemicals & Allied Products,2022-12-31,1963700000
@@ -3750,12 +4188,24 @@ cik,sic,industry,period_end,revenue_usd
 1058290,7371,Services-Computer Programming Services,2023-12-31,19353000000
 1058290,7371,Services-Computer Programming Services,2024-12-31,19736000000
 1058290,7371,Services-Computer Programming Services,2025-12-31,21108000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2020-12-31,5371000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2021-12-31,6218000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2022-12-31,5468000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2023-12-31,5916000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2024-12-31,7088000000
+1059556,7320,"Services-Consumer Credit Reporting, Collection Agencies",2025-12-31,7718000000
 1060391,4953,Refuse Systems,2020-12-31,12031700000
 1060391,4953,Refuse Systems,2021-12-31,13321100000
 1060391,4953,Refuse Systems,2022-12-31,15645000000
 1060391,4953,Refuse Systems,2023-12-31,17279000000
 1060391,4953,Refuse Systems,2024-12-31,18418000000
 1060391,4953,Refuse Systems,2025-12-31,19027000000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2021-01-02,3024334000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2022-01-01,3486440000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2022-12-31,3212733000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2023-12-30,2945594000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2024-12-28,2844102000
+1060822,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2026-01-03,2898426000
 1061630,6798,Real Estate Investment Trusts,,
 1061983,2834,Pharmaceutical Preparations,2020-12-31,55828000
 1061983,2834,Pharmaceutical Preparations,2021-12-31,70428000
@@ -3763,6 +4213,12 @@ cik,sic,industry,period_end,revenue_usd
 1061983,2834,Pharmaceutical Preparations,2023-12-31,7530000
 1061983,2834,Pharmaceutical Preparations,2024-12-31,18474000
 1061983,2834,Pharmaceutical Preparations,2025-12-31,88039000
+1062231,3714,Motor Vehicle Parts & Accessories,2020-12-31,4710800000
+1062231,3714,Motor Vehicle Parts & Accessories,2021-12-31,5156600000
+1062231,3714,Motor Vehicle Parts & Accessories,2022-12-31,5802400000
+1062231,3714,Motor Vehicle Parts & Accessories,2023-12-31,6079500000
+1062231,3714,Motor Vehicle Parts & Accessories,2024-12-31,6124900000
+1062231,3714,Motor Vehicle Parts & Accessories,2025-12-31,5836700000
 1063761,6798,Real Estate Investment Trusts,2020-12-31,4607503000
 1063761,6798,Real Estate Investment Trusts,2021-12-31,5116789000
 1063761,6798,Real Estate Investment Trusts,2022-12-31,5291447000
@@ -3807,6 +4263,9 @@ cik,sic,industry,period_end,revenue_usd
 1067983,6331,"Fire, Marine & Casualty Insurance",2024-12-31,371433000000
 1067983,6331,"Fire, Marine & Casualty Insurance",2025-12-31,371444000000
 1068851,6022,State Commercial Banks,,
+1068875,6199,Finance Services,2020-12-31,546189000
+1068875,6199,Finance Services,2021-12-31,658213000
+1068875,6199,Finance Services,2022-12-31,666496000
 1069157,6022,State Commercial Banks,,
 1069183,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2020-12-31,681003000
 1069183,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2021-12-31,865638000
@@ -3826,6 +4285,7 @@ cik,sic,industry,period_end,revenue_usd
 1069258,3760,Guided Missiles & Space Vehicles & Parts,2023-12-31,1037100000
 1069258,3760,Guided Missiles & Space Vehicles & Parts,2024-12-29,1136300000
 1069258,3760,Guided Missiles & Space Vehicles & Parts,2025-12-28,1346800000
+1069530,2834,Pharmaceutical Preparations,,
 1069878,2400,Lumber & Wood Products (No Furniture),2020-12-31,880831000
 1069878,2400,Lumber & Wood Products (No Furniture),2021-12-31,1196952000
 1069878,2400,Lumber & Wood Products (No Furniture),2022-12-31,1106043000
@@ -3869,6 +4329,7 @@ cik,sic,industry,period_end,revenue_usd
 1076930,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2024-12-31,949245000
 1076930,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2025-12-31,980600000
 1077183,8734,Services-Testing Laboratories,,
+1077428,6022,State Commercial Banks,,
 1078075,7373,Services-Computer Integrated Systems Design,2021-03-31,831282000
 1078075,7373,Services-Computer Integrated Systems Design,2022-03-31,855575000
 1078075,7373,Services-Computer Integrated Systems Design,2023-03-31,914530000
@@ -3910,6 +4371,10 @@ cik,sic,industry,period_end,revenue_usd
 1084961,6153,Short-Term Business Credit Institutions,2023-12-31,1222680000
 1084961,6153,Short-Term Business Credit Institutions,2024-12-31,1316361000
 1084961,6153,Short-Term Business Credit Institutions,2025-12-31,1768802000
+1085869,7371,Services-Computer Programming Services,2020-12-31,612133000
+1085869,7371,Services-Computer Programming Services,2021-12-31,761027000
+1085869,7371,Services-Computer Programming Services,2022-12-31,905062000
+1085869,7371,Services-Computer Programming Services,2023-12-31,906541000
 1086222,7389,"Services-Business Services, NEC",,
 1088856,2834,Pharmaceutical Preparations,2020-12-31,353874000
 1088856,2834,Pharmaceutical Preparations,2021-12-31,365978000
@@ -3936,6 +4401,12 @@ cik,sic,industry,period_end,revenue_usd
 1090872,3826,Laboratory Analytical Instruments,2023-10-31,6833000000
 1090872,3826,Laboratory Analytical Instruments,2024-10-31,6510000000
 1090872,3826,Laboratory Analytical Instruments,2025-10-31,6948000000
+1091667,4841,Cable & Other Pay Television Services,2020-12-31,48097000000
+1091667,4841,Cable & Other Pay Television Services,2021-12-31,51682000000
+1091667,4841,Cable & Other Pay Television Services,2022-12-31,54022000000
+1091667,4841,Cable & Other Pay Television Services,2023-12-31,54607000000
+1091667,4841,Cable & Other Pay Television Services,2024-12-31,55085000000
+1091667,4841,Cable & Other Pay Television Services,2025-12-31,54774000000
 1092699,7372,Services-Prepackaged Software,2020-12-31,312630000
 1092699,7372,Services-Prepackaged Software,2021-12-31,385276000
 1092699,7372,Services-Prepackaged Software,2022-12-31,450875000
@@ -4038,6 +4509,15 @@ cik,sic,industry,period_end,revenue_usd
 1101302,3089,"Plastics Products, NEC",2023-12-31,3523900000
 1101302,3089,"Plastics Products, NEC",2024-12-31,3241200000
 1101302,3089,"Plastics Products, NEC",2025-12-31,3196600000
+1102112,6021,National Commercial Banks,2020-12-31,1249551000
+1102112,6021,National Commercial Banks,2021-12-31,1352656000
+1102112,6021,National Commercial Banks,2022-12-31,1631316000
+1102993,7372,Services-Prepackaged Software,2020-12-31,366620000
+1102993,7372,Services-Prepackaged Software,2021-12-31,469624000
+1102993,7372,Services-Prepackaged Software,2022-12-31,514800000
+1102993,7372,Services-Prepackaged Software,2023-12-31,401983000
+1102993,7372,Services-Prepackaged Software,2024-12-31,312474000
+1102993,7372,Services-Prepackaged Software,2025-12-31,243742000
 1103982,2000,Food and Kindred Products,2020-12-31,26581000000
 1103982,2000,Food and Kindred Products,2021-12-31,28720000000
 1103982,2000,Food and Kindred Products,2022-12-31,31496000000
@@ -4062,6 +4542,12 @@ cik,sic,industry,period_end,revenue_usd
 1107843,7372,Services-Prepackaged Software,2023-12-31,554458000
 1107843,7372,Services-Prepackaged Software,2024-12-31,607571000
 1107843,7372,Services-Prepackaged Software,2025-12-31,669125000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2020-12-31,383089000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2021-12-31,434414000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2022-12-31,413534000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2023-12-31,411829000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2024-12-31,400000000
+1108134,6036,"Savings Institutions, Not Federally Chartered",2025-12-31,29947000
 1108426,4911,Electric Services,2020-12-31,1523012000
 1108426,4911,Electric Services,2021-12-31,1779873000
 1108426,4911,Electric Services,2022-12-31,2250217000
@@ -4116,6 +4602,12 @@ cik,sic,industry,period_end,revenue_usd
 1111928,3674,Semiconductors & Related Devices,2023-12-31,1287439000
 1111928,3674,Semiconductors & Related Devices,2024-12-31,977134000
 1111928,3674,Semiconductors & Related Devices,2025-12-31,1003777000
+1113169,6282,Investment Advice,2020-12-31,6206700000
+1113169,6282,Investment Advice,2021-12-31,7671900000
+1113169,6282,Investment Advice,2022-12-31,6488400000
+1113169,6282,Investment Advice,2023-12-31,6460500000
+1113169,6282,Investment Advice,2024-12-31,7093600000
+1113169,6282,Investment Advice,2025-12-31,7314800000
 1113232,3559,"Special Industry Machinery, NEC",2020-12-31,474560000
 1113232,3559,"Special Industry Machinery, NEC",2021-12-31,662428000
 1113232,3559,"Special Industry Machinery, NEC",2022-12-31,919998000
@@ -4169,12 +4661,26 @@ cik,sic,industry,period_end,revenue_usd
 1123360,7389,"Services-Business Services, NEC",2023-12-31,7379784000
 1123360,7389,"Services-Business Services, NEC",2024-12-31,7735970000
 1123360,7389,"Services-Business Services, NEC",2025-12-31,7705878000
+1124140,8071,Services-Medical Laboratories,2020-12-31,1491391000
+1124140,8071,Services-Medical Laboratories,2021-12-31,1767087000
+1124140,8071,Services-Medical Laboratories,2022-12-31,2084279000
+1124140,8071,Services-Medical Laboratories,2023-12-31,2499766000
+1124140,8071,Services-Medical Laboratories,2024-12-31,2758867000
+1124140,8071,Services-Medical Laboratories,2025-12-31,3246990000
 1124524,2834,Pharmaceutical Preparations,2020-12-31,78696000
 1124524,2834,Pharmaceutical Preparations,2021-12-31,222608000
 1124524,2834,Pharmaceutical Preparations,2022-12-31,237277000
 1124524,2834,Pharmaceutical Preparations,2023-12-31,168662000
 1124524,2834,Pharmaceutical Preparations,2024-12-31,156769000
 1124524,2834,Pharmaceutical Preparations,2025-12-31,176177000
+1124610,7372,Services-Prepackaged Software,2021-01-29,11767000000
+1124610,7372,Services-Prepackaged Software,2022-01-28,12851000000
+1124610,7372,Services-Prepackaged Software,2023-02-03,13350000000
+1124941,5030,Wholesale-Lumber & Other Construction Materials,2020-09-30,5916700000
+1124941,5030,Wholesale-Lumber & Other Construction Materials,2021-09-30,6642000000
+1124941,5030,Wholesale-Lumber & Other Construction Materials,2022-12-31,8429700000
+1124941,5030,Wholesale-Lumber & Other Construction Materials,2023-12-31,9119800000
+1124941,5030,Wholesale-Lumber & Other Construction Materials,2024-12-31,9763200000
 1125376,8051,Services-Skilled Nursing Care Facilities,2020-12-31,2402596000
 1125376,8051,Services-Skilled Nursing Care Facilities,2021-12-31,2627461000
 1125376,8051,Services-Skilled Nursing Care Facilities,2022-12-31,3025468000
@@ -4206,6 +4712,12 @@ cik,sic,industry,period_end,revenue_usd
 1130310,4911,Electric Services,2023-12-31,8696000000
 1130310,4911,Electric Services,2024-12-31,8643000000
 1130310,4911,Electric Services,2025-12-31,9357000000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2020-12-31,2493915000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2021-12-31,2756446000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2022-12-31,1929334000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2023-12-31,1561122000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2024-12-31,1394964000
+1130713,5961,Retail-Catalog & Mail-Order Houses,2025-12-31,1044616000
 1136869,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2020-12-31,6127500000
 1136869,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2021-12-31,6827300000
 1136869,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2022-12-31,6939900000
@@ -4261,6 +4773,13 @@ cik,sic,industry,period_end,revenue_usd
 1142750,7363,Services-Help Supply Services,2023-12-31,3789254000
 1142750,7363,Services-Help Supply Services,2024-12-31,2983781000
 1142750,7363,Services-Help Supply Services,2025-12-31,2730429000
+1144215,3640,Electric Lighting & Wiring Equipment,2020-08-31,3326300000
+1144215,3640,Electric Lighting & Wiring Equipment,2021-08-31,3461000000
+1144215,3640,Electric Lighting & Wiring Equipment,2022-08-31,4006100000
+1144215,3640,Electric Lighting & Wiring Equipment,2023-08-31,3952200000
+1144215,3640,Electric Lighting & Wiring Equipment,2024-08-31,3841000000
+1144215,3640,Electric Lighting & Wiring Equipment,2025-08-31,4345600000
+1144215,3640,Electric Lighting & Wiring Equipment,2026-08-31,4641800000
 1144980,5500,Retail-Auto Dealers & Gasoline Stations,2020-12-31,7131800000
 1144980,5500,Retail-Auto Dealers & Gasoline Stations,2021-12-31,9837700000
 1144980,5500,Retail-Auto Dealers & Gasoline Stations,2022-12-31,15433800000
@@ -4319,6 +4838,16 @@ cik,sic,industry,period_end,revenue_usd
 1159036,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,829253000
 1159036,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,1015324000
 1159036,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,1396611000
+1159167,3630,Household Appliances,2021-01-02,1430390000
+1159167,3630,Household Appliances,2022-01-01,1564987000
+1159167,3630,Household Appliances,2022-12-31,1183383000
+1159167,3630,Household Appliances,2023-12-30,890580000
+1159167,3630,Household Appliances,2024-12-28,681849000
+1163302,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",2020-12-31,9741000000
+1163302,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",2021-12-31,20275000000
+1163302,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",2022-12-31,21065000000
+1163302,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",2023-12-31,18053000000
+1163302,3312,"Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",2024-12-31,15640000000
 1164727,1040,Gold and Silver Ores,2020-12-31,11497000000
 1164727,1040,Gold and Silver Ores,2021-12-31,12222000000
 1164727,1040,Gold and Silver Ores,2022-12-31,11915000000
@@ -4397,6 +4926,12 @@ cik,sic,industry,period_end,revenue_usd
 1178670,2834,Pharmaceutical Preparations,2023-12-31,1828292000
 1178670,2834,Pharmaceutical Preparations,2024-12-31,2248243000
 1178670,2834,Pharmaceutical Preparations,2025-12-31,3713937000
+1178879,2834,Pharmaceutical Preparations,2020-12-31,260886000
+1178879,2834,Pharmaceutical Preparations,2021-12-31,305514000
+1178879,2834,Pharmaceutical Preparations,2022-12-31,329233000
+1178879,2834,Pharmaceutical Preparations,2023-12-31,399356000
+1178879,2834,Pharmaceutical Preparations,2024-12-31,528295000
+1178879,2834,Pharmaceutical Preparations,2025-12-31,634210000
 1178970,6035,"Savings Institution, Federally Chartered",2020-12-31,45532000
 1178970,6035,"Savings Institution, Federally Chartered",2021-12-31,57558000
 1178970,6035,"Savings Institution, Federally Chartered",2022-12-31,54987000
@@ -4415,6 +4950,12 @@ cik,sic,industry,period_end,revenue_usd
 1192448,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,314711000
 1192448,3841,Surgical & Medical Instruments & Apparatus,2024-12-31,383481000
 1192448,3841,Surgical & Medical Instruments & Apparatus,2025-12-31,507442000
+1206264,2510,Household Furniture,2020-12-31,3676900000
+1206264,2510,Household Furniture,2021-12-31,4930800000
+1206264,2510,Household Furniture,2022-12-31,4921200000
+1206264,2510,Household Furniture,2023-12-31,4925400000
+1206264,2510,Household Furniture,2024-12-31,4930900000
+1206264,2510,Household Furniture,2025-12-31,7476500000
 1210677,7374,Services-Computer Processing & Data Preparation,2020-12-31,472369000
 1210677,7374,Services-Computer Processing & Data Preparation,2021-12-31,712295000
 1210677,7374,Services-Computer Processing & Data Preparation,2022-12-31,810023000
@@ -4513,6 +5054,7 @@ cik,sic,industry,period_end,revenue_usd
 1273813,6351,Surety Insurance,2023-12-31,1373000000
 1273813,6351,Surety Insurance,2024-12-31,872000000
 1273813,6351,Surety Insurance,2025-12-31,1110000000
+1274173,6282,Investment Advice,,
 1274494,3674,Semiconductors & Related Devices,2020-12-31,2711332000
 1274494,3674,Semiconductors & Related Devices,2021-12-31,2923377000
 1274494,3674,Semiconductors & Related Devices,2022-12-31,2619319000
@@ -4582,6 +5124,12 @@ cik,sic,industry,period_end,revenue_usd
 1286139,7374,Services-Computer Processing & Data Preparation,2023-12-31,660727000
 1286139,7374,Services-Computer Processing & Data Preparation,2024-12-31,681881000
 1286139,7374,Services-Computer Processing & Data Preparation,2025-12-31,756043000
+1286681,5140,Wholesale-Groceries & Related Products,2021-01-03,4117411000
+1286681,5140,Wholesale-Groceries & Related Products,2022-01-02,4357373000
+1286681,5140,Wholesale-Groceries & Related Products,2023-01-01,4537158000
+1286681,5140,Wholesale-Groceries & Related Products,2023-12-31,4479358000
+1286681,5140,Wholesale-Groceries & Related Products,2024-12-29,4706416000
+1286681,5140,Wholesale-Groceries & Related Products,2025-12-28,4939994000
 1287865,6798,Real Estate Investment Trusts,2020-12-31,1249238000
 1287865,6798,Real Estate Investment Trusts,2021-12-31,1544669000
 1287865,6798,Real Estate Investment Trusts,2022-12-31,1542851000
@@ -4706,6 +5254,9 @@ cik,sic,industry,period_end,revenue_usd
 1308547,6794,Patent Owners & Lessors,2023-09-29,1299744000
 1308547,6794,Patent Owners & Lessors,2024-09-27,1273721000
 1308547,6794,Patent Owners & Lessors,2025-09-26,1349130000
+1308606,6512,Opeators of  Nonresidential Buildings,2020-12-31,483617000
+1308606,6512,Opeators of  Nonresidential Buildings,2021-12-31,608390000
+1308606,6512,Opeators of  Nonresidential Buildings,2022-12-31,709629000
 1309108,7389,"Services-Business Services, NEC",2020-12-31,1559869000
 1309108,7389,"Services-Business Services, NEC",2021-12-31,1850500000
 1309108,7389,"Services-Business Services, NEC",2022-12-31,2350500000
@@ -4718,6 +5269,12 @@ cik,sic,industry,period_end,revenue_usd
 1311370,6282,Investment Advice,2023-12-31,2593162000
 1311370,6282,Investment Advice,2024-12-31,3139904000
 1311370,6282,Investment Advice,2025-12-31,3186466000
+1314102,3826,Laboratory Analytical Instruments,2020-12-31,34437000
+1314102,3826,Laboratory Analytical Instruments,2021-12-31,36939000
+1314102,3826,Laboratory Analytical Instruments,2022-12-31,41404000
+1314102,3826,Laboratory Analytical Instruments,2023-12-31,46018000
+1314102,3826,Laboratory Analytical Instruments,2024-12-31,43273000
+1314102,3826,Laboratory Analytical Instruments,2025-12-31,31371000
 1314727,3651,Household Audio & Video Equipment,2020-10-03,1326328000
 1314727,3651,Household Audio & Video Equipment,2021-10-02,1716744000
 1314727,3651,Household Audio & Video Equipment,2022-10-01,1752336000
@@ -4757,6 +5314,17 @@ cik,sic,industry,period_end,revenue_usd
 1319161,7900,Services-Amusement & Recreation Services,2023-09-30,6037000000
 1319161,7900,Services-Amusement & Recreation Services,2024-09-30,6426000000
 1319161,7900,Services-Amusement & Recreation Services,2025-09-30,6707000000
+1320414,8060,Services-Hospitals,2020-12-31,5531713000
+1320414,8060,Services-Hospitals,2021-12-31,6204515000
+1320414,8060,Services-Hospitals,2022-12-31,4609179000
+1320414,8060,Services-Hospitals,2023-12-31,4825977000
+1320414,8060,Services-Hospitals,2024-12-31,5187105000
+1320414,8060,Services-Hospitals,2025-12-31,5452830000
+1320695,2030,"Canned, Frozen & Preservd Fruit, Veg & Food Specialties",2020-12-31,2994300000
+1320695,2030,"Canned, Frozen & Preservd Fruit, Veg & Food Specialties",2021-12-31,2814300000
+1320695,2030,"Canned, Frozen & Preservd Fruit, Veg & Food Specialties",2022-12-31,3297100000
+1320695,2030,"Canned, Frozen & Preservd Fruit, Veg & Food Specialties",2023-12-31,3431600000
+1320695,2030,"Canned, Frozen & Preservd Fruit, Veg & Food Specialties",2024-12-31,3354000000
 1321655,7372,Services-Prepackaged Software,2020-12-31,1092673000
 1321655,7372,Services-Prepackaged Software,2021-12-31,1541889000
 1321655,7372,Services-Prepackaged Software,2022-12-31,1905871000
@@ -4872,9 +5440,23 @@ cik,sic,industry,period_end,revenue_usd
 1336920,7373,Services-Computer Integrated Systems Design,2023-12-29,15438000000
 1336920,7373,Services-Computer Integrated Systems Design,2025-01-03,16662000000
 1336920,7373,Services-Computer Integrated Systems Design,2026-01-02,17174000000
+1337619,7389,"Services-Business Services, NEC",2020-12-31,998230000
+1337619,7389,"Services-Business Services, NEC",2021-12-31,1186517000
+1337619,7389,"Services-Business Services, NEC",2022-12-31,1239784000
+1337619,7389,"Services-Business Services, NEC",2023-12-31,1245620000
 1337634,7990,Services-Miscellaneous Amusement & Recreation,2023-12-31,1367719000
 1337634,7990,Services-Miscellaneous Amusement & Recreation,2024-12-31,1770645000
 1337634,7990,Services-Miscellaneous Amusement & Recreation,2025-12-31,1745188000
+1338749,6798,Real Estate Investment Trusts,2020-12-31,1040930000
+1338749,6798,Real Estate Investment Trusts,2021-12-31,1337435000
+1338749,6798,Real Estate Investment Trusts,2022-12-31,1330780000
+1338749,6798,Real Estate Investment Trusts,2023-12-31,1024075000
+1338749,6798,Real Estate Investment Trusts,2024-12-31,1062076000
+1339605,7350,Services-Miscellaneous Equipment Rental & Leasing,2020-12-31,1006975000
+1339605,7350,Services-Miscellaneous Equipment Rental & Leasing,2021-12-31,1062797000
+1339605,7350,Services-Miscellaneous Equipment Rental & Leasing,2022-12-31,1244518000
+1339605,7350,Services-Miscellaneous Equipment Rental & Leasing,2023-12-31,1469216000
+1339605,7350,Services-Miscellaneous Equipment Rental & Leasing,2024-12-31,1516583000
 1341439,7372,Services-Prepackaged Software,2021-05-31,40479000000
 1341439,7372,Services-Prepackaged Software,2022-05-31,42440000000
 1341439,7372,Services-Prepackaged Software,2023-05-31,49954000000
@@ -4893,6 +5475,7 @@ cik,sic,industry,period_end,revenue_usd
 1345016,7200,Services-Personal Services,2023-12-31,1337062000
 1345016,7200,Services-Personal Services,2024-12-31,1412064000
 1345016,7200,Services-Personal Services,2025-12-31,1464955000
+1348911,2834,Pharmaceutical Preparations,2024-04-30,50000000
 1350593,3490,Miscellaneous Fabricated Metal Products,2020-09-30,964100000
 1350593,3490,Miscellaneous Fabricated Metal Products,2021-09-30,1111000000
 1350593,3490,Miscellaneous Fabricated Metal Products,2022-09-30,1247400000
@@ -4906,6 +5489,9 @@ cik,sic,industry,period_end,revenue_usd
 1352010,7371,Services-Computer Programming Services,2023-12-31,4690540000
 1352010,7371,Services-Computer Programming Services,2024-12-31,4727940000
 1352010,7371,Services-Computer Programming Services,2025-12-31,5457056000
+1353283,7372,Services-Prepackaged Software,2021-01-31,2229385000
+1353283,7372,Services-Prepackaged Software,2022-01-31,2673664000
+1353283,7372,Services-Prepackaged Software,2023-01-31,3653708000
 1356576,2834,Pharmaceutical Preparations,2020-12-31,520397000
 1356576,2834,Pharmaceutical Preparations,2021-12-31,579775000
 1356576,2834,Pharmaceutical Preparations,2022-12-31,667238000
@@ -4918,6 +5504,14 @@ cik,sic,industry,period_end,revenue_usd
 1357615,1600,Heavy Construction Other Than Bldg Const - Contractors,2023-12-29,6956000000
 1357615,1600,Heavy Construction Other Than Bldg Const - Contractors,2025-01-03,7710000000
 1357615,1600,Heavy Construction Other Than Bldg Const - Contractors,2026-01-02,7786000000
+1358762,2834,Pharmaceutical Preparations,2020-12-31,9019000
+1358762,2834,Pharmaceutical Preparations,2021-12-31,11490000
+1358762,2834,Pharmaceutical Preparations,2022-12-31,2216000
+1359841,5600,Retail-Apparel & Accessory Stores,2021-01-02,6127161000
+1359841,5600,Retail-Apparel & Accessory Stores,2022-01-01,6801240000
+1359841,5600,Retail-Apparel & Accessory Stores,2022-12-31,3862809000
+1359841,5600,Retail-Apparel & Accessory Stores,2023-12-30,3639386000
+1359841,5600,Retail-Apparel & Accessory Stores,2024-12-28,3507438000
 1360214,2834,Pharmaceutical Preparations,2020-12-31,48871000
 1360214,2834,Pharmaceutical Preparations,2021-12-31,72476000
 1360214,2834,Pharmaceutical Preparations,2022-12-31,88595000
@@ -4955,6 +5549,10 @@ cik,sic,industry,period_end,revenue_usd
 1362468,4512,"Air Transportation, Scheduled",2023-12-31,2509857000
 1362468,4512,"Air Transportation, Scheduled",2024-12-31,2512589000
 1362468,4512,"Air Transportation, Scheduled",2025-12-31,2606579000
+1363829,6331,"Fire, Marine & Casualty Insurance",2020-12-31,2660000000
+1363829,6331,"Fire, Marine & Casualty Insurance",2021-12-31,789000000
+1363829,6331,"Fire, Marine & Casualty Insurance",2023-12-31,1441000000
+1363829,6331,"Fire, Marine & Casualty Insurance",2024-12-31,1205000000
 1364250,6798,Real Estate Investment Trusts,2020-12-31,891523000
 1364250,6798,Real Estate Investment Trusts,2021-12-31,918397000
 1364250,6798,Real Estate Investment Trusts,2022-12-31,993652000
@@ -4966,6 +5564,11 @@ cik,sic,industry,period_end,revenue_usd
 1364479,7350,Services-Miscellaneous Equipment Rental & Leasing,2023-12-31,3282000000
 1364479,7350,Services-Miscellaneous Equipment Rental & Leasing,2024-12-31,3568000000
 1364479,7350,Services-Miscellaneous Equipment Rental & Leasing,2025-12-31,4376000000
+1364885,3728,"Aircraft Parts & Auxiliary Equipment, NEC",2020-12-31,3404800000
+1364885,3728,"Aircraft Parts & Auxiliary Equipment, NEC",2021-12-31,3953000000
+1364885,3728,"Aircraft Parts & Auxiliary Equipment, NEC",2022-12-31,5029600000
+1364885,3728,"Aircraft Parts & Auxiliary Equipment, NEC",2023-12-31,6047900000
+1364885,3728,"Aircraft Parts & Auxiliary Equipment, NEC",2024-12-31,6316600000
 1364954,8200,Services-Educational Services,2020-12-31,644338000
 1364954,8200,Services-Educational Services,2021-12-31,776265000
 1364954,8200,Services-Educational Services,2022-12-31,766897000
@@ -4978,6 +5581,10 @@ cik,sic,industry,period_end,revenue_usd
 1365135,7389,"Services-Business Services, NEC",2023-12-31,4357000000
 1365135,7389,"Services-Business Services, NEC",2024-12-31,4209700000
 1365135,7389,"Services-Business Services, NEC",2025-12-31,4050700000
+1366561,7372,Services-Prepackaged Software,2021-01-31,385513000
+1366561,7372,Services-Prepackaged Software,2022-01-31,550832000
+1366561,7372,Services-Prepackaged Software,2023-01-31,766915000
+1366561,7372,Services-Prepackaged Software,2024-01-31,958338000
 1366868,4899,"Communications Services, NEC",2020-12-31,128487000
 1366868,4899,"Communications Services, NEC",2021-12-31,124297000
 1366868,4899,"Communications Services, NEC",2022-12-31,148504000
@@ -5043,6 +5650,11 @@ cik,sic,industry,period_end,revenue_usd
 1376139,2911,Petroleum Refining,2023-12-31,9247000000
 1376139,2911,Petroleum Refining,2024-12-31,7610000000
 1376139,2911,Petroleum Refining,2025-12-31,7162000000
+1378992,3089,"Plastics Products, NEC",2020-09-26,11709000000
+1378992,3089,"Plastics Products, NEC",2021-10-02,13850000000
+1378992,3089,"Plastics Products, NEC",2022-10-01,14495000000
+1378992,3089,"Plastics Products, NEC",2023-09-30,10410000000
+1378992,3089,"Plastics Products, NEC",2024-09-28,10071000000
 1379041,6331,"Fire, Marine & Casualty Insurance",2020-12-31,711400000
 1379041,6331,"Fire, Marine & Casualty Insurance",2021-12-31,703100000
 1379041,6331,"Fire, Marine & Casualty Insurance",2022-12-31,713500000
@@ -5056,6 +5668,11 @@ cik,sic,industry,period_end,revenue_usd
 1381197,6211,"Security Brokers, Dealers & Flotation Companies",2024-12-31,1977000000
 1381197,6211,"Security Brokers, Dealers & Flotation Companies",2025-12-31,2440000000
 1381668,6035,"Savings Institution, Federally Chartered",,
+1382821,6531,Real Estate Agents & Managers (For Others),2020-12-31,886093000
+1382821,6531,Real Estate Agents & Managers (For Others),2021-12-31,1058638000
+1382821,6531,Real Estate Agents & Managers (For Others),2022-12-31,1099574000
+1382821,6531,Real Estate Agents & Managers (For Others),2023-12-31,976672000
+1382821,6531,Real Estate Agents & Managers (For Others),2024-12-31,1042979000
 1383312,7389,"Services-Business Services, NEC",2020-06-30,4529000000
 1383312,7389,"Services-Business Services, NEC",2021-06-30,4993700000
 1383312,7389,"Services-Business Services, NEC",2022-06-30,5709100000
@@ -5093,6 +5710,12 @@ cik,sic,industry,period_end,revenue_usd
 1385849,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2023-12-31,37928000
 1385849,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2024-12-31,78114000
 1385849,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2025-12-31,65922000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,265166000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,322825000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,410921000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,492681000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2024-12-31,591839000
+1388658,3841,Surgical & Medical Instruments & Apparatus,2025-12-31,747138000
 1389050,4922,Natural Gas Transmission,2020-12-31,874970000
 1389050,4922,Natural Gas Transmission,2021-12-31,781461000
 1389050,4922,Natural Gas Transmission,2022-12-31,845568000
@@ -5111,6 +5734,11 @@ cik,sic,industry,period_end,revenue_usd
 1390777,6022,State Commercial Banks,2023-12-31,17697000000
 1390777,6022,State Commercial Banks,2024-12-31,18619000000
 1390777,6022,State Commercial Banks,2025-12-31,20080000000
+1392972,7371,Services-Computer Programming Services,2020-12-31,252424000
+1392972,7371,Services-Computer Programming Services,2021-12-31,251423000
+1392972,7371,Services-Computer Programming Services,2022-12-31,276137000
+1392972,7371,Services-Computer Programming Services,2023-12-31,303708000
+1392972,7371,Services-Computer Programming Services,2024-12-31,330372000
 1393052,7372,Services-Prepackaged Software,2021-01-31,1465069000
 1393052,7372,Services-Prepackaged Software,2022-01-31,1850777000
 1393052,7372,Services-Prepackaged Software,2023-01-31,2155060000
@@ -5123,6 +5751,9 @@ cik,sic,industry,period_end,revenue_usd
 1393311,6798,Real Estate Investment Trusts,2023-12-31,4517690000
 1393311,6798,Real Estate Investment Trusts,2024-12-31,4695616000
 1393311,6798,Real Estate Investment Trusts,2025-12-31,4824113000
+1393612,6141,Personal Credit Institutions,2022-12-31,1799000000
+1393612,6141,Personal Credit Institutions,2023-12-31,1941000000
+1393612,6141,Personal Credit Institutions,2024-12-31,2797000000
 1395942,5500,Retail-Auto Dealers & Gasoline Stations,2020-12-31,1326900000
 1395942,5500,Retail-Auto Dealers & Gasoline Stations,2021-12-31,1450600000
 1395942,5500,Retail-Auto Dealers & Gasoline Stations,2022-12-31,1529200000
@@ -5160,6 +5791,11 @@ cik,sic,industry,period_end,revenue_usd
 1398659,8742,Services-Management Consulting Services,2023-12-31,4476888000
 1398659,8742,Services-Management Consulting Services,2024-12-31,4767139000
 1398659,8742,Services-Management Consulting Services,2025-12-31,5079879000
+1398987,6531,Real Estate Agents & Managers (For Others),2020-12-31,6221000000
+1398987,6531,Real Estate Agents & Managers (For Others),2021-12-31,7983000000
+1398987,6531,Real Estate Agents & Managers (For Others),2022-12-31,6908000000
+1398987,6531,Real Estate Agents & Managers (For Others),2023-12-31,5636000000
+1398987,6531,Real Estate Agents & Managers (For Others),2024-12-31,5692000000
 1402057,5961,Retail-Catalog & Mail-Order Houses,2020-12-31,18467500000
 1402057,5961,Retail-Catalog & Mail-Order Houses,2021-12-31,20820800000
 1402057,5961,Retail-Catalog & Mail-Order Houses,2022-12-31,23748700000
@@ -5202,12 +5838,22 @@ cik,sic,industry,period_end,revenue_usd
 1406666,4899,"Communications Services, NEC",2023-12-31,1039593000
 1406666,4899,"Communications Services, NEC",2024-12-31,831518000
 1406666,4899,"Communications Services, NEC",2025-12-31,1000010000
+1407623,6798,Real Estate Investment Trusts,2020-12-31,284114000
+1407623,6798,Real Estate Investment Trusts,2021-12-31,284100000
+1407623,6798,Real Estate Investment Trusts,2022-12-31,312929000
+1407623,6798,Real Estate Investment Trusts,2023-12-31,327732000
 1408075,2650,Paperboard Containers & Boxes,2020-12-31,6560000000
 1408075,2650,Paperboard Containers & Boxes,2021-12-31,7156000000
 1408075,2650,Paperboard Containers & Boxes,2022-12-31,9440000000
 1408075,2650,Paperboard Containers & Boxes,2023-12-31,9428000000
 1408075,2650,Paperboard Containers & Boxes,2024-12-31,8807000000
 1408075,2650,Paperboard Containers & Boxes,2025-12-31,8617000000
+1408100,6500,Real Estate,2020-12-31,454000000
+1408100,6500,Real Estate,2021-12-31,453600000
+1408100,6500,Real Estate,2022-12-31,540000000
+1408100,6500,Real Estate,2023-12-31,562600000
+1408100,6500,Real Estate,2024-12-31,531400000
+1408100,6500,Real Estate,2025-12-31,501000000
 1408198,7389,"Services-Business Services, NEC",2020-12-31,1695390000
 1408198,7389,"Services-Business Services, NEC",2021-12-31,2043544000
 1408198,7389,"Services-Business Services, NEC",2022-12-31,2248598000
@@ -5232,6 +5878,7 @@ cik,sic,industry,period_end,revenue_usd
 1410636,4941,Water Supply,2023-12-31,4217000000
 1410636,4941,Water Supply,2024-12-31,4653000000
 1410636,4941,Water Supply,2025-12-31,5121000000
+1410939,2834,Pharmaceutical Preparations,,
 1411207,3714,Motor Vehicle Parts & Accessories,2020-12-31,2081000000
 1411207,3714,Motor Vehicle Parts & Accessories,2021-12-31,2402000000
 1411207,3714,Motor Vehicle Parts & Accessories,2022-12-31,2769000000
@@ -5256,6 +5903,12 @@ cik,sic,industry,period_end,revenue_usd
 1413447,3674,Semiconductors & Related Devices,2023-12-31,13276000000
 1413447,3674,Semiconductors & Related Devices,2024-12-31,12614000000
 1413447,3674,Semiconductors & Related Devices,2025-12-31,12269000000
+1417398,3990,Miscellaneous Manufacturing Industries,2020-09-30,2517000000
+1417398,3990,Miscellaneous Manufacturing Industries,2021-09-30,2241400000
+1417398,3990,Miscellaneous Manufacturing Industries,2022-09-30,2315300000
+1417398,3990,Miscellaneous Manufacturing Industries,2023-09-30,2826000000
+1417398,3990,Miscellaneous Manufacturing Industries,2024-09-30,3182800000
+1417398,3990,Miscellaneous Manufacturing Industries,2025-09-30,2673800000
 1418121,6798,Real Estate Investment Trusts,2020-12-31,601879000
 1418121,6798,Real Estate Investment Trusts,2021-12-31,933869000
 1418121,6798,Real Estate Investment Trusts,2022-12-31,1238417000
@@ -5322,18 +5975,31 @@ cik,sic,industry,period_end,revenue_usd
 1433642,6282,Investment Advice,2024-03-31,553842000
 1433642,6282,Investment Advice,2025-03-31,712963000
 1433642,6282,Investment Advice,2026-03-31,758993000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2020-12-31,1727800000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2021-12-31,1868300000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2022-12-31,1590300000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2023-12-31,1664400000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2024-12-31,1716000000
+1433660,3550,Special Industry Machinery (No Metalworking Machinery),2025-12-31,3798200000
 1434588,8200,Services-Educational Services,2020-12-31,844096000
 1434588,8200,Services-Educational Services,2021-12-31,896564000
 1434588,8200,Services-Educational Services,2022-12-31,911306000
 1434588,8200,Services-Educational Services,2023-12-31,960899000
 1434588,8200,Services-Educational Services,2024-12-31,1033002000
 1434588,8200,Services-Educational Services,2025-12-31,1106070000
+1435049,2834,Pharmaceutical Preparations,2020-12-31,827000
+1435049,2834,Pharmaceutical Preparations,2021-12-31,51625000
+1435049,2834,Pharmaceutical Preparations,2022-12-31,6128000
 1437107,4841,Cable & Other Pay Television Services,2020-12-31,10671000000
 1437107,4841,Cable & Other Pay Television Services,2021-12-31,12191000000
 1437107,4841,Cable & Other Pay Television Services,2022-12-31,33817000000
 1437107,4841,Cable & Other Pay Television Services,2023-12-31,41321000000
 1437107,4841,Cable & Other Pay Television Services,2024-12-31,39321000000
 1437107,4841,Cable & Other Pay Television Services,2025-12-31,37296000000
+1437352,7372,Services-Prepackaged Software,2020-12-31,271141000
+1437352,7372,Services-Prepackaged Software,2021-12-31,368433000
+1437352,7372,Services-Prepackaged Software,2022-12-31,431892000
+1437352,7372,Services-Prepackaged Software,2023-12-31,448788000
 1437578,8351,Services-Child Day Care Services,2020-12-31,1515093000
 1437578,8351,Services-Child Day Care Services,2021-12-31,1755307000
 1437578,8351,Services-Child Day Care Services,2022-12-31,2020487000
@@ -5396,6 +6062,9 @@ cik,sic,industry,period_end,revenue_usd
 1447669,7372,Services-Prepackaged Software,2023-12-31,4153945000
 1447669,7372,Services-Prepackaged Software,2024-12-31,4458036000
 1447669,7372,Services-Prepackaged Software,2025-12-31,5067220000
+1448056,7372,Services-Prepackaged Software,2021-03-31,667648000
+1448056,7372,Services-Prepackaged Software,2022-03-31,785521000
+1448056,7372,Services-Prepackaged Software,2023-03-31,925626000
 1448893,6351,Surety Insurance,2020-12-31,955154000
 1448893,6351,Surety Insurance,2021-12-31,1028510000
 1448893,6351,Surety Insurance,2022-12-31,1000824000
@@ -5498,6 +6167,12 @@ cik,sic,industry,period_end,revenue_usd
 1474098,6798,Real Estate Investment Trusts,2023-12-31,1419949000
 1474098,6798,Real Estate Investment Trusts,2024-12-31,1453309000
 1474098,6798,Real Estate Investment Trusts,2025-12-31,1475544000
+1474432,3572,Computer Storage Devices,2021-01-31,1684179000
+1474432,3572,Computer Storage Devices,2022-02-06,2180848000
+1474432,3572,Computer Storage Devices,2023-02-05,2753434000
+1474432,3572,Computer Storage Devices,2024-02-04,2830621000
+1474432,3572,Computer Storage Devices,2025-02-02,3168164000
+1474432,3572,Computer Storage Devices,2026-02-01,3662843000
 1474735,3621,Motors & Generators,2020-12-31,2485200000
 1474735,3621,Motors & Generators,2021-12-31,3737184000
 1474735,3621,Motors & Generators,2022-12-31,4564737000
@@ -5558,6 +6233,16 @@ cik,sic,industry,period_end,revenue_usd
 1479094,6798,Real Estate Investment Trusts,2023-12-31,707835000
 1479094,6798,Real Estate Investment Trusts,2024-12-31,767384000
 1479094,6798,Real Estate Investment Trusts,2025-12-31,845184000
+1481646,7389,"Services-Business Services, NEC",2021-02-28,170358000
+1481646,7389,"Services-Business Services, NEC",2022-02-28,310021000
+1481646,7389,"Services-Business Services, NEC",2023-02-28,363142000
+1481646,7389,"Services-Business Services, NEC",2024-02-29,414292000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2020-12-31,2015439000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2021-12-31,2088389000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2022-12-31,2317302000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2023-12-31,2684977000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2024-12-31,2733657000
+1487712,7359,"Services-Equipment Rental & Leasing, NEC",2025-12-31,3015749000
 1489393,2860,Industrial Organic Chemicals,2020-12-31,27753000000
 1489393,2860,Industrial Organic Chemicals,2021-12-31,46173000000
 1489393,2860,Industrial Organic Chemicals,2022-12-31,50451000000
@@ -5582,6 +6267,15 @@ cik,sic,industry,period_end,revenue_usd
 1492298,6798,Real Estate Investment Trusts,2023-12-31,647514000
 1492298,6798,Real Estate Investment Trusts,2024-12-31,703235000
 1492298,6798,Real Estate Investment Trusts,2025-12-31,774632000
+1492422,2834,Pharmaceutical Preparations,2020-12-31,250646000
+1492422,2834,Pharmaceutical Preparations,2021-12-31,66563000
+1492422,2834,Pharmaceutical Preparations,2022-12-31,75422000
+1492422,2834,Pharmaceutical Preparations,2023-12-31,396591000
+1492422,2834,Pharmaceutical Preparations,2024-12-31,781367000
+1492422,2834,Pharmaceutical Preparations,2025-12-31,1003782000
+1492426,2834,Pharmaceutical Preparations,2020-12-31,2200429000
+1492426,2834,Pharmaceutical Preparations,2021-12-31,3226410000
+1492426,2834,Pharmaceutical Preparations,2022-12-31,3629044000
 1492691,4213,Trucking (No Local),2020-12-31,4673863000
 1492691,4213,Trucking (No Local),2021-12-31,5998019000
 1492691,4213,Trucking (No Local),2022-12-31,7428582000
@@ -5600,12 +6294,23 @@ cik,sic,industry,period_end,revenue_usd
 1494259,7374,Services-Computer Processing & Data Preparation,2023-12-31,698421000
 1494259,7374,Services-Computer Processing & Data Preparation,2024-12-31,798044000
 1494259,7374,Services-Computer Processing & Data Preparation,2025-12-31,906980000
+1495932,6531,Real Estate Agents & Managers (For Others),2020-12-31,1798285000
+1495932,6531,Real Estate Agents & Managers (For Others),2021-12-31,3771170000
+1495932,6531,Real Estate Agents & Managers (For Others),2022-12-31,4589676000
+1495932,6531,Real Estate Agents & Managers (For Others),2023-12-31,4273821000
+1495932,6531,Real Estate Agents & Managers (For Others),2024-12-31,4567672000
+1495932,6531,Real Estate Agents & Managers (For Others),2025-12-31,4772311000
 1497770,6199,Finance Services,2020-12-31,1083707000
 1497770,6199,Finance Services,2021-12-31,1259178000
 1497770,6199,Finance Services,2022-12-31,1258753000
 1497770,6199,Finance Services,2023-12-31,1054440000
 1497770,6199,Finance Services,2024-12-31,1132490000
 1497770,6199,Finance Services,2025-12-31,1234306000
+1498710,4512,"Air Transportation, Scheduled",2020-12-31,1810022000
+1498710,4512,"Air Transportation, Scheduled",2021-12-31,3230775000
+1498710,4512,"Air Transportation, Scheduled",2022-12-31,5068447000
+1498710,4512,"Air Transportation, Scheduled",2023-12-31,5362549000
+1498710,4512,"Air Transportation, Scheduled",2024-12-31,4913421000
 1500217,6798,Real Estate Investment Trusts,2020-12-31,344573000
 1500217,6798,Real Estate Investment Trusts,2021-12-31,375828000
 1500217,6798,Real Estate Investment Trusts,2022-12-31,422648000
@@ -5613,6 +6318,12 @@ cik,sic,industry,period_end,revenue_usd
 1500217,6798,Real Estate Investment Trusts,2024-12-31,457855000
 1500217,6798,Real Estate Investment Trusts,2025-12-31,436204000
 1504008,6035,"Savings Institution, Federally Chartered",,
+1505952,7372,Services-Prepackaged Software,2021-01-31,210180000
+1505952,7372,Services-Prepackaged Software,2022-01-31,257961000
+1505952,7372,Services-Prepackaged Software,2023-01-31,308645000
+1505952,7372,Services-Prepackaged Software,2024-01-31,318989000
+1505952,7372,Services-Prepackaged Software,2025-01-31,317044000
+1505952,7372,Services-Prepackaged Software,2026-01-31,318857000
 1506293,7370,"Services-Computer Programming, Data Processing, Etc.",2020-12-31,1692658000
 1506293,7370,"Services-Computer Programming, Data Processing, Etc.",2021-12-31,2578027000
 1506293,7370,"Services-Computer Programming, Data Processing, Etc.",2022-12-31,2802574000
@@ -5631,6 +6342,12 @@ cik,sic,industry,period_end,revenue_usd
 1507079,5211,Retail-Lumber & Other Building Materials Dealers,2023-12-28,4413884000
 1507079,5211,Retail-Lumber & Other Building Materials Dealers,2024-12-26,4455770000
 1507079,5211,Retail-Lumber & Other Building Materials Dealers,2025-12-25,4684088000
+1507605,6199,Finance Services,2020-12-31,4357000
+1507605,6199,Finance Services,2021-12-31,159163000
+1507605,6199,Finance Services,2022-12-31,117753000
+1507605,6199,Finance Services,2023-12-31,387508000
+1507605,6199,Finance Services,2024-12-31,656378000
+1507605,6199,Finance Services,2025-12-31,907093000
 1510295,2911,Petroleum Refining,2020-12-31,69779000000
 1510295,2911,Petroleum Refining,2021-12-31,119983000000
 1510295,2911,Petroleum Refining,2022-12-31,177453000000
@@ -5675,6 +6392,12 @@ cik,sic,industry,period_end,revenue_usd
 1516513,7371,Services-Computer Programming Services,2024-03-31,475422000
 1516513,7371,Services-Computer Programming Services,2025-03-31,570399000
 1516513,7371,Services-Computer Programming Services,2026-03-31,644863000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2020-12-31,8435900000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2021-12-31,6737400000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2022-12-31,5788800000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2023-12-31,1863800000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2024-12-31,1382600000
+1517228,3663,Radio & Tv Broadcasting & Communications Equipment,2025-12-31,1931600000
 1517302,6282,Investment Advice,2020-12-31,899567000
 1517302,6282,Investment Advice,2021-12-31,1227236000
 1517302,6282,Investment Advice,2022-12-31,993285000
@@ -5780,6 +6503,10 @@ cik,sic,industry,period_end,revenue_usd
 1530950,2040,Grain Mill Products,2023-09-30,6991000000
 1530950,2040,Grain Mill Products,2024-09-30,7922700000
 1530950,2040,Grain Mill Products,2025-09-30,8158100000
+1531048,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,139670000
+1531048,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,276984000
+1531048,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,383471000
+1531048,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,493632000
 1531152,5331,Retail-Variety Stores,2021-01-30,15430017000
 1531152,5331,Retail-Variety Stores,2022-01-29,16667302000
 1531152,5331,Retail-Variety Stores,2023-01-28,19315165000
@@ -5824,6 +6551,12 @@ cik,sic,industry,period_end,revenue_usd
 1544522,7372,Services-Prepackaged Software,2023-12-31,596432000
 1544522,7372,Services-Prepackaged Software,2024-12-31,720420000
 1544522,7372,Services-Prepackaged Software,2025-12-31,838809000
+1545654,6798,Real Estate Investment Trusts,2020-12-31,190300000
+1545654,6798,Real Estate Investment Trusts,2021-12-31,254000000
+1545654,6798,Real Estate Investment Trusts,2022-12-31,230553000
+1545654,6798,Real Estate Investment Trusts,2023-12-31,208843000
+1545654,6798,Real Estate Investment Trusts,2024-12-31,236641000
+1545654,6798,Real Estate Investment Trusts,2025-12-31,206673000
 1546417,5812,Retail-Eating  Places,2020-12-27,3170561000
 1546417,5812,Retail-Eating  Places,2021-12-26,4122385000
 1546417,5812,Retail-Eating  Places,2022-12-25,4009250000
@@ -5866,6 +6599,11 @@ cik,sic,industry,period_end,revenue_usd
 1552033,7320,"Services-Consumer Credit Reporting, Collection Agencies",2023-12-31,3831200000
 1552033,7320,"Services-Consumer Credit Reporting, Collection Agencies",2024-12-31,4183800000
 1552033,7320,"Services-Consumer Credit Reporting, Collection Agencies",2025-12-31,4576300000
+1554859,3845,Electromedical & Electrotherapeutic Apparatus,2020-12-31,38603000
+1554859,3845,Electromedical & Electrotherapeutic Apparatus,2021-12-31,53027000
+1554859,3845,Electromedical & Electrotherapeutic Apparatus,2022-12-31,56686000
+1554859,3845,Electromedical & Electrotherapeutic Apparatus,2023-12-31,68184000
+1554859,3845,Electromedical & Electrotherapeutic Apparatus,2024-12-31,56294000
 1555280,2834,Pharmaceutical Preparations,2020-12-31,6675000000
 1555280,2834,Pharmaceutical Preparations,2021-12-31,7776000000
 1555280,2834,Pharmaceutical Preparations,2022-12-31,8080000000
@@ -5878,6 +6616,12 @@ cik,sic,industry,period_end,revenue_usd
 1556593,6798,Real Estate Investment Trusts,2023-12-31,3732625000
 1556593,6798,Real Estate Investment Trusts,2024-12-31,4917492000
 1556593,6798,Real Estate Investment Trusts,2025-12-31,4590228000
+1559053,2834,Pharmaceutical Preparations,2020-12-31,853000
+1559053,2834,Pharmaceutical Preparations,2021-12-31,200577000
+1559053,2834,Pharmaceutical Preparations,2022-12-31,53905000
+1559053,2834,Pharmaceutical Preparations,2023-12-31,91370000
+1559053,2834,Pharmaceutical Preparations,2024-12-31,135157000
+1559053,2834,Pharmaceutical Preparations,2025-12-31,9684000
 1559720,7340,Services-To Dwellings & Other Buildings,2020-12-31,3378000000
 1559720,7340,Services-To Dwellings & Other Buildings,2021-12-31,5992000000
 1559720,7340,Services-To Dwellings & Other Buildings,2022-12-31,8399000000
@@ -5908,6 +6652,18 @@ cik,sic,industry,period_end,revenue_usd
 1561550,7372,Services-Prepackaged Software,2023-12-31,2128359000
 1561550,7372,Services-Prepackaged Software,2024-12-31,2684275000
 1561550,7372,Services-Prepackaged Software,2025-12-31,3427158000
+1561680,1531,Operative Builders,2020-12-31,3260447000
+1561680,1531,Operative Builders,2021-12-31,3982235000
+1561680,1531,Operative Builders,2022-12-31,4348533000
+1561680,1531,Operative Builders,2023-12-31,3715204000
+1561680,1531,Operative Builders,2024-12-31,4492870000
+1561680,1531,Operative Builders,2025-12-31,3470704000
+1561894,6799,"Investors, NEC",2020-12-31,186907000
+1561894,6799,"Investors, NEC",2021-12-31,213166000
+1561894,6799,"Investors, NEC",2022-12-31,239737000
+1561894,6799,"Investors, NEC",2023-12-31,319871000
+1561894,6799,"Investors, NEC",2024-12-31,383595000
+1561894,6799,"Investors, NEC",2025-12-31,400502000
 1562088,7372,Services-Prepackaged Software,2020-12-31,161696000
 1562088,7372,Services-Prepackaged Software,2021-12-31,250772000
 1562088,7372,Services-Prepackaged Software,2022-12-31,369495000
@@ -5953,6 +6709,11 @@ cik,sic,industry,period_end,revenue_usd
 1567094,3531,Construction Machinery & Equip,2023-12-31,24687000000
 1567094,3531,Construction Machinery & Equip,2024-12-31,19836000000
 1567094,3531,Construction Machinery & Equip,2025-12-31,18095000000
+1567514,2834,Pharmaceutical Preparations,2020-12-31,22813000
+1567514,2834,Pharmaceutical Preparations,2021-12-31,83803000
+1567514,2834,Pharmaceutical Preparations,2022-12-31,250314000
+1567514,2834,Pharmaceutical Preparations,2023-12-31,464370000
+1567514,2834,Pharmaceutical Preparations,2024-12-31,680852000
 1567683,4911,Electric Services,2020-12-31,1199000000
 1567683,4911,Electric Services,2021-12-31,1286000000
 1567683,4911,Electric Services,2022-12-31,1190000000
@@ -6018,6 +6779,10 @@ cik,sic,industry,period_end,revenue_usd
 1573516,5500,Retail-Auto Dealers & Gasoline Stations,2021-12-31,17360500000
 1573516,5500,Retail-Auto Dealers & Gasoline Stations,2022-12-31,23446100000
 1573516,5500,Retail-Auto Dealers & Gasoline Stations,2023-12-31,21529400000
+1574540,6798,Real Estate Investment Trusts,2020-12-31,437505000
+1574540,6798,Real Estate Investment Trusts,2021-12-31,457699000
+1574540,6798,Real Estate Investment Trusts,2022-12-31,526635000
+1574540,6798,Real Estate Investment Trusts,2023-12-31,543463000
 1575515,5411,Retail-Grocery Stores,2021-01-03,6468759000
 1575515,5411,Retail-Grocery Stores,2022-01-02,6099869000
 1575515,5411,Retail-Grocery Stores,2023-01-01,6404223000
@@ -6036,6 +6801,9 @@ cik,sic,industry,period_end,revenue_usd
 1576018,6331,"Fire, Marine & Casualty Insurance",2023-12-31,2737300000
 1576018,6331,"Fire, Marine & Casualty Insurance",2024-12-31,2603800000
 1576018,6331,"Fire, Marine & Casualty Insurance",2025-12-31,3205100000
+1576263,2834,Pharmaceutical Preparations,2020-12-31,13398000
+1576263,2834,Pharmaceutical Preparations,2021-12-31,72092000
+1576263,2834,Pharmaceutical Preparations,2022-12-31,12436000
 1576280,8071,Services-Medical Laboratories,2020-12-31,286730000
 1576280,8071,Services-Medical Laboratories,2021-12-31,373653000
 1576280,8071,Services-Medical Laboratories,2022-12-31,449538000
@@ -6062,6 +6830,12 @@ cik,sic,industry,period_end,revenue_usd
 1577526,7372,Services-Prepackaged Software,2025-04-30,389056000
 1577526,7372,Services-Prepackaged Software,2026-04-30,250268000
 1577670,6798,Real Estate Investment Trusts,,
+1577916,8741,Services-Management Services,2020-06-30,1299592000
+1577916,8741,Services-Management Services,2021-06-30,1721152000
+1577916,8741,Services-Management Services,2022-06-30,1432901000
+1577916,8741,Services-Management Services,2023-06-30,1095337000
+1577916,8741,Services-Management Services,2024-06-30,1136009000
+1577916,8741,Services-Management Services,2025-06-30,1012647000
 1578732,6531,Real Estate Agents & Managers (For Others),2020-12-31,716906000
 1578732,6531,Real Estate Agents & Managers (For Others),2021-12-31,1296440000
 1578732,6531,Real Estate Agents & Managers (For Others),2022-12-31,1301710000
@@ -6140,6 +6914,12 @@ cik,sic,industry,period_end,revenue_usd
 1585364,2834,Pharmaceutical Preparations,2023-12-31,4655600000
 1585364,2834,Pharmaceutical Preparations,2024-12-31,4373400000
 1585364,2834,Pharmaceutical Preparations,2025-12-31,4253100000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2021-01-31,2651368000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2022-01-31,4099864000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2023-01-31,4392960000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2024-01-31,4527224000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2025-01-31,4665433000
+1585521,7370,"Services-Computer Programming, Data Processing, Etc.",2026-01-31,4868769000
 1585689,7011,Hotels & Motels,2020-12-31,4307000000
 1585689,7011,Hotels & Motels,2021-12-31,5788000000
 1585689,7011,Hotels & Motels,2022-12-31,8773000000
@@ -6218,6 +6998,11 @@ cik,sic,industry,period_end,revenue_usd
 1596532,3576,Computer Communications Equipment,2023-12-31,5860200000
 1596532,3576,Computer Communications Equipment,2024-12-31,7003100000
 1596532,3576,Computer Communications Equipment,2025-12-31,9005700000
+1596783,2834,Pharmaceutical Preparations,2020-06-30,3094000000
+1596783,2834,Pharmaceutical Preparations,2021-06-30,3998000000
+1596783,2834,Pharmaceutical Preparations,2022-06-30,4802000000
+1596783,2834,Pharmaceutical Preparations,2023-06-30,4263000000
+1596783,2834,Pharmaceutical Preparations,2024-06-30,4381000000
 1596967,6282,Investment Advice,,
 1597033,7370,"Services-Computer Programming, Data Processing, Etc.",2020-12-31,1334100000
 1597033,7370,"Services-Computer Programming, Data Processing, Etc.",2021-12-31,1688875000
@@ -6225,6 +7010,12 @@ cik,sic,industry,period_end,revenue_usd
 1597033,7370,"Services-Computer Programming, Data Processing, Etc.",2023-12-31,2642077000
 1597033,7370,"Services-Computer Programming, Data Processing, Etc.",2024-12-31,2744845000
 1597033,7370,"Services-Computer Programming, Data Processing, Etc.",2025-12-31,2770983000
+1597264,2834,Pharmaceutical Preparations,,
+1597553,2834,Pharmaceutical Preparations,2020-12-31,1114200000
+1597553,2834,Pharmaceutical Preparations,2021-12-31,6308000
+1597553,2834,Pharmaceutical Preparations,2022-12-31,7686000
+1597553,2834,Pharmaceutical Preparations,2023-12-31,86455000
+1597553,2834,Pharmaceutical Preparations,2024-12-31,41243000
 1599298,2834,Pharmaceutical Preparations,2020-12-31,860000
 1599298,2834,Pharmaceutical Preparations,2021-12-31,1809000
 1599298,2834,Pharmaceutical Preparations,2022-12-31,705000
@@ -6234,12 +7025,23 @@ cik,sic,industry,period_end,revenue_usd
 1599617,3533,Oil & Gas Field Machinery & Equipment,2023-12-31,2321000000
 1599617,3533,Oil & Gas Field Machinery & Equipment,2024-12-31,2373000000
 1599617,3533,Oil & Gas Field Machinery & Equipment,2025-12-31,2820000000
+1599901,2834,Pharmaceutical Preparations,2020-12-31,6787000
+1599901,2834,Pharmaceutical Preparations,2021-12-31,9326000
+1599901,2834,Pharmaceutical Preparations,2022-12-31,9224000
+1599901,2834,Pharmaceutical Preparations,2023-12-31,9560000
+1599901,2834,Pharmaceutical Preparations,2024-12-31,10897000
+1599901,2834,Pharmaceutical Preparations,2025-12-31,18755000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2021-03-31,318110000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2022-03-31,392155000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2023-03-31,578844000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2024-03-31,1023932000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2025-03-31,1313517000
 1600033,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2026-03-31,1636472000
+1600438,5030,Wholesale-Lumber & Other Construction Materials,2021-04-30,3298823000
+1600438,5030,Wholesale-Lumber & Other Construction Materials,2022-04-30,4634875000
+1600438,5030,Wholesale-Lumber & Other Construction Materials,2023-04-30,5329252000
+1600438,5030,Wholesale-Lumber & Other Construction Materials,2024-04-30,5501907000
+1600438,5030,Wholesale-Lumber & Other Construction Materials,2025-04-30,5513738000
 1600620,2834,Pharmaceutical Preparations,2020-12-31,50118000
 1600620,2834,Pharmaceutical Preparations,2021-12-31,45605000
 1600620,2834,Pharmaceutical Preparations,2022-12-31,134030000
@@ -6260,6 +7062,10 @@ cik,sic,industry,period_end,revenue_usd
 1601830,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,58839000
 1601830,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,74681000
 1603454,8071,Services-Medical Laboratories,,
+1603756,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,111535000
+1603756,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,180290000
+1603756,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,273702000
+1603756,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,366379000
 1603923,3533,Oil & Gas Field Machinery & Equipment,2020-12-31,3685000000
 1603923,3533,Oil & Gas Field Machinery & Equipment,2021-12-31,3645000000
 1603923,3533,Oil & Gas Field Machinery & Equipment,2022-12-31,4331000000
@@ -6281,7 +7087,19 @@ cik,sic,industry,period_end,revenue_usd
 1604821,8071,Services-Medical Laboratories,2023-12-31,1082571000
 1604821,8071,Services-Medical Laboratories,2024-12-31,1696911000
 1604821,8071,Services-Medical Laboratories,2025-12-31,2306113000
+1605607,6798,Real Estate Investment Trusts,2020-12-31,714237000
+1605607,6798,Real Estate Investment Trusts,2021-12-31,726786000
+1605607,6798,Real Estate Investment Trusts,2022-12-31,740377000
+1605607,6798,Real Estate Investment Trusts,2023-12-31,742788000
+1605607,6798,Real Estate Investment Trusts,2024-12-31,757451000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2020-12-31,714800000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2021-12-31,587000000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2022-12-31,684100000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2023-12-31,673300000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2024-12-31,687800000
+1606498,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2025-12-31,701200000
 1607678,2834,Pharmaceutical Preparations,,
+1607939,8200,Services-Educational Services,,
 1609550,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,115381000
 1609550,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,233394000
 1609550,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,407856000
@@ -6300,6 +7118,9 @@ cik,sic,industry,period_end,revenue_usd
 1610250,5661,Retail-Shoe Stores,2024-03-30,1667009000
 1610250,5661,Retail-Shoe Stores,2025-03-29,1911104000
 1610250,5661,Retail-Shoe Stores,2026-03-28,2253859000
+1610950,8731,Services-Commercial Physical & Biological Research,2020-12-31,4415777000
+1610950,8731,Services-Commercial Physical & Biological Research,2021-12-31,5212970000
+1610950,8731,Services-Commercial Physical & Biological Research,2022-12-31,5393082000
 1611052,7372,Services-Prepackaged Software,2020-12-31,400291000
 1611052,7372,Services-Prepackaged Software,2021-12-31,514821000
 1611052,7372,Services-Prepackaged Software,2022-12-31,720203000
@@ -6318,6 +7139,11 @@ cik,sic,industry,period_end,revenue_usd
 1611647,2040,Grain Mill Products,2023-12-31,766895000
 1611647,2040,Grain Mill Products,2024-12-31,975177000
 1611647,2040,Grain Mill Products,2025-12-31,1102015000
+1611983,4841,Cable & Other Pay Television Services,2020-12-31,51000000
+1611983,4841,Cable & Other Pay Television Services,2021-12-31,988000000
+1611983,4841,Cable & Other Pay Television Services,2022-12-31,975000000
+1611983,4841,Cable & Other Pay Television Services,2023-12-31,981000000
+1611983,4841,Cable & Other Pay Television Services,2024-12-31,1016000000
 1613103,3845,Electromedical & Electrotherapeutic Apparatus,2021-04-30,30117000000
 1613103,3845,Electromedical & Electrotherapeutic Apparatus,2022-04-29,31686000000
 1613103,3845,Electromedical & Electrotherapeutic Apparatus,2023-04-28,31227000000
@@ -6330,6 +7156,10 @@ cik,sic,industry,period_end,revenue_usd
 1616000,7011,Hotels & Motels,2023-12-31,1025443000
 1616000,7011,Hotels & Motels,2024-12-31,1039047000
 1616000,7011,Hotels & Motels,2025-12-31,1078500000
+1616318,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2021-03-31,2225522000
+1616318,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2022-03-31,3044621000
+1616318,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2023-03-31,3079807000
+1616318,3480,"Ordnance & Accessories, (No Vehicles/Guided Missiles)",2024-03-31,2746063000
 1616707,5961,Retail-Catalog & Mail-Order Houses,2020-12-31,14145000000
 1616707,5961,Retail-Catalog & Mail-Order Houses,2021-12-31,13708000000
 1616707,5961,Retail-Catalog & Mail-Order Houses,2022-12-31,12218000000
@@ -6355,6 +7185,12 @@ cik,sic,industry,period_end,revenue_usd
 1617640,7389,"Services-Business Services, NEC",2023-12-31,1945000000
 1617640,7389,"Services-Business Services, NEC",2024-12-31,2236000000
 1617640,7389,"Services-Business Services, NEC",2025-12-31,2583000000
+1618563,6798,Real Estate Investment Trusts,2020-12-31,432222000
+1618563,6798,Real Estate Investment Trusts,2021-12-31,585671000
+1618563,6798,Real Estate Investment Trusts,2022-12-31,801569000
+1618563,6798,Real Estate Investment Trusts,2023-12-31,858063000
+1618563,6798,Real Estate Investment Trusts,2024-12-31,770335000
+1618563,6798,Real Estate Investment Trusts,2025-12-31,752929000
 1618673,5141,"Wholesale-Groceries, General Line",,
 1618732,7372,Services-Prepackaged Software,2020-07-31,1307682000
 1618732,7372,Services-Prepackaged Software,2021-07-31,1394364000
@@ -6369,12 +7205,21 @@ cik,sic,industry,period_end,revenue_usd
 1618756,5812,Retail-Eating  Places,2023-12-31,7022000000
 1618756,5812,Retail-Eating  Places,2024-12-31,8406000000
 1618756,5812,Retail-Eating  Places,2025-12-31,9434000000
+1618921,5912,Retail-Drug Stores and Proprietary Stores,2020-08-31,121982000000
+1618921,5912,Retail-Drug Stores and Proprietary Stores,2021-08-31,132509000000
+1618921,5912,Retail-Drug Stores and Proprietary Stores,2022-08-31,132703000000
+1618921,5912,Retail-Drug Stores and Proprietary Stores,2023-08-31,139081000000
+1618921,5912,Retail-Drug Stores and Proprietary Stores,2024-08-31,147658000000
 1620533,5810,Retail-Eating & Drinking Places,2020-12-30,522867000
 1620533,5810,Retail-Eating & Drinking Places,2021-12-29,739893000
 1620533,5810,Retail-Eating & Drinking Places,2022-12-28,900486000
 1620533,5810,Retail-Eating & Drinking Places,2023-12-27,1087533000
 1620533,5810,Retail-Eating & Drinking Places,2024-12-25,1252608000
 1620533,5810,Retail-Eating & Drinking Places,2025-12-31,1445306000
+1621563,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2021-01-02,2332451000
+1621563,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2022-01-01,2409669000
+1621563,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2022-12-31,2412522000
+1621563,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2023-12-30,2619468000
 1622229,2834,Pharmaceutical Preparations,,
 1622536,4911,Electric Services,2022-12-31,3209000000
 1622536,4911,Electric Services,2024-12-31,2115000000
@@ -6400,6 +7245,12 @@ cik,sic,industry,period_end,revenue_usd
 1626115,6282,Investment Advice,2023-12-31,1153182000
 1626115,6282,Investment Advice,2024-12-31,1493177000
 1626115,6282,Investment Advice,2025-12-31,1713671000
+1626450,7372,Services-Prepackaged Software,2020-12-31,152368000
+1626450,7372,Services-Prepackaged Software,2021-12-31,219855000
+1626450,7372,Services-Prepackaged Software,2022-12-31,279075000
+1626450,7372,Services-Prepackaged Software,2023-12-31,309394000
+1626450,7372,Services-Prepackaged Software,2024-12-31,332927000
+1626450,7372,Services-Prepackaged Software,2025-12-31,342349000
 1627223,2800,Chemicals & Allied Products,2020-12-31,4969000000
 1627223,2800,Chemicals & Allied Products,2021-12-31,6345000000
 1627223,2800,Chemicals & Allied Products,2022-12-31,6831000000
@@ -6453,10 +7304,20 @@ cik,sic,industry,period_end,revenue_usd
 1633917,7389,"Services-Business Services, NEC",2023-12-31,29771000000
 1633917,7389,"Services-Business Services, NEC",2024-12-31,31797000000
 1633917,7389,"Services-Business Services, NEC",2025-12-31,33172000000
+1633931,1700,Construction - Special Trade Contractors,2020-12-31,2718038000
+1633931,1700,Construction - Special Trade Contractors,2021-12-31,3486207000
+1633931,1700,Construction - Special Trade Contractors,2022-12-31,5008744000
+1633931,1700,Construction - Special Trade Contractors,2023-12-31,5194694000
+1633931,1700,Construction - Special Trade Contractors,2024-12-31,5329803000
+1633931,1700,Construction - Special Trade Contractors,2025-12-31,5409086000
 1633978,3669,"Communications Equipment, NEC",2022-07-02,1712600000
 1633978,3669,"Communications Equipment, NEC",2023-07-01,1767000000
 1633978,3669,"Communications Equipment, NEC",2025-06-28,1645000000
 1633978,3669,"Communications Equipment, NEC",2026-06-27,3014000000
+1634997,4911,Electric Services,2020-12-31,6320000000
+1634997,4911,Electric Services,2021-12-31,6974000000
+1634997,4911,Electric Services,2022-12-31,7923000000
+1634997,4911,Electric Services,2023-12-31,8309000000
 1635088,2834,Pharmaceutical Preparations,2021-03-31,23795000
 1635088,2834,Pharmaceutical Preparations,2022-03-31,55286000
 1635088,2834,Pharmaceutical Preparations,2023-03-31,31530000
@@ -6473,6 +7334,13 @@ cik,sic,industry,period_end,revenue_usd
 1636282,2834,Pharmaceutical Preparations,2021-12-31,18739000
 1636282,2834,Pharmaceutical Preparations,2022-12-31,2329000
 1636282,2834,Pharmaceutical Preparations,2023-12-31,886000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2020-06-30,603319000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2021-06-30,415721000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2022-06-30,821354000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2023-06-30,887447000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2024-06-30,1027149000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2025-06-30,1039220000
+1636519,7990,Services-Miscellaneous Amusement & Recreation,2026-06-30,1153822000
 1637207,7997,Services-Membership Sports & Recreation Clubs,2020-12-31,406618000
 1637207,7997,Services-Membership Sports & Recreation Clubs,2021-12-31,587023000
 1637207,7997,Services-Membership Sports & Recreation Clubs,2022-12-31,936772000
@@ -6515,6 +7383,10 @@ cik,sic,industry,period_end,revenue_usd
 1640147,7372,Services-Prepackaged Software,2024-01-31,2806489000
 1640147,7372,Services-Prepackaged Software,2025-01-31,3626396000
 1640147,7372,Services-Prepackaged Software,2026-01-31,4683946000
+1642545,3841,Surgical & Medical Instruments & Apparatus,2020-12-31,67789000
+1642545,3841,Surgical & Medical Instruments & Apparatus,2021-12-31,237146000
+1642545,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,489733000
+1642545,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,730230000
 1642896,7373,Services-Computer Integrated Systems Design,2021-01-30,249905000
 1642896,7373,Services-Computer Integrated Systems Design,2022-01-29,428345000
 1642896,7373,Services-Computer Integrated Systems Design,2023-01-28,652545000
@@ -6539,6 +7411,12 @@ cik,sic,industry,period_end,revenue_usd
 1646972,5411,Retail-Grocery Stores,2024-02-24,79237700000
 1646972,5411,Retail-Grocery Stores,2025-02-22,80390900000
 1646972,5411,Retail-Grocery Stores,2026-02-28,83172500000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2020-12-31,1272991000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2021-12-31,1672980000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2022-12-31,2142623000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2023-12-31,2364767000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2024-12-31,2395718000
+1647088,7350,Services-Miscellaneous Equipment Rental & Leasing,2025-12-31,2281446000
 1647639,6199,Finance Services,2020-12-31,233416000
 1647639,6199,Finance Services,2021-12-31,848589000
 1647639,6199,Finance Services,2022-12-31,907272000
@@ -6581,12 +7459,20 @@ cik,sic,industry,period_end,revenue_usd
 1650729,5040,Wholesale-Professional & Commercial Equipment & Supplies,2023-12-31,4301200000
 1650729,5040,Wholesale-Professional & Commercial Equipment & Supplies,2024-12-29,4540600000
 1650729,5040,Wholesale-Professional & Commercial Equipment & Supplies,2025-12-28,4704800000
+1651052,6282,Investment Advice,2020-12-31,1361319000
+1651052,6282,Investment Advice,2021-12-31,1797951000
+1651052,6282,Investment Advice,2022-12-31,2143321000
 1651308,2834,Pharmaceutical Preparations,2020-12-31,308874000
 1651308,2834,Pharmaceutical Preparations,2021-12-31,1176283000
 1651308,2834,Pharmaceutical Preparations,2022-12-31,1415921000
 1651308,2834,Pharmaceutical Preparations,2023-12-31,2458779000
 1651308,2834,Pharmaceutical Preparations,2024-12-31,3810241000
 1651308,2834,Pharmaceutical Preparations,2025-12-31,5343033000
+1651311,2834,Pharmaceutical Preparations,2020-12-31,29943000
+1651311,2834,Pharmaceutical Preparations,2021-12-31,49107000
+1651311,2834,Pharmaceutical Preparations,2022-12-31,41586000
+1651311,2834,Pharmaceutical Preparations,2023-12-31,43947000
+1651311,2834,Pharmaceutical Preparations,2024-12-31,36133000
 1651562,7372,Services-Prepackaged Software,2020-12-31,293511000
 1651562,7372,Services-Prepackaged Software,2021-12-31,415287000
 1651562,7372,Services-Prepackaged Software,2022-12-31,523756000
@@ -6629,6 +7515,9 @@ cik,sic,industry,period_end,revenue_usd
 1655759,2834,Pharmaceutical Preparations,2023-12-31,78500000
 1655759,2834,Pharmaceutical Preparations,2024-12-31,263400000
 1655759,2834,Pharmaceutical Preparations,2025-12-31,262600000
+1657312,2834,Pharmaceutical Preparations,2021-12-31,40000000
+1657312,2834,Pharmaceutical Preparations,2022-12-31,458000
+1657312,2834,Pharmaceutical Preparations,2024-12-31,42279000
 1657853,7510,Services-Auto Rental & Leasing (No Drivers),2020-12-31,5258000000
 1657853,7510,Services-Auto Rental & Leasing (No Drivers),2021-12-31,7336000000
 1657853,7510,Services-Auto Rental & Leasing (No Drivers),2022-12-31,8685000000
@@ -6677,6 +7566,12 @@ cik,sic,industry,period_end,revenue_usd
 1666134,7372,Services-Prepackaged Software,2023-12-31,589996000
 1666134,7372,Services-Prepackaged Software,2024-12-31,653336000
 1666134,7372,Services-Prepackaged Software,2025-12-31,700427000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2020-09-30,1765421000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2021-09-30,2928014000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2022-09-30,3913949000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2023-09-30,3518761000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2024-09-30,3202053000
+1666138,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2025-09-30,2850378000
 1666700,2821,"Plastic Materials, Synth Resins & Nonvulcan Elastomers",2020-12-31,14338000000
 1666700,2821,"Plastic Materials, Synth Resins & Nonvulcan Elastomers",2021-12-31,12566000000
 1666700,2821,"Plastic Materials, Synth Resins & Nonvulcan Elastomers",2022-12-31,13017000000
@@ -6844,12 +7739,21 @@ cik,sic,industry,period_end,revenue_usd
 1685040,6311,Life Insurance,2023-12-31,4117000000
 1685040,6311,Life Insurance,2024-12-31,4724000000
 1685040,6311,Life Insurance,2025-12-31,6766000000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2020-10-31,2277600000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2021-10-31,2380800000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2022-10-31,2331600000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2023-10-31,2638000000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2024-10-31,2380200000
+1687221,3711,Motor Vehicles & Passenger Car Bodies,2025-10-31,2463500000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2020-12-31,1822828000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2021-12-31,1996615000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2022-12-31,2238121000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2023-12-31,2432278000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2024-12-31,2618942000
 1687229,6510,Real Estate Operators (No Developers) & Lessors,2025-12-31,2729296000
+1688476,1389,"Oil & Gas Field Services, NEC",2020-12-31,1202581000
+1688476,1389,"Oil & Gas Field Services, NEC",2021-12-31,1423441000
+1688476,1389,"Oil & Gas Field Services, NEC",2022-12-31,3244822000
 1688568,7374,Services-Computer Processing & Data Preparation,2021-03-31,17729000000
 1688568,7374,Services-Computer Processing & Data Preparation,2022-03-31,16265000000
 1688568,7374,Services-Computer Processing & Data Preparation,2023-03-31,14430000000
@@ -6864,6 +7768,10 @@ cik,sic,industry,period_end,revenue_usd
 1689796,6798,Real Estate Investment Trusts,2023-12-31,604198000
 1689796,6798,Real Estate Investment Trusts,2024-12-31,547312000
 1689796,6798,Real Estate Investment Trusts,2025-12-31,498598000
+1689923,7372,Services-Prepackaged Software,2020-12-31,495308000
+1689923,7372,Services-Prepackaged Software,2021-12-31,536000000
+1689923,7372,Services-Prepackaged Software,2022-12-31,855000000
+1689923,7372,Services-Prepackaged Software,2023-12-31,970000000
 1690585,2834,Pharmaceutical Preparations,2021-12-31,1476000
 1690585,2834,Pharmaceutical Preparations,2022-12-31,6417000
 1690585,2834,Pharmaceutical Preparations,2023-12-31,2826000
@@ -6930,12 +7838,23 @@ cik,sic,industry,period_end,revenue_usd
 1699150,3560,General Industrial Machinery & Equipment,2023-12-31,6876100000
 1699150,3560,General Industrial Machinery & Equipment,2024-12-31,7235000000
 1699150,3560,General Industrial Machinery & Equipment,2025-12-31,7650900000
+1699838,7372,Services-Prepackaged Software,2020-12-31,236577000
+1699838,7372,Services-Prepackaged Software,2021-12-31,387864000
+1699838,7372,Services-Prepackaged Software,2022-12-31,585944000
+1699838,7372,Services-Prepackaged Software,2023-12-31,776952000
+1699838,7372,Services-Prepackaged Software,2024-12-31,963642000
+1699838,7372,Services-Prepackaged Software,2025-12-31,1166748000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2020-12-31,20705000000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2021-12-31,20502000000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2022-12-31,21156000000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2023-12-31,25506000000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2024-12-31,27829000000
 1701605,3533,Oil & Gas Field Machinery & Equipment,2025-12-31,27733000000
+1701732,7372,Services-Prepackaged Software,2020-12-31,469921000
+1701732,7372,Services-Prepackaged Software,2021-12-31,532179000
+1701732,7372,Services-Prepackaged Software,2022-12-31,572221000
+1701732,7372,Services-Prepackaged Software,2023-12-31,612701000
+1701732,7372,Services-Prepackaged Software,2024-12-31,665788000
 1702744,2000,Food and Kindred Products,2020-08-29,816641000
 1702744,2000,Food and Kindred Products,2021-08-28,1005613000
 1702744,2000,Food and Kindred Products,2022-08-27,1168678000
@@ -7045,6 +7964,15 @@ cik,sic,industry,period_end,revenue_usd
 1720635,3550,Special Industry Machinery (No Metalworking Machinery),2023-12-31,2668900000
 1720635,3550,Special Industry Machinery (No Metalworking Machinery),2024-12-31,3006100000
 1720635,3550,Special Industry Machinery (No Metalworking Machinery),2025-12-31,3893100000
+1720671,7371,Services-Computer Programming Services,2021-01-31,211854000
+1720671,7371,Services-Computer Programming Services,2022-01-31,320769000
+1720671,7371,Services-Computer Programming Services,2023-01-31,475889000
+1720671,7371,Services-Computer Programming Services,2024-01-31,583137000
+1721947,7372,Services-Prepackaged Software,2020-12-31,269132000
+1721947,7372,Services-Prepackaged Software,2021-12-31,366388000
+1721947,7372,Services-Prepackaged Software,2022-12-31,478776000
+1721947,7372,Services-Prepackaged Software,2023-12-31,560571000
+1721947,7372,Services-Prepackaged Software,2024-12-31,627399000
 1722482,3826,Laboratory Analytical Instruments,2020-12-31,6393600000
 1722482,3826,Laboratory Analytical Instruments,2021-12-31,7386100000
 1722482,3826,Laboratory Analytical Instruments,2022-12-31,7512400000
@@ -7057,12 +7985,23 @@ cik,sic,industry,period_end,revenue_usd
 1722684,7011,Hotels & Motels,2023-12-31,1397000000
 1722684,7011,Hotels & Motels,2024-12-31,1408000000
 1722684,7011,Hotels & Motels,2025-12-31,1429000000
+1723089,3530,"Construction, Mining & Materials Handling Machinery & Equip",2020-12-31,1899996000
+1723089,3530,"Construction, Mining & Materials Handling Machinery & Equip",2021-12-31,3074990000
+1723089,3530,"Construction, Mining & Materials Handling Machinery & Equip",2022-12-31,3805948000
+1723089,3530,"Construction, Mining & Materials Handling Machinery & Equip",2023-12-31,3758285000
+1723089,3530,"Construction, Mining & Materials Handling Machinery & Equip",2024-12-31,3633983000
+1723596,6035,"Savings Institution, Federally Chartered",,
 1724521,2834,Pharmaceutical Preparations,2020-12-31,78000000
 1724521,2834,Pharmaceutical Preparations,2021-12-31,383000000
 1724521,2834,Pharmaceutical Preparations,2022-12-31,112000000
 1724521,2834,Pharmaceutical Preparations,2023-12-31,117000000
 1724521,2834,Pharmaceutical Preparations,2024-12-31,258000000
 1724521,2834,Pharmaceutical Preparations,2025-12-31,247000000
+1725057,7372,Services-Prepackaged Software,2020-12-31,842500000
+1725057,7372,Services-Prepackaged Software,2021-12-31,1024200000
+1725057,7372,Services-Prepackaged Software,2022-12-31,1246200000
+1725057,7372,Services-Prepackaged Software,2023-12-31,1513700000
+1725057,7372,Services-Prepackaged Software,2024-12-31,1760000000
 1725160,2834,Pharmaceutical Preparations,2024-12-31,67425000
 1727196,2836,"Biological Products, (No Diagnostic Substances)",2020-12-31,15403000
 1727196,2836,"Biological Products, (No Diagnostic Substances)",2021-12-31,18816000
@@ -7073,6 +8012,8 @@ cik,sic,industry,period_end,revenue_usd
 1727263,7340,Services-To Dwellings & Other Buildings,2023-12-31,1780000000
 1727263,7340,Services-To Dwellings & Other Buildings,2024-12-31,1843000000
 1727263,7340,Services-To Dwellings & Other Buildings,2025-12-31,2093000000
+1728205,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2023-12-31,39817000
+1728205,1400,Mining & Quarrying of  Nonmetallic Minerals (No Fuels),2024-12-31,99877000
 1728951,6798,Real Estate Investment Trusts,2020-12-31,164009000
 1728951,6798,Real Estate Investment Trusts,2021-12-31,230234000
 1728951,6798,Real Estate Investment Trusts,2022-12-31,286506000
@@ -7085,6 +8026,8 @@ cik,sic,industry,period_end,revenue_usd
 1730168,3674,Semiconductors & Related Devices,2023-10-29,35819000000
 1730168,3674,Semiconductors & Related Devices,2024-11-03,51574000000
 1730168,3674,Semiconductors & Related Devices,2025-11-02,63887000000
+1731289,3711,Motor Vehicles & Passenger Car Bodies,2020-12-31,95000
+1731289,3711,Motor Vehicles & Passenger Car Bodies,2022-12-31,49725000
 1733998,4924,Natural Gas Distribution,2020-12-31,773679000
 1733998,4924,Natural Gas Distribution,2021-12-31,860400000
 1733998,4924,Natural Gas Distribution,2022-12-31,1037353000
@@ -7124,24 +8067,39 @@ cik,sic,industry,period_end,revenue_usd
 1739940,6324,Hospital & Medical Service Plans,2023-12-31,195265000000
 1739940,6324,Hospital & Medical Service Plans,2024-12-31,247121000000
 1739940,6324,Hospital & Medical Service Plans,2025-12-31,274900000000
+1739942,7372,Services-Prepackaged Software,2020-12-31,716770000
+1739942,7372,Services-Prepackaged Software,2021-12-31,718632000
+1739942,7372,Services-Prepackaged Software,2022-12-31,719367000
+1739942,7372,Services-Prepackaged Software,2023-12-31,758740000
+1739942,7372,Services-Prepackaged Software,2024-12-31,796895000
 1740332,5072,Wholesale-Hardware,2020-12-31,5071000000
 1740332,5072,Wholesale-Hardware,2021-12-31,5846000000
 1740332,5072,Wholesale-Hardware,2022-12-31,6370000000
 1740332,5072,Wholesale-Hardware,2023-12-31,6242000000
 1740332,5072,Wholesale-Hardware,2024-12-31,6761000000
 1740332,5072,Wholesale-Hardware,2025-12-31,7472000000
+1742924,2800,Chemicals & Allied Products,2020-12-31,288200000
+1742924,2800,Chemicals & Allied Products,2021-12-31,420400000
+1742924,2800,Chemicals & Allied Products,2022-12-31,813200000
 1743881,2834,Pharmaceutical Preparations,2020-12-31,8249000
 1743881,2834,Pharmaceutical Preparations,2021-12-31,69716000
 1743881,2834,Pharmaceutical Preparations,2022-12-31,77648000
 1743881,2834,Pharmaceutical Preparations,2023-12-31,9303000
 1743881,2834,Pharmaceutical Preparations,2024-12-31,221902000
 1743881,2834,Pharmaceutical Preparations,2025-12-31,502076000
+1743907,4512,"Air Transportation, Scheduled",2020-12-31,401486000
+1743907,4512,"Air Transportation, Scheduled",2021-12-31,623015000
+1743907,4512,"Air Transportation, Scheduled",2022-12-31,894444000
+1743907,4512,"Air Transportation, Scheduled",2023-12-31,1049620000
+1743907,4512,"Air Transportation, Scheduled",2024-12-31,1075739000
+1743907,4512,"Air Transportation, Scheduled",2025-12-31,1126769000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2020-10-03,65388000000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2021-10-02,67418000000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2022-10-01,82722000000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2023-09-30,88898000000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2024-09-28,91361000000
 1744489,7990,Services-Miscellaneous Amusement & Recreation,2025-09-27,94425000000
+1744659,2834,Pharmaceutical Preparations,,
 1745916,6162,Mortgage Bankers & Loan Correspondents,2020-12-31,6737000
 1745916,6162,Mortgage Bankers & Loan Correspondents,2021-12-31,7325000
 1745916,6162,Mortgage Bankers & Loan Correspondents,2022-12-31,12392000
@@ -7154,6 +8112,10 @@ cik,sic,industry,period_end,revenue_usd
 1745999,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,377709000
 1745999,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,63518000
 1745999,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,139743000
+1747009,4922,Natural Gas Transmission,2020-12-31,1510825000
+1747009,4922,Natural Gas Transmission,2021-12-31,1317037000
+1747009,4922,Natural Gas Transmission,2022-12-31,1357747000
+1747009,4922,Natural Gas Transmission,2023-12-31,1393929000
 1748790,3990,Miscellaneous Manufacturing Industries,2020-06-30,12468000000
 1748790,3990,Miscellaneous Manufacturing Industries,2021-06-30,12861000000
 1748790,3990,Miscellaneous Manufacturing Industries,2022-06-30,14544000000
@@ -7212,6 +8174,12 @@ cik,sic,industry,period_end,revenue_usd
 1757898,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2024-03-31,5138700000
 1757898,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2025-03-31,5459500000
 1757898,3842,"Orthopedic, Prosthetic & Surgical Appliances & Supplies",2026-03-31,5935900000
+1758057,3714,Motor Vehicle Parts & Accessories,2020-12-31,13951000
+1758057,3714,Motor Vehicle Parts & Accessories,2021-12-31,31944000
+1758057,3714,Motor Vehicle Parts & Accessories,2022-12-31,40698000
+1758057,3714,Motor Vehicle Parts & Accessories,2023-12-31,69779000
+1758057,3714,Motor Vehicle Parts & Accessories,2024-12-31,75395000
+1758057,3714,Motor Vehicle Parts & Accessories,2025-12-31,66014000
 1758730,6200,"Security & Commodity Brokers, Dealers, Exchanges & Services",2020-12-31,892659000
 1758730,6200,"Security & Commodity Brokers, Dealers, Exchanges & Services",2021-12-31,1076447000
 1758730,6200,"Security & Commodity Brokers, Dealers, Exchanges & Services",2022-12-31,1188781000
@@ -7288,6 +8256,7 @@ cik,sic,industry,period_end,revenue_usd
 1771515,5411,Retail-Grocery Stores,2023-12-30,3969453000
 1771515,5411,Retail-Grocery Stores,2024-12-28,4371501000
 1771515,5411,Retail-Grocery Stores,2026-01-03,4688759000
+1771917,2834,Pharmaceutical Preparations,,
 1772016,2000,Food and Kindred Products,2020-09-30,988300000
 1772016,2000,Food and Kindred Products,2021-09-30,1247100000
 1772016,2000,Food and Kindred Products,2022-09-30,1371500000
@@ -7300,6 +8269,8 @@ cik,sic,industry,period_end,revenue_usd
 1773383,7372,Services-Prepackaged Software,2024-03-31,1430530000
 1773383,7372,Services-Prepackaged Software,2025-03-31,1698683000
 1773383,7372,Services-Prepackaged Software,2026-03-31,2018387000
+1773427,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,5447000
+1773427,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,191589000
 1773751,8011,Services-Offices & Clinics of  Doctors of  Medicine,2020-12-31,148757000
 1773751,8011,Services-Offices & Clinics of  Doctors of  Medicine,2021-12-31,271878000
 1773751,8011,Services-Offices & Clinics of  Doctors of  Medicine,2022-12-31,526916000
@@ -7328,6 +8299,11 @@ cik,sic,industry,period_end,revenue_usd
 1782170,7389,"Services-Business Services, NEC",2023-12-31,944285000
 1782170,7389,"Services-Business Services, NEC",2024-12-31,1263963000
 1782170,7389,"Services-Business Services, NEC",2025-12-31,1635147000
+1782754,3089,"Plastics Products, NEC",2020-09-30,899259000
+1782754,3089,"Plastics Products, NEC",2021-09-30,1178974000
+1782754,3089,"Plastics Products, NEC",2022-09-30,1355586000
+1782754,3089,"Plastics Products, NEC",2023-09-30,1370316000
+1782754,3089,"Plastics Products, NEC",2024-09-30,1441448000
 1783180,3585,Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip,2020-12-31,17456000000
 1783180,3585,Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip,2021-12-31,20613000000
 1783180,3585,Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip,2022-12-31,17288000000
@@ -7346,6 +8322,9 @@ cik,sic,industry,period_end,revenue_usd
 1783879,6211,"Security Brokers, Dealers & Flotation Companies",2023-12-31,1865000000
 1783879,6211,"Security Brokers, Dealers & Flotation Companies",2024-12-31,2951000000
 1783879,6211,"Security Brokers, Dealers & Flotation Companies",2025-12-31,4473000000
+1786205,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,110319000
+1786205,2836,"Biological Products, (No Diagnostic Substances)",2024-12-31,107936000
+1786205,2836,"Biological Products, (No Diagnostic Substances)",2025-12-31,22286000
 1786352,7372,Services-Prepackaged Software,2020-06-30,157600000
 1786352,7372,Services-Prepackaged Software,2021-06-30,238265000
 1786352,7372,Services-Prepackaged Software,2022-06-30,641959000
@@ -7420,6 +8399,11 @@ cik,sic,industry,period_end,revenue_usd
 1800227,7370,"Services-Computer Programming, Data Processing, Etc.",2023-12-31,4365235000
 1800227,7370,"Services-Computer Programming, Data Processing, Etc.",2024-12-31,2622121000
 1800227,7370,"Services-Computer Programming, Data Processing, Etc.",2025-12-31,2393189000
+1800347,7374,Services-Computer Processing & Data Preparation,2021-02-03,308647000
+1800347,7374,Services-Computer Processing & Data Preparation,2022-02-28,425561000
+1800347,7374,Services-Computer Processing & Data Preparation,2023-02-28,652215000
+1800347,7374,Services-Computer Processing & Data Preparation,2024-02-29,634554000
+1800347,7374,Services-Computer Processing & Data Preparation,2025-02-28,607688000
 1800667,7372,Services-Prepackaged Software,2020-12-31,150827000
 1800667,7372,Services-Prepackaged Software,2021-12-31,206683000
 1800667,7372,Services-Prepackaged Software,2022-12-31,280040000
@@ -7462,6 +8446,13 @@ cik,sic,industry,period_end,revenue_usd
 1804745,7500,"Services-Automotive Repair, Services & Parking",2023-12-30,1710040000
 1804745,7500,"Services-Automotive Repair, Services & Parking",2024-12-28,1752476000
 1804745,7500,"Services-Automotive Repair, Services & Parking",2025-12-27,1862438000
+1805387,2834,Pharmaceutical Preparations,,
+1806201,6141,Personal Credit Institutions,2020-12-31,108892000
+1806201,6141,Personal Credit Institutions,2021-12-31,215655000
+1806201,6141,Personal Credit Institutions,2022-12-31,179594000
+1806201,6141,Personal Credit Institutions,2023-12-31,117460000
+1806201,6141,Personal Credit Institutions,2024-12-31,24024000
+1806201,6141,Personal Credit Institutions,2025-12-31,93217000
 1807794,3674,Semiconductors & Related Devices,2021-04-30,58697000
 1807794,3674,Semiconductors & Related Devices,2022-04-30,106477000
 1807794,3674,Semiconductors & Related Devices,2023-04-29,184194000
@@ -7474,6 +8465,11 @@ cik,sic,industry,period_end,revenue_usd
 1808834,7359,"Services-Equipment Rental & Leasing, NEC",2023-12-31,2339352000
 1808834,7359,"Services-Equipment Rental & Leasing, NEC",2024-12-31,2399081000
 1808834,7359,"Services-Equipment Rental & Leasing, NEC",2025-12-31,2409223000
+1809104,7389,"Services-Business Services, NEC",2020-12-31,2728000000
+1809104,7389,"Services-Business Services, NEC",2022-12-31,2207000000
+1809104,7389,"Services-Business Services, NEC",2023-12-31,2386000000
+1809104,7389,"Services-Business Services, NEC",2024-12-31,2332000000
+1809104,7389,"Services-Business Services, NEC",2025-12-31,2262000000
 1810546,6035,"Savings Institution, Federally Chartered",2020-12-31,60167000
 1810546,6035,"Savings Institution, Federally Chartered",2021-12-31,69423000
 1810546,6035,"Savings Institution, Federally Chartered",2022-12-31,77299000
@@ -7529,6 +8525,11 @@ cik,sic,industry,period_end,revenue_usd
 1818874,6199,Finance Services,2023-12-31,421454000
 1818874,6199,Finance Services,2024-12-31,503123000
 1818874,6199,Finance Services,2025-12-31,619353000
+1819394,7372,Services-Prepackaged Software,2020-12-31,85884000
+1819394,7372,Services-Prepackaged Software,2021-12-31,111174000
+1819394,7372,Services-Prepackaged Software,2022-12-31,136125000
+1819394,7372,Services-Prepackaged Software,2023-12-31,157748000
+1819394,7372,Services-Prepackaged Software,2024-12-31,169699000
 1819790,2836,"Biological Products, (No Diagnostic Substances)",2021-12-31,57027000
 1819790,2836,"Biological Products, (No Diagnostic Substances)",2022-12-31,25816000
 1819790,2836,"Biological Products, (No Diagnostic Substances)",2023-12-31,17447000
@@ -7560,6 +8561,10 @@ cik,sic,industry,period_end,revenue_usd
 1820721,3674,Semiconductors & Related Devices,2023-12-31,1576551000
 1820721,3674,Semiconductors & Related Devices,2024-12-31,915807000
 1820721,3674,Semiconductors & Related Devices,2025-12-31,1284141000
+1820877,6798,Real Estate Investment Trusts,2020-12-31,719556000
+1820877,6798,Real Estate Investment Trusts,2021-12-31,740853000
+1820877,6798,Real Estate Investment Trusts,2022-12-31,773723000
+1820877,6798,Real Estate Investment Trusts,2023-12-31,820036000
 1820953,6141,Personal Credit Institutions,2020-06-30,509528000
 1820953,6141,Personal Credit Institutions,2021-06-30,870464000
 1820953,6141,Personal Credit Institutions,2022-06-30,1349292000
@@ -7653,6 +8658,10 @@ cik,sic,industry,period_end,revenue_usd
 1831651,3674,Semiconductors & Related Devices,2024-12-31,399208000
 1831651,3674,Semiconductors & Related Devices,2025-12-31,475331000
 1831828,2834,Pharmaceutical Preparations,,
+1832433,5070,Wholesale-Hardware & Plumbing & Heating Equipment & Supplies,2020-07-31,19940000000
+1832433,5070,Wholesale-Hardware & Plumbing & Heating Equipment & Supplies,2021-07-31,22792000000
+1832433,5070,Wholesale-Hardware & Plumbing & Heating Equipment & Supplies,2022-07-31,28566000000
+1832433,5070,Wholesale-Hardware & Plumbing & Heating Equipment & Supplies,2023-07-31,29734000000
 1832466,6324,Hospital & Medical Service Plans,2020-12-31,959222000
 1832466,6324,Hospital & Medical Service Plans,2021-12-31,1167773000
 1832466,6324,Hospital & Medical Service Plans,2022-12-31,1434159000
@@ -7689,17 +8698,33 @@ cik,sic,industry,period_end,revenue_usd
 1835632,3674,Semiconductors & Related Devices,2024-02-03,5507700000
 1835632,3674,Semiconductors & Related Devices,2025-02-01,5767300000
 1835632,3674,Semiconductors & Related Devices,2026-01-31,8194600000
+1835681,7372,Services-Prepackaged Software,2020-12-31,434888000
+1835681,7372,Services-Prepackaged Software,2021-12-31,558598000
+1835681,7372,Services-Prepackaged Software,2022-12-31,630683000
+1835681,7372,Services-Prepackaged Software,2023-12-31,697651000
 1835830,7372,Services-Prepackaged Software,2021-12-31,290640000
 1835830,7372,Services-Prepackaged Software,2022-12-31,472748000
 1835830,7372,Services-Prepackaged Software,2023-12-31,698099000
 1835830,7372,Services-Prepackaged Software,2024-12-31,937464000
 1835830,7372,Services-Prepackaged Software,2025-12-31,1234019000
+1839341,6199,Finance Services,2020-12-31,60320000
+1839341,6199,Finance Services,2021-12-31,544483000
+1839341,6199,Finance Services,2022-12-31,640313000
+1839341,6199,Finance Services,2023-12-31,502400000
+1839341,6199,Finance Services,2024-12-31,510672000
+1839341,6199,Finance Services,2025-12-31,319019000
+1839439,7372,Services-Prepackaged Software,2020-06-30,327909000
+1839439,7372,Services-Prepackaged Software,2021-06-30,352777000
+1839439,7372,Services-Prepackaged Software,2022-06-30,429387000
+1839439,7372,Services-Prepackaged Software,2023-06-30,552692000
+1839439,7372,Services-Prepackaged Software,2024-06-30,654948000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2020-12-31,1188893000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2021-12-31,1378458000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2022-12-31,1401150000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2023-12-31,1439685000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2024-12-31,1766220000
 1840502,7370,"Services-Computer Programming, Data Processing, Etc.",2025-12-31,1912040000
+1840574,2834,Pharmaceutical Preparations,,
 1841156,7389,"Services-Business Services, NEC",2020-12-31,301767000
 1841156,7389,"Services-Business Services, NEC",2021-12-31,395524000
 1841156,7389,"Services-Business Services, NEC",2022-12-31,497001000
@@ -7712,6 +8737,16 @@ cik,sic,industry,period_end,revenue_usd
 1842022,4922,Natural Gas Transmission,2023-12-31,922000000
 1842022,4922,Natural Gas Transmission,2024-12-31,981000000
 1842022,4922,Natural Gas Transmission,2025-12-31,1243000000
+1842718,7370,"Services-Computer Programming, Data Processing, Etc.",2020-12-31,240633000
+1842718,7370,"Services-Computer Programming, Data Processing, Etc.",2021-12-31,323513000
+1842718,7370,"Services-Computer Programming, Data Processing, Etc.",2022-12-31,408348000
+1842718,7370,"Services-Computer Programming, Data Processing, Etc.",2023-12-31,474369000
+1842718,7370,"Services-Computer Programming, Data Processing, Etc.",2024-12-31,530101000
+1845022,7372,Services-Prepackaged Software,2021-01-31,103285000
+1845022,7372,Services-Prepackaged Software,2022-01-31,123542000
+1845022,7372,Services-Prepackaged Software,2023-01-31,154824000
+1845022,7372,Services-Prepackaged Software,2024-01-31,180037000
+1845022,7372,Services-Prepackaged Software,2025-01-31,209466000
 1845337,2834,Pharmaceutical Preparations,2024-12-31,131161000
 1845337,2834,Pharmaceutical Preparations,2025-12-31,158182000
 1846576,2300,Apparel & Other Finishd Prods of  Fabrics & Similar Matl,2020-12-31,263112000
@@ -7732,12 +8767,24 @@ cik,sic,industry,period_end,revenue_usd
 1851003,7372,Services-Prepackaged Software,2023-12-31,728723000
 1851003,7372,Services-Prepackaged Software,2024-12-31,1005754000
 1851003,7372,Services-Prepackaged Software,2025-12-31,1304668000
+1852131,3674,Semiconductors & Related Devices,2021-03-31,1195617000
+1852131,3674,Semiconductors & Related Devices,2022-03-31,1457592000
+1852131,3674,Semiconductors & Related Devices,2023-03-31,1902137000
+1852131,3674,Semiconductors & Related Devices,2024-03-31,2499841000
+1852131,3674,Semiconductors & Related Devices,2025-03-31,2959197000
+1852131,3674,Semiconductors & Related Devices,2026-03-31,3559390000
 1852244,4700,Transportation Services,2020-12-31,6195000000
 1852244,4700,Transportation Services,2021-12-31,7940000000
 1852244,4700,Transportation Services,2022-12-31,8993000000
 1852244,4700,Transportation Services,2023-12-31,9778000000
 1852244,4700,Transportation Services,2024-12-31,11709000000
 1852244,4700,Transportation Services,2025-12-31,13178000000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2020-12-31,574941000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2021-12-31,758357000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2022-12-31,876506000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2023-12-31,927070000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2024-12-31,994727000
+1853513,7500,"Services-Automotive Repair, Services & Parking",2025-12-31,1051731000
 1856314,7372,Services-Prepackaged Software,2020-12-31,230796000
 1856314,7372,Services-Prepackaged Software,2021-12-31,253953000
 1856314,7372,Services-Prepackaged Software,2022-12-31,437434000
@@ -7782,6 +8829,12 @@ cik,sic,industry,period_end,revenue_usd
 1865782,8082,Services-Home Health Care Services,2023-12-31,7691016000
 1865782,8082,Services-Home Health Care Services,2024-12-31,10072214000
 1865782,8082,Services-Home Health Care Services,2025-12-31,12910564000
+1866368,7372,Services-Prepackaged Software,2020-12-31,203222000
+1866368,7372,Services-Prepackaged Software,2021-12-31,252022000
+1866368,7372,Services-Prepackaged Software,2022-12-31,303426000
+1866368,7372,Services-Prepackaged Software,2023-12-31,368168000
+1866368,7372,Services-Prepackaged Software,2024-12-31,451803000
+1866368,7372,Services-Prepackaged Software,2025-12-31,731368000
 1866581,5810,Retail-Eating & Drinking Places,2020-12-31,327413000
 1866581,5810,Retail-Eating & Drinking Places,2021-12-31,497876000
 1866581,5810,Retail-Eating & Drinking Places,2022-12-31,739012000
@@ -7804,6 +8857,17 @@ cik,sic,industry,period_end,revenue_usd
 1868275,4911,Electric Services,2023-12-31,24918000000
 1868275,4911,Electric Services,2024-12-31,23568000000
 1868275,4911,Electric Services,2025-12-31,25533000000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2020-12-31,282250000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2021-12-31,598365000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2022-12-31,704274000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2023-12-31,458300000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2024-12-31,422670000
+1868726,2844,"Perfumes, Cosmetics & Other Toilet Preparations",2025-12-31,422960000
+1868778,7372,Services-Prepackaged Software,2020-12-31,1323096000
+1868778,7372,Services-Prepackaged Software,2021-12-31,1444055000
+1868778,7372,Services-Prepackaged Software,2022-12-31,1505118000
+1868778,7372,Services-Prepackaged Software,2023-12-31,1595160000
+1868778,7372,Services-Prepackaged Software,2024-12-31,1640018000
 1868941,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2020-09-30,561323000
 1868941,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2021-09-30,680766000
 1868941,3690,"Miscellaneous Electrical Machinery, Equipment & Supplies",2022-09-30,1198603000
@@ -7830,6 +8894,11 @@ cik,sic,industry,period_end,revenue_usd
 1876042,6199,Finance Services,2023-12-31,1450466000
 1876042,6199,Finance Services,2024-12-31,1676253000
 1876042,6199,Finance Services,2025-12-31,2746642000
+1876588,3843,Dental Equipment & Supplies,2020-12-31,912427000
+1876588,3843,Dental Equipment & Supplies,2021-12-31,472308000
+1876588,3843,Dental Equipment & Supplies,2022-12-31,463292000
+1876588,3843,Dental Equipment & Supplies,2023-12-31,457433000
+1876588,3843,Dental Equipment & Supplies,2024-12-31,449749000
 1877322,3569,"General Industrial Machinery & Equipment, NEC",2020-12-31,1950069000
 1877322,3569,"General Industrial Machinery & Equipment, NEC",2021-12-31,2428115000
 1877322,3569,"General Industrial Machinery & Equipment, NEC",2022-12-31,2593480000
@@ -7960,6 +9029,10 @@ cik,sic,industry,period_end,revenue_usd
 1958140,7900,Services-Amusement & Recreation Services,2023-12-31,640667000
 1958140,7900,Services-Amusement & Recreation Services,2024-12-31,662748000
 1958140,7900,Services-Amusement & Recreation Services,2025-12-31,732492000
+1959348,2040,Grain Mill Products,2022-01-01,2460000000
+1959348,2040,Grain Mill Products,2022-12-31,2695000000
+1959348,2040,Grain Mill Products,2023-12-30,2763000000
+1959348,2040,Grain Mill Products,2024-12-28,2708000000
 1964738,3841,Surgical & Medical Instruments & Apparatus,2022-12-31,8130000000
 1964738,3841,Surgical & Medical Instruments & Apparatus,2023-12-31,8197000000
 1964738,3841,Surgical & Medical Instruments & Apparatus,2024-12-31,8254000000
@@ -8003,6 +9076,10 @@ cik,sic,industry,period_end,revenue_usd
 1974138,3578,Calculating & Accounting Machines (No Electronic Computers),2024-12-31,4305000000
 1974138,3578,Calculating & Accounting Machines (No Electronic Computers),2025-12-31,4354000000
 1974640,2836,"Biological Products, (No Diagnostic Substances)",,
+1977303,2810,Industrial Inorganic Chemicals,2021-12-31,420400000
+1977303,2810,Industrial Inorganic Chemicals,2022-12-31,813200000
+1977303,2810,Industrial Inorganic Chemicals,2023-12-31,882500000
+1977303,2810,Industrial Inorganic Chemicals,2024-12-31,1007800000
 1981792,6798,Real Estate Investment Trusts,2021-12-31,1427901000
 1981792,6798,Real Estate Investment Trusts,2022-12-31,1489490000
 1981792,6798,Real Estate Investment Trusts,2023-12-31,908753000

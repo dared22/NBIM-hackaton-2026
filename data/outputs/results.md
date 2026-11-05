@@ -8,17 +8,17 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### US executive pay votes (history + company facts)
 - Proposals: 1200; NBIM voted against the board on 114.
-- Decided automatically: 833 (69%). Sent to a person: 367 (31%).
-- Automatic 'against the board' suggestions: 101, of which 68 were right (precision 67%, recall 60%).
-- Against-votes inside the pile sent to a person: 37 (32% of all against-votes).
-- Against-votes the tool waved through with the board: 9 (8% of all against-votes).
-- With a person reading the review pile, 105 of 114 against-votes are either suggested or seen (92%).
-- Low-information gate: 130 proposals the model would have waved through were sent to a person instead; 10 of them were against-votes.
+- Decided automatically: 903 (75%). Sent to a person: 297 (25%).
+- Automatic 'against the board' suggestions: 101, of which 71 were right (precision 70%, recall 62%).
+- Against-votes inside the pile sent to a person: 31 (27% of all against-votes).
+- Against-votes the tool waved through with the board: 12 (11% of all against-votes).
+- With a person reading the review pile, 102 of 114 against-votes are either suggested or seen (89%).
+- Low-information gate: 75 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1158 (75%). Sent to a person: 381 (25%).
-- Automatic 'against the board' suggestions: 36, of which 25 were right (precision 69%, recall 38%).
+- Decided automatically: 1165 (76%). Sent to a person: 374 (24%).
+- Automatic 'against the board' suggestions: 37, of which 25 were right (precision 68%, recall 38%).
 - Against-votes inside the pile sent to a person: 26 (39% of all against-votes).
 - Against-votes the tool waved through with the board: 15 (23% of all against-votes).
 - With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
@@ -76,7 +76,7 @@ NBIM say-on-pay votes: 4260 annual pay votes at 1786 companies (US filers)
 Left out: 487 frequency votes and blanks (NBIM never opposed the board on these), and 123 merger payout votes (37 against, one-off events with no history)
 Train: seasons before 2026, 3060 votes, 261 against the board
 Test:  season 2026, 1200 votes, 114 against the board (9.5%)
-Company facts for the test votes: 1109 from the meeting's own proxy, 3 from the SEC API, 88 none. CEO pay known for 1111 (93%).
+Company facts for the test votes: 1170 from the meeting's own proxy, 3 from the SEC API, 27 none. CEO pay known for 1172 (98%).
 Proxies were filed 21 to 90 days before the meeting (median 43).
 
 Results on season 2026 (95% intervals from resampling votes)
@@ -85,60 +85,60 @@ Results on season 2026 (95% intervals from resampling votes)
   Always with board                  |      0.0% |   0%-0% |   0.0% |   0%-0% |  0.0% |       0 |    0 |            0 |    114
   Same as last season                |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
   History only, top 97               |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
-  History + company facts, top 97    |     73.2% | 63%-82% |  62.3% | 54%-70% | 67.3% |      97 |   71 |           26 |     43
-  History + company facts, p >= 0.33 |     69.1% | 60%-78% |  66.7% | 58%-75% | 67.9% |     110 |   76 |           34 |     38
+  History + company facts, top 97    |     74.2% | 65%-83% |  63.2% | 55%-71% | 68.2% |      97 |   72 |           25 |     42
+  History + company facts, p >= 0.37 |     71.8% | 63%-80% |  69.3% | 61%-77% | 70.5% |     110 |   79 |           31 |     35
 
   'top 97' rows flag exactly as many votes as the same-as-last-season baseline, so they compare like for like.
-  Average precision: history + company facts 0.669, history only 0.246, random 0.095
-  Brier score (lower is better): model 0.0473, always saying 8.5% 0.0861
+  Average precision: history + company facts 0.698, history only 0.246, random 0.095
+  Brier score (lower is better): model 0.0451, always saying 8.5% 0.0861
 
 By what was known about the company
   What was known                   | Votes | Against | Found | Recall | False alarms
   ---------------------------------+-------+---------+-------+--------+-------------
-  CEO pay known                    |  1111 |     105 |    76 |    72% |           34
-  only other executives' pay known |     1 |       0 |     0 |      - |            0
-  no pay figure                    |    88 |       9 |     0 |     0% |            0
+  CEO pay known                    |  1172 |     113 |    79 |    70% |           30
+  only other executives' pay known |     1 |       0 |     0 |      - |            1
+  no pay figure                    |    27 |       1 |     0 |     0% |            0
 
 New situations: against-votes at companies NBIM did not oppose last season
-  72 such votes. Same-as-last-season finds 0 by construction; the model finds 37 in its top 97 and 41 at p >= 0.33.
+  72 such votes. Same-as-last-season finds 0 by construction; the model finds 38 in its top 97 and 43 at p >= 0.37.
 
 Bands on the test season
   Band                 | Votes | Share | Real against-votes | Share of all against | Against rate
   ---------------------+-------+-------+--------------------+----------------------+-------------
-  likely WITH board    |   862 |   72% |                 19 |                  17% |         2.2%
-  send to human        |   228 |   19% |                 19 |                  17% |         8.3%
-  likely AGAINST board |   110 |    9% |                 76 |                  67% |        69.1%
+  likely WITH board    |   877 |   73% |                 15 |                  13% |         1.7%
+  send to human        |   213 |   18% |                 20 |                  18% |         9.4%
+  likely AGAINST board |   110 |    9% |                 79 |                  69% |        71.8%
 
 Is the confidence honest? (predicted vs actual share against)
   Predicted | Votes | Model says | Actual
   ----------+-------+------------+-------
-  0%-5%     |   862 |       2.5% |   2.2%
-  5%-15%    |   133 |       7.8% |   6.0%
-  15%-35%   |    98 |      23.6% |  13.3%
-  35%-60%   |    28 |      44.4% |  39.3%
-  60%-100%  |    79 |      83.1% |  79.7%
+  0%-5%     |   877 |       2.2% |   1.7%
+  5%-15%    |   116 |       8.1% |   6.0%
+  15%-35%   |    90 |      23.5% |  14.4%
+  35%-60%   |    29 |      43.2% |  34.5%
+  60%-100%  |    88 |      83.7% |  78.4%
 
 Against rate by CEO pay, test season
   CEO total pay | Votes | Against | Against rate
   --------------+-------+---------+-------------
-  under $10m    |   405 |       6 |           1%
-  $10-25m       |   558 |      20 |           4%
-  $25-40m       |   102 |      45 |          44%
-  $40m or more  |    46 |      34 |          74%
-  no CEO figure |    89 |       9 |          10%
+  under $10m    |   432 |       8 |           2%
+  $10-25m       |   585 |      22 |           4%
+  $25-40m       |   107 |      47 |          44%
+  $40m or more  |    48 |      36 |          75%
+  no CEO figure |    28 |       1 |           4%
 
 Model weights (positive = pushes towards AGAINST)
-   +1.46  prev_against   NBIM voted against this company's pay last season
-   -0.66  prev_for       NBIM supported this company's pay last season
-   -0.62  pay_size       size of the CEO's total pay
-   +1.63  pay_25m        CEO pay is at or above the 25 million dollar level NBIM reviews more strictly
-   +0.97  pay_doubled    CEO pay at least doubled from the year before
-   +0.41  ceo_vs_others  CEO pay is many times the other executives' average
-   +1.88  others_size    size of the other named executives' average pay
-   +0.16  high_pay_lost  CEO pay of 25 million dollars or more while shareholders have lost money
-   +0.48  ceo_changed    more than one CEO was paid during the year
-   +0.69  pay_vs_peers   CEO pay as a multiple of the median at companies of similar industry and size
-   +0.98  pay_outran_returns CEO pay has grown faster than shareholder returns over the years in the pay table
+   +1.49  prev_against   NBIM voted against this company's pay last season
+   -0.63  prev_for       NBIM supported this company's pay last season
+   -0.70  pay_size       size of the CEO's total pay
+   +1.52  pay_25m        CEO pay is at or above the 25 million dollar level NBIM reviews more strictly
+   +1.09  pay_doubled    CEO pay at least doubled from the year before
+   +0.58  ceo_vs_others  CEO pay is many times the other executives' average
+   +2.47  others_size    size of the other named executives' average pay
+   +0.33  high_pay_lost  CEO pay of 25 million dollars or more while shareholders have lost money
+   +0.46  ceo_changed    more than one CEO was paid during the year
+   +0.70  pay_vs_peers   CEO pay as a multiple of the median at companies of similar industry and size
+   +1.14  pay_outran_returns CEO pay has grown faster than shareholder returns over the years in the pay table
 
 Wrote 1200 scored votes to data/outputs/pay_votes_2026.csv
 ```
@@ -152,13 +152,13 @@ Training seasons only. AP = average precision (higher is better).
 
   Inputs                       | AP 2024->2025 | AP 2025->2024 | Mean AP | Hits in top 115 (2025)
   -----------------------------+---------------+---------------+---------+-----------------------
-  company facts, first version |         0.587 |         0.456 |   0.522 |                     69
-  + pay_vs_peers               |         0.609 |         0.468 |   0.539 |                     71
-  + pay_outran_returns         |         0.599 |         0.469 |   0.534 |                     70
-  + all of them                |         0.618 |         0.475 |   0.547 |                     71
+  company facts, first version |         0.629 |         0.514 |   0.572 |                     74
+  + pay_vs_peers               |         0.650 |         0.533 |   0.591 |                     76
+  + pay_outran_returns         |         0.639 |         0.534 |   0.586 |                     71
+  + all of them                |         0.658 |         0.544 |   0.601 |                     76
 
   For comparison, 'same as last season' on 2025: 46 hits with 115 flags.
-  Share of training votes with the measure: pay vs peers 84%, pay vs returns trend 82%
+  Share of training votes with the measure: pay vs peers 95%, pay vs returns trend 92%
 ```
 
 ## Director elections at US companies: NBIM's written rules applied to dated facts

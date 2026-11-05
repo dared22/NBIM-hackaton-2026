@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thursday 20:05.
+Last full update: Thursday 20:45.
 
 ## What must be delivered
 
@@ -23,7 +23,7 @@ Last full update: Thursday 20:05.
 | Piece | File | Status | Result |
 |---|---|---|---|
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
-| Pay model, US pay votes | `src/agent/pay_model.py` | Done | 71 hits against 42 at the same number of flags, season 2026 |
+| Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Director rules, US director elections | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; simple rule 36 and 37 (2019-2026) |
 | Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 73 of 73; 66 against-votes found with no false alarms, 21 of them first-time items |
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
@@ -33,7 +33,7 @@ Last full update: Thursday 20:05.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 30 pass, including leakage audits |
+| Checks | `tests/test_agent.py` | Done | 32 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -45,7 +45,7 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
    the same as last time". Two thirds of NBIM's against-votes are on items it
    never opposed before at that company.
 2. **Facts make the difference.** With pay figures read from each company's
-   proxy, the tool finds 71 of 114 against-votes on US pay where the simple
+   proxy, the tool finds 72 of 114 against-votes on US pay where the simple
    rule finds 42. With roles from SEC filings, NBIM's own rule "no chair who
    is also CEO" is right 84% of the time it fires.
 3. **Policy and practice differ.** NBIM opposed 28 of 28 chair-and-CEO
@@ -113,3 +113,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 19:20 Iftikhar: wording rules for shareholder proposals (declassify, written consent, simple majority and so on): 22 of 22.
 - Thu 19:50 Iftikhar: NBIM's 12 position papers loaded and tested. Good for citations, no gain for prediction.
 - Thu 20:05 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.
+- Thu 20:45 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.

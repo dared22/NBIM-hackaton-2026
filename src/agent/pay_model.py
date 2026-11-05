@@ -46,10 +46,12 @@ How the inputs were chosen
       combination with high pay.
 
 Versions scored on the 2026 season
-    Three: SEC API figures only; proxy figures; proxy figures plus the two ISS
-    measures and the confidence correction (this version). All three results
-    are in the commit history. The last change did not move the 2026 result
-    beyond noise.
+    Three model versions: SEC API figures only; proxy figures; proxy figures
+    plus the two ISS measures and the confidence correction (this version).
+    The last change did not move the 2026 result beyond noise. The season was
+    scored a fourth time after 239 more companies were linked to the SEC
+    (link_companies.py), with no change to the model. All results are in the
+    commit history.
 
 A missing figure gives 0 on every pay input, the same as an average package.
 There is no "figure exists" input.
