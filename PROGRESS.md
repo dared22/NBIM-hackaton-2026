@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thursday 20:45.
+Last full update: Thursday 19:48.
 
 ## What must be delivered
 
@@ -110,7 +110,7 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 18:00 Iftikhar: low-information gate; ballot-detail experiment (no gain).
 - Thu 18:40 Iftikhar: director rules from SEC role data; chair-and-CEO finding; drift monitor.
 - Thu 18:55 Iftikhar: merged into `main`, this file added.
-- Thu 19:20 Iftikhar: wording rules for shareholder proposals (declassify, written consent, simple majority and so on): 22 of 22.
-- Thu 19:50 Iftikhar: NBIM's 12 position papers loaded and tested. Good for citations, no gain for prediction.
-- Thu 20:05 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.
-- Thu 20:45 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.
+- Thu 19:05 Iftikhar: wording rules for shareholder proposals (declassify, written consent, simple majority and so on): 22 of 22.
+- Thu 19:20 Iftikhar: NBIM's 12 position papers loaded and tested. Good for citations, no gain for prediction.
+- Thu 19:30 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.
+- Thu 19:48 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.
