@@ -342,12 +342,13 @@ Wrote 1742 nominees to data/outputs/board_rules.csv
 
 ```text
 All proposals in NBIM's file: 13324, 744 against the board, 2019-2026
-Proposals whose wording falls under a clear-cut rule: 73 (20 from shareholders, 53 from management)
+Proposals whose wording falls under a clear-cut rule: 79 (20 from shareholders, 59 from management)
 
 1. Does NBIM vote as its rule says?
   Rule     |                                 The proposal asks to | Rule says | Proposals | NBIM voted so | Share | Board said the opposite | of which NBIM against the board
   ---------+------------------------------------------------------+-----------+-----------+---------------+-------+-------------------------+--------------------------------
   1.3.3    |            separate the roles of chairperson and CEO |       FOR |         3 |             3 |  100% |                       3 |                               3
+  1.3.1    | appoint one person as both chairperson and CEO or ma |       MOT |         6 |             6 |  100% |                       6 |                               6
   3.1.2    |                                 declassify the board |       FOR |         5 |             5 |  100% |                       4 |                               4
   3.1.5    |          majority requirements in director elections |       FOR |         1 |             1 |  100% |                       1 |                               1
   3.1.8    |                                         proxy access |       FOR |         1 |             1 |  100% |                       1 |                               1
@@ -366,23 +367,23 @@ Proposals whose wording falls under a clear-cut rule: 73 (20 from shareholders, 
   Same as last time, or a rule     |    25 |   24 |            1 |       96% |    48%
 
    All proposals where a rule means 'against the board' (management and shareholder proposals)
-   66 proposals, 66 against the board. 'Same as last time' covers 45 of them; the other 21 are first-time items it cannot flag, and 21 of those were against-votes.
+   72 proposals, 72 against the board. 'Same as last time' covers 45 of them; the other 27 are first-time items it cannot flag, and 27 of those were against-votes.
 
 3. By period, with the drift monitor
   Years     | Rules alone: hits/flags | Monitor: automatic hits/flags | Monitor: sent to a person, against/total
   ----------+-------------------------+-------------------------------+-----------------------------------------
-  2019-2025 |                   57/57 |                         57/57 |                                      0/0
+  2019-2025 |                   63/63 |                         63/63 |                                      0/0
   2026      |                     9/9 |                           9/9 |                                      0/0
-  all years |                   66/66 |                         66/66 |                                      0/0
+  all years |                   72/72 |                         72/72 |                                      0/0
 
 4. Does the tool cite the section NBIM itself gave?
-   Of 58 rule hits where NBIM gave a reason, the tool's section matches NBIM's in 58: {('GVG 4.2', 'GVG 4.2'): 5, ('GVG 5.2', 'GVG 5.2'): 39, ('GVG 6.2', 'GVG 6.2'): 6, ('GVG 3.1', 'GVG 3.1'): 6, ('GVG 1.3', 'GVG 1.3'): 2}
+   Of 64 rule hits where NBIM gave a reason, the tool's section matches NBIM's in 61: {('GVG 4.2', 'GVG 4.2'): 5, ('GVG 5.2', 'GVG 5.2'): 39, ('GVG 6.2', 'GVG 6.2'): 6, ('GVG 1.3', 'GVG 1.2'): 2, ('GVG 3.1', 'GVG 3.1'): 6, ('GVG 1.3', 'GVG 1.3'): 5, ('GVG 1.3', 'GVG 1.1'): 1}
 
 5. Against-votes on shareholder proposals that no clear-cut rule covers, by NBIM's stated reason
     {'GVG 5.3': 21, 'none given': 4, 'GVG 4.3': 2, 'GVG 3.1': 2, 'GVG 1.1': 1}
     GVG 5.3 is sustainability reporting, where every rule needs judgement.
 
-Wrote 73 proposals to data/outputs/proposal_rules.csv
+Wrote 79 proposals to data/outputs/proposal_rules.csv
 ```
 
 ## Experiment: do ballot details improve the history model? (test years 2022-2025)
@@ -491,7 +492,7 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   Rules             | Rule hits | NBIM named a paper | Tool names the same paper | NBIM named none | Tool also names none
   ------------------+-----------+--------------------+---------------------------+-----------------+---------------------
   US director rules |        38 |                 31 |                        28 |               7 |                    0
-  wording rules     |        66 |                  3 |                         3 |              63 |                   62
+  wording rules     |        72 |                  9 |                         9 |              63 |                   62
    NBIM's own pairing of guideline section and paper, all against-votes: GVG 1.1 -> Board independence (84); GVG 1.3 -> Separation of chairperson and CEO (50); GVG 2.1 -> Time commitment of board members (49); GVG 1.2 -> Board independence (46); GVG 3.3 -> CEO remuneration (43); GVG 5.3 -> Corporate sustainability reporting (21); GVG 2.3 -> Board diversity (17); GVG 3.2 -> Corporate sustainability reporting (16)
 
 4. Decision model on the proposal wording, 2026, with and without the papers

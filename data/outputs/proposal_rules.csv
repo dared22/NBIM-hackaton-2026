@@ -25,6 +25,7 @@ meeting_id,item_no,meeting_date,company,country,proponent,proposal_text,board_re
 1496814,22,2021-04-23,Arbonia AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1517661,12,2021-04-27,PACCAR Inc,United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
 1496823,23,2021-04-29,DocMorris Ltd.,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
+1543997,6,2021-08-04,Hero Motocorp Limited,India,Management,Approve Reappointment of Pawan Munjal as Whole-time Director Designated as Chairman & CEO,FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.2
 1572745,6,2021-10-07,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
 1607541,12,2022-03-02,Aguas Andinas SA,Chile,Management,Other Business,FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1606875,11,2022-04-01,Global Power Synergy Public Company Limited,Thailand,Management,Other Business,FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
@@ -45,6 +46,7 @@ meeting_id,item_no,meeting_date,company,country,proponent,proposal_text,board_re
 1706771,35,2023-05-04,DocMorris Ltd.,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1763807,10,2023-06-28,Meidensha Corp.,Japan,Management,Approve Takeover Defense Plan (Poison Pill),FOR,6.2-AT.2,MOT,1,GVG 6.2 active,MOT,1,GVG 6.2
 1777474,22,2023-08-10,"TSURUHA Holdings, Inc.",Japan,Shareholder,"Amend Articles to Separate Chairperson of the Board and CEO, and Appoint Outside Director as Board Chairperson",MOT,1.3.3,FOR,1,GVG 1.3 active,FOR,1,GVG 1.3
+1788399,6,2023-09-28,Bharat Dynamics Limited,India,Management,Approve Appointment of Atmakuri Madhavarao as Chairman and Managing Director,FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.3
 1823658,25,2024-03-26,Mobimo Holding AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1821035,11,2024-04-03,Global Power Synergy Public Company Limited,Thailand,Management,Other Business,FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1812495,20,2024-04-19,Arbonia AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
@@ -54,6 +56,7 @@ meeting_id,item_no,meeting_date,company,country,proponent,proposal_text,board_re
 1856850,7,2024-06-13,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
 1856850,8,2024-06-13,"Tesla, Inc.",United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
 1869119,6,2024-07-02,Snowflake Inc.,United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1886920,4,2024-08-29,Indian Railway Finance Corp. Ltd.,India,Management,Approve Appointment of Usha Venugopal as Chairman and Managing Director (Addl. Charge),FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.3
 1921521,21,2025-03-31,Mobimo Holding AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1928458,11,2025-04-04,Global Power Synergy Public Company Limited,Thailand,Management,Other Business,FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1943457,12,2025-04-16,Aguas Andinas SA,Chile,Management,Other Business,FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
@@ -61,6 +64,9 @@ meeting_id,item_no,meeting_date,company,country,proponent,proposal_text,board_re
 1949282,20,2025-04-25,Arbonia AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1915478,27,2025-05-08,DocMorris Ltd.,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2
 1976170,6,2025-07-02,Snowflake Inc.,United States,Management,Declassify the Board of Directors,FOR,3.1.2,FOR,0,,FOR,0,
+1979284,14,2025-08-21,Varroc Engineering Limited,India,Management,Approve Reappointment and Remuneration of Tarang Jain as Chairman and Managing Director,FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.2
+1996189,7,2025-08-28,NMDC Steel Ltd.,India,Management,Elect Amitava Mukherjee as Director and Approve Appointment of Amitava Mukherjee as Chairman & Managing Director,FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.1
+1997473,4,2025-08-30,Indian Railway Finance Corp. Ltd.,India,Management,Approve Appointment and Remuneration of Manoj Kumar Dubey as Chairman and Managing Director,FOR,1.3.1,MOT,1,GVG 1.3 active,MOT,1,GVG 1.3
 1994609,14,2025-11-06,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
 1994609,15,2025-11-06,"Tesla, Inc.",United States,Shareholder,Reduce Supermajority Vote Requirement,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
 2041367,21,2026-03-31,Mobimo Holding AG,Switzerland,Management,Transact Other Business (Voting),FOR,5.2.2,MOT,1,GVG 5.2 active,MOT,1,GVG 5.2

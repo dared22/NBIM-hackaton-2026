@@ -6,6 +6,8 @@ Run from the repo root (no internet, no API key, no AI model):
 Idea
     Some of NBIM's rules are about what a proposal asks for, and the proposal
     title says it. For example
+        1.3.1     "We will not support the election of a chairperson who is also
+                  the CEO of the company."
         3.1.2     "We will support a proposal to declassify the board."
         4.2.2     support for the right "to act by written consent"
         6.2-AT.3  "We will support a proposal to abolish anti-takeover measures."
@@ -49,6 +51,14 @@ OUT = os.path.join(ROOT, "data", "outputs", "proposal_rules.csv")
 RULES = [
     ("1.3.3", "GVG 1.3", "FOR", "separate the roles of chairperson and CEO",
      r"^(require|adopt|appoint|establish)\b.{0,40}(?<!non-)independent (board )?chair|separate .{0,60}chair"),
+    # A proposal to appoint one person as both chair and chief executive (common wording in India:
+    # "Approve Appointment of X as Chairman and Managing Director"). "Vice chairman", an executive
+    # chairman who is not the managing director, and items that only set pay are left out.
+    ("1.3.1", "GVG 1.3", "MOT", "appoint one person as both chairperson and CEO or managing director",
+     r"^(approve (the )?(re-?)?(appointment|continuation)|elect|re-?elect|appoint|reappoint)\b.*?(?<!vice )(?<!vice-)(?<!deputy )"
+     r"\bchair(man|person|woman)?\b[^;]{0,30}\b(managing director|chief executive|ceo)\b"
+     r"|^(approve (the )?(re-?)?(appointment|continuation)|elect|re-?elect|appoint|reappoint)\b.*?"
+     r"\b(managing director|chief executive officer|ceo)\b[^;]{0,25}(?<!vice )(?<!vice-)\bchair(man|person|woman)\b"),
     ("3.1.2", "GVG 3.1", "FOR", "declassify the board", r"\bdeclassify"),
     ("3.1.5", "GVG 3.1", "FOR", "majority requirements in director elections",
      r"majority vot\w+ (standard )?(for|in) (the )?election of directors"),

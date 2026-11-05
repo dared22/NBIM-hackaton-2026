@@ -252,14 +252,16 @@ rules are about what a proposal asks for, and the title says it: declassify
 the board (3.1.2), majority voting in director elections (3.1.5), proxy
 access (3.1.8), the right to act by written consent (4.2.2), separate chair
 and CEO (1.3.3), abolish an anti-takeover measure such as a supermajority
-requirement (6.2-AT.3), no support for a new poison pill (6.2-AT.2), and no
+requirement (6.2-AT.3), no support for a new poison pill (6.2-AT.2), no
 support for the agenda item "other business" (5.2.2, which names that item in
-its own text).
+its own text), and no support for appointing one person as both chair and CEO
+or managing director (1.3.1, where the title says so, as in "Approve
+Appointment of ... as Chairman and Managing Director").
 
-Scored on every proposal in file A, all countries, 2019-2026. 73 proposals
-fall under one of these rules, and NBIM voted as the rule says on all 73.
-The rule means a vote against the board on 66 of them (the board recommended
-the opposite), and all 66 were against-votes, including 9 of 9 in 2026.
+Scored on every proposal in file A, all countries, 2019-2026. 79 proposals
+fall under one of these rules, and NBIM voted as the rule says on all 79.
+The rule means a vote against the board on 72 of them (the board recommended
+the opposite), and all 72 were against-votes, including 9 of 9 in 2026.
 
 | Rule | Proposals | NBIM voted as the rule says |
 |---|---|---|
@@ -267,12 +269,13 @@ the opposite), and all 66 were against-votes, including 9 of 9 in 2026.
 | 6.2-AT.3, abolish supermajority or takeover defence | 11 | 11 |
 | 4.2.2, written consent | 6 | 6 |
 | 3.1.2, declassify the board | 5 | 5 |
+| 1.3.1, one person appointed chair and CEO or managing director (India) | 6 | 6 |
 | 1.3.3, separate chair and CEO | 3 | 3 |
 | 6.2-AT.2, poison pill | 2 | 2 |
 | 3.1.5 and 3.1.8, majority voting and proxy access | 2 | 2 |
 
-"Same as last time" already covers 45 of the 66, because the same item comes
-back each year. The other 21 are first-time items it cannot flag, and all 21
+"Same as last time" already covers 45 of the 72, because the same item comes
+back each year. The other 27 are first-time items it cannot flag, and all 27
 were against-votes. On the 150 shareholder proposals (50 against the board):
 
 | Method | Flags | Hits | False alarms | Precision | Recall |
@@ -281,8 +284,22 @@ were against-votes. On the 150 shareholder proposals (50 against the board):
 | Rules from the wording | 20 | 20 | 0 | 100% | 40% |
 | Same as last time, or a rule | 25 | 24 | 1 | 96% | 48% |
 
-The tool cites the same guideline section as NBIM in 58 of the 58 hits where
-NBIM gave a reason.
+The tool cites the same guideline section as NBIM in 61 of the 64 hits where
+NBIM gave a reason. The three that differ are appointments of a chair and
+managing director, where NBIM cited board independence instead.
+
+The appointment rule was added last, after the others, and none of its six
+cases is in 2026, so it does not change the test-year result. With a looser
+wording that also takes "Chairman and Whole-time Director" and "Vice
+Chairman", NBIM opposed 9 of 17, which is why the pattern is kept strict.
+
+Changes to governing documents (rule 4.3.2, "not in the best interest of
+shareholders") were looked at and left with a person. The titles that sound
+like a cut in shareholder rights are mostly ones NBIM supports: limiting
+officers' liability 0 of 8 against, virtual-only meetings 1 of 19. The ones
+it opposed in 2026 (moving incorporation from Delaware to Texas, a higher
+threshold for shareholder proposals) had no earlier cases to learn from, and
+a rule written for them now would be written with the answer in hand.
 
 Tested and left out: "auditor not named" (rule 5.1.2). Auditor proposals with
 no firm in the title are opposed 3.2% of the time, against 1.7% where a firm

@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 23:02.
+Last full update: Thu 23:05.
 
 ## What must be delivered
 
@@ -26,7 +26,7 @@ Last full update: Thu 23:02.
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
 | Director rules on SEC insider filings (second source) | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; agrees with the proxy reader on 98.9% of nominees |
-| Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 73 of 73; 66 against-votes found with no false alarms, 21 of them first-time items |
+| Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 79 of 79; 72 against-votes found with no false alarms, 27 of them first-time items |
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
@@ -37,7 +37,7 @@ Last full update: Thu 23:02.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 52 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 53 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -128,3 +128,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 21:14 Iftikhar: a non-linear pay model (boosted trees) tested on the training seasons: no gain, logistic model kept.
 - Thu 22:46 Iftikhar: proxy reader for US director elections. An AI model reads facts with checked quotes, code applies nine NBIM rules, and a rule acts alone only after NBIM followed it twice in a row. In the pipeline; file A 2026 now 35 automatic 'against' suggestions, 25 right, and 52 of 66 against-votes suggested or seen.
 - Thu 23:02 Iftikhar: pay reader extended to CEO pay of 25 million dollars or more. Better on the training seasons, worse on 2026, so not adopted. Its findings now appear as evidence with quotes on 152 pay decisions.
+- Thu 23:05 Iftikhar: wording rule for appointing one person as chair and managing director or CEO (rule 1.3.1, India): 6 of 6, none in 2026. Changes to governing documents looked at and left with a person.

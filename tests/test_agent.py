@@ -489,6 +489,17 @@ class PipelineResistanceTests(unittest.TestCase):
 
 
 class ProposalRuleTests(unittest.TestCase):
+    def test_combined_chair_and_ceo_appointment_is_recognised_from_the_title(self):
+        import proposal_rules as pr
+        hit = lambda t: (pr.match_rule(t) or [""])[0]
+        self.assertEqual(hit("Approve Appointment of A. Rao as Chairman and Managing Director"), "1.3.1")
+        self.assertEqual(hit("Approve Reappointment of P. Munjal as Whole-time Director Designated as Chairman & CEO"), "1.3.1")
+        self.assertNotEqual(hit("Approve Reappointment and Remuneration of R. Juneja as Vice Chairman and Managing Director"), "1.3.1")
+        self.assertNotEqual(hit("Approve Appointment and Remuneration of A. Lal as Executive Chairman and Whole-Time Director"), "1.3.1")
+        self.assertNotEqual(hit("Elect S. Vaidya as Director (Refineries), Designated as Chairman"), "1.3.1")
+        self.assertNotEqual(hit("Approve Remuneration and Waiver of Excess Remuneration Paid to L. Agarwal as Chairman and Managing Director"), "1.3.1")
+        self.assertEqual(hit("Amend Articles to Separate Chairperson of the Board and CEO"), "1.3.3")
+
     def setUp(self):
         import proposal_rules
         self.rule = lambda text: (proposal_rules.match_rule(text) or [None])[0]
