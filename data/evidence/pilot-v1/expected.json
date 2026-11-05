@@ -1,0 +1,28 @@
+{
+  "basis": "Manual review of the cached source profiles and current-board lists, before inspecting extraction results. These are factual annotations, not NBIM voting labels.",
+  "expected": {
+    "1950494/1/independent": true,
+    "1950494/1/audit_member": true,
+    "1950494/1/remuneration_member": true,
+    "1950494/2/independent": true,
+    "1950494/3/independent": true,
+    "1950494/3/remuneration_member": true,
+    "1930739/1/independent": true,
+    "1930739/1/board_chair": true,
+    "1930739/1/board_count_min": 2,
+    "1930739/12/independent": true,
+    "1930739/12/nomination_chair": true,
+    "1930739/12/board_count_min": 4,
+    "1923687/1/independent": true,
+    "1923687/1/audit_member": true,
+    "1923687/10/ceo": true,
+    "1923687/10/executive": true,
+    "1974465/1/ceo": true,
+    "1974465/1/board_chair": true,
+    "1947292/10/independent": true,
+    "1947292/10/audit_member": true,
+    "1947292/11/independent": true,
+    "1947292/11/nomination_chair": true,
+    "1947292/12/independent": true
+  }
+}

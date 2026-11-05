@@ -1,0 +1,21 @@
+{
+  "proposals": 20,
+  "meetings": 5,
+  "fact_statuses": {
+    "unknown": 155,
+    "partial": 37,
+    "known": 132,
+    "conflicting": 16
+  },
+  "rule_statuses": {
+    "ready": 34,
+    "incomplete": 102,
+    "not_implemented": 340,
+    "conflicting": 24
+  },
+  "failures": {},
+  "model_calls": 0,
+  "cache_hits": 20,
+  "cost": 0.0,
+  "seconds": 1.199
+}

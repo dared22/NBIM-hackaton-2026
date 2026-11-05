@@ -5,8 +5,9 @@ proposal, cites the relevant NBIM voting guideline, and sends uncertain cases
 to a person. We evaluate recommendations against NBIM's published votes.
 
 The current repository contains the supplied data, a structured copy of the
-2025 guidelines, an architecture plan, and a historical benchmark. The voting
-agent itself is still to be built.
+2025 guidelines, an architecture plan, and a historical benchmark. The policy
+and US director-evidence modules are implemented; the Jev voting and evaluation
+pipeline remains to be integrated.
 
 ## Project layout
 
@@ -21,20 +22,20 @@ required.
 │   ├── dirty/                 # Supplied, unchanged CSVs
 │   │   ├── real_votes.csv     # NBIM API vote history; evaluation labels
 │   │   └── npx_votes.csv      # Optional SEC N-PX reference data
-│   ├── prepared/              # Planned: cleaned proposal inputs and splits
-│   ├── evidence/              # Planned: cached, dated meeting documents
+│   ├── prepared/              # Prepared proposal inputs; splits planned
+│   ├── evidence/              # Cached, dated meeting documents
 │   └── outputs/               # Planned: predictions and evaluation reports
 ├── docs/
 │   └── case1-architecture.md  # Detailed design and benchmark protocol
 ├── src/
 │   ├── prepare.py             # Planned: clean votes and separate inputs/labels
-│   ├── policy.py              # Planned: select and cite guideline sections
-│   ├── evidence.py            # Planned: retrieve pre-meeting company facts
+│   ├── policy.py              # Select and cite guideline sections
+│   ├── evidence.py            # Retrieve pre-meeting US director facts
 │   ├── decision.py            # Planned: Jev vote and human-review gate
 │   ├── evaluate.py            # Planned: baselines and holdout metrics
 │   ├── run.py                 # Planned: one end-to-end command
 │   └── benchmark/             # Existing historical disagreement model
-├── tests/                     # Planned: focused pipeline checks
+├── tests/                     # Focused evidence and pipeline checks
 └── startpakke/                # Organizers' materials and original scripts
 ```
 
@@ -100,3 +101,6 @@ method on the same eligible rows and include the simple baseline of following
 
 For the full case requirements and source scripts, see the
 [organizers' Case 1 README](startpakke/case1_stemmegivning/README.md).
+
+For evidence commands, offline replay, and the downstream contract, see the
+[director evidence reference](docs/reference/director-evidence.md).

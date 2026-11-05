@@ -1,0 +1,17 @@
+{
+  "proposals": 20,
+  "meetings": 5,
+  "source_audit": "Known values reviewed against saved source excerpts; shared meeting values checked once per meeting. Minimum role counts are lower bounds, not exhaustive totals.",
+  "annotated_facts": 23,
+  "matched_known_annotations": 21,
+  "unresolved_annotations": [
+    "1923687/10/executive",
+    "1923687/10/ceo"
+  ],
+  "incorrect_known_annotations": [],
+  "pdf_citations_verified": 28,
+  "pdf_sha256": "cde5f906ff68e4c13a0408a9b516ca346c821f642db3603405c1736cf7d6378c",
+  "source_url": "https://www.nbim.no/contentassets/01a7ee19b5d84a73a67a365e76a0fb01/global-voting-guildeines_2025.pdf",
+  "limits": "Small selected development pilot; no voting precision or production accuracy claim. Unknown and contradictory facts remain unresolved.",
+  "offline_replay": "Zero model calls; contract test compares packets excluding operational provenance."
+}
