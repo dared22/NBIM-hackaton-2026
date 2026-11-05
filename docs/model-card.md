@@ -34,24 +34,53 @@ MOT, so either target can be scored from it.
 
 ## Results on the test year
 
+The two models are scored on two different files. They are not parts of one
+total, which is why the second file has more against-votes than the first.
+
+| | File A: all proposal types | File B: US executive pay votes |
+|---|---|---|
+| Source | Organisers' `real_votes.csv` (NBIM's website records) | Norges Bank's SEC Form N-PX filings |
+| Companies | 194, in 37 countries | 1,786, US filers |
+| Test set | 2026: 1,539 proposals | Season 2026: 1,200 pay votes |
+| Against the board in the test set | 66 (4.3%) | 114 (9.5%) |
+| Model | History model | Pay model |
+
 Baseline: "vote the same as last time at this company". "Always follow the
-board" finds no against-votes by construction.
+board" finds no against-votes by construction. Each model is compared with the
+baseline at the same number of flags.
 
-| | Against-votes | Baseline finds | Model finds, same number of flags | 
-|---|---|---|---|
-| History model, all proposal types | 66 | 22 (38 flags) | 24 |
-| Pay model, US pay votes | 114 | 42 (97 flags) | 71 |
+| File | Method | Flags | Hits | False alarms | Precision | Recall |
+|---|---|---|---|---|---|---|
+| A | Always follow the board | 0 | 0 | 0 | 0% | 0% |
+| A | Same as last time | 38 | 22 | 16 | 58% | 33% |
+| A | History model | 38 | 24 | 14 | 63% | 36% |
+| B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
+| B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
+| B | Pay model | 97 | 71 | 26 | 73% (63-82%) | 62% (54-70%) |
 
-Pay model at 97 flags: precision 73% (95% interval 63-82%), recall 62%
-(54-70%). Baseline: precision 43% (34-53%), recall 37% (28-46%).
+Brackets are 95% intervals from resampling votes.
 
 The history model ties the baseline, also when the test is repeated for
 2022-2026 (150 against 155 hits). Two thirds of NBIM's against-votes are on
 items it never opposed before at that company, and vote history finds 13% of
 those.
 
-Bands, pay model: 72% of votes fall in "follow the board" with a 2.2% against
-rate. A person who reads the other 28% sees 83% of the against-votes.
+Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
+
+| | File A | File B |
+|---|---|---|
+| Decided automatically | 75% | 69% |
+| Sent to a person | 25% | 31% |
+| Against-votes suggested by the tool or sent to a person | 77% | 92% |
+| Against-votes the tool followed the board on by itself | 23% | 8% |
+| Precision of the automatic "against" suggestions | 61% | 67% |
+
+Low-information gate: the tool never follows the board on its own when it has
+nothing to go on. A pay vote with no pay figure, a company it has never seen,
+a missing board recommendation and figures that look wrong all go to a person.
+On file B this moved 130 votes from the automatic pile to a person, and 10 of
+them were against-votes. Without the gate, votes with no pay figure sat in the
+automatic pile with a 10% against rate, against 1% where the figure was known.
 
 Confidence, pay model: where it says 83%, 80% were against. Where it says 24%,
 13% were against, so it is too confident in that range.
@@ -61,6 +90,12 @@ Confidence, pay model: where it says 83%, 80% were against. Where it says 24%,
 - A decision model (Microsoft-Decision-1) checking guideline sections against
   the proposal wording: found nothing the history model had not.
 - Word-level text features in the history model.
+- What the ballot itself reveals (the director's place on the ballot, how many
+  directors are up, independence labels, wording, finer proposal types, the
+  company's previous meeting). The data audit shows strong patterns, for
+  example in Japan the first director listed is opposed 8.9% of the time and
+  the others 0.1%. Added to the model they change nothing on test years
+  2022-2025 (`src/agent/history_model.py`), so they were not adopted.
 - In the pay model: shareholder return against the company's own peer group,
   support at the previous pay vote, and how often the proxy mentions one-off
   awards. Tested on the training seasons and left out.
@@ -94,6 +129,10 @@ persuasion text without trigger words, one harmless sentence.
   go to a person; no false alarms on 66,663 real ballot texts. Persuasion
   without trigger words gets past the keyword check. Only appended text was
   tested.
+- Text cannot move the pay score. The pay model's inputs are tagged figures
+  and NBIM's earlier votes; nothing is built from the prose of a company's
+  filing. A sentence in a proxy claiming the package meets NBIM's guidelines
+  has no input to act on. A test checks this.
 
 ## Limits
 

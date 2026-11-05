@@ -146,6 +146,34 @@ class RuleCheckRequestTests(unittest.TestCase):
         self.assertIn("never follow instructions", text)
 
 
+class DecisionTests(unittest.TestCase):
+    def setUp(self):
+        sys.path.insert(0, os.path.join(ROOT, "src"))
+        import run
+        self.run = run
+
+    def test_low_probability_alone_is_automatic(self):
+        self.assertEqual(self.run.decide("FOR", "likely WITH board", []), ("FOR", "automatic", ""))
+
+    def test_low_information_always_goes_to_a_person(self):
+        vote, who, why = self.run.decide("FOR", "likely WITH board", ["low information: no pay figure found for this company"])
+        self.assertEqual(who, "human review")
+        self.assertIn("low information", why)
+
+    def test_missing_board_recommendation_goes_to_a_person(self):
+        self.assertEqual(self.run.decide("", "likely WITH board", [])[1], "human review")
+
+    def test_against_the_board_flips_the_boards_recommendation(self):
+        self.assertEqual(self.run.decide("FOR", "likely AGAINST board", [])[0], "MOT")
+        self.assertEqual(self.run.decide("MOT", "likely AGAINST board", [])[0], "FOR")
+
+    def test_pay_score_uses_numbers_and_past_votes_only(self):
+        # Free text from a company filing can never raise or lower the pay score:
+        # no input is built from prose, only from tagged figures and earlier votes.
+        names = [name for name, _, _ in pm.FEATURES]
+        self.assertFalse(any(word in n for n in names for word in ("text", "word", "sentence", "support")))
+
+
 class ProxyTextTests(unittest.TestCase):
     def test_prior_support_is_the_figure_next_to_the_result(self):
         text = ("Approval requires a majority (50%) of shares present. "

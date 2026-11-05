@@ -90,18 +90,23 @@ needs no API key and no internet: model answers and SEC figures are saved in
 the repository.
 
 ```bash
-python3 src/run.py                        # about two minutes
-python3 -m unittest discover -s tests     # 15 checks, including leakage audits
+python3 src/run.py                        # about three minutes
+python3 -m unittest discover -s tests     # 20 checks, including leakage audits
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
 probability, band, who decides, reasons, guideline, evidence link) and
 `data/outputs/results.md` (the full output of every script below).
 
+The two models are scored on two different files, so their counts do not add up
+to one total.
+
 | Script | What it shows | Result on 2026 |
 |---|---|---|
-| `src/benchmark/model.py` | Vote history only, all proposal types, 37 countries | 24 of 66 against-votes found; "same as last time" finds 22 |
-| `src/agent/pay_model.py` | US executive pay votes: history plus company facts read from each meeting's proxy | 71 of 114 found with 97 flags; "same as last season" finds 42 with 97 flags |
+| `src/benchmark/model.py` | File A, `real_votes.csv`: all proposal types, 37 countries, 1,539 proposals, 66 against the board. Vote history only | 24 hits and 14 false alarms at 38 flags; "same as last time" has 22 and 16 |
+| `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 71 hits and 26 false alarms at 97 flags; "same as last season" has 42 and 55 |
+| `src/agent/history_model.py` | Experiment on file A: does what the ballot reveals (director order, board size, labels) help? | No change on test years 2022-2025; not adopted |
+| `src/agent/data_audit.py` | Every column of all three vote files | Report in `data/outputs/data_audit.md` |
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |
 

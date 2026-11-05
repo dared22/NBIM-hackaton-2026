@@ -8,19 +8,21 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### US executive pay votes (history + company facts)
 - Proposals: 1200; NBIM voted against the board on 114.
-- Decided automatically: 963 (80%). Sent to a person: 237 (20%).
+- Decided automatically: 833 (69%). Sent to a person: 367 (31%).
 - Automatic 'against the board' suggestions: 101, of which 68 were right (precision 67%, recall 60%).
-- Against-votes inside the pile sent to a person: 27 (24% of all against-votes).
-- Against-votes the tool waved through with the board: 19 (17% of all against-votes).
-- With a person reading the review pile, 95 of 114 against-votes are either suggested or seen (83%).
+- Against-votes inside the pile sent to a person: 37 (32% of all against-votes).
+- Against-votes the tool waved through with the board: 9 (8% of all against-votes).
+- With a person reading the review pile, 105 of 114 against-votes are either suggested or seen (92%).
+- Low-information gate: 130 proposals the model would have waved through were sent to a person instead; 10 of them were against-votes.
 
 ### All proposal types (history only)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1192 (77%). Sent to a person: 347 (23%).
-- Automatic 'against the board' suggestions: 39, of which 24 were right (precision 62%, recall 36%).
-- Against-votes inside the pile sent to a person: 24 (36% of all against-votes).
-- Against-votes the tool waved through with the board: 18 (27% of all against-votes).
-- With a person reading the review pile, 48 of 66 against-votes are either suggested or seen (73%).
+- Decided automatically: 1160 (75%). Sent to a person: 379 (25%).
+- Automatic 'against the board' suggestions: 38, of which 23 were right (precision 61%, recall 35%).
+- Against-votes inside the pile sent to a person: 28 (42% of all against-votes).
+- Against-votes the tool waved through with the board: 15 (23% of all against-votes).
+- With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
+- Low-information gate: 31 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -157,6 +159,33 @@ Training seasons only. AP = average precision (higher is better).
 
   For comparison, 'same as last season' on 2025: 46 hits with 115 flags.
   Share of training votes with the measure: pay vs peers 84%, pay vs returns trend 82%
+```
+
+## Experiment: do ballot details improve the history model? (test years 2022-2025)
+
+`python3 src/agent/history_model.py`
+
+```text
+Test years 2022-2025, each scored by a model fitted on the years before it. 2026 is not read.
+
+  Inputs                         | Mean average precision | Hits at the baseline's 215 flags | New situations found
+  -------------------------------+------------------------+----------------------------------+---------------------
+  benchmark (history only)       |                  0.408 |                              126 |               17/268
+  + finer types                  |                  0.410 |                              125 |               16/268
+  + position                     |                  0.407 |                              126 |               20/268
+  + board_size                   |                  0.417 |                              127 |               18/268
+  + label                        |                  0.407 |                              123 |               14/268
+  + wording                      |                  0.411 |                              125 |               17/268
+  + last_meeting                 |                  0.409 |                              125 |               14/268
+  + everything                   |                  0.421 |                              129 |               18/268
+  everything except position     |                  0.420 |                              127 |               18/268
+  everything except board_size   |                  0.412 |                              125 |               19/268
+  everything except label        |                  0.422 |                              129 |               19/268
+  everything except wording      |                  0.419 |                              130 |               19/268
+  everything except last_meeting |                  0.422 |                              127 |               18/268
+  everything except finer_types  |                  0.421 |                              129 |               18/268
+
+  'Same as last time' finds 133 of 401 against-votes with 215 flags, and no new situations by construction.
 ```
 
 ## Guideline rule check

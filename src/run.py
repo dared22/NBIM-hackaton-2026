@@ -1,6 +1,6 @@
 """One command that reproduces every result and writes one decision per proposal.
 
-Run from the repo root (about two minutes, no internet, no API key):
+Run from the repo root (about three minutes, no internet, no API key):
     python3 src/run.py
 
 It writes two files in data/outputs/
@@ -19,8 +19,10 @@ How a decision is made
     2. The model gives the probability that NBIM votes against the board.
     3. Band. Below 5%: follow the board. At or above the model's cut-off:
        vote against the board. In between: a person decides.
-    4. A person also decides when the board's recommendation is missing or the
-       company's figures look wrong.
+    4. Low-information gate. The tool never follows the board on its own when
+       it is flying blind: no pay figure for a pay vote, a company it has
+       never seen, a missing board recommendation, or figures that look
+       wrong all go to a person, whatever the probability says.
 
 The tool only suggests. It never casts a vote. NBIM's actual vote is joined
 in at the very end, for scoring only.
@@ -48,6 +50,7 @@ SCRIPTS = [
     ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
     ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
     ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
+    ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
 ]
@@ -76,7 +79,8 @@ def general_decisions():
     sections = rc.load_guidelines()
     cand = rc.candidate_sections(rows, sections)
     _, val, _, _ = bm.run_year(rows, YEAR - 1)
-    _, test, w, thr = bm.run_year(rows, YEAR)
+    train, test, w, thr = bm.run_year(rows, YEAR)
+    known_companies = {r["company_id"] for r in train}
     cache = rc.load_cache()
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
@@ -84,8 +88,11 @@ def general_decisions():
     rule_thr = bm.best_f1_threshold([r["rule_p"] for r in scored], [r["y"] for r in scored]) if scored else 1.0
     out = []
     for r in test:
-        flags = ["security flag: " + ", ".join(hits)] if (hits := rb.guard_patterns(r["proposal_text"])) else []
-        band = "send to human" if flags else r["band"]
+        hits = rb.guard_patterns(r["proposal_text"])
+        flags = ["security flag: " + ", ".join(hits)] if hits else []
+        if r["company_id"] not in known_companies:
+            flags.append("low information: no earlier votes at this company")
+        band = "send to human" if hits else r["band"]
         vote, who, why = decide(r["mgmt_rec"], band, flags)
         if r["rule_p"] is not None and r["rule_p"] >= rule_thr:
             guide = f"GVG {r['rule_section']} (rule check, probability {r['rule_p']:.2f})"
@@ -105,13 +112,13 @@ def pay_decisions():
     _, test, w, ps, thr = pm.score_test_season(rows)
     out = []
     for r, p in zip(test, ps):
-        flags = list(pm.warnings_for(r))
-        if hits := rb.guard_patterns(r["forslag"]):
+        flags = [("low information: " if "no pay figure" in f else "check the figures: ") + f for f in pm.warnings_for(r)]
+        hits = rb.guard_patterns(r["forslag"])
+        if hits:
             flags.append("security flag: " + ", ".join(hits))
-        band = "send to human" if any(f.startswith("security") for f in flags) else pm.band_of(p, thr)
+        band = "send to human" if hits else pm.band_of(p, thr)
         # Every say-on-pay proposal is recommended FOR by the board.
-        vote, who, why = decide("FOR", band, flags if band != "likely WITH board" else
-                                [f for f in flags if f.startswith("security")])
+        vote, who, why = decide("FOR", band, flags)
         why_pay = pm.reasons(r, w)
         out.append(["NBIM pay votes, US filers", f"{r['cusip']}-{r['moetedato']}", r["moetedato"], r["utsteder"],
                     r["forslag"], "FOR", vote, f"{p:.3f}", band, who, why, "vote history + company facts",
@@ -127,6 +134,7 @@ def summary(rows, name):
     against = [r for r in rows if r[col["actual_against_board"]] == 1]
     auto = [r for r in rows if r[col["decided_by"]] == "automatic"]
     auto_against = [r for r in auto if r[col["band"]] == "likely AGAINST board"]
+    gated = [r for r in rows if r[col["decided_by"]] == "human review" and r[col["band"]] == "likely WITH board"]
     review = [r for r in rows if r[col["decided_by"]] == "human review"]
     hit = lambda group: sum(1 for r in group if r[col["actual_against_board"]] == 1)
     lines = [f"### {name}",
@@ -141,7 +149,9 @@ def summary(rows, name):
              f"{hit([r for r in auto if r[col['band']] == 'likely WITH board'])} "
              f"({hit([r for r in auto if r[col['band']] == 'likely WITH board']) / len(against):.0%} of all against-votes).",
              f"- With a person reading the review pile, {hit(auto_against) + hit(review)} of {len(against)} against-votes "
-             f"are either suggested or seen ({(hit(auto_against) + hit(review)) / len(against):.0%})."]
+             f"are either suggested or seen ({(hit(auto_against) + hit(review)) / len(against):.0%}).",
+             f"- Low-information gate: {len(gated)} proposals the model would have waved through were sent to a person "
+             f"instead; {hit(gated)} of them were against-votes."]
     return "\n".join(lines)
 
 
