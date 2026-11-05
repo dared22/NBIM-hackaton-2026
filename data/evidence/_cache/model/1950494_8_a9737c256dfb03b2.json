@@ -1,0 +1,190 @@
+{
+  "facts": [
+    {
+      "fact_id": "company_size",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "majority_control",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "nominee_disclosed",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "The nominees for election at the Annual Meeting are: ● Darcy G. Anderson ● Rhoman J. Hardy ● Brian E. Lane ● Franklin Myers ● Constance E. Skidmore ● Herman E. Bulls ● Gaurav Kapoor ● Pablo G. Mercado ● William J. Sandbrook ● Cindy L. Wallis-Lage"
+    },
+    {
+      "fact_id": "nominee_biography",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "William J. Sandbrook has served as a Director of the Company since April 2018. Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024."
+    },
+    {
+      "fact_id": "nominee_independent",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability"
+    },
+    {
+      "fact_id": "board_independence",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "fact_id": "nominee_executive",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "nominee_committees",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability"
+    },
+    {
+      "fact_id": "audit_independence",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "nominee_board_chair",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "nominee_ceo",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "other_boards",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "In June, 2023, he was appointed to the board of Knife River Corporation."
+    },
+    {
+      "fact_id": "other_chairs",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "other_management",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024."
+    },
+    {
+      "fact_id": "attendance",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "industry",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "gender",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "2 female directors and 4 directors who self-identify as racially / ethnically diverse"
+    },
+    {
+      "fact_id": "term",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "Ten directors will be elected at the Annual Meeting to serve for a one-year term expiring at the Annual Meeting of Stockholders expected to be held in May 2026."
+    },
+    {
+      "fact_id": "local_practice",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "cumulative_voting",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "minority_nominated",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "prior_requests",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "pay_response",
+      "status": "known",
+      "source_id": "D1",
+      "quote": "The Committee viewed the outcome of that advisory vote—approval by more than 95% of the shares voted—as indicating that the Company’s stockholders support the Company’s overall approach to executive compensation and made no changes to the structure of our executive compensation program as a direct result of the vote."
+    },
+    {
+      "fact_id": "bylaws",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "governance",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "misconduct",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "audit",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "environment",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "climate",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "social",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    },
+    {
+      "fact_id": "performance",
+      "status": "unknown",
+      "source_id": "D1",
+      "quote": ""
+    }
+  ]
+}

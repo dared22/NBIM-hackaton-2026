@@ -1,0 +1,575 @@
+{
+  "proposal": {
+    "meeting_id": "1950494",
+    "item_no": "8",
+    "company": "Comfort Systems USA, Inc.",
+    "ticker": "FIX",
+    "country": "United States",
+    "meeting_date": "2025-05-16",
+    "proposal_text": "Elect Director William J. Sandbrook",
+    "mgmt_rec": "FOR"
+  },
+  "status": "fact_evidence_extracted",
+  "sec_cik": 1035983,
+  "guidelines": "Global voting guidelines 2025",
+  "extraction_model": "deepseek/deepseek-v4.1-flash",
+  "source_checks": {
+    "proxy_report_date_matches_meeting": true,
+    "nominee_appears_in_proxy": true
+  },
+  "documents": [
+    {
+      "form": "DEF 14A",
+      "filing_date": "2025-04-07",
+      "report_date": "2025-05-16",
+      "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "filing_date": "2024-04-08",
+      "report_date": "2024-05-17",
+      "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817924000481/lfix2024_def14a.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "filing_date": "2023-04-06",
+      "report_date": "",
+      "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817923000587/lfix2023_def14a.htm"
+    },
+    {
+      "form": "10-K",
+      "filing_date": "2025-02-20",
+      "report_date": "2024-12-31",
+      "url": "https://www.sec.gov/Archives/edgar/data/1035983/000155837025001222/fix-20241231x10k.htm"
+    }
+  ],
+  "facts": {
+    "company_size": {
+      "question": "Is the company large, mid, or small cap at the meeting date?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "majority_control": {
+      "question": "Does a shareholder control a majority of voting rights?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "nominee_disclosed": {
+      "question": "Is the nominee named in the pre-meeting proxy?",
+      "status": "known",
+      "answer": "The nominees for election at the Annual Meeting are: ● Darcy G. Anderson ● Rhoman J. Hardy ● Brian E. Lane ● Franklin Myers ● Constance E. Skidmore ● Herman E. Bulls ● Gaurav Kapoor ● Pablo G. Mercado ● William J. Sandbrook ● Cindy L. Wallis-Lage",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "The nominees for election at the Annual Meeting are: ● Darcy G. Anderson ● Rhoman J. Hardy ● Brian E. Lane ● Franklin Myers ● Constance E. Skidmore ● Herman E. Bulls ● Gaurav Kapoor ● Pablo G. Mercado ● William J. Sandbrook ● Cindy L. Wallis-Lage"
+      }
+    },
+    "nominee_biography": {
+      "question": "What biography and qualifications are disclosed for the nominee?",
+      "status": "partial",
+      "answer": "William J. Sandbrook has served as a Director of the Company since April 2018. Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024.",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "William J. Sandbrook has served as a Director of the Company since April 2018. Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024."
+      }
+    },
+    "nominee_independent": {
+      "question": "Does the proxy identify the nominee as independent?",
+      "status": "known",
+      "answer": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability"
+      }
+    },
+    "board_independence": {
+      "question": "How many board members are independent, out of how many total?",
+      "status": "known",
+      "answer": "9 of our 10 continuing directors are independent",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "9 of our 10 continuing directors are independent"
+      }
+    },
+    "nominee_executive": {
+      "question": "Is the nominee an executive of this company?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "nominee_committees": {
+      "question": "Which board committees does the nominee belong to or chair?",
+      "status": "partial",
+      "answer": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "WILLIAM J. SANDBROOK Age 67 Committees: Director ● Compensation and Human Capital Independent ● Nominating, Governance, and Sustainability"
+      }
+    },
+    "audit_independence": {
+      "question": "How many audit committee members are independent, out of how many total?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "nominee_board_chair": {
+      "question": "Is the nominee chair of this company's board?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "nominee_ceo": {
+      "question": "Is the nominee CEO of this company?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "other_boards": {
+      "question": "Which other company boards does the nominee serve on?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "other_chairs": {
+      "question": "How many other board chair roles does the nominee hold?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "other_management": {
+      "question": "What other management roles does the nominee hold?",
+      "status": "partial",
+      "answer": "Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024.",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "Mr. Sandbrook has served as Executive Chairman and Chairman of the Board of Andretti Acquisition Corp. II, a special purpose acquisition company formed for the purpose of effecting a business combination, since September 2024."
+      }
+    },
+    "attendance": {
+      "question": "What was the nominee's board meeting attendance in each of the prior two years?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "industry": {
+      "question": "Which non-executive directors have worked in this company's industry?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "gender": {
+      "question": "How many board members of each gender are disclosed?",
+      "status": "partial",
+      "answer": "2 female directors and 4 directors who self-identify as racially / ethnically diverse",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "2 female directors and 4 directors who self-identify as racially / ethnically diverse"
+      }
+    },
+    "term": {
+      "question": "What is the proposed election term?",
+      "status": "known",
+      "answer": "Ten directors will be elected at the Annual Meeting to serve for a one-year term expiring at the Annual Meeting of Stockholders expected to be held in May 2026.",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "Ten directors will be elected at the Annual Meeting to serve for a one-year term expiring at the Annual Meeting of Stockholders expected to be held in May 2026."
+      }
+    },
+    "local_practice": {
+      "question": "What is local-market best practice for a director's election term?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "cumulative_voting": {
+      "question": "Does this election use cumulative voting?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "minority_nominated": {
+      "question": "Was the nominee proposed by minority shareholders?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "prior_requests": {
+      "question": "Which prior majority-supported shareholder requests did the board act on or ignore?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "pay_response": {
+      "question": "What was the previous pay vote support and how did the board respond?",
+      "status": "partial",
+      "answer": "The Committee viewed the outcome of that advisory vote—approval by more than 95% of the shares voted—as indicating that the Company’s stockholders support the Company’s overall approach to executive compensation and made no changes to the structure of our executive compensation program as a direct result of the vote.",
+      "source": {
+        "id": "D1",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035983/000130817925000407/fix435973-def14a.htm",
+        "filing_date": "2025-04-07",
+        "quote": "The Committee viewed the outcome of that advisory vote—approval by more than 95% of the shares voted—as indicating that the Company’s stockholders support the Company’s overall approach to executive compensation and made no changes to the structure of our executive compensation program as a direct result of the vote."
+      }
+    },
+    "bylaws": {
+      "question": "Did the board change governing documents without shareholder approval?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "governance": {
+      "question": "What material governance, risk oversight, or fiduciary failures are documented?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "misconduct": {
+      "question": "Is documented misconduct linked to the nominee's service on another board?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "audit": {
+      "question": "Is there an adverse audit opinion, material weakness, or serious auditor concern, and what was the board's response?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "environment": {
+      "question": "What material environmental oversight or disclosure failures are documented?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "climate": {
+      "question": "What material climate oversight or disclosure failures are documented?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "social": {
+      "question": "What material social oversight or disclosure failures are documented?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    },
+    "performance": {
+      "question": "What is the long-run shareholder performance and stated strategy?",
+      "status": "unknown",
+      "answer": null,
+      "source": null
+    }
+  },
+  "rules": [
+    {
+      "rule_id": "1.1.1",
+      "rule_text": "At a large- or mid-cap company in developed markets, we will not support the election of any non-executive, non-independent director if the board does not have at least 50 percent independent members.",
+      "required_fact_ids": [
+        "company_size",
+        "nominee_independent",
+        "nominee_executive",
+        "board_independence"
+      ],
+      "unresolved_fact_ids": [
+        "company_size",
+        "nominee_executive"
+      ]
+    },
+    {
+      "rule_id": "1.1.2",
+      "rule_text": "At a large- or mid-cap, majority-controlled company in developed markets, we will not support the election of any non-executive, non-independent director if the board does not have at least one third independent members.",
+      "required_fact_ids": [
+        "company_size",
+        "majority_control",
+        "nominee_independent",
+        "nominee_executive",
+        "board_independence"
+      ],
+      "unresolved_fact_ids": [
+        "company_size",
+        "majority_control",
+        "nominee_executive"
+      ]
+    },
+    {
+      "rule_id": "1.1.3",
+      "rule_text": "At a company in emerging markets or at a small-cap company in developed markets, we will not support the election of the chair of the nomination committee if the board does not have at least two independent members.",
+      "required_fact_ids": [
+        "company_size",
+        "nominee_committees",
+        "board_independence"
+      ],
+      "unresolved_fact_ids": [
+        "company_size",
+        "nominee_committees"
+      ]
+    },
+    {
+      "rule_id": "1.1.4",
+      "rule_text": "We will support the election of minority-nominated candidates in markets with cumulative voting.",
+      "required_fact_ids": [
+        "cumulative_voting",
+        "minority_nominated"
+      ],
+      "unresolved_fact_ids": [
+        "cumulative_voting",
+        "minority_nominated"
+      ]
+    },
+    {
+      "rule_id": "1.2.1",
+      "rule_text": "We will not support the election of an executive director who is a member of the remuneration committee.",
+      "required_fact_ids": [
+        "nominee_executive",
+        "nominee_committees"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_executive",
+        "nominee_committees"
+      ]
+    },
+    {
+      "rule_id": "1.2.2",
+      "rule_text": "We will not support the election of an executive director who is a member of the audit committee.",
+      "required_fact_ids": [
+        "nominee_executive",
+        "nominee_committees"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_executive",
+        "nominee_committees"
+      ]
+    },
+    {
+      "rule_id": "1.2.3",
+      "rule_text": "We will not support the election of any non-independent director if the audit committee does not have at least 50 percent independent members.",
+      "required_fact_ids": [
+        "nominee_independent",
+        "audit_independence"
+      ],
+      "unresolved_fact_ids": [
+        "audit_independence"
+      ]
+    },
+    {
+      "rule_id": "1.3.1",
+      "rule_text": "We will not support the election of a chairperson who is also the CEO of the company.",
+      "required_fact_ids": [
+        "nominee_board_chair",
+        "nominee_ceo"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_board_chair",
+        "nominee_ceo"
+      ]
+    },
+    {
+      "rule_id": "2.1.1",
+      "rule_text": "At a company in developed markets, we will not support the election of a director who sits on more than five boards, holds more than two board chairs, or otherwise has too many board or management roles to fulfil effectively his or her responsibilities at the company.",
+      "required_fact_ids": [
+        "other_boards",
+        "other_chairs",
+        "other_management"
+      ],
+      "unresolved_fact_ids": [
+        "other_boards",
+        "other_chairs",
+        "other_management"
+      ]
+    },
+    {
+      "rule_id": "2.1.2",
+      "rule_text": "We will not support the election of a director who has attended fewer than 75 percent of board meetings over the last two years.",
+      "required_fact_ids": [
+        "attendance"
+      ],
+      "unresolved_fact_ids": [
+        "attendance"
+      ]
+    },
+    {
+      "rule_id": "2.2.1",
+      "rule_text": "At a company in developed markets, we will not support the re-election of the chair of the nomination committee if there is not at least one non-executive director who has worked in the industry.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "industry"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "industry"
+      ]
+    },
+    {
+      "rule_id": "2.3.1",
+      "rule_text": "In general, at a company in developed markets, we will not support the re-election of the chair of the nomination committee if the board does not include at least two members of each gender.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "gender"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "gender"
+      ]
+    },
+    {
+      "rule_id": "3.1.3",
+      "rule_text": "We will not support the election of a director with an election term longer than local-market best practice.",
+      "required_fact_ids": [
+        "term",
+        "local_practice"
+      ],
+      "unresolved_fact_ids": [
+        "local_practice"
+      ]
+    },
+    {
+      "rule_id": "3.1.6",
+      "rule_text": "We will not support the election of a director whose name has not been disclosed in the proxy information, or where the disclosure is insufficient to assess his or her suitability.",
+      "required_fact_ids": [
+        "nominee_disclosed",
+        "nominee_biography"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_biography"
+      ]
+    },
+    {
+      "rule_id": "3.2.1",
+      "rule_text": "We will not support the re-election of members of the governance or nomination committee, or other directors, if the company has failed to act on material requests from shareholders where such requests received majority support the previous year.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "prior_requests"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "prior_requests"
+      ]
+    },
+    {
+      "rule_id": "3.2.2",
+      "rule_text": "We will not support the re-election of members of the remuneration committee, or other board members, if the board received low shareholder support for its most recent pay-related proposal and we consider that the board has failed to address our concern.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "pay_response"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "pay_response"
+      ]
+    },
+    {
+      "rule_id": "3.2.3",
+      "rule_text": "We will not support the re-election of members of the nomination or governance committee, or other board members, if the board has amended the company's governing documents without shareholder approval.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "bylaws"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "bylaws"
+      ]
+    },
+    {
+      "rule_id": "3.2.4",
+      "rule_text": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures of governance or risk oversight, or breaches of fiduciary responsibilities.",
+      "required_fact_ids": [
+        "governance"
+      ],
+      "unresolved_fact_ids": [
+        "governance"
+      ]
+    },
+    {
+      "rule_id": "3.2.5",
+      "rule_text": "We will not support the election of a director whose service on other boards has been associated with misconduct.",
+      "required_fact_ids": [
+        "other_boards",
+        "misconduct"
+      ],
+      "unresolved_fact_ids": [
+        "other_boards",
+        "misconduct"
+      ]
+    },
+    {
+      "rule_id": "3.2.7",
+      "rule_text": "We will not support the re-election of any member of the audit committee, or other board members, if the company's financial statements received an adverse opinion from its auditor or the auditor flagged material weaknesses, and we consider that the board has failed adequately to address our concern.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "audit"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "audit"
+      ]
+    },
+    {
+      "rule_id": "3.2.8",
+      "rule_text": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of environmental risks.",
+      "required_fact_ids": [
+        "environment"
+      ],
+      "unresolved_fact_ids": [
+        "environment"
+      ]
+    },
+    {
+      "rule_id": "3.2.9",
+      "rule_text": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of climate risks.",
+      "required_fact_ids": [
+        "climate"
+      ],
+      "unresolved_fact_ids": [
+        "climate"
+      ]
+    },
+    {
+      "rule_id": "3.2.10",
+      "rule_text": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of social risks.",
+      "required_fact_ids": [
+        "social"
+      ],
+      "unresolved_fact_ids": [
+        "social"
+      ]
+    },
+    {
+      "rule_id": "3.2.11",
+      "rule_text": "We will not support the re-election of a director, or the entire board, if shareholders have experienced unsatisfactory financial performance over time or we lack faith in the ability to implement a sufficiently profitable strategy.",
+      "required_fact_ids": [
+        "performance"
+      ],
+      "unresolved_fact_ids": [
+        "performance"
+      ]
+    },
+    {
+      "rule_id": "5.1.4",
+      "rule_text": "We will not support the appointment of an auditor, statutory auditor, or audit committee member if there are serious concerns about the external auditor's ability to identify accounting irregularities.",
+      "required_fact_ids": [
+        "nominee_committees",
+        "audit"
+      ],
+      "unresolved_fact_ids": [
+        "nominee_committees",
+        "audit"
+      ]
+    }
+  ]
+}

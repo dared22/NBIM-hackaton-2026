@@ -1,0 +1,179 @@
+{
+  "answers": [
+    {
+      "rule_id": "1.1.1",
+      "result": "not_applicable",
+      "reason": "The rule applies only to non-executive, non-independent directors. William J. Sandbrook is listed as an independent director nominee, so the condition about a non-independent director is not applicable.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.1.2",
+      "result": "not_applicable",
+      "reason": "The rule applies only to a majority-controlled company. The filing does not indicate that Comfort Systems USA is majority-controlled, and the nominee is independent.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.1.3",
+      "result": "not_applicable",
+      "reason": "The rule applies to emerging-market or small-cap companies and to the chair of the nomination committee. The company is a U.S. large/mid-cap and Sandbrook is not identified as nomination committee chair.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.1.4",
+      "result": "not_applicable",
+      "reason": "The rule concerns minority-nominated candidates in markets with cumulative voting. The filing does not indicate cumulative voting or that Sandbrook is minority-nominated.",
+      "source_id": "D1",
+      "quote": "Each share of Common Stock is entitled to one vote on each matter before the Annual Meeting."
+    },
+    {
+      "rule_id": "1.2.1",
+      "result": "not_applicable",
+      "reason": "The rule applies to an executive director who is a member of the remuneration committee. Sandbrook is a non-executive, independent director, not an executive director.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.2.2",
+      "result": "not_applicable",
+      "reason": "The rule applies to an executive director who is a member of the audit committee. Sandbrook is a non-executive, independent director, not an executive director.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.2.3",
+      "result": "not_applicable",
+      "reason": "The rule applies to non-independent directors. Sandbrook is listed as an independent director nominee.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "1.3.1",
+      "result": "not_applicable",
+      "reason": "The rule applies to a chairperson who is also CEO. Sandbrook is not identified as chairperson or CEO; Franklin Myers is Chair and Brian E. Lane is CEO.",
+      "source_id": "D1",
+      "quote": "Franklin Myers Chair of the Board Brian E. Lane President and Chief Executive Officer"
+    },
+    {
+      "rule_id": "2.1.1",
+      "result": "unknown",
+      "reason": "The filing lists Sandbrook's other current public company boards as 2, but does not disclose whether he holds board chairs or management roles sufficient to assess the full condition.",
+      "source_id": "D1",
+      "quote": "WILLIAM J. SANDBROOK Executive Chairman, Andretti Acquisition Corp. II 67 2018 2"
+    },
+    {
+      "rule_id": "2.1.2",
+      "result": "unknown",
+      "reason": "The filing does not provide director-specific board meeting attendance percentages for William J. Sandbrook over the last two years.",
+      "source_id": "D1",
+      "quote": "Meetings of the Board and Committees 20"
+    },
+    {
+      "rule_id": "2.2.1",
+      "result": "not_applicable",
+      "reason": "The rule applies to re-election of the chair of the nomination committee. Sandbrook is not identified as chair of the nomination committee.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "2.3.1",
+      "result": "not_applicable",
+      "reason": "The rule applies to re-election of the chair of the nomination committee. Sandbrook is not identified as chair of the nomination committee.",
+      "source_id": "D1",
+      "quote": "9 of our 10 continuing directors are independent"
+    },
+    {
+      "rule_id": "3.1.3",
+      "result": "unknown",
+      "reason": "The filing states directors are elected annually for a one-year term, but does not establish whether this matches local-market best practice for term length.",
+      "source_id": "D1",
+      "quote": "Election of the ten director nominees for a one-year term"
+    },
+    {
+      "rule_id": "3.1.6",
+      "result": "not_applicable",
+      "reason": "The rule concerns undisclosed or insufficiently disclosed director names. William J. Sandbrook is named in the proxy information.",
+      "source_id": "D1",
+      "quote": "William J. Sandbrook"
+    },
+    {
+      "rule_id": "3.2.1",
+      "result": "unknown",
+      "reason": "The filing does not disclose whether shareholders passed material requests by majority vote the previous year that the company failed to act on.",
+      "source_id": "D1",
+      "quote": "The Board knows of no business to be brought before the Annual Meeting that is not referred to in the accompanying Notice of Annual Meeting."
+    },
+    {
+      "rule_id": "3.2.2",
+      "result": "unknown",
+      "reason": "The filing does not provide the most recent pay-related proposal vote result or establish that the board failed to address a concern.",
+      "source_id": "D1",
+      "quote": "The Board and the Compensation and Human Capital Committee will review the voting results and take them into consideration when making future decisions regarding executive compensation."
+    },
+    {
+      "rule_id": "3.2.3",
+      "result": "unknown",
+      "reason": "The filing does not disclose whether the company amended its governing documents without shareholder approval.",
+      "source_id": "D1",
+      "quote": "The Bylaws also contain procedures for regulation of the order of business and conduct of stockholder meetings"
+    },
+    {
+      "rule_id": "3.2.4",
+      "result": "unknown",
+      "reason": "The filing does not establish whether the company experienced material failures of governance or risk oversight or breaches of fiduciary responsibilities.",
+      "source_id": "D1",
+      "quote": "Active oversight of strategic and risk management issues"
+    },
+    {
+      "rule_id": "3.2.5",
+      "result": "unknown",
+      "reason": "The filing does not disclose whether Sandbrook's service on other boards has been associated with misconduct.",
+      "source_id": "D1",
+      "quote": "WILLIAM J. SANDBROOK Executive Chairman, Andretti Acquisition Corp. II 67 2018 2"
+    },
+    {
+      "rule_id": "3.2.7",
+      "result": "unknown",
+      "reason": "The filing does not disclose an adverse auditor opinion or material weaknesses, nor whether the board failed to address any such concern.",
+      "source_id": "D1",
+      "quote": "The Audit Committee has re-appointed Deloitte & Touche LLP as the Company’s independent registered public accounting firm for the year ending December 31, 2025."
+    },
+    {
+      "rule_id": "3.2.8",
+      "result": "unknown",
+      "reason": "The filing does not establish whether the company experienced material failures in environmental risk oversight, management, or disclosure.",
+      "source_id": "D1",
+      "quote": "Our Board supplies high-level oversight of our corporate sustainability performance and material sustainability issues"
+    },
+    {
+      "rule_id": "3.2.9",
+      "result": "unknown",
+      "reason": "The filing does not establish whether the company experienced material failures in climate risk oversight, management, or disclosure.",
+      "source_id": "D1",
+      "quote": "Our Board supplies high-level oversight of our corporate sustainability performance and material sustainability issues"
+    },
+    {
+      "rule_id": "3.2.10",
+      "result": "unknown",
+      "reason": "The filing does not establish whether the company experienced material failures in social risk oversight, management, or disclosure.",
+      "source_id": "D1",
+      "quote": "The Compensation and Human Capital Committee of our Board of Directors provides oversight on our diversity and inclusion strategy."
+    },
+    {
+      "rule_id": "3.2.11",
+      "result": "unknown",
+      "reason": "The filing does not establish whether shareholders have experienced unsatisfactory financial performance over time or whether there is a lack of faith in strategy implementation.",
+      "source_id": "D1",
+      "quote": "Focus on creating long-term value for our stockholders"
+    },
+    {
+      "rule_id": "5.1.4",
+      "result": "unknown",
+      "reason": "The rule concerns serious concerns about the external auditor's ability to identify accounting irregularities. The filing does not establish whether such concerns exist.",
+      "source_id": "D1",
+      "quote": "The Audit Committee has re-appointed Deloitte & Touche LLP as the Company’s independent registered public accounting firm for the year ending December 31, 2025."
+    }
+  ]
+}
