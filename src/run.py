@@ -29,6 +29,8 @@ How a decision is made
        it is flying blind: no pay figure for a pay vote, a company it has
        never seen, a missing board recommendation, or figures that look
        wrong all go to a person, whatever the probability says.
+    5. Abstain. Where NBIM's earlier against-votes in a market were cast as
+       abstentions, an "against the board" suggestion is written as AVSTÅ.
 
 The tool only suggests. It never casts a vote. NBIM's actual vote is joined
 in at the very end, for scoring only.
@@ -50,6 +52,7 @@ import director_rules as dr  # noqa: E402
 import pay_model as pm  # noqa: E402
 import proposal_rules as pr  # noqa: E402
 import robustness as rb  # noqa: E402
+import routing  # noqa: E402
 import rule_check as rc  # noqa: E402
 
 OUT = os.path.join(ROOT, "data", "outputs")
@@ -64,6 +67,7 @@ SCRIPTS = [
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
+    ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
@@ -102,6 +106,7 @@ def general_decisions(rows=None):
     _, val, _, _ = bm.run_year(rows, YEAR - 1)
     train, test, w, thr = bm.run_year(rows, YEAR)
     known_companies = {r["company_id"] for r in train}
+    abstain = routing.abstain_markets(train)
     papers = rc.load_papers()
     citations = rc.load_citations()
     cache = rc.load_cache()
@@ -134,6 +139,12 @@ def general_decisions(rows=None):
                 flags.append("rule suspended: NBIM supported the board the last two times " +
                              ", ".join(c for c, _ in d["rules"]) + " applied")
         vote, who, why = decide(r["mgmt_rec"], band, flags)
+        market = (r["country"], r["proposal_type"])
+        if vote == "MOT" and band == "likely AGAINST board" and market in abstain:
+            # In a few markets NBIM casts its against-votes as abstentions (learned from earlier years).
+            vote = "AVSTÅ"
+            reasons += (f" | in {r['country']} NBIM cast {abstain[market][0]} of its {abstain[market][1]} earlier "
+                        f"against-votes on this proposal type as abstentions")
         if guide:
             pass
         elif r["rule_p"] is not None and r["rule_p"] >= rule_thr:

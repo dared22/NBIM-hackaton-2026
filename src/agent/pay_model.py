@@ -104,6 +104,8 @@ FEATURES = [
 #   - shareholder return against the company's own peer group
 #   - support at the previous pay vote, read from the proxy text
 #   - how often the proxy mentions one-off, sign-on, retention or severance awards
+#   - "compensation actually paid" to the CEO (size, 25 million level, ratio to total pay)
+#   - finer steps in pay size (15, 20 and 35 million dollars) and total pay over the table years
 # The last two are still shown to the reviewer as evidence (data/evidence/proxy_text.csv).
 HISTORY_ONLY = [0, 1]
 

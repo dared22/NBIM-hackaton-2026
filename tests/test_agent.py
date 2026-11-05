@@ -216,6 +216,30 @@ class DirectorRuleTests(unittest.TestCase):
         self.assertTrue(self.dr.facts_for(row, people, early)["chair_ceo"])
 
 
+class RoutingTests(unittest.TestCase):
+    def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
+        import routing
+        row = lambda country, vote, y=1: {"country": country, "proposal_type": "DIRECTOR_ELECTION", "nbim_vote": vote, "y": y}
+        earlier = ([row("Denmark", "AVSTÅ")] * 3 + [row("Denmark", "MOT")]          # 3 of 4: habit
+                   + [row("Norway", "AVSTÅ")] + [row("Norway", "MOT")] * 2          # 1 of 3: no habit
+                   + [row("Chile", "AVSTÅ")]                                        # one case: too few
+                   + [row("Brazil", "AVSTÅ", y=0)] * 5)                             # not against the board: ignored
+        self.assertEqual(routing.abstain_markets(earlier), {("Denmark", "DIRECTOR_ELECTION"): (3, 4)})
+
+    def test_abstain_is_only_suggested_where_the_market_has_the_habit(self):
+        import run
+        import routing
+        from benchmark import model as bm
+        col = {c: i for i, c in enumerate(run.COLS)}
+        rows = bm.read_votes(rc.VOTES)
+        habit = routing.abstain_markets([r for r in rows if r["meeting_date"] < f"{run.YEAR}-01-01"])
+        place = {f"{r['meeting_id']}-{r['item_no']}": (r["country"], r["proposal_type"]) for r in rows}
+        for d in run.general_decisions():
+            if d[col["suggested_vote"]] == "AVSTÅ":
+                self.assertIn(place[d[col["key"]]], habit)
+                self.assertEqual(d[col["band"]], "likely AGAINST board")
+
+
 class PipelineResistanceTests(unittest.TestCase):
     """End to end: instructions hidden in a 2026 proposal must not get it waved through."""
 

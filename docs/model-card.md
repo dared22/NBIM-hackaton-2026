@@ -19,8 +19,8 @@ Why this and not "NBIM voted MOT": on shareholder proposals the board usually
 recommends against, so NBIM voting MOT there means agreeing with the board.
 The decision that takes human judgement, and that NBIM must explain in
 writing, is the vote against the board. For management proposals the two
-targets are the same. The decisions file states the suggested vote as FOR or
-MOT, so either target can be scored from it.
+targets are the same. The decisions file states the suggested vote as FOR,
+MOT or AVSTÅ, so either target can be scored from it.
 
 ## Two models and a rule engine
 
@@ -222,6 +222,42 @@ The papers describe what NBIM thinks a good board does. They are written as
 "the board should", not "we will vote against", and they give no facts about
 any company.
 
+## Confidence and routing: when the tool asks a person
+
+`src/agent/routing.py`, on NBIM's vote file. Every test year from 2022 to 2026
+is scored by a model fitted on earlier years only.
+
+- **Is the confidence honest?** Below 10% the stated probability matches what
+  happened (the tool says 3.3%, 3.2% were against-votes). Between 10% and 70%
+  the tool says more than what happened: a stated 54% was an against-vote 41%
+  of the time. A correction learned from earlier years was better in 2 of 5
+  years, so it is not used. A reviewer should read the middle band as "worth
+  a look", which is how the tool uses it.
+- **The 5% level.** Below it the tool follows the board on its own, and it is
+  then wrong about 2% of the time (1.9% in 2022-2025, 1.6% in 2026). Lowering
+  the level to 3% means a person reads 32% of proposals instead of 20%, and
+  the share of against-votes waved through falls from 26% to 19% (2022-2025).
+  In 2026 the same change would have cut the waved-through against-votes from
+  18 to 3, but the level may not be chosen on the test year. The 5% level is
+  kept. It is a choice between reading time and missed against-votes, and the
+  table in `results.md` is what to choose from.
+- **Can anything pick out the ones waved through?** Two tests: wording never
+  seen before, and another item at the same meeting that the tool flags or is
+  unsure about. No group stands out (0.5% to 3.4% against in every group in
+  2022-2025). The against-votes the tool waves through look like the other
+  proposals in the vote file. This is the same limit as before: without a
+  fact about the company, the vote file does not hold the answer.
+- **Abstain.** NBIM abstained 68 times in the file. 28 of those are on items
+  with no board recommendation (Brazil, cumulative voting) and are outside
+  the target. 39 are votes against the board, and most of them follow a
+  market habit: in Denmark 13 of 13 against-votes on directors were cast as
+  abstentions, and in Taiwan 20 of 27 against-votes across several item types. The tool learns the habit from earlier years and then
+  writes its "against the board" suggestion as AVSTÅ. Given a vote against
+  the board, the rule said abstain 19 times in 2021-2025 and was right 18
+  times. In 2026 it finds none of the 5 abstentions (Vietnam and Switzerland,
+  no such history) and fires once, on a suggestion that was a false alarm
+  anyway.
+
 ## What was tried and did not help
 
 - A decision model (Microsoft-Decision-1) checking guideline sections against
@@ -241,6 +277,15 @@ any company.
 - In the pay model: shareholder return against the company's own peer group,
   support at the previous pay vote, and how often the proxy mentions one-off
   awards. Tested on the training seasons and left out.
+- In the pay model, a look at the misses on the training seasons: the model
+  finds 92% of its hits where the CEO is paid 25 million dollars or more. The
+  against-votes it misses are mostly at 10 to 25 million (median 17 million).
+  Tested there and left out, no gain: "compensation actually paid" (three
+  forms), finer steps in pay size (15, 20 and 35 million), total pay over the
+  years in the table, and pay of 15 to 25 million combined with pay well above
+  similar companies. What separates these votes is likely how the pay is
+  built (lock-in, performance terms), which the tagged figures do not show.
+  The 2026 season was not scored again.
 - The last pay model change (pay against similar companies, pay against
   returns) improved the training-season comparisons but did not move the 2026
   result beyond noise: 71 hits against 73 before, at 97 flags. Linking more

@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 20:23.
+Last full update: Thu 20:40.
 
 ## What must be delivered
 
@@ -29,11 +29,12 @@ Last full update: Thu 20:23.
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
+| Confidence and routing | `src/agent/routing.py` | Done | Below 5% the tool is wrong about 2% of the time; no signal in the vote file picks those out. The 5% level is kept, with a table of what other levels cost. Abstain suggested where a market has the habit (18 of 19 right in 2021-2025) |
 | Low-information gate and drift monitor | `src/run.py`, `src/agent/director_rules.py` | Done | The tool never follows the board alone when it has no facts |
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 33 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 35 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -71,7 +72,8 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
 | 3 | Write and rehearse the three jury answers | |
 | 4 | Merge or park the open branches below, so `main` is what we hand in | |
 | 5 | Ask Andreas (Case 1 contact): is the `against_board` column in `npx_votes.csv` built correctly? Which investor is it? | |
-| 6 | If time: independence and committee facts for US directors (rules 1.1 and 1.2), from the AI reader on `llm_search` | |
+| 6 | Dropped: independence facts for US directors. NBIM cited independence for only 8 US directors in eight years | |
+| 7 | If time: how pay is built (lock-in, performance terms) for CEOs paid 10 to 25 million dollars, read from the proxy text. This is where the pay model misses | |
 
 ## Branches not yet in `main`
 
@@ -115,3 +117,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 19:30 Iftikhar: "other business" rule (5.2.2) added to the wording rules: 44 of 44. Unnamed auditor and unnamed directors tested and left out.
 - Thu 19:48 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.
 - Thu 20:23 Iftikhar: reviewed `policy-retrieval`. Every cited guideline in `decisions_2026.csv` now carries its own words and page number (new column `guideline_text`), with a check that the quotes are word for word.
+- Thu 20:40 Iftikhar: confidence and routing report (`src/agent/routing.py`); abstain rule in the pipeline; pay misses studied on the training seasons, five more inputs tested and left out.

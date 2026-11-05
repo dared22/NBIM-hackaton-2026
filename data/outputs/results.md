@@ -392,6 +392,81 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
    66 against-votes in 2026. The history model alone finds 24.
 ```
 
+## Confidence and routing: when should the tool ask a person?
+
+`python3 src/agent/routing.py`
+
+```text
+1. Is the confidence honest? Test years 2022-2026, 8864 proposals
+  The tool says | Proposals | Average stated | Actually against the board
+  --------------+-----------+----------------+---------------------------
+  0% to 2%      |      4764 |           0.8% |                       1.3%
+  2% to 5%      |      1882 |           3.3% |                       3.2%
+  5% to 10%     |      1011 |           7.1% |                       6.1%
+  10% to 20%    |       609 |          14.2% |                       8.7%
+  20% to 40%    |       263 |          27.3% |                      23.2%
+  40% to 70%    |       255 |          54.1% |                      41.2%
+  70% to 100%   |        80 |          82.7% |                      78.8%
+   Below 10% the stated probability matches what happened. Between 10% and 70% the tool
+   says more than what happened, so a stated 50% is closer to 40%.
+
+2. Does a correction learned from earlier years help? (Brier score, lower is better)
+  Test year | As it is | With correction
+  ----------+----------+----------------
+  2022      |   0.0499 |          0.0516
+  2023      |   0.0421 |          0.0408
+  2024      |   0.0385 |          0.0384
+  2025      |   0.0376 |          0.0389
+  2026      |   0.0309 |          0.0310
+   The correction is better in 2 of 5 years. It is not used.
+
+3. The level below which the tool follows the board on its own
+  Level | 2022-2025: a person reads | against-votes waved through | 2026: a person reads | against-votes waved through | wrong among those waved through
+  ------+---------------------------+-----------------------------+----------------------+-----------------------------+--------------------------------
+  5%    |                     20.0% |            105 of 401 (26%) |                22.5% |                    18 of 66 |                            1.6%
+  4%    |                     25.3% |             91 of 401 (23%) |                29.3% |                    11 of 66 |                            1.0%
+  3%    |                     32.2% |             75 of 401 (19%) |                38.0% |                     3 of 66 |                            0.3%
+  2%    |                     40.6% |             59 of 401 (15%) |                46.8% |                     3 of 66 |                            0.4%
+   Judged on 2022-2025: going from 5% to 3%, a person reads about 60% more proposals and
+   most of the against-votes that were waved through still are. The gain in 2026 is larger,
+   but the level may not be chosen on 2026. The 5% level is kept. The level is a choice between
+   reading time and missed against-votes, and this table is what to choose from.
+
+4. Can anything pick out the against-votes among the proposals the tool waves through (below 5%)?
+  Group                                           | 2022-2025: proposals | against | share | 2026: proposals | against | share
+  ------------------------------------------------+----------------------+---------+-------+-----------------+---------+------
+  director election, wording never seen           |                  551 |      19 |  3.4% |             128 |       5 |  3.9%
+  director election, wording seen 1-4 times       |                 1596 |      38 |  2.4% |             246 |       1 |  0.4%
+  director election, wording seen 5 or more times |                  413 |       2 |  0.5% |             175 |       3 |  1.7%
+  other proposal, wording never seen              |                  662 |      13 |  2.0% |             133 |       5 |  3.8%
+  other proposal, wording seen 1-4 times          |                  710 |      16 |  2.3% |             110 |       3 |  2.7%
+  other proposal, wording seen 5 or more times    |                 1561 |      17 |  1.1% |             361 |       1 |  0.3%
+  Group                                      | 2022-2025: proposals | against | share | 2026: proposals | against | share
+  -------------------------------------------+----------------------+---------+-------+-----------------+---------+------
+  nothing else stands out at the meeting     |                 2642 |      52 |  2.0% |             415 |       5 |  1.2%
+  the tool flags another item at the meeting |                 1233 |      24 |  1.9% |             302 |       7 |  2.3%
+  the tool is unsure about another item      |                 1618 |      29 |  1.8% |             436 |       6 |  1.4%
+   No group stands out enough to send to a person: in 2022-2025 the share of against-votes is
+   between 0.5% and 3.4% in every group, and the order of the groups changes between the periods.
+   The against-votes the tool waves through look like the other proposals in the vote file.
+
+5. Abstain. Of NBIM's votes against the board, how many were cast as abstentions, and does
+   the market habit learned from earlier years say so? (given that the vote is against the board)
+  Year | Votes against the board | cast as abstain | Rule says abstain | of which right
+  -----+-------------------------+-----------------+-------------------+---------------
+  2021 |                      97 |               8 |                 4 |              4
+  2022 |                     117 |              14 |                12 |             11
+  2023 |                      83 |               2 |                 2 |              2
+  2024 |                      98 |               1 |                 1 |              1
+  2025 |                     103 |               0 |                 0 |              0
+  2026 |                      66 |               5 |                 0 |              0
+  all  |                     564 |              30 |                19 |             18
+   Markets with the habit over the whole file: Denmark director election (13 of 13), Taiwan articles (5 of 6), Taiwan dividend (4 of 4), Taiwan fin statements (4 of 4), Taiwan merger (3 of 3), Taiwan routine (3 of 3), Vietnam director election (2 of 2)
+   In 2026 the rule finds none of that year's abstentions: they are in markets with no such history.
+   Other abstentions in the file are on items with no board recommendation (Brazil, cumulative
+   voting), which have no 'against the board' answer and are outside the target.
+```
+
 ## Resistance test and guardrail
 
 `python3 src/agent/robustness.py`
