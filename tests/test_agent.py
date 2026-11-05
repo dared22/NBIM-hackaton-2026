@@ -174,6 +174,48 @@ class DecisionTests(unittest.TestCase):
         self.assertFalse(any(word in n for n in names for word in ("text", "word", "sentence", "support")))
 
 
+class DirectorRuleTests(unittest.TestCase):
+    def setUp(self):
+        import director_rules
+        self.dr = director_rules
+
+    def test_ballot_name_is_matched_to_the_sec_name(self):
+        same = self.dr.same_person
+        self.assertGreater(same("Michael S. Dell", "DELL MICHAEL S"), 0)
+        self.assertGreater(same("Ronald L. Havner, Jr.", "Havner Ronald L Jr"), 0)
+        self.assertGreater(same('Judith "Jami" Miscik', "Miscik Judith A"), 0)
+        self.assertEqual(same("Michael S. Dell", "DELL SUSAN L"), 0)
+        self.assertEqual(same("Egon Durban", "DELL MICHAEL S"), 0)
+
+    def test_chair_and_ceo_is_read_from_the_title(self):
+        both = lambda t: bool(self.dr.CEO.search(t) and self.dr.CHAIR.search(t))
+        for title in ("Chairman and CEO", "Chairman, President & CEO", "CEO and Chairman", "Chairman, Chief Executive Off."):
+            self.assertTrue(both(title), title)
+        for title in ("President and CEO", "Executive Chairman", "Vice Chairman and CEO", "Chief Financial Officer"):
+            self.assertFalse(both(title), title)
+
+    def test_rules_fire_only_on_their_fact(self):
+        base = {"matched": True, "title": "Chairman and CEO", "title_month": "2025-03", "chair_ceo": True, "boards": 2}
+        self.assertEqual([c for c, _ in self.dr.decide(base)], ["GVG 1.3"])
+        self.assertEqual([c for c, _ in self.dr.decide(dict(base, chair_ceo=False, boards=6))], ["GVG 2.1"])
+        self.assertEqual(self.dr.decide(dict(base, chair_ceo=False, boards=5)), [])
+        self.assertEqual(self.dr.decide({"matched": False}), [])
+
+    def test_a_rule_is_suspended_after_two_misses_in_a_row(self):
+        rows = [{"meeting_date": d, "rules": [("GVG 1.3", "")], "y": y} for d, y in
+                (("2025-04-01", 1), ("2025-07-02", 0), ("2026-04-21", 0), ("2026-04-28", 0), ("2026-04-28", 0))]
+        self.dr.run_monitor(rows)
+        self.assertEqual([r["rule_state"]["GVG 1.3"] for r in rows], ["active", "active", "active", "suspended", "suspended"])
+
+    def test_only_reports_from_before_the_meeting_month_are_used(self):
+        row = {"proposal_text": "Elect Director Jane Doe", "company_id": "c1", "meeting_date": "2025-05-20"}
+        people = {"c1": {"99": "DOE JANE"}}
+        late = {"99": [("2025-05", "777", "Director;Officer", "Chairman and CEO", "c1")]}
+        early = {"99": [("2025-03", "777", "Director;Officer", "Chairman and CEO", "c1")]}
+        self.assertFalse(self.dr.facts_for(row, people, late)["chair_ceo"])
+        self.assertTrue(self.dr.facts_for(row, people, early)["chair_ceo"])
+
+
 class ProxyTextTests(unittest.TestCase):
     def test_prior_support_is_the_figure_next_to_the_result(self):
         text = ("Approval requires a majority (50%) of shares present. "

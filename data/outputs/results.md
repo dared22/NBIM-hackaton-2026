@@ -17,8 +17,8 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (history only)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1160 (75%). Sent to a person: 379 (25%).
-- Automatic 'against the board' suggestions: 38, of which 23 were right (precision 61%, recall 35%).
+- Decided automatically: 1156 (75%). Sent to a person: 383 (25%).
+- Automatic 'against the board' suggestions: 34, of which 23 were right (precision 68%, recall 35%).
 - Against-votes inside the pile sent to a person: 28 (42% of all against-votes).
 - Against-votes the tool waved through with the board: 15 (23% of all against-votes).
 - With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
@@ -159,6 +159,71 @@ Training seasons only. AP = average precision (higher is better).
 
   For comparison, 'same as last season' on 2025: 46 hits with 115 flags.
   Share of training votes with the measure: pay vs peers 84%, pay vs returns trend 82%
+```
+
+## Director elections at US companies: NBIM's written rules applied to dated facts
+
+`python3 src/agent/director_rules.py`
+
+```text
+US director elections in NBIM's file: 1742 nominees at 36 companies, 218 meetings, 2019-2026
+NBIM voted against the board on 93 (5.3%).
+Nominees matched to a person in the SEC data: 1660 (95%); of the against-votes: 87 of 93.
+
+1. What the facts show (matched nominees)
+  Fact about the nominee       | Nominees | NBIM against | Against rate
+  -----------------------------+----------+--------------+-------------
+  chair and CEO combined       |       38 |           32 |        84.2%
+  executive, not chair and CEO |      170 |            9 |         5.3%
+  not an executive             |     1453 |           47 |         3.2%
+  on 1 US board                |      832 |           43 |         5.2%
+  on 2 US boards               |      481 |           22 |         4.6%
+  on 3 US boards               |      224 |            9 |         4.0%
+  on 4-5 US boards             |      111 |            7 |         6.3%
+  on more than 5 US boards     |       12 |            6 |        50.0%
+  not matched to a person      |       82 |            6 |         7.3%
+
+2. NBIM's rules as a predictor (no training, all years)
+  Method                            | Flags | Hits | False alarms | Precision | Recall
+  ----------------------------------+-------+------+--------------+-----------+-------
+  Always with board                 |     0 |    0 |            0 |         - |     0%
+  Same as last time                 |    73 |   36 |           37 |       49% |    39%
+  Rule 1.3.1, chair who is also CEO |    38 |   32 |            6 |       84% |    34%
+  Rule 2.1.1, more than five boards |    12 |    6 |            6 |       50% |     6%
+  Either rule                       |    50 |   38 |           12 |       76% |    41%
+  Same as last time, or either rule |    88 |   47 |           41 |       53% |    51%
+
+   Against-votes on people NBIM had not opposed before: 57. The rules find 11; 'same as last time' finds 0 by construction.
+
+3. Does the tool cite the rule NBIM itself gave?
+   GVG 1.3 (chair and CEO): NBIM cited it for 28 against-votes; the rule fired on 38 nominees and matched 25 of NBIM's 28. When the rule fired and NBIM voted against, NBIM's stated reason was: {'none given': 5, 'GVG 2.1': 2, 'GVG 1.3': 25}
+   GVG 2.1 (time commitment): NBIM cited it for 9 against-votes; the rule fired on 12 nominees and matched 3 of NBIM's 9. When the rule fired and NBIM voted against, NBIM's stated reason was: {'none given': 2, 'GVG 1.2': 1, 'GVG 2.1': 3}
+
+4. Policy and practice: nominees titled chair and CEO, by year
+  Year | Chair-and-CEO nominees | NBIM against | Against rate
+  -----+------------------------+--------------+-------------
+  2019 |                      5 |            5 |       100.0%
+  2020 |                      6 |            6 |       100.0%
+  2021 |                      4 |            4 |       100.0%
+  2022 |                      4 |            4 |       100.0%
+  2023 |                      5 |            5 |       100.0%
+  2024 |                      4 |            4 |       100.0%
+  2025 |                      5 |            4 |        80.0%
+  2026 |                      5 |            0 |         0.0%
+   By company (against / elections): First Financial Bankshares, Inc. 7/8; UMB Financial Corporation 7/8; The Hartford Insurance Group, Inc. 7/8; First Horizon Corporation 5/6; Public Storage 3/3; Standex International Corporation 2/2; Snowflake Inc. 1/2; Texas Capital Bancshares, Inc. 0/1
+
+5. With the drift monitor (a rule is suspended after NBIM supported the board on its last two cases)
+  Years     | Rules alone: hits/flags | Monitor: automatic hits/flags | Monitor: sent to a person, against/total
+  ----------+-------------------------+-------------------------------+-----------------------------------------
+  2019-2025 |                   38/45 |                         37/42 |                                      1/3
+  2026      |                     0/5 |                           0/1 |                                      0/4
+  all years |                   38/50 |                         37/43 |                                      1/7
+   Rules suspended from: GVG 1.3 on 2026-04-28, GVG 2.1 on 2022-05-12
+
+6. Against-votes the rules do not explain, by NBIM's stated reason
+    {'GVG 3.2': 24, 'none given': 9, 'GVG 1.1': 8, 'GVG 2.3': 5, 'GVG 2.1': 4, 'GVG 1.3': 3, 'GVG 1.2': 2}
+
+Wrote 1742 nominees to data/outputs/director_rules.csv
 ```
 
 ## Experiment: do ballot details improve the history model? (test years 2022-2025)

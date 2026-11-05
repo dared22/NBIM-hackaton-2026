@@ -91,7 +91,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about three minutes
-python3 -m unittest discover -s tests     # 20 checks, including leakage audits
+python3 -m unittest discover -s tests     # 25 checks, including leakage audits
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
@@ -105,6 +105,7 @@ to one total.
 |---|---|---|
 | `src/benchmark/model.py` | File A, `real_votes.csv`: all proposal types, 37 countries, 1,539 proposals, 66 against the board. Vote history only | 24 hits and 14 false alarms at 38 flags; "same as last time" has 22 and 16 |
 | `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 71 hits and 26 false alarms at 97 flags; "same as last season" has 42 and 55 |
+| `src/agent/director_rules.py` | US director elections in file A, 2019-2026: 1,742 nominees, 93 against. NBIM's written rules (chair who is also CEO; more than five boards) applied to SEC role data. No training, no AI model | 38 hits and 12 false alarms at 50 flags; "same as last time" has 36 and 37 at 73 flags. From 2019 to 2024 NBIM opposed 28 of 28 chair-and-CEO nominees; in 2026, 0 of 5 |
 | `src/agent/history_model.py` | Experiment on file A: does what the ballot reveals (director order, board size, labels) help? | No change on test years 2022-2025; not adopted |
 | `src/agent/data_audit.py` | Every column of all three vote files | Report in `data/outputs/data_audit.md` |
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |
@@ -117,7 +118,7 @@ say-on-pay votes from Norges Bank's SEC Form N-PX filings
 
 To rebuild the SEC data (about an hour, needs internet), run in this order:
 `src/agent/fetch_ceo_pay.py`, `fetch_proxy_pay.py`, `fetch_company_size.py`,
-`fetch_proxy_text.py`. To call the decision model for new proposals, put
+`fetch_proxy_text.py`, `fetch_director_roles.py`. To call the decision model for new proposals, put
 `OPENROUTER_API_KEY=...` in a `.env` file at the repository root.
 
 The `src/evaluate.py`, `src/policy.py` and other planned files in the layout above

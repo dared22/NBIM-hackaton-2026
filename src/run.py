@@ -9,9 +9,11 @@ It writes two files in data/outputs/
                         evidence link, and what NBIM actually did
     results.md          the full printed output of every evaluation script
 
-Two models feed the decisions
-    US executive pay votes   src/agent/pay_model.py   vote history + company facts
-    all other proposals      src/benchmark/model.py   vote history only
+Three sources feed the decisions
+    US executive pay votes   src/agent/pay_model.py       vote history + company facts
+    US director elections    src/agent/director_rules.py  NBIM's written rules + SEC role data,
+                                                          on top of the history model
+    all other proposals      src/benchmark/model.py       vote history only
 
 How a decision is made
     1. Guardrail. Instruction-like wording in the proposal text sends it to a
@@ -39,6 +41,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 
 from benchmark import model as bm  # noqa: E402
+import director_rules as dr  # noqa: E402
 import pay_model as pm  # noqa: E402
 import robustness as rb  # noqa: E402
 import rule_check as rc  # noqa: E402
@@ -50,6 +53,7 @@ SCRIPTS = [
     ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
     ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
     ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
+    ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
@@ -84,6 +88,7 @@ def general_decisions():
     cache = rc.load_cache()
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
+    directors = {(r["meeting_id"], r["item_no"]): r for r in dr.load_scored()}
     scored = [r for r in val if r["rule_p"] is not None]
     rule_thr = bm.best_f1_threshold([r["rule_p"] for r in scored], [r["y"] for r in scored]) if scored else 1.0
     out = []
@@ -93,16 +98,32 @@ def general_decisions():
         if r["company_id"] not in known_companies:
             flags.append("low information: no earlier votes at this company")
         band = "send to human" if hits else r["band"]
+        model, reasons, guide = "vote history", bm.reasons(w, r["x"]), None
+        d = directors.get((r["meeting_id"], r["item_no"]))
+        if d and d["rules"]:
+            active = [(c, t) for c, t in d["rules"] if d["rule_state"][c] == "active"]
+            model = "NBIM rule + SEC role data"
+            reasons = " | ".join(t for _, t in d["rules"])
+            guide = ", ".join(c for c, _ in d["rules"])
+            if active and not hits:
+                band = "likely AGAINST board"
+            else:
+                flags.append("rule suspended: NBIM supported the board the last two times " +
+                             ", ".join(c for c, _ in d["rules"]) + " applied")
         vote, who, why = decide(r["mgmt_rec"], band, flags)
-        if r["rule_p"] is not None and r["rule_p"] >= rule_thr:
+        if guide:
+            pass
+        elif r["rule_p"] is not None and r["rule_p"] >= rule_thr:
             guide = f"GVG {r['rule_section']} (rule check, probability {r['rule_p']:.2f})"
         elif band != "likely WITH board" and r["candidates"]:
             guide = f"GVG {r['candidates'][0]} (NBIM's most common stated reason for this proposal type before 2025)"
         else:
             guide = ""
+        evidence = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
+                    if d and d["rules"] else "")
         out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
-                    r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, "vote history",
-                    bm.reasons(w, r["x"]), guide, "", r["y"], r["nbim_vote"]])
+                    r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, model,
+                    reasons, guide, evidence, r["y"], r["nbim_vote"]])
     return out
 
 

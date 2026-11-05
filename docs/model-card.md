@@ -22,7 +22,9 @@ writing, is the vote against the board. For management proposals the two
 targets are the same. The decisions file states the suggested vote as FOR or
 MOT, so either target can be scored from it.
 
-## Two models
+## Two models and a rule engine
+
+The rule engine for US director elections is described further down.
 
 | | History model | Pay model |
 |---|---|---|
@@ -84,6 +86,54 @@ automatic pile with a 10% against rate, against 1% where the figure was known.
 
 Confidence, pay model: where it says 83%, 80% were against. Where it says 24%,
 13% were against, so it is too confident in that range.
+
+## Director elections at US companies: written rules applied to facts
+
+`src/agent/director_rules.py`. No training and no AI model. NBIM's guidelines
+contain clear-cut rules about directors. Two of them can be checked against
+the SEC's records of who is a director or officer of which company, and with
+what title (Insider Transactions Data Sets, Forms 3, 4 and 5):
+
+- Rule 1.3.1: "We will not support the election of a chairperson who is also
+  the CEO of the company."
+- Rule 2.1.1: no support for a director "who sits on more than five boards".
+
+Scored on all US director elections in file A: 1,742 nominees at 36 companies,
+2019-2026, 93 against the board. Because nothing is fitted, every year is a
+test year. 95% of nominees were matched to a person in the SEC data.
+
+| Method | Flags | Hits | False alarms | Precision | Recall |
+|---|---|---|---|---|---|
+| Same as last time | 73 | 36 | 37 | 49% | 39% |
+| Rule 1.3.1, chair who is also CEO | 38 | 32 | 6 | 84% | 34% |
+| Rule 2.1.1, more than five boards | 12 | 6 | 6 | 50% | 6% |
+| Either rule | 50 | 38 | 12 | 76% | 41% |
+| Same as last time, or either rule | 88 | 47 | 41 | 53% | 51% |
+
+- The rules find 11 of the 57 against-votes on people NBIM had not opposed
+  before. "Same as last time" finds none of those by construction.
+- The tool cites the rule NBIM itself gave: NBIM cited section 1.3 for 28
+  against-votes, and rule 1.3.1 fired on 25 of them.
+
+Policy and practice. From 2019 to 2024 NBIM voted against every nominee titled
+chair and CEO at these companies: 28 of 28. In 2025 it was 4 of 5. In 2026 it
+was 0 of 5, including four people it had opposed every year before. The 2025
+guidelines we were given still contain rule 1.3.1. So in 2026 NBIM's practice
+at these companies no longer followed that written rule, and a tool that
+applied it blindly would have been wrong five times.
+
+Drift monitor. Each rule is watched: when NBIM has supported the board the
+last two times a rule fired, the rule is suspended and its later cases go to a
+person. With the monitor, 2019-2025 gives 37 hits in 42 automatic suggestions
+(88%). In 2026 it makes one wrong suggestion, then suspends the rule and sends
+the other four cases to a person.
+
+Limits: 36 companies. Board counts cover US-listed companies only and are a
+lower bound, which is why rule 2.1.1 misses 6 of NBIM's 9 "time commitment"
+votes. A title is what the company wrote on the form, so a CEO who chairs the
+board but is titled only "CEO" is missed (3 of NBIM's 28). Independence and
+committee membership are not in this data, so rules 1.1 and 1.2 are not
+covered. The monitor uses NBIM's own earlier votes, which NBIM would have.
 
 ## What was tried and did not help
 
@@ -155,6 +205,8 @@ persuasion text without trigger words, one harmless sentence.
 - NBIM votes: organisers' `real_votes.csv`; Norges Bank Form N-PX,
   https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1374170&type=N-PX
 - Company facts: SEC EDGAR proxy statements and XBRL API, https://www.sec.gov/edgar
+- Director and officer roles: SEC Insider Transactions Data Sets,
+  https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets
 - Guidelines: NBIM Global voting guidelines 2025,
   https://www.nbim.no/contentassets/01a7ee19b5d84a73a67a365e76a0fb01/global-voting-guildeines_2025.pdf
 - NBIM voting review, first half 2025,
