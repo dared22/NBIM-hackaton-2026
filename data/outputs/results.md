@@ -17,12 +17,12 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1165 (76%). Sent to a person: 374 (24%).
-- Automatic 'against the board' suggestions: 37, of which 25 were right (precision 68%, recall 38%).
+- Decided automatically: 1163 (76%). Sent to a person: 376 (24%).
+- Automatic 'against the board' suggestions: 36, of which 25 were right (precision 69%, recall 38%).
 - Against-votes inside the pile sent to a person: 26 (39% of all against-votes).
 - Against-votes the tool waved through with the board: 15 (23% of all against-votes).
 - With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
-- Low-information gate: 31 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
+- Low-information gate: 33 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -159,6 +159,24 @@ Training seasons only. AP = average precision (higher is better).
 
   For comparison, 'same as last season' on 2025: 46 hits with 115 flags.
   Share of training votes with the measure: pay vs peers 95%, pay vs returns trend 92%
+```
+
+## The same US pay proposals in both files: which model should answer?
+
+`python3 src/agent/pay_overlap.py`
+
+```text
+  Year                              | US pay votes in NBIM's file | also in the SEC file | against the board | History model: flags | hits | Pay model: flags | hits | Pay model waved through an against-vote
+  ----------------------------------+-----------------------------+----------------------+-------------------+----------------------+------+------------------+------+----------------------------------------
+  2024 (scored without the company) |                          33 |                   32 |                 5 |                    0 |    0 |                3 |    3 |                                       0
+  2025 (scored without the company) |                          31 |                   31 |                 3 |                    4 |    2 |                3 |    2 |                                       1
+  2026 (the real test)              |                          18 |                   18 |                 0 |                    2 |    0 |                1 |    0 |                                       0
+  all three                         |                          82 |                   81 |                 8 |                    6 |    2 |                7 |    5 |                                       1
+
+  On the 81 proposals in both files the pay model finds 5 of the 8 against-votes with 7 flags.
+  The history model finds 2 with 6 flags. In 2026 there were no against-votes among them,
+  and the pay model raises one false alarm where the history model raises two.
+  src/run.py now gives these proposals the pay model's answer, so each proposal has one answer.
 ```
 
 ## Director elections at US companies: NBIM's written rules applied to dated facts

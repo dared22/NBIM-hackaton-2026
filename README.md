@@ -113,6 +113,7 @@ to one total.
 | `src/agent/history_model.py` | Experiment on file A: does what the ballot reveals (director order, board size, labels) help? | No change on test years 2022-2025; not adopted |
 | `src/agent/data_audit.py` | Every column of all three vote files | Report in `data/outputs/data_audit.md` |
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |
+| `src/agent/pay_overlap.py` | The 81 US pay proposals (2024-2026) that are in both files, scored by both models | Pay model 5 of 8 against-votes with 7 flags, history model 2 with 6. These proposals now get the pay model's answer in file A |
 | `src/agent/routing.py` | Is the confidence honest, what does a lower "ask a person" level cost, and when does NBIM abstain | Below 5% the tool is wrong about 2% of the time and nothing in the vote file picks those out; abstaining is a market habit the tool now follows |
 | `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | An AI model reads how the CEO's pay is built from the proxy, with a checked quote for every answer. Pilot on 299 proxies | No gain: NBIM's pay against-votes at 10 to 25 million dollars do not follow lock-in, one-off awards or the other eight facts read. Not used by the pay model |
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |

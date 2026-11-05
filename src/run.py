@@ -18,6 +18,10 @@ Three sources feed the decisions
     decides the vote                                      title, on top of the history model
     all other proposals      src/benchmark/model.py       vote history only
 
+A US company's annual pay vote in NBIM's vote file that is also in the SEC file
+gets the pay model's answer (src/agent/pay_overlap.py), so each proposal has
+one answer.
+
 How a decision is made
     1. Guardrail. Instruction-like wording in the proposal text sends it to a
        person with a security flag. Extra words added to a known item do not
@@ -49,6 +53,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 
 from benchmark import model as bm  # noqa: E402
 import director_rules as dr  # noqa: E402
+import pay_overlap as po  # noqa: E402
 import pay_model as pm  # noqa: E402
 import proposal_rules as pr  # noqa: E402
 import robustness as rb  # noqa: E402
@@ -62,6 +67,7 @@ SCRIPTS = [
     ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
     ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
     ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
+    ("The same US pay proposals in both files: which model should answer?", ["src/agent/pay_overlap.py"]),
     ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
     ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
@@ -92,12 +98,25 @@ def decide(board, band, flags):
     return vote, ("human review" if flags else "automatic"), "; ".join(flags)
 
 
-def general_decisions(rows=None):
+_PAY = []
+
+
+def pay_once():
+    """The pay decisions, computed once per run."""
+    if not _PAY:
+        _PAY.append(pay_decisions())
+    return _PAY[0]
+
+
+def general_decisions(rows=None, pay=None):
     """All proposal types from NBIM's published votes: history model plus NBIM's written rules.
+    A US company's annual pay vote that is also in the SEC file gets the pay model's answer.
 
     `rows` can be passed in to score altered proposals (the resistance check in tests).
     """
     rows = bm.read_votes(rc.VOTES) if rows is None else rows
+    col = {c: i for i, c in enumerate(COLS)}
+    pay_index = po.build_index([(d[col["company"]], d[col["meeting_date"]], d) for d in (pay_once() if pay is None else pay)])
     # Guardrail, part 2: if a proposal's text is an item this company has voted on
     # before plus extra words, the known item is used for the history lookup.
     year = lambda r: int(r["meeting_date"][:4])
@@ -139,6 +158,15 @@ def general_decisions(rows=None):
             else:
                 flags.append("rule suspended: NBIM supported the board the last two times " +
                              ", ".join(c for c, _ in d["rules"]) + " applied")
+        prob, by_pay = r["p"], po.find(pay_index, r["company"], r["meeting_date"]) if po.is_annual_pay_vote(r) else None
+        if by_pay:
+            # The same proposal is scored with company facts by the pay model: use that answer.
+            model, prob = "vote history + company facts (pay model)", float(by_pay[col["probability_against_board"]])
+            band = "send to human" if hits else by_pay[col["band"]]
+            reasons = by_pay[col["reasons"]]
+            flags = (["security flag: " + ", ".join(hits)] if hits else []) + [
+                f for f in by_pay[col["review_reason"]].split("; ")
+                if f and f != "the model is unsure" and not f.startswith("security flag")]
         vote, who, why = decide(r["mgmt_rec"], band, flags)
         market = (r["country"], r["proposal_type"])
         if vote == "MOT" and band == "likely AGAINST board" and market in abstain:
@@ -159,13 +187,15 @@ def general_decisions(rows=None):
         # The words of the guideline and the page they are on. A rule that fired is quoted
         # itself; otherwise the cited section's introduction is quoted.
         quoted = rc.quote((RULE_ID.findall(reasons) if d and d["rules"] else []) or GVG_ID.findall(guide), citations)
-        if guide:   # name NBIM's position paper for the cited section, as NBIM does in its own rationales
+        if by_pay:
+            guide, quoted, evidence = by_pay[col["guideline"]], by_pay[col["guideline_text"]], by_pay[col["evidence_url"]]
+        elif guide:   # name NBIM's position paper for the cited section, as NBIM does in its own rationales
             rule_id = d["rule"][0] if d and d["rules"] and d.get("rule") else ""
             paper = rc.paper_for(papers, guide.split(" (")[0].split(",")[0], rule_id)
             if paper:
                 guide += f"; position paper: {paper['title']} ({paper['url']})"
         out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
-                    r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, model,
+                    r["proposal_text"], r["mgmt_rec"], vote, f"{prob:.3f}", band, who, why, model,
                     reasons, guide, quoted, evidence, r["y"], r["nbim_vote"]])
     return out
 
@@ -228,7 +258,8 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     parts = ["# Results", "", f"Produced by `python3 src/run.py`. Test year {YEAR}; nothing from {YEAR} is used to fit or tune.", ""]
 
-    general, pay = general_decisions(), pay_decisions()
+    pay = pay_once()
+    general = general_decisions(pay=pay)
     with open(os.path.join(OUT, f"decisions_{YEAR}.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(COLS)

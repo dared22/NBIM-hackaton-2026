@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 21:03.
+Last full update: Thu 21:13.
 
 ## What must be delivered
 
@@ -29,13 +29,14 @@ Last full update: Thu 21:03.
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
+| One answer per proposal | `src/agent/pay_overlap.py`, `src/run.py` | Done | US pay proposals that are in both files were answered twice. They now get the pay model's answer (5 of 8 against-votes found on those, history model 2). File A 2026: 36 automatic "against" suggestions, 25 right |
 | Confidence and routing | `src/agent/routing.py` | Done | Below 5% the tool is wrong about 2% of the time; no signal in the vote file picks those out. The 5% level is kept, with a table of what other levels cost. Abstain suggested where a market has the habit (18 of 19 right in 2021-2025) |
 | Pay structure reader (AI model, pilot) | `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | Done, not adopted | 299 proxies read with a checked quote for every answer. The answers do not explain NBIM's pay against-votes at 10 to 25 million dollars (51 to at most 53 hits of 89) |
 | Low-information gate and drift monitor | `src/run.py`, `src/agent/director_rules.py` | Done | The tool never follows the board alone when it has no facts |
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 39 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 42 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -121,3 +122,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 20:23 Iftikhar: reviewed `policy-retrieval`. Every cited guideline in `decisions_2026.csv` now carries its own words and page number (new column `guideline_text`), with a check that the quotes are word for word.
 - Thu 20:40 Iftikhar: confidence and routing report (`src/agent/routing.py`); abstain rule in the pipeline; pay misses studied on the training seasons, five more inputs tested and left out.
 - Thu 21:03 Iftikhar: AI reader of pay structure built and piloted on 299 proxies (training seasons). No gain, so the rest were not read and the pay model is unchanged.
+- Thu 21:13 Iftikhar: US pay proposals that sit in both vote files now get one answer, from the pay model. One false alarm fewer on file A in 2026.

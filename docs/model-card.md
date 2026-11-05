@@ -75,7 +75,18 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 | Sent to a person | 24% | 25% |
 | Against-votes suggested by the tool or sent to a person | 77% | 89% |
 | Against-votes the tool followed the board on by itself | 23% | 11% |
-| Precision of the automatic "against" suggestions | 68% | 70% |
+| Precision of the automatic "against" suggestions | 69% | 70% |
+
+One answer per proposal. The annual pay vote of 36 US companies is in both
+files. The tool used to answer those twice, and the two answers could differ.
+On the 81 such proposals in 2024-2026 the pay model finds 5 of the 8
+against-votes with 7 flags, and the history model finds 2 with 6 flags
+(`src/agent/pay_overlap.py`). For 2024 and 2025 the pay model's scores come
+from a model that had not seen the company, which is not a time split. 2026 is
+the real test and has no against-votes among them: there the pay model raises
+one false alarm where the history model raises two. These proposals in file A
+now get the pay model's answer, which took the automatic "against"
+suggestions on file A from 37 (25 right) to 36 (25 right).
 
 Low-information gate: the tool never follows the board on its own when it has
 nothing to go on. A pay vote with no pay figure, a company it has never seen,

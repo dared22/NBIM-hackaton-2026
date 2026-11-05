@@ -266,6 +266,41 @@ class PayStructureReaderTests(unittest.TestCase):
                     self.assertTrue(r[key + "_quote"].strip(), (r["cik"], key))
 
 
+class PayOverlapTests(unittest.TestCase):
+    """A US pay proposal that is in both vote files must get one answer."""
+
+    def test_company_names_match_only_when_they_are_the_same_company(self):
+        import pay_overlap as po
+        index = po.build_index([("BRINK'S CO", "2026-05-01", "brinks"), ("AMERICAN EXPRESS CO", "2026-05-01", "amex"),
+                                ("First Horizon Corp", "2026-05-01", "horizon")])
+        self.assertEqual(po.find(index, "The Brinks Company", "2026-05-01"), "brinks")
+        self.assertEqual(po.find(index, "First Horizon Corporation", "2026-05-01"), "horizon")
+        self.assertIsNone(po.find(index, "American Water Works Company, Inc.", "2026-05-01"))
+        self.assertIsNone(po.find(index, "First Financial Bankshares, Inc.", "2026-05-01"))
+        self.assertIsNone(po.find(index, "The Brinks Company", "2026-05-02"))
+
+    def test_only_the_annual_us_pay_vote_is_handed_to_the_pay_model(self):
+        import pay_overlap as po
+        row = lambda text, country="United States", kind="SAY_ON_PAY": {"proposal_text": text, "country": country, "proposal_type": kind}
+        self.assertTrue(po.is_annual_pay_vote(row("Advisory Vote to Ratify Named Executive Officers' Compensation")))
+        self.assertFalse(po.is_annual_pay_vote(row("Ratify Performance Based Stock Options to Elon Musk")))
+        self.assertFalse(po.is_annual_pay_vote(row("Advisory Vote to Ratify Named Executive Officers' Compensation", country="Canada")))
+        self.assertFalse(po.is_annual_pay_vote(row("Elect Director Jane Doe", kind="DIRECTOR_ELECTION")))
+
+    def test_shared_proposals_get_the_same_suggestion_in_both_lists(self):
+        import run
+        import pay_overlap as po
+        col = {c: i for i, c in enumerate(run.COLS)}
+        pay = run.pay_once()
+        index = po.build_index([(d[col["company"]], d[col["meeting_date"]], d) for d in pay])
+        shared = [d for d in run.general_decisions(pay=pay) if "pay model" in d[col["model"]]]
+        self.assertGreater(len(shared), 10)
+        for d in shared:
+            other = po.find(index, d[col["company"]], d[col["meeting_date"]])
+            for name in ("suggested_vote", "probability_against_board", "band", "decided_by"):
+                self.assertEqual(d[col[name]], other[col[name]], (d[col["company"]], name))
+
+
 class RoutingTests(unittest.TestCase):
     def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
         import routing
