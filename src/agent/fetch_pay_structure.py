@@ -1,7 +1,9 @@
 """Read how the CEO's pay is built from each proxy, with an AI model and a quote for every answer.
 
 Run from the repo root (needs internet and OPENROUTER_API_KEY in .env; resumes if stopped):
-    python3 src/agent/fetch_pay_structure.py --pilot 300    # a sample from the training seasons
+    python3 src/agent/fetch_pay_structure.py --pilot 300    # a sample from the training seasons, CEO pay 10-25 million
+    python3 src/agent/fetch_pay_structure.py --pilot-high   # training seasons, CEO pay of 25 million or more
+    python3 src/agent/fetch_pay_structure.py --high         # all seasons, CEO pay of 25 million or more (used by the pay model)
     python3 src/agent/fetch_pay_structure.py                # every pay vote with CEO pay of 10 million dollars or more
 
 Why
@@ -147,7 +149,7 @@ def quote_found(quote, text_simple):
 
 def request_body(passages):
     keys = "\n".join(f"- {k} ({'yes/no/unknown' if kind == 'yes_no' else 'number or null'}): {q}" for k, kind, q in QUESTIONS)
-    return {"model": MODEL, "temperature": 0, "max_tokens": 3000, "usage": {"include": True}, "reasoning": {"enabled": False},
+    return {"model": MODEL, "max_tokens": 3000, "usage": {"include": True}, "reasoning": {"enabled": False},
             "messages": [{"role": "system", "content": SYSTEM + keys},
                          {"role": "user", "content": "PASSAGES FROM THE PROXY STATEMENT:\n\n" + passages}]}
 
@@ -217,7 +219,7 @@ def passages_for(meeting):
     return text
 
 
-def targets(pilot):
+def targets(pilot, high=False):
     """The proxies to read: pay votes where the CEO's pay is MIN_PAY or more.
 
     --pilot N takes a sample from the training seasons only, at CEO pay below
@@ -228,7 +230,10 @@ def targets(pilot):
     import pay_model as pm
     rows, _ = pm.load_rows()
     rows = [r for r in rows if r["pay"] and r["pay"] >= MIN_PAY and r["c"].get("kind") == "proxy" and r["c"].get("url")]
-    if pilot:
+    if high:
+        # every vote where the CEO is paid 25 million dollars or more: the training seasons, or all seasons
+        rows = [r for r in rows if r["pay"] >= pm.STRICT_LEVEL and (high == "all" or r["season"] < pm.TEST_SEASON)]
+    elif pilot:
         band = [r for r in rows if r["season"] < pm.TEST_SEASON and r["pay"] < pm.STRICT_LEVEL]
         against = [r for r in band if r["y"]]
         others = [r for r in band if not r["y"]]
@@ -261,9 +266,11 @@ def write_csv(cache):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pilot", type=int, default=0, help="read a sample of this size from the training seasons")
+    ap.add_argument("--pilot-high", action="store_true", help="read every training-season vote with CEO pay of 25 million dollars or more")
+    ap.add_argument("--high", action="store_true", help="read every vote, all seasons, with CEO pay of 25 million dollars or more (what the pay model uses)")
     a = ap.parse_args()
     cache = load_cache()
-    todo = [m for m in targets(a.pilot) if (m["cik"], m["meeting_date"]) not in cache]
+    todo = [m for m in targets(a.pilot, "all" if a.high else a.pilot_high) if (m["cik"], m["meeting_date"]) not in cache]
     print(f"{len(cache)} proxies already read, {len(todo)} to read")
     if todo:
         key = rc.api_key()

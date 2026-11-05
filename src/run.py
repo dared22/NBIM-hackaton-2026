@@ -226,9 +226,11 @@ def pay_decisions():
         vote, who, why = decide("FOR", band, flags)
         why_pay = pm.reasons(r, w)
         codes = ", ".join(sorted({c for _, c in why_pay if c}))
+        notes = pm.structure_notes(r)
         out.append(["NBIM pay votes, US filers", f"{r['cusip']}-{r['moetedato']}", r["moetedato"], r["utsteder"],
                     r["forslag"], "FOR", vote, f"{p:.3f}", band, who, why, "vote history + company facts",
-                    " | ".join(t for t, _ in why_pay),
+                    " | ".join(t for t, _ in why_pay) + (
+                        " | read from the proxy, shown as evidence and not part of the score: " + "; ".join(notes) if notes else ""),
                     codes + (f"; position paper: {pay_paper['title']} ({pay_paper['url']})" if why_pay and pay_paper else ""),
                     rc.quote(GVG_ID.findall(codes), citations),
                     r["c"].get("url", ""), r["y"], "MOT" if r["stemme"] in ("AGAINST", "WITHHOLD") else "FOR"])

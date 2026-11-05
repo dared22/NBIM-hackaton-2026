@@ -62,6 +62,7 @@ import collections
 import csv
 import datetime
 import hashlib
+import json
 import math
 import os
 import random
@@ -79,6 +80,7 @@ PROXY_MEET = os.path.join(ROOT, "data", "evidence", "proxy_meetings.csv")
 LINK = os.path.join(ROOT, "data", "evidence", "pay_company_link.csv")
 SIZE = os.path.join(ROOT, "data", "evidence", "company_size.csv")
 TEXT = os.path.join(ROOT, "data", "evidence", "proxy_text.csv")
+STRUCTURE = os.path.join(ROOT, "src", "agent", "cache", "pay_structure.jsonl")
 TEST_SEASON = 2026
 STRICT_LEVEL = 25e6
 LOW = 0.05
@@ -107,6 +109,9 @@ FEATURES = [
 #   - "compensation actually paid" to the CEO (size, 25 million level, ratio to total pay)
 #   - finer steps in pay size (15, 20 and 35 million dollars) and total pay over the table years
 #   - a non-linear model (boosted trees) in place of the logistic model: 73 hits against 76
+#   - how the pay is built, read from the proxy text by an AI model (one-off awards, performance-based
+#     share, earlier support), for CEO pay of 25 million dollars or more. Better on the training
+#     seasons, worse on 2026. The three inputs are kept in r["xs"] for pay_structure_test.py only.
 # The last two are still shown to the reviewer as evidence (data/evidence/proxy_text.csv).
 HISTORY_ONLY = [0, 1]
 
@@ -277,6 +282,34 @@ def load_text():
     return out
 
 
+def load_structure():
+    """What the AI reader recorded about how the CEO's pay is built, by (SEC number, meeting date)."""
+    out = {}
+    if os.path.exists(STRUCTURE):
+        with open(STRUCTURE, encoding="utf-8") as f:
+            for line in f:
+                rec = json.loads(line)
+                out[(int(rec["cik"]), rec["meeting_date"])] = rec["answers"]
+    return out
+
+
+def structure_inputs(answers):
+    """Three inputs from the reader's answers, each +1, 0 or -1. An answer counts only if its quote
+    was found in the proxy. Not used by the pay model: see pay_structure_test.py.
+        one-off award to the CEO: yes +1, the proxy says none -1
+        performance-based share of equity: none stated +1, three quarters or more -1
+        support at the last pay vote: under 70 percent +1, 90 percent or more -1"""
+    if not answers:
+        return [0.0, 0.0, 0.0]
+    v = lambda k: answers[k]["answer"] if answers[k]["verified"] else None
+    share, support = v("performance_share_pct"), v("prior_support_pct")
+    return [
+        {"yes": 1.0, "no": -1.0}.get(v("special_award"), 0.0),
+        1.0 if share is None else -1.0 if share >= 75 else 0.0,
+        0.0 if support is None else 1.0 if support < 70 else -1.0 if support >= 90 else 0.0,
+    ]
+
+
 def load_peers(meetings, proxy):
     """What is needed to build peer groups: industry, revenue, and each company's
     CEO pay with the date the proxy reporting it was filed."""
@@ -341,8 +374,9 @@ def peer_multiple(r, c, peers):
     return None, len(pool)
 
 
-def add_features(rows, link, api, proxy, meetings, source="proxy", peers=None, text=None):
+def add_features(rows, link, api, proxy, meetings, source="proxy", peers=None, text=None, structure=None):
     text = text or {}
+    structure = structure or {}
     prev = {(r["season"], r["cusip"]): r["y"] for r in rows}
     for r in rows:
         last = prev.get((r["season"] - 1, r["cusip"]))
@@ -378,6 +412,9 @@ def add_features(rows, link, api, proxy, meetings, source="proxy", peers=None, t
             max(-2.0, min(3.0, math.log2(c["peer_multiple"]))) if c["peer_multiple"] else 0.0,
             max(-1.0, min(1.0, -c["trend_gap"])) if c["trend_gap"] is not None else 0.0,
         ]
+        # Experiment only (pay_structure_test.py): how the pay is built, where CEO pay is 25 million or more.
+        c["structure"] = structure.get(key) if pay and pay >= STRICT_LEVEL and c["kind"] == "proxy" else None
+        r["xs"] = structure_inputs(c["structure"])
 
 
 def fit_predict(train, test, cols):
@@ -476,6 +513,24 @@ def reasons(r, w):
     return out[:3]
 
 
+def structure_notes(r):
+    """What the AI reader found in the proxy about how the pay is built, with its quotes. Evidence for
+    the reviewer. Not part of the score."""
+    st = r["c"].get("structure")
+    if not st:
+        return []
+    known = lambda k: st[k]["verified"]
+    out = []
+    if known("special_award") and st["special_award"]["answer"] == "yes":
+        out.append(f"a one-off award to the CEO outside the regular programme (\"{st['special_award']['quote']}\")")
+    if known("performance_share_pct"):
+        out.append(f"{st['performance_share_pct']['answer']:.0f}% of the CEO's equity award is performance-based "
+                   f"(\"{st['performance_share_pct']['quote']}\")")
+    if known("prior_support_pct"):
+        out.append(f"the last pay vote had {st['prior_support_pct']['answer']:.0f}% support (\"{st['prior_support_pct']['quote']}\")")
+    return out
+
+
 def explore(train):
     """Against-rate tables on the training seasons only. This is how inputs were chosen."""
     print(f"Training seasons only ({len(train)} votes, {sum(r['y'] for r in train)} against). The test season is not read here.\n")
@@ -519,7 +574,8 @@ def load_rows(source="proxy"):
     rows, other = read_votes()
     link, api, proxy, meetings = load_sources()
     peers = load_peers(meetings, proxy) if source == "proxy" else None
-    add_features(rows, link, api, proxy, meetings, source, peers, load_text() if source == "proxy" else None)
+    add_features(rows, link, api, proxy, meetings, source, peers, load_text() if source == "proxy" else None,
+                 load_structure() if source == "proxy" else None)
     return rows, other
 
 

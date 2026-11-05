@@ -397,11 +397,24 @@ is scored by a model fitted on earlier years only.
   against 7% of the time in this band, and for most answers that barely
   moves: lock-in of three, four or five years 5%, 6%, 6%; a one-off award
   8% against 5% without. Added to the pay inputs the answers move the hits
-  in the sample from 51 to at most 53 of 89. The other 1,900 proxies were
-  not read and the pay model is unchanged
+  in the sample from 51 to at most 53 of 89
   (`src/agent/pay_structure_test.py`). NBIM's stated reason for these votes
   is lock-in and how pay is built, but its votes at this pay level do not
   follow the ten things we could read.
+- The same reader where the CEO is paid 25 million dollars or more (377
+  proxies, all seasons). On the training seasons three answers do separate
+  the votes there: a one-off award (NBIM against 68% with one, 31% where the
+  proxy says there was none), the performance-based share of the CEO's equity
+  (41% against at three quarters or more, 89% where none is stated), and
+  support at the last pay vote (27% against at 90% or more, 7 of 7 under
+  70%). As three inputs they improved both training-season comparisons
+  (average precision 0.658 to 0.675 and 0.544 to 0.567), so the 2026 season
+  was scored with them, once. It came out worse: average precision 0.660
+  against 0.698, the same 72 hits at 97 flags, and 81 hits with 54 false
+  alarms at its own cut-off against 79 with 31. The pay model is kept as it
+  was. The reader's findings are shown on 152 pay decisions as evidence with
+  their quotes, and are not part of the score. That also keeps one property
+  intact: no text from a company filing can move the pay score.
 - A non-linear pay model (small boosted trees, on the model's inputs and on
   the raw figures) in place of the logistic model. On the training seasons it
   finds 73 against-votes where the logistic model finds 76 at the same number
@@ -420,9 +433,12 @@ is scored by a model fitted on earlier years only.
 - Every proxy used was filed 21 to 90 days before its meeting. An automatic
   test fails if one is filed on or after the meeting date.
 - Inputs for the pay model were chosen on the training seasons. The 2026
-  season was scored four times: once for each of three model versions, and
-  once more after 239 more companies were linked with no change to the model.
-  All four results are in the commit history.
+  season was scored five times: once for each of three model versions, once
+  more after 239 more companies were linked with no change to the model, and
+  once with three inputs read from the proxy text, which were rejected because
+  that result was worse. The reported numbers are from the model as it stood
+  before that fifth scoring. All five results are in the commit history or in
+  `data/outputs/results.md`.
 - The decision model never receives the company name, NBIM's vote or NBIM's
   rationale. An automatic test checks the request.
 
@@ -486,6 +502,6 @@ Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
 Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by
-the director rules, which are plain code) and the pay structure pilot (299
-proxies; not used by any model). The model only reads. It never sees NBIM's
+the director rules, which are plain code) and how CEO pay is built (675
+proxies; shown as evidence, not used by any model). The model only reads. It never sees NBIM's
 votes or rules, and it does not decide a vote.

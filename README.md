@@ -116,7 +116,7 @@ to one total.
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |
 | `src/agent/pay_overlap.py` | The 81 US pay proposals (2024-2026) that are in both files, scored by both models | Pay model 5 of 8 against-votes with 7 flags, history model 2 with 6. These proposals now get the pay model's answer in file A |
 | `src/agent/routing.py` | Is the confidence honest, what does a lower "ask a person" level cost, and when does NBIM abstain | Below 5% the tool is wrong about 2% of the time and nothing in the vote file picks those out; abstaining is a market habit the tool now follows |
-| `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | An AI model reads how the CEO's pay is built from the proxy, with a checked quote for every answer. Pilot on 299 proxies | No gain: NBIM's pay against-votes at 10 to 25 million dollars do not follow lock-in, one-off awards or the other eight facts read. Not used by the pay model |
+| `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | An AI model reads how the CEO's pay is built from the proxy, with a checked quote for every answer. 675 proxies | No gain at CEO pay of 10 to 25 million dollars. At 25 million or more three answers helped on the training seasons and hurt on 2026 (average precision 0.660 against 0.698), so the pay model is unchanged. The findings are shown as evidence on 152 pay decisions |
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |
 
 Scope of the pay model: US filers and pay votes only. It uses NBIM's own
@@ -156,9 +156,10 @@ The hackathon rules ask for this list.
   `src/agent/cache/decisions.jsonl`.
 - Claude Haiku 5.5 through OpenRouter: reads board and nominee facts from
   proxies (`src/agent/fetch_board_facts.py`, 214 meetings, cached in
-  `src/agent/cache/board_facts.jsonl`), and the pay structure pilot
-  (`src/agent/fetch_pay_structure.py`, 299 proxies, cached in
-  `src/agent/cache/pay_structure.jsonl`, not used by any model).
+  `src/agent/cache/board_facts.jsonl`), and how CEO pay is built
+  (`src/agent/fetch_pay_structure.py`, 675 proxies, cached in
+  `src/agent/cache/pay_structure.jsonl`, shown as evidence and not used by
+  any model).
 - Other branches not yet in `main` used DeepSeek through OpenRouter
   (`llm_search`) and Jev (`marie`). Add them here if those branches are merged.
 

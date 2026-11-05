@@ -167,6 +167,16 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(self.pipe.decide("FOR", "likely AGAINST board", [])[0], "MOT")
         self.assertEqual(self.pipe.decide("MOT", "likely AGAINST board", [])[0], "FOR")
 
+    def test_what_the_ai_reader_found_is_evidence_and_never_a_pay_model_input(self):
+        fact = lambda answer, ok=True: {"answer": answer, "quote": "q" if ok else "", "verified": ok}
+        answers = {"special_award": fact("yes"), "performance_share_pct": fact(80.0), "prior_support_pct": fact(65.0)}
+        self.assertEqual(pm.structure_inputs(answers), [1.0, -1.0, 1.0])
+        unchecked = {"special_award": fact("yes", ok=False), "performance_share_pct": fact(80.0), "prior_support_pct": fact(None, ok=False)}
+        self.assertEqual(pm.structure_inputs(unchecked), [0.0, -1.0, 0.0])
+        rows, _ = pm.load_rows()
+        self.assertTrue(all(len(r["x"]) == len(pm.FEATURES) for r in rows))      # the three inputs stay outside x
+        self.assertTrue(any(any(r["xs"]) for r in rows))
+
     def test_pay_score_uses_numbers_and_past_votes_only(self):
         # Free text from a company filing can never raise or lower the pay score:
         # no input is built from prose, only from tagged figures and earlier votes.

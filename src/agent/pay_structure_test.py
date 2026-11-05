@@ -20,8 +20,16 @@ times as needed to stand for all of them.
 
 Result: no answer separates the against-votes well enough to matter. Added to
 the current pay inputs, the answers move the hits in the sample from 51 to at
-most 53 of 89. The remaining proxies were not read and the pay model is
-unchanged.
+most 53 of 89.
+
+Second test: CEO pay of 25 million dollars or more, where NBIM votes against
+about six times in ten. Every such proxy was read (training seasons first,
+then the test season). Here three answers do separate the votes on the
+training seasons: a one-off award, the performance-based share of equity, and
+support at the last pay vote. Added to the pay model as three inputs they
+improved both training-season comparisons, so the test season was scored with
+them, once. It came out worse than the model without them. The pay model is
+therefore unchanged, and the reader's answers are shown as evidence only.
 """
 
 import collections
@@ -130,6 +138,57 @@ def main():
     lost = sum(1 for rec in cache.values() for a in rec["answers"].values()
                if a["answer"] not in ("unknown", None) and not a["verified"])
     print(f"   {lost} answers were dropped because their quote was not found word for word in the text.")
+
+    high_pay(rows, cache, key_of)
+
+
+def high_pay(rows, cache, key_of):
+    """The second test: CEO pay of 25 million dollars or more."""
+    train = [r for r in rows if r["season"] < pm.TEST_SEASON]
+    test = [r for r in rows if r["season"] == pm.TEST_SEASON]
+    band = [r for r in train if r["pay"] and r["pay"] >= pm.STRICT_LEVEL and key_of(r) in cache]
+    print(f"\n4. CEO pay of 25 million dollars or more, training seasons: {len(band)} votes, "
+          f"{sum(r['y'] for r in band)} against ({sum(r['y'] for r in band) / len(band):.0%})")
+    out = []
+    for key, kind, _ in fp.QUESTIONS:
+        if key not in ("special_award", "performance_share_pct", "prior_support_pct"):
+            continue
+        cells = collections.defaultdict(lambda: [0, 0])
+        for r in band:
+            cells[bucket(key, kind, cache[key_of(r)]["answers"][key])][r["y"]] += 1
+        for i, label in enumerate(sorted(cells, key=lambda b: (b == NOT_STATED, b))):
+            others, against = cells[label]
+            out.append([key if i == 0 else "", label, against + others, against, f"{against / (against + others):.0%}"])
+    bm.table(["Question", "Answer", "Votes", "Against", "Against rate"], out)
+
+    print("\n5. The three answers as inputs to the pay model (+1, 0 or -1 each; see pay_model.structure_inputs)")
+    with_inputs = lambda group: [dict(r, x=r["x"] + r["xs"]) for r in group]
+    names = [f[0] for f in pm.FEATURES]
+    facts = [i for i, n in enumerate(names) if n not in ("prev_against", "prev_for")]
+    s24, s25 = [r for r in train if r["season"] == 2024], [r for r in train if r["season"] == 2025]
+    out = []
+    for label, wrap, cols in (("pay model as it is", lambda g: g, facts),
+                              ("with the three inputs", with_inputs, facts + [len(names) + j for j in range(3)])):
+        a24, a25 = wrap(s24), wrap(s25)
+        _, p25 = pm.fit_predict(a24, a25, cols)
+        _, p24 = pm.fit_predict(a25, a24, cols)
+        out.append([label, f"{bm.average_precision(p25, [r['y'] for r in s25]):.3f}",
+                    f"{bm.average_precision(p24, [r['y'] for r in s24]):.3f}"])
+    bm.table(["Training seasons, company facts only", "AP 2024 -> 2025", "AP 2025 -> 2024"], out)
+
+    out, ys = [], [r["y"] for r in test]
+    n = sum(1 for r in test if r["prev"] == 1)
+    for label, wrap, width in (("pay model as it is", lambda g: g, len(names)), ("with the three inputs", with_inputs, len(names) + 3)):
+        _, ps, honest = pm.fit_calibrated(wrap(train), wrap(test), list(range(width)))
+        thr = bm.best_f1_threshold(honest, [r["y"] for r in train])
+        top = pm.top_flags(ps, n)
+        own = [p >= thr for p in ps]
+        out.append([label, f"{bm.average_precision(ps, ys):.3f}", sum(y for f, y in zip(top, ys) if f),
+                    f"{sum(y for f, y in zip(own, ys) if f)} of {sum(own)} (at {thr:.2f})",
+                    f"{sum((p - y) ** 2 for p, y in zip(ps, ys)) / len(ys):.4f}"])
+    bm.table([f"Test season {pm.TEST_SEASON}", "Average precision", f"Hits in the top {n}", "Hits at its own cut-off", "Brier score"], out)
+    print("   The three inputs helped on both training-season comparisons and hurt on the test season.")
+    print("   The pay model is kept as it is. This was the fifth time the test season was scored.")
 
 
 if __name__ == "__main__":

@@ -645,17 +645,45 @@ Proxies read: 301 votes, all 89 against-votes and 212 of the others (each stands
 3. How often the reader found an answer with a quote in the text
   Question                 | Answered with a quote found | Share of proxies read
   -------------------------+-----------------------------+----------------------
-  special_award            |                         243 |                   81%
-  performance_share_pct    |                         235 |                   79%
-  longest_lock_years       |                         161 |                   54%
-  holding_after_vesting    |                          86 |                   29%
-  performance_period_years |                         259 |                   87%
-  bonus_pct_of_target      |                         165 |                   55%
-  upward_discretion        |                         144 |                   48%
-  prior_support_pct        |                          98 |                   33%
-  changed_after_feedback   |                         126 |                   42%
-  ceo_change               |                         126 |                   42%
-   193 answers were dropped because their quote was not found word for word in the text.
+  special_award            |                         562 |                   83%
+  performance_share_pct    |                         544 |                   81%
+  longest_lock_years       |                         370 |                   55%
+  holding_after_vesting    |                         219 |                   32%
+  performance_period_years |                         596 |                   88%
+  bonus_pct_of_target      |                         341 |                   51%
+  upward_discretion        |                         326 |                   48%
+  prior_support_pct        |                         196 |                   29%
+  changed_after_feedback   |                         307 |                   45%
+  ceo_change               |                         289 |                   43%
+   469 answers were dropped because their quote was not found word for word in the text.
+
+4. CEO pay of 25 million dollars or more, training seasons: 222 votes, 131 against (59%)
+  Question              |                         Answer | Votes | Against | Against rate
+  ----------------------+--------------------------------+-------+---------+-------------
+  special_award         |                             no |    36 |      11 |          31%
+                        |                            yes |   151 |     103 |          68%
+                        | not stated, or quote not found |    35 |      17 |          49%
+  performance_share_pct |                      50 to 59% |    58 |      35 |          60%
+                        |                      60 to 74% |    55 |      31 |          56%
+                        |                    75% or more |    59 |      24 |          41%
+                        |                      under 50% |    12 |       7 |          58%
+                        | not stated, or quote not found |    38 |      34 |          89%
+  prior_support_pct     |                      70 to 89% |    17 |      10 |          59%
+                        |                    90% or more |    30 |       8 |          27%
+                        |                      under 70% |     7 |       7 |         100%
+                        | not stated, or quote not found |   168 |     106 |          63%
+
+5. The three answers as inputs to the pay model (+1, 0 or -1 each; see pay_model.structure_inputs)
+  Training seasons, company facts only | AP 2024 -> 2025 | AP 2025 -> 2024
+  -------------------------------------+-----------------+----------------
+  pay model as it is                   |           0.658 |           0.544
+  with the three inputs                |           0.675 |           0.567
+  Test season 2026      | Average precision | Hits in the top 97 | Hits at its own cut-off | Brier score
+  ----------------------+-------------------+--------------------+-------------------------+------------
+  pay model as it is    |             0.698 |                 72 |     79 of 110 (at 0.37) |      0.0451
+  with the three inputs |             0.660 |                 72 |     81 of 135 (at 0.27) |      0.0465
+   The three inputs helped on both training-season comparisons and hurt on the test season.
+   The pay model is kept as it is. This was the fifth time the test season was scored.
 ```
 
 ## Resistance test and guardrail
