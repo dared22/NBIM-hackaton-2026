@@ -2,8 +2,8 @@
 against the board on this proposal?
 
 Run from the repo root:
-    python3 agent/rule_check.py              # 2026 test year, thresholds from 2025
-    python3 agent/rule_check.py --limit 50   # quick pilot on the first 50 proposals
+    python3 src/agent/rule_check.py              # 2026 test year, thresholds from 2025
+    python3 src/agent/rule_check.py --limit 50   # quick pilot on the first 50 proposals
 
 How it works, per proposal
     1. Pick up to three guideline sections that fit the proposal type.
@@ -17,7 +17,7 @@ The decision model sees only: proposal text, proposal type, proponent, the
 board's recommendation, country and market. It never sees the company name,
 NBIM's vote or NBIM's rationale.
 
-Answers are cached in agent/cache/decisions.jsonl. With the cache in place the
+Answers are cached in src/agent/cache/decisions.jsonl. With the cache in place the
 script needs no API key and gives the same numbers every time. Without a
 cached answer it calls OpenRouter, reading OPENROUTER_API_KEY from .env.
 """
@@ -35,13 +35,13 @@ import time
 import urllib.error
 import urllib.request
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "src"))
 from benchmark import model as bm  # noqa: E402
 
 GUIDELINES = os.path.join(ROOT, "startpakke", "case1_stemmegivning", "retningslinjer_2025.json")
-VOTES = os.path.join(ROOT, "data", "real_votes.csv")
-CACHE = os.path.join(ROOT, "agent", "cache", "decisions.jsonl")
+VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
+CACHE = os.path.join(ROOT, "src", "agent", "cache", "decisions.jsonl")
 URL = "https://openrouter.ai/api/alpha/decisions"
 MODEL = "microsoft/microsoft-decision-1"
 
@@ -295,7 +295,7 @@ def main():
             out.append([t, len(rs)] + show("", [r["rule_p"] >= rule_thr for r in rs], rs)[1:])
     bm.table(["Type", "Proposals", "Precision", "Recall", "F1", "Flagged", "Hits", "False alarms", "Missed"], out)
 
-    path = os.path.join(ROOT, "agent", f"rule_check_{a.test_year}.csv")
+    path = os.path.join(ROOT, "data", "outputs", f"rule_check_{a.test_year}.csv")
     cols = ["meeting_id", "item_no", "meeting_date", "country", "proposal_type", "proposal_text", "mgmt_rec"]
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)

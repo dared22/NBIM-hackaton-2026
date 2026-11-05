@@ -1,8 +1,8 @@
 """Read pay figures straight from each meeting's own proxy statement.
 
 Run from the repo root (needs internet, about 20-30 minutes for everything):
-    python3 agent/fetch_proxy_pay.py              # all meetings, resumes if stopped
-    python3 agent/fetch_proxy_pay.py --limit 20   # quick test on 20 meetings
+    python3 src/agent/fetch_proxy_pay.py              # all meetings, resumes if stopped
+    python3 src/agent/fetch_proxy_pay.py --limit 20   # quick test on 20 meetings
 
 Why: the SEC's XBRL API drops a pay figure when the company tags it per named
 CEO, and it only exposes each company's newest filing. The proxy statement
@@ -10,7 +10,7 @@ itself carries the tagged "pay versus performance" table for every company
 that must publish one, and it has a filing date we can check against the
 meeting date.
 
-For each company meeting in data/nbim_pay_votes.csv
+For each company meeting in data/dirty/nbim_pay_votes.csv
     1. Look up the company's filings (data.sec.gov/submissions).
     2. Pick the last definitive proxy filed 1-120 days before the meeting.
        A proxy filed on or after the meeting date is never used.
@@ -19,12 +19,12 @@ For each company meeting in data/nbim_pay_votes.csv
     4. Keep the tagged numbers, drop the document.
 
 Output
-    data/proxy_pay.csv       one row per tagged figure: meeting, filing,
+    data/evidence/proxy_pay.csv       one row per tagged figure: meeting, filing,
                              filing date, tag, fiscal year, named CEO, value
-    data/proxy_meetings.csv  one row per meeting: which filing was used, or why
+    data/evidence/proxy_meetings.csv  one row per meeting: which filing was used, or why
                              none was found
 
-Scope: US filers only. Every company in data/nbim_pay_votes.csv files a US
+Scope: US filers only. Every company in data/dirty/nbim_pay_votes.csv files a US
 proxy, because the file only holds votes required by US rules.
 
 The SEC asks for a contact address in the User-Agent. It is read from
@@ -47,14 +47,14 @@ import time
 import urllib.error
 import urllib.request
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "startpakke", "case1_stemmegivning"))
 from hent_npx import USER_AGENT  # noqa: E402
 
-VOTES = os.path.join(ROOT, "data", "nbim_pay_votes.csv")
-LINK = os.path.join(ROOT, "data", "pay_company_link.csv")
-OUT_PAY = os.path.join(ROOT, "data", "proxy_pay.csv")
-OUT_MEET = os.path.join(ROOT, "data", "proxy_meetings.csv")
+VOTES = os.path.join(ROOT, "data", "dirty", "nbim_pay_votes.csv")
+LINK = os.path.join(ROOT, "data", "evidence", "pay_company_link.csv")
+OUT_PAY = os.path.join(ROOT, "data", "evidence", "proxy_pay.csv")
+OUT_MEET = os.path.join(ROOT, "data", "evidence", "proxy_meetings.csv")
 
 PROXY_FORMS = ["DEF 14A", "DEFR14A", "DEFC14A", "DEFM14A"]  # in order of preference
 MAX_DAYS_BEFORE = 120

@@ -1,0 +1,21 @@
+{
+  "source": "/Users/benjaminjholm/NBIM-hackaton-2026/data/dirty/real_votes.csv",
+  "source_rows": 13757,
+  "output_rows": 13325,
+  "duplicates_removed": 0,
+  "rows_removed_missing_vote_or_recommendation": 432,
+  "source_missing_nbim_vote": 334,
+  "source_missing_mgmt_rec": 421,
+  "missing_nbim_vote": 0,
+  "missing_mgmt_rec": 0,
+  "vote_counts": {
+    "FOR": 12547,
+    "MOT": 738,
+    "AVSTÅ": 40
+  },
+  "holdout_start_year": 2026,
+  "split_counts": {
+    "development": 11786,
+    "holdout": 1539
+  }
+}

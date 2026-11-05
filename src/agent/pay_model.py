@@ -1,9 +1,9 @@
 """Pay-vote model: will NBIM vote against the board on executive pay?
 
 Run from the repo root (no internet, no API key):
-    python3 agent/pay_model.py              # train on seasons 2024-2025, test on 2026
-    python3 agent/pay_model.py --explore    # training seasons only: how the inputs were chosen
-    python3 agent/pay_model.py --source api # earlier version, SEC API figures only
+    python3 src/agent/pay_model.py              # train on seasons 2024-2025, test on 2026
+    python3 src/agent/pay_model.py --explore    # training seasons only: how the inputs were chosen
+    python3 src/agent/pay_model.py --source api # earlier version, SEC API figures only
 
 Scope: US filers, executive pay votes only. Every company in the vote file
 files a US proxy statement, because the file only holds votes required by US
@@ -15,12 +15,12 @@ proposal wording does not contain the reason. Here the model also gets facts
 about the company's pay, read from the proxy statement for that meeting.
 
 Data
-    data/nbim_pay_votes.csv    NBIM's say-on-pay votes, from Norges Bank's own
+    data/dirty/nbim_pay_votes.csv    NBIM's say-on-pay votes, from Norges Bank's own
                                SEC Form N-PX filings (CIK 1374170), 3 seasons
-    data/proxy_pay.csv         tagged pay figures from each meeting's own proxy
-    data/proxy_meetings.csv    which proxy was used for which meeting
-    data/ceo_pay.csv           SEC API figures, used only where no proxy was read
-    data/pay_company_link.csv  which company name was linked to which SEC number
+    data/evidence/proxy_pay.csv         tagged pay figures from each meeting's own proxy
+    data/evidence/proxy_meetings.csv    which proxy was used for which meeting
+    data/evidence/ceo_pay.csv           SEC API figures, used only where no proxy was read
+    data/evidence/pay_company_link.csv  which company name was linked to which SEC number
 
 Seasons run July to June. Train on seasons 2024 and 2025, test on season 2026.
 
@@ -55,15 +55,15 @@ import random
 import re
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "src"))
 from benchmark import model as bm  # noqa: E402
 
-VOTES = os.path.join(ROOT, "data", "nbim_pay_votes.csv")
-API_PAY = os.path.join(ROOT, "data", "ceo_pay.csv")
-PROXY_PAY = os.path.join(ROOT, "data", "proxy_pay.csv")
-PROXY_MEET = os.path.join(ROOT, "data", "proxy_meetings.csv")
-LINK = os.path.join(ROOT, "data", "pay_company_link.csv")
+VOTES = os.path.join(ROOT, "data", "dirty", "nbim_pay_votes.csv")
+API_PAY = os.path.join(ROOT, "data", "evidence", "ceo_pay.csv")
+PROXY_PAY = os.path.join(ROOT, "data", "evidence", "proxy_pay.csv")
+PROXY_MEET = os.path.join(ROOT, "data", "evidence", "proxy_meetings.csv")
+LINK = os.path.join(ROOT, "data", "evidence", "pay_company_link.csv")
 TEST_SEASON = 2026
 STRICT_LEVEL = 25e6
 LOW = 0.05
@@ -437,7 +437,7 @@ def main():
         print(f"  {wi:+6.2f}  {name:<14} {text}")
 
     suffix = "" if a.source == "proxy" else "_api"
-    path = os.path.join(ROOT, "agent", f"pay_votes_{TEST_SEASON}{suffix}.csv")
+    path = os.path.join(ROOT, "data", "outputs", f"pay_votes_{TEST_SEASON}{suffix}.csv")
     with open(path, "w", newline="", encoding="utf-8") as f:
         wr = csv.writer(f)
         wr.writerow(["meeting_date", "company", "proposal", "probability_against", "band", "ceo_pay_usd",

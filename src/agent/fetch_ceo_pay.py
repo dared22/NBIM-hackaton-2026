@@ -1,7 +1,7 @@
 """Fetch CEO pay for the companies in NBIM's pay votes, with filing dates.
 
 Run from the repo root (takes about 6 minutes, needs internet):
-    python3 agent/fetch_ceo_pay.py
+    python3 src/agent/fetch_ceo_pay.py
 
 Source: SEC EDGAR XBRL API, https://data.sec.gov/api/xbrl/companyconcept/
 Since 2023 US proxy statements must tag a "pay versus performance" table.
@@ -13,11 +13,11 @@ Every fact keeps the date it was filed, so the pay model can use only
 figures that were public before the meeting.
 
 Steps
-    1. Link each company name in data/nbim_pay_votes.csv to an SEC company
+    1. Link each company name in data/dirty/nbim_pay_votes.csv to an SEC company
        number (CIK). Only exact matches after normalising the name; names that
        match more than one company are skipped, not guessed.
     2. Download the two tags for each linked company.
-    3. Write data/ceo_pay.csv (one row per fact) and data/pay_company_link.csv
+    3. Write data/evidence/ceo_pay.csv (one row per fact) and data/evidence/pay_company_link.csv
        (which name was linked to which CIK, or why not).
 
 The SEC asks for a contact address in the User-Agent. It is read from
@@ -36,13 +36,13 @@ import time
 import urllib.error
 import urllib.request
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "startpakke", "case1_stemmegivning"))
 from hent_npx import USER_AGENT  # noqa: E402
 
-VOTES = os.path.join(ROOT, "data", "nbim_pay_votes.csv")
-OUT_PAY = os.path.join(ROOT, "data", "ceo_pay.csv")
-OUT_LINK = os.path.join(ROOT, "data", "pay_company_link.csv")
+VOTES = os.path.join(ROOT, "data", "dirty", "nbim_pay_votes.csv")
+OUT_PAY = os.path.join(ROOT, "data", "evidence", "ceo_pay.csv")
+OUT_LINK = os.path.join(ROOT, "data", "evidence", "pay_company_link.csv")
 TAGS = ["PeoTotalCompAmt", "NonPeoNeoAvgTotalCompAmt"]
 FORMS = {"INC", "INCORPORATED", "CORP", "CORPORATION", "CO", "COMPANY", "LTD", "LIMITED", "PLC",
          "LLC", "LP", "THE", "HOLDINGS", "HOLDING", "GROUP", "NV", "SA", "AG", "TRUST", "AND", "OF",
