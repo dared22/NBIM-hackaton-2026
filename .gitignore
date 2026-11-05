@@ -31,3 +31,6 @@ dist/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 .DS_Store
+
+# Proxy passages sent to the AI reader (downloaded, large)
+data/evidence/proxy_excerpts/

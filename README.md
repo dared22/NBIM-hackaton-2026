@@ -114,6 +114,7 @@ to one total.
 | `src/agent/data_audit.py` | Every column of all three vote files | Report in `data/outputs/data_audit.md` |
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |
 | `src/agent/routing.py` | Is the confidence honest, what does a lower "ask a person" level cost, and when does NBIM abstain | Below 5% the tool is wrong about 2% of the time and nothing in the vote file picks those out; abstaining is a market habit the tool now follows |
+| `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | An AI model reads how the CEO's pay is built from the proxy, with a checked quote for every answer. Pilot on 299 proxies | No gain: NBIM's pay against-votes at 10 to 25 million dollars do not follow lock-in, one-off awards or the other eight facts read. Not used by the pay model |
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |
 
 Scope of the pay model: US filers and pay votes only. It uses NBIM's own
@@ -142,3 +143,21 @@ method on the same eligible rows and include the simple baseline of following
 
 For the full case requirements and source scripts, see the
 [organizers' Case 1 README](startpakke/case1_stemmegivning/README.md).
+
+## AI tools used
+
+The hackathon rules ask for this list.
+
+- Claude Code (Anthropic): research, code and evaluation.
+- Microsoft-Decision-1 through OpenRouter: the guideline rule check
+  (`src/agent/rule_check.py`) and the resistance test. Answers are cached in
+  `src/agent/cache/decisions.jsonl`.
+- Claude Haiku 5.5 through OpenRouter: the pay structure pilot
+  (`src/agent/fetch_pay_structure.py`), 299 proxies. Answers are cached in
+  `src/agent/cache/pay_structure.jsonl` and are not used by any model.
+- Other branches not yet in `main` used DeepSeek through OpenRouter
+  (`llm_search`) and Jev (`marie`). Add them here if those branches are merged.
+
+No AI model casts or decides a vote. The suggestions in
+`data/outputs/decisions_2026.csv` come from the history model, the pay model
+and NBIM's written rules.

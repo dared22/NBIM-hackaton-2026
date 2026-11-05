@@ -286,6 +286,22 @@ is scored by a model fitted on earlier years only.
   similar companies. What separates these votes is likely how the pay is
   built (lock-in, performance terms), which the tagged figures do not show.
   The 2026 season was not scored again.
+- How the CEO's pay is built, read from the proxy text by an AI model
+  (`src/agent/fetch_pay_structure.py`, Claude Haiku 5.5, every answer with a
+  quote that is checked against the text). Ten questions: one-off awards, the
+  performance-based share of equity, lock-in years, holding after vesting,
+  performance period, bonus against target, pay raised by discretion,
+  previous say-on-pay support, changes after shareholder feedback, CEO
+  change. Pilot on 299 proxies from the training seasons at CEO pay of 10 to
+  25 million dollars (all 89 against-votes and 210 others). NBIM votes
+  against 7% of the time in this band, and for most answers that barely
+  moves: lock-in of three, four or five years 5%, 6%, 6%; a one-off award
+  8% against 5% without. Added to the pay inputs the answers move the hits
+  in the sample from 51 to at most 53 of 89. The other 1,900 proxies were
+  not read and the pay model is unchanged
+  (`src/agent/pay_structure_test.py`). NBIM's stated reason for these votes
+  is lock-in and how pay is built, but its votes at this pay level do not
+  follow the ten things we could read.
 - The last pay model change (pay against similar companies, pay against
   returns) improved the training-season comparisons but did not move the 2026
   result beyond noise: 71 hits against 73 before, at 97 flags. Linking more
@@ -363,3 +379,5 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
+Claude Haiku 5.5 through OpenRouter for the pay structure pilot (reads proxy
+passages, 299 proxies). Its answers are not used by any model.

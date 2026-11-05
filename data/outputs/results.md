@@ -467,6 +467,87 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
    voting), which have no 'against the board' answer and are outside the target.
 ```
 
+## Pilot: does how the CEO's pay is built explain the pay against-votes?
+
+`python3 src/agent/pay_structure_test.py`
+
+```text
+Training seasons, CEO pay 10 to 25 million dollars: 1211 pay votes, 89 against (7%).
+Proxies read: 301 votes, all 89 against-votes and 212 of the others (each stands for 5.3).
+
+1. NBIM's against-votes by what the proxy says
+  Question                 |                         Answer | Against | With the board (sampled) | Estimated against rate
+  -------------------------+--------------------------------+---------+--------------------------+-----------------------
+  special_award            |                             no |       8 |                       29 |                     5%
+                           |                            yes |      65 |                      142 |                     8%
+                           | not stated, or quote not found |      16 |                       41 |                     7%
+  performance_share_pct    |                      50 to 59% |      19 |                       64 |                     5%
+                           |                      60 to 74% |      26 |                       70 |                     7%
+                           |                    75% or more |       9 |                       28 |                     6%
+                           |                      under 50% |       5 |                       15 |                     6%
+                           | not stated, or quote not found |      30 |                       35 |                    14%
+  longest_lock_years       |                        3 years |      19 |                       63 |                     5%
+                           |                        4 years |      12 |                       36 |                     6%
+                           |                5 years or more |       8 |                       23 |                     6%
+                           |                  under 3 years |       1 |                        0 |                   100%
+                           | not stated, or quote not found |      49 |                       90 |                     9%
+  holding_after_vesting    |                             no |       8 |                       29 |                     5%
+                           |                            yes |      11 |                       38 |                     5%
+                           | not stated, or quote not found |      70 |                      145 |                     8%
+  performance_period_years |                        3 years |      58 |                      178 |                     6%
+                           |                   over 3 years |       8 |                        5 |                    23%
+                           |                  under 3 years |       4 |                        8 |                     9%
+                           | not stated, or quote not found |      19 |                       21 |                    15%
+  bonus_pct_of_target      |                    100 to 149% |      21 |                       51 |                     7%
+                           |                   150% or more |       6 |                       35 |                     3%
+                           |                     under 100% |      15 |                       38 |                     7%
+                           | not stated, or quote not found |      47 |                       88 |                     9%
+  upward_discretion        |                             no |       9 |                       36 |                     5%
+                           |                            yes |      34 |                       65 |                     9%
+                           | not stated, or quote not found |      46 |                      111 |                     7%
+  prior_support_pct        |                      70 to 89% |       6 |                       20 |                     5%
+                           |                    90% or more |      12 |                       48 |                     5%
+                           |                      under 70% |       8 |                        4 |                    27%
+                           | not stated, or quote not found |      63 |                      140 |                     8%
+  changed_after_feedback   |                             no |       7 |                       21 |                     6%
+                           |                            yes |      30 |                       69 |                     8%
+                           | not stated, or quote not found |      52 |                      122 |                     7%
+  ceo_change               |                             no |      12 |                       44 |                     5%
+                           |                            yes |      30 |                       40 |                    12%
+                           | not stated, or quote not found |      47 |                      128 |                     6%
+   The questions are written out in src/agent/fetch_pay_structure.py. Quotes for every answer are in
+   data/evidence/pay_structure.csv.
+
+2. Do the answers add anything to the current pay inputs? (the sample, five folds by company)
+  Inputs                               | Average precision | Hits in the top 89
+  -------------------------------------+-------------------+-------------------
+  current pay inputs                   |             0.574 |                 51
+  + no performance-based equity stated |             0.594 |                 50
+  + previous support under 70%         |             0.576 |                 51
+  + performance period over 3 years    |             0.567 |                 53
+  + CEO change in the text             |             0.580 |                 50
+  + one-off award                      |             0.566 |                 50
+  + pay raised by discretion           |             0.574 |                 49
+  + all six                            |             0.585 |                 51
+   Flagging everything in this sample would give an average precision of 0.296.
+   No input moves the hits by more than two. The differences are noise at this sample size.
+
+3. How often the reader found an answer with a quote in the text
+  Question                 | Answered with a quote found | Share of proxies read
+  -------------------------+-----------------------------+----------------------
+  special_award            |                         243 |                   81%
+  performance_share_pct    |                         235 |                   79%
+  longest_lock_years       |                         161 |                   54%
+  holding_after_vesting    |                          86 |                   29%
+  performance_period_years |                         259 |                   87%
+  bonus_pct_of_target      |                         165 |                   55%
+  upward_discretion        |                         144 |                   48%
+  prior_support_pct        |                          98 |                   33%
+  changed_after_feedback   |                         126 |                   42%
+  ceo_change               |                         126 |                   42%
+   193 answers were dropped because their quote was not found word for word in the text.
+```
+
 ## Resistance test and guardrail
 
 `python3 src/agent/robustness.py`

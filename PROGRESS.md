@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 20:40.
+Last full update: Thu 21:03.
 
 ## What must be delivered
 
@@ -30,11 +30,12 @@ Last full update: Thu 20:40.
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
 | Confidence and routing | `src/agent/routing.py` | Done | Below 5% the tool is wrong about 2% of the time; no signal in the vote file picks those out. The 5% level is kept, with a table of what other levels cost. Abstain suggested where a market has the habit (18 of 19 right in 2021-2025) |
+| Pay structure reader (AI model, pilot) | `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | Done, not adopted | 299 proxies read with a checked quote for every answer. The answers do not explain NBIM's pay against-votes at 10 to 25 million dollars (51 to at most 53 hits of 89) |
 | Low-information gate and drift monitor | `src/run.py`, `src/agent/director_rules.py` | Done | The tool never follows the board alone when it has no facts |
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 35 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 39 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -73,7 +74,7 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
 | 4 | Merge or park the open branches below, so `main` is what we hand in | |
 | 5 | Ask Andreas (Case 1 contact): is the `against_board` column in `npx_votes.csv` built correctly? Which investor is it? | |
 | 6 | Dropped: independence facts for US directors. NBIM cited independence for only 8 US directors in eight years | |
-| 7 | If time: how pay is built (lock-in, performance terms) for CEOs paid 10 to 25 million dollars, read from the proxy text. This is where the pay model misses | |
+| 7 | Done, no gain: how pay is built for CEOs paid 10 to 25 million dollars, read from the proxy text by an AI model (pilot) | Iftikhar |
 
 ## Branches not yet in `main`
 
@@ -96,7 +97,8 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
   This is stated in the model card.
 - Volkswagen holds 125 of the 744 against-votes in file A.
 - AI tools used must be listed in the README: Claude Code, Microsoft-Decision-1
-  through OpenRouter, plus whatever the other branches used (DeepSeek, Jev).
+  and Claude Haiku 5.5 through OpenRouter, plus whatever the other branches
+  used (DeepSeek, Jev).
 - Do not commit `.env`. It holds the OpenRouter key and is ignored by git.
 
 ## Log
@@ -118,3 +120,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 19:48 Iftikhar: 239 more companies linked to the SEC (acquired, delisted or oddly spelled names); pay coverage 93% -> 98%. Appended-text defence now inside the pipeline with end-to-end checks. Recency weighting and merger payouts tested, no gain.
 - Thu 20:23 Iftikhar: reviewed `policy-retrieval`. Every cited guideline in `decisions_2026.csv` now carries its own words and page number (new column `guideline_text`), with a check that the quotes are word for word.
 - Thu 20:40 Iftikhar: confidence and routing report (`src/agent/routing.py`); abstain rule in the pipeline; pay misses studied on the training seasons, five more inputs tested and left out.
+- Thu 21:03 Iftikhar: AI reader of pay structure built and piloted on 299 proxies (training seasons). No gain, so the rest were not read and the pay model is unchanged.

@@ -68,6 +68,7 @@ SCRIPTS = [
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
+    ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
