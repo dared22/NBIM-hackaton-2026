@@ -13,6 +13,8 @@ Three sources feed the decisions
     US executive pay votes   src/agent/pay_model.py       vote history + company facts
     US director elections    src/agent/director_rules.py  NBIM's written rules + SEC role data,
                                                           on top of the history model
+    proposals whose wording  src/agent/proposal_rules.py  NBIM's written rules + the proposal
+    decides the vote                                      title, on top of the history model
     all other proposals      src/benchmark/model.py       vote history only
 
 How a decision is made
@@ -43,6 +45,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 import director_rules as dr  # noqa: E402
 import pay_model as pm  # noqa: E402
+import proposal_rules as pr  # noqa: E402
 import robustness as rb  # noqa: E402
 import rule_check as rc  # noqa: E402
 
@@ -54,6 +57,7 @@ SCRIPTS = [
     ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
     ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
     ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
+    ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
@@ -89,6 +93,7 @@ def general_decisions():
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
     directors = {(r["meeting_id"], r["item_no"]): r for r in dr.load_scored()}
+    worded = {(r["meeting_id"], r["item_no"]): r for r in pr.load_scored() if r["rules"]}
     scored = [r for r in val if r["rule_p"] is not None]
     rule_thr = bm.best_f1_threshold([r["rule_p"] for r in scored], [r["y"] for r in scored]) if scored else 1.0
     out = []
@@ -99,10 +104,11 @@ def general_decisions():
             flags.append("low information: no earlier votes at this company")
         band = "send to human" if hits else r["band"]
         model, reasons, guide = "vote history", bm.reasons(w, r["x"]), None
-        d = directors.get((r["meeting_id"], r["item_no"]))
+        key = (r["meeting_id"], r["item_no"])
+        d = directors.get(key) if directors.get(key, {}).get("rules") else worded.get(key)
         if d and d["rules"]:
             active = [(c, t) for c, t in d["rules"] if d["rule_state"][c] == "active"]
-            model = "NBIM rule + SEC role data"
+            model = "NBIM rule + SEC role data" if key in directors and directors[key]["rules"] else "NBIM rule + proposal wording"
             reasons = " | ".join(t for _, t in d["rules"])
             guide = ", ".join(c for c, _ in d["rules"])
             if active and not hits:
@@ -120,7 +126,7 @@ def general_decisions():
         else:
             guide = ""
         evidence = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
-                    if d and d["rules"] else "")
+                    if d and d["rules"] and "f" in d else "")
         out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
                     r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, model,
                     reasons, guide, evidence, r["y"], r["nbim_vote"]])
@@ -187,7 +193,7 @@ def main():
         w.writerows(sorted(pay + general, key=lambda r: -float(r[7])))
     parts += ["## Decisions", "", "One row per proposal is in `data/outputs/decisions_2026.csv`.", "",
               summary(pay, "US executive pay votes (history + company facts)"), "",
-              summary(general, "All proposal types (history only)"), ""]
+              summary(general, "All proposal types (history, plus NBIM rules for US directors and worded proposals)"), ""]
 
     env = dict(os.environ, PYTHONPATH=os.path.join(ROOT, "src"))
     for title, args in SCRIPTS:
@@ -202,7 +208,7 @@ def main():
     print()
     print(summary(pay, "US executive pay votes (history + company facts)"))
     print()
-    print(summary(general, "All proposal types (history only)"))
+    print(summary(general, "All proposal types (history, plus NBIM rules for US directors and worded proposals)"))
     print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals) and data/outputs/results.md")
 
 

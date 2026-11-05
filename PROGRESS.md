@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thursday 18:55.
+Last full update: Thursday 19:20.
 
 ## What must be delivered
 
@@ -25,13 +25,14 @@ Last full update: Thursday 18:55.
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 71 hits against 42 at the same number of flags, season 2026 |
 | Director rules, US director elections | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; simple rule 36 and 37 (2019-2026) |
+| Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 29 of 29; 20 hits and 0 false alarms on shareholder proposals |
 | Guideline check with a decision model | `src/agent/rule_check.py` | Done | No gain from wording alone |
 | Resistance test and guardrail | `src/agent/robustness.py` | Done | All instruction attacks flagged, no false alarms on 66,663 real texts |
 | Low-information gate and drift monitor | `src/run.py`, `src/agent/director_rules.py` | Done | The tool never follows the board alone when it has no facts |
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 25 pass, including leakage audits |
+| Checks | `tests/test_agent.py` | Done | 27 pass, including leakage audits |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -108,3 +109,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 18:00 Iftikhar: low-information gate; ballot-detail experiment (no gain).
 - Thu 18:40 Iftikhar: director rules from SEC role data; chair-and-CEO finding; drift monitor.
 - Thu 18:55 Iftikhar: merged into `main`, this file added.
+- Thu 19:20 Iftikhar: wording rules for shareholder proposals (declassify, written consent, simple majority and so on): 22 of 22.

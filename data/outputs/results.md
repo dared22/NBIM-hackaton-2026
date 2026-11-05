@@ -15,11 +15,11 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 - With a person reading the review pile, 105 of 114 against-votes are either suggested or seen (92%).
 - Low-information gate: 130 proposals the model would have waved through were sent to a person instead; 10 of them were against-votes.
 
-### All proposal types (history only)
+### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1156 (75%). Sent to a person: 383 (25%).
-- Automatic 'against the board' suggestions: 34, of which 23 were right (precision 68%, recall 35%).
-- Against-votes inside the pile sent to a person: 28 (42% of all against-votes).
+- Decided automatically: 1157 (75%). Sent to a person: 382 (25%).
+- Automatic 'against the board' suggestions: 35, of which 24 were right (precision 69%, recall 36%).
+- Against-votes inside the pile sent to a person: 27 (41% of all against-votes).
 - Against-votes the tool waved through with the board: 15 (23% of all against-votes).
 - With a person reading the review pile, 51 of 66 against-votes are either suggested or seen (77%).
 - Low-information gate: 31 proposals the model would have waved through were sent to a person instead; 3 of them were against-votes.
@@ -224,6 +224,51 @@ Nominees matched to a person in the SEC data: 1660 (95%); of the against-votes: 
     {'GVG 3.2': 24, 'none given': 9, 'GVG 1.1': 8, 'GVG 2.3': 5, 'GVG 2.1': 4, 'GVG 1.3': 3, 'GVG 1.2': 2}
 
 Wrote 1742 nominees to data/outputs/director_rules.csv
+```
+
+## Proposals whose wording decides the vote: NBIM's written rules applied to the title
+
+`python3 src/agent/proposal_rules.py`
+
+```text
+All proposals in NBIM's file: 13324, 744 against the board, 2019-2026
+Proposals whose wording falls under a clear-cut rule: 29 (20 from shareholders, 9 from management)
+
+1. Does NBIM vote as its rule says?
+  Rule     |                                 The proposal asks to | Rule says | Proposals | NBIM voted so | Share | Board said the opposite | of which NBIM against the board
+  ---------+------------------------------------------------------+-----------+-----------+---------------+-------+-------------------------+--------------------------------
+  1.3.3    |            separate the roles of chairperson and CEO |       FOR |         3 |             3 |  100% |                       3 |                               3
+  3.1.2    |                                 declassify the board |       FOR |         5 |             5 |  100% |                       4 |                               4
+  3.1.5    |          majority requirements in director elections |       FOR |         1 |             1 |  100% |                       1 |                               1
+  3.1.8    |                                         proxy access |       FOR |         1 |             1 |  100% |                       1 |                               1
+  4.2.2    |                      right to act by written consent |       FOR |         6 |             6 |  100% |                       6 |                               6
+  6.2-AT.3 | abolish an anti-takeover measure (supermajority requ |       FOR |        11 |            11 |  100% |                       5 |                               5
+  6.2-AT.2 | introduce or renew an anti-takeover measure (poison  |       MOT |         2 |             2 |  100% |                       2 |                               2
+
+2. As a predictor of 'against the board' on shareholder proposals (no training, all years)
+   150 shareholder proposals with an answer, 50 against the board
+  Method                           | Flags | Hits | False alarms | Precision | Recall
+  ---------------------------------+-------+------+--------------+-----------+-------
+  Always with board                |     0 |    0 |            0 |         - |     0%
+  Same as last time                |    12 |   11 |            1 |       92% |    22%
+  Clear-cut rules from the wording |    20 |   20 |            0 |      100% |    40%
+  Same as last time, or a rule     |    25 |   24 |            1 |       96% |    48%
+
+3. By period, with the drift monitor
+  Years     | Rules alone: hits/flags | Monitor: automatic hits/flags | Monitor: sent to a person, against/total
+  ----------+-------------------------+-------------------------------+-----------------------------------------
+  2019-2025 |                   19/19 |                         19/19 |                                      0/0
+  2026      |                     3/3 |                           3/3 |                                      0/0
+  all years |                   22/22 |                         22/22 |                                      0/0
+
+4. Does the tool cite the section NBIM itself gave?
+   Of 19 rule hits where NBIM gave a reason, the tool's section matches NBIM's in 19: {('GVG 4.2', 'GVG 4.2'): 5, ('GVG 6.2', 'GVG 6.2'): 6, ('GVG 3.1', 'GVG 3.1'): 6, ('GVG 1.3', 'GVG 1.3'): 2}
+
+5. Against-votes on shareholder proposals that no clear-cut rule covers, by NBIM's stated reason
+    {'GVG 5.3': 21, 'none given': 4, 'GVG 4.3': 2, 'GVG 3.1': 2, 'GVG 1.1': 1}
+    GVG 5.3 is sustainability reporting, where every rule needs judgement.
+
+Wrote 29 proposals to data/outputs/proposal_rules.csv
 ```
 
 ## Experiment: do ballot details improve the history model? (test years 2022-2025)

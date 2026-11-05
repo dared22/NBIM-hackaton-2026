@@ -216,6 +216,31 @@ class DirectorRuleTests(unittest.TestCase):
         self.assertTrue(self.dr.facts_for(row, people, early)["chair_ceo"])
 
 
+class ProposalRuleTests(unittest.TestCase):
+    def setUp(self):
+        import proposal_rules
+        self.rule = lambda text: (proposal_rules.match_rule(text) or [None])[0]
+
+    def test_wording_is_mapped_to_the_right_rule(self):
+        for text, rule in (("Declassify the Board of Directors", "3.1.2"),
+                           ("Provide Right to Act by Written Consent", "4.2.2"),
+                           ("Adopt Simple Majority Vote", "6.2-AT.3"),
+                           ("Reduce Supermajority Vote Requirement", "6.2-AT.3"),
+                           ("Require Independent Board Chair", "1.3.3"),
+                           ("Adopt Proxy Access Right", "3.1.8"),
+                           ("Require a Majority Vote for the Election of Directors", "3.1.5"),
+                           ("Approve Takeover Defense Plan (Poison Pill)", "6.2-AT.2"),
+                           ("Amend Articles to Amend Business Lines - Remove Provisions on Takeover Defense", "6.2-AT.3")):
+            self.assertEqual(self.rule(text), rule, text)
+
+    def test_look_alike_wording_is_not_matched(self):
+        for text in ("Approve Payment of Remuneration to Rishma Kaur as Non-Executive, Non-Independent Chairman",
+                     "Elect Director Jane Doe", "Approve Final Dividend",
+                     "Reduce Ownership Threshold for Shareholders to Call Special Meeting",
+                     "Submit Poison Pill to Shareholder Vote"):
+            self.assertIsNone(self.rule(text), text)
+
+
 class ProxyTextTests(unittest.TestCase):
     def test_prior_support_is_the_figure_next_to_the_result(self):
         text = ("Approval requires a majority (50%) of shares present. "

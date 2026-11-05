@@ -1,0 +1,30 @@
+meeting_id,item_no,meeting_date,company,country,proponent,proposal_text,board_recommendation,rule,rule_says,against_board_by_rule,rule_state,nbim_vote,actual_against_board,nbim_stated_reason
+1299987,1,2019-03-22,"Nissha Co., Ltd.",Japan,Management,Amend Articles to Amend Business Lines - Remove Provisions on Takeover Defense,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1299407,14,2019-04-23,HP Inc.,United States,Shareholder,Require Independent Board Chairman,MOT,1.3.3,FOR,1,GVG 1.3 active,FOR,1,
+1309954,12,2019-04-30,PACCAR Inc,United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,
+1333676,5,2019-06-11,"Tesla, Inc.",United States,Management,Eliminate Supermajority Vote Requirement,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1333676,9,2019-06-11,"Tesla, Inc.",United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,
+1406061,14,2020-04-21,PACCAR Inc,United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,GVG 4.2
+1412377,16,2020-05-12,HP Inc.,United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,GVG 4.2
+1440770,20,2020-06-26,Meidensha Corp.,Japan,Management,Approve Takeover Defense Plan (Poison Pill),FOR,6.2-AT.2,MOT,1,GVG 6.2 active,MOT,1,GVG 6.2
+1455762,7,2020-09-22,"Tesla, Inc.",United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
+1505971,14,2021-04-13,HP Inc.,United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,GVG 4.2
+1517661,12,2021-04-27,PACCAR Inc,United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
+1572745,6,2021-10-07,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1621160,12,2022-04-26,PACCAR Inc,United States,Management,Eliminate Supermajority Vote Requirements,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1622384,17,2022-04-28,Public Storage,United States,Management,Eliminate Supermajority Voting Requirements to Amend the Declaration of Trust,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1666433,4,2022-08-04,"Tesla, Inc.",United States,Management,Eliminate Supermajority Voting Provisions,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1666433,7,2022-08-04,"Tesla, Inc.",United States,Shareholder,Adopt Proxy Access Right,MOT,3.1.8,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1718938,17,2023-04-24,HP Inc.,United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,GVG 4.2
+1763807,10,2023-06-28,Meidensha Corp.,Japan,Management,Approve Takeover Defense Plan (Poison Pill),FOR,6.2-AT.2,MOT,1,GVG 6.2 active,MOT,1,GVG 6.2
+1777474,22,2023-08-10,"TSURUHA Holdings, Inc.",Japan,Shareholder,"Amend Articles to Separate Chairperson of the Board and CEO, and Appoint Outside Director as Board Chairperson",MOT,1.3.3,FOR,1,GVG 1.3 active,FOR,1,GVG 1.3
+1845165,7,2024-05-22,"Privia Health Group, Inc.",United States,Management,Eliminate Supermajority Vote Requirement,FOR,6.2-AT.3,FOR,0,,FOR,0,
+1856850,7,2024-06-13,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1856850,8,2024-06-13,"Tesla, Inc.",United States,Shareholder,Adopt Simple Majority Vote,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
+1869119,6,2024-07-02,Snowflake Inc.,United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1976170,6,2025-07-02,Snowflake Inc.,United States,Management,Declassify the Board of Directors,FOR,3.1.2,FOR,0,,FOR,0,
+1994609,14,2025-11-06,"Tesla, Inc.",United States,Shareholder,Declassify the Board of Directors,MOT,3.1.2,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
+1994609,15,2025-11-06,"Tesla, Inc.",United States,Shareholder,Reduce Supermajority Vote Requirement,MOT,6.2-AT.3,FOR,1,GVG 6.2 active,FOR,1,GVG 6.2
+2045311,16,2026-04-16,HP Inc.,United States,Shareholder,Require Independent Board Chair,MOT,1.3.3,FOR,1,GVG 1.3 active,FOR,1,GVG 1.3
+2066391,14,2026-05-20,"The Hartford Insurance Group, Inc.",United States,Shareholder,Provide Right to Act by Written Consent,MOT,4.2.2,FOR,1,GVG 4.2 active,FOR,1,GVG 4.2
+2086078,6,2026-06-29,Snowflake Inc.,United States,Shareholder,Require a Majority Vote for the Election of Directors,MOT,3.1.5,FOR,1,GVG 3.1 active,FOR,1,GVG 3.1
