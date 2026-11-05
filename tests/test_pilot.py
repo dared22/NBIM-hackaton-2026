@@ -64,8 +64,11 @@ class SavedPilotTest(unittest.TestCase):
         self.assertGreaterEqual(recovered, 15)
         self.assertGreater(outside_counts, 0)
 
-    def test_offline_replay_needs_no_credentials_or_network(self):
-        with tempfile.TemporaryDirectory() as output:
+    def test_schema3_does_not_promote_legacy_cache_entries(self):
+        with tempfile.TemporaryDirectory() as output, tempfile.TemporaryDirectory() as cache:
+            (Path(cache) / "sec").symlink_to(
+                ROOT / "data/evidence/_cache/sec", target_is_directory=True
+            )
             subprocess.run(
                 [
                     sys.executable,
@@ -75,6 +78,8 @@ class SavedPilotTest(unittest.TestCase):
                     "--year",
                     "2025",
                     "--offline",
+                    "--cache",
+                    cache,
                     "--output-dir",
                     output,
                 ],
@@ -86,16 +91,19 @@ class SavedPilotTest(unittest.TestCase):
             self.assertEqual(summary["model_calls"], 0)
             self.assertEqual(summary["proposals"], 20)
 
-            def comparable(path):
-                result = [json.loads(line) for line in path.read_text().splitlines()]
-                for packet in result:
-                    packet["company_evidence"].pop("provenance")
-                return result
-
-            self.assertEqual(
-                comparable(Path(output) / "evidence.jsonl"),
-                comparable(PILOT / "accepted/evidence.jsonl"),
-            )
+            packets = [
+                json.loads(line)
+                for line in (Path(output) / "evidence.jsonl").read_text().splitlines()
+            ]
+            self.assertTrue(all(p["schema_version"] == "3" for p in packets))
+            # Old population strings are not source-verified schema-3 identities.
+            for packet in packets:
+                evidence = packet["company_evidence"]
+                facts = [
+                    *evidence["shared"].values(),
+                    *evidence["nominee"]["facts"].values(),
+                ]
+                self.assertTrue(all(f["status"] == "unknown" for f in facts))
 
 
 if __name__ == "__main__":

@@ -56,7 +56,7 @@ flowchart TD
 ```
 
 A missing fact stays missing. Failure to discover a problem does not establish
-that no problem exists. The v1 handoff therefore prohibits automatic FOR votes.
+that no problem exists. The handoff therefore prohibits automatic FOR votes.
 
 ## 1. Start from label-free proposals
 
@@ -119,11 +119,16 @@ paragraph, table-row, and cell separators. It does not reconstruct every HTML
 table's visual meaning. The canonical text is the coordinate system used for
 quotation offsets; positions are not raw HTML byte offsets or PDF pages.
 
-`relevant_text()` keeps opening material and windows around nominee names and
-governance terms. It merges overlapping windows and caps the supplied context
-at 100,000 characters. Content outside those windows or after the cap cannot
-support that extraction request, even if it exists elsewhere in the filing.
-This is one reason a clearly disclosed role can still remain unknown.
+`select_passages()` keeps opening material and windows around nominee names
+and fact-specific terms. It retains complete canonical lines and contiguous
+table rows, merges overlapping windows, and limits context to 100,000
+characters per document. A table/window that cannot fit is omitted rather than
+cut mid-row. Targeted requests rank windows by matching terms.
+
+Retrieval provenance records selected canonical ranges, character counts,
+request hashes, stages, and truncation, including the forty-match-per-term
+search limit. An unknown answer under truncated context is marked
+`insufficient_passage_coverage`; this does not mean the fact is undisclosed.
 
 The collector sends one batch of meeting-wide questions and batches of up to
 five nominees. Prefixes such as `meeting:board_total` and `1:ceo` identify where
@@ -137,8 +142,23 @@ answers belong; `1` in that example is the proposal's item number.
 
 The model receives source material as untrusted data and is instructed to
 ignore embedded commands. It must return typed values, statuses, quotations,
-population/time descriptions, and reasons using structured output. Schema
-requests constrain formatting; local validation is still necessary.
+population/time descriptions, and reasons using structured output. Each
+quotation identifies its document by SHA-256 hash. Both live and cached replies
+undergo the same shape validation.
+
+After the first pass, `unresolved_questions()` gathers missing facts for the
+eight implemented rules and current-nomination checks. Shared questions are
+deduplicated. The collector performs at most one targeted extraction and support
+pass per original batch; it does not recursively search.
+
+Targeted requests can include at most one meeting-verified `DEFA14A` supplement
+and one annual report. The collector examines at most three supplementary
+proxy candidates in the same 120-day window and the latest `10-K` within 400
+days before the meeting. All must belong to the resolved issuer and be filed
+strictly before the meeting. The annual report can support explicit founder
+history only; it cannot establish current roles or nomination. Source failures
+remain gaps. The collector retains contradictory accepted evidence rather than
+overwriting it with a newer claim.
 
 ## 4. Validate facts before treating them as known
 
@@ -184,11 +204,13 @@ negative facts may use wording that it misses.
 | `conflicting` | Count or population consistency checks failed, or contradictory material was retained. |
 
 Count checks reject zero denominators and independent counts above the total.
-They also currently compare free-text `scope` strings literally. Descriptions
-such as "proposed board" and "proposed board of twelve nominees" can therefore
-create a conflict even when they refer to the same population. That known
-implementation flaw is conservative but reduces usable evidence. It is not
-proof that the underlying documents disagree.
+Board/committee counts carry a structured `population`: issuer CIK, meeting
+ID, body, proposed/current membership, member basis, and effective date. The
+collector supplies trusted issuer/meeting identity; the quotations must support
+the remaining attributes and the support pass checks them with the value.
+Unknown population identity remains partial. Different established populations
+remain conflicting, while equivalent free-text scope descriptions are harmless.
+The free-text `scope` remains available for explanation.
 
 ## 5. Select policy and express readiness
 
@@ -208,16 +230,17 @@ The current executable checks cover eight rules across four sections:
 
 A known false prerequisite can rule out a concern without requiring unrelated
 facts. For example, an independent nominee does not meet a rule targeting a
-non-independent nominee. Current conflict checks run first, however, so an
-unrelated population conflict can still block this short-circuit. That ordering
-needs explicit review when rule assessment is improved.
+non-independent nominee. Conflict checks apply to the branch needed for that
+conclusion. Each assessment returns `supporting_fact_ids`; its required and
+missing fact IDs describe the evaluated branch. A supported six-board minimum
+can establish that numeric concern even if chair-role counts are unresolved.
 
 Role counts are lower bounds. A proven minimum of six boards can establish a
 numeric concern. A proven minimum of two does not establish that the actual
 number is only two. The discretionary "too many other roles" branch remains
 unassessed. Founder status alone does not establish whether a limited-period
 exception and mitigating measures are satisfied; founder cases remain review
-cases in v1.
+cases.
 
 Sections rank by concern signals, then unresolved core checks, then assessed
 checks without concerns, then sections with only deferred checks. More concern
@@ -266,15 +289,18 @@ without repeating paid model calls.
 | Location or file | Contents |
 |---|---|
 | `data/evidence/_cache/sec/` | SEC ticker/submissions metadata and original filing bytes. |
-| `data/evidence/_cache/core-model-v1/` | Raw fact-extraction answers. |
-| `data/evidence/_cache/grounding-v2/` | Raw boolean support-verification answers. |
+| `data/evidence/_cache/core-model-v3/` | Initial schema-3 fact answers. |
+| `data/evidence/_cache/targeted-model-v3/` | Bounded follow-up answers. |
+| `data/evidence/_cache/grounding-v3/` | Boolean support-verification answers. |
 | `evidence.jsonl` in a run directory | One full packet per selected proposal. |
 | `summary.json` and `report.txt` | Operational totals, evidence/check statuses, and failures. |
 
 Model cache keys hash the schema version, document hash, and complete request,
 including model, prompt, questions, and supplied text. Prompt or request changes
-therefore invalidate relevant entries. Cache directory names are historical;
-packet `schema_version` and policy version are separate concepts.
+therefore invalidate relevant entries. Packet schema version 3 adds structured
+populations and document-tagged quotations. Schema-2 answers and the original
+pilot are preserved, but never automatically promoted into schema-3 evidence.
+An offline cache miss under the new contract is a gap, not a regression score.
 
 SEC resources are cached by their filenames and are not automatically refreshed.
 Metadata may become stale, and metadata retrieval time is not yet recorded as
@@ -289,15 +315,21 @@ output directory; the command does not resume or append packets.
 
 The command uses exclusive creation for `evidence.jsonl`, so existing packets
 are not overwritten. Shared facts repeat in each nominee packet. Summary fact
-counts are per packet, not counts of distinct company facts. Ready-rule counts
-are rule assessments, not automatic voting decisions. Cached replay's zero
+counts in `fact_statuses` are per packet. `unique_fact_statuses` deduplicates
+meeting-wide facts, and `gap_reasons` counts their blockers. The report also
+separates implemented rule statuses, supported concerns, cleared concerns,
+recovered facts, and truncated requests. Ready-rule counts are rule assessments,
+not automatic voting decisions. Cached replay's zero
 cost/model-call totals describe replay activity, not the original extraction
 bill. Cached timing is not a cold-run benchmark.
 
 The [saved pilot artifacts](../data/evidence/pilot-v1/) contain the selected
 inputs, manually annotated expectations, citation audit, accepted packets, and
-an audit report. They are a reproducibility fixture, not a representative
-voting-performance benchmark. The current checks can be run with:
+an audit report. They remain a schema-2 provenance fixture, not a representative
+voting-performance benchmark. The [schema-3 validation artifacts](../data/evidence/pilot-v2/validation.json)
+record offline checks and whether live extraction was possible. They must not
+be presented as improved extraction accuracy without a source-audited live run.
+The current checks can be run with:
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -309,39 +341,35 @@ PYTHONPATH=src python3 -m unittest discover -s src/benchmark -p 'test_model.py'
 Complete these steps in order. Each step has a concrete acceptance check, and
 later model confidence must never bypass earlier evidence requirements.
 
-### 1. Fix population identity and rule applicability
+### 1. Audit schema-3 evidence on the fixed pilot
 
-Replace free-text scope equality with a structured population identity:
-issuer, meeting, board versus committee, proposed versus current membership,
-and effective date. Retain the human-readable scope description as explanation.
-Do not simply delete the population consistency check; current-board and
-proposed-board counts can genuinely differ.
+Population identity and conditional assessments have executable regression
+checks. Before claiming extraction improvement, regenerate the same five
+meetings under a provider-enforced budget and audit every newly accepted fact
+and resolved conflict. Account for all previously recovered factual annotations.
+Freeze source annotations before inspecting new model answers.
 
-Test equivalent descriptions, different populations, retiring/new directors,
-zero totals, and inconsistent counts. Review conflict handling so a fact that
-is irrelevant to an excluded rule does not unnecessarily block that rule.
-Acceptance: equivalent populations no longer create false conflicts, while
-real population mismatches remain blocked. Bump the record/schema version and
-refresh affected fixtures when behavior changes.
+Acceptance: the new cache replays without network access; population matches are
+supported by actual quotations; factual regressions are explained. Report
+supported concerns and review blockers separately from cleared concerns and
+unimplemented rules.
 
-### 2. Retrieve specific missing facts and exception evidence
+### 2. Extend exception evidence only with source support
 
-Use the per-rule missing-fact lists to request targeted passages rather than
-repeating broad extraction. Expand name matching carefully around documented
-aliases and recover roles that are disclosed under shortened names. Record
-context truncation explicitly and distinguish "not retrieved" from "not
-present in the source."
+The bounded targeted stage retrieves missing core facts from the verified proxy
+and approved SEC supplements. Shortened-name aliases remain unsupported. Add an
+alias only when the documents establish the person's identity; surname-only
+matching is insufficient.
 
-For chair/CEO cases, capture founder status, the period of combined service,
-and disclosed mitigating arrangements. When these require judgment, retain
-review. Obtain a dated, agreed cap classification for size-dependent rules;
-do not invent thresholds or substitute SEC filer categories. Keep SEC-only
-scope until any new source path is deliberately approved and validated.
+Founder status alone cannot establish the duration or mitigating conditions of
+a chair/CEO exception. Those cases stay incomplete. Size-dependent rules still
+need an explicit, dated cap classification; do not invent thresholds or
+substitute SEC filer categories. Any broader source or rule path needs its own
+fixtures and source review.
 
-Acceptance: source-backed positive and negative examples exist for each core
-rule family, including thresholds and exceptions. An adversarial irrelevant
-quote, unsupported negative, or incomplete role list cannot qualify a finding.
-Human annotations must measure both correctness and missing-fact coverage.
+Acceptance: source-backed positive and negative examples cover each supported
+rule branch. Unsupported negatives, irrelevant quotations, and incomplete role
+lists cannot qualify a finding.
 
 ### 3. Tighten the evidence-to-decision contract
 

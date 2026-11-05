@@ -46,99 +46,99 @@ def supported(proposal: ProposalInput) -> bool:
 
 
 def assess(rule_id: str, facts: dict) -> dict:
-    """Evaluate only core concern signals; this is not a voting decision."""
-    required_fact_ids = REQUIREMENTS.get(rule_id)
-    if required_fact_ids is None:
-        return dict(
-            status="not_implemented",
-            required_fact_ids=[],
-            missing_fact_ids=[],
-            concern=None,
-        )
-    known_values = {
-        key: f["value"] for key, f in facts.items() if f["status"] == "known"
-    }
-    missing_fact_ids = [k for k in required_fact_ids if k not in known_values]
-    result = dict(
-        status="incomplete" if missing_fact_ids else "ready",
-        required_fact_ids=list(required_fact_ids),
-        missing_fact_ids=missing_fact_ids,
-        concern=None,
-    )
-    if any(facts.get(k, {}).get("status") == "conflicting" for k in required_fact_ids):
-        return {**result, "status": "conflicting"}
+    """Assess only the facts needed by a logical branch, never an overall vote."""
+    required = REQUIREMENTS.get(rule_id)
+    values = {key: f["value"] for key, f in facts.items() if f["status"] == "known"}
 
-    # Known false prerequisites can rule out a condition without requiring its other facts.
-    def resolved(condition: bool) -> dict:
-        return {
-            **result,
-            "status": "ready",
-            "missing_fact_ids": [],
-            "concern": condition,
-        }
+    def result(keys: tuple | list, concern: bool | None = None, **extra) -> dict:
+        missing = [k for k in keys if k not in values]
+        status = "incomplete" if missing else "ready"
+        if any(facts.get(k, {}).get("status") == "conflicting" for k in keys):
+            status = "conflicting"
+        return (
+            dict(
+                status=status,
+                required_fact_ids=list(keys),
+                missing_fact_ids=missing,
+                supporting_fact_ids=[k for k in keys if k in values],
+                concern=concern,
+                reason=(
+                    "conflicting_required_facts"
+                    if status == "conflicting"
+                    else "missing_required_facts" if missing else ""
+                ),
+            )
+            | extra
+        )
+
+    if required is None:
+        return result([], status="not_implemented")
+
+    # A false prerequisite settles a conjunction even if another fact conflicts.
+    exclusions = {
+        "1.1.1": {
+            "company_size": ("small",),
+            "independent": (True,),
+            "executive": (True,),
+        },
+        "1.1.2": {
+            "company_size": ("small",),
+            "independent": (True,),
+            "executive": (True,),
+        },
+        "1.1.3": {"company_size": ("large", "mid"), "nomination_chair": (False,)},
+        "1.2.1": {"executive": (False,), "remuneration_member": (False,)},
+        "1.2.2": {"executive": (False,), "audit_member": (False,)},
+        "1.2.3": {"independent": (True,)},
+        "1.3.1": {"board_chair": (False,), "ceo": (False,)},
+    }
+    for key, excluded_values in exclusions.get(rule_id, {}).items():
+        if key in values and values[key] in excluded_values:
+            return result([key], False)
 
     if rule_id in {"1.1.1", "1.1.2"}:
-        if (
-            known_values.get("company_size") == "small"
-            or known_values.get("independent") is True
-            or known_values.get("executive") is True
-        ):
-            return resolved(False)
-        if "majority_control" in known_values and known_values["majority_control"] != (
+        if "majority_control" in values and values["majority_control"] != (
             rule_id == "1.1.2"
         ):
-            return {**resolved(False), "status": "not_applicable"}
-        if not missing_fact_ids:
-            threshold = 3 if rule_id == "1.1.2" else 2
-            return resolved(
-                known_values["board_independent"] * threshold
-                < known_values["board_total"]
+            return result(["majority_control"], False, status="not_applicable")
+        if all(k in values for k in required):
+            multiplier = 3 if rule_id == "1.1.2" else 2
+            return result(
+                required,
+                values["board_independent"] * multiplier < values["board_total"],
             )
     elif rule_id == "1.1.3":
-        if (
-            known_values.get("company_size") in {"large", "mid"}
-            or known_values.get("nomination_chair") is False
-        ):
-            return resolved(False)
-        if not missing_fact_ids:
-            return resolved(known_values["board_independent"] < 2)
+        if all(k in values for k in required):
+            return result(required, values["board_independent"] < 2)
     elif rule_id in {"1.2.1", "1.2.2"}:
-        if any(known_values.get(k) is False for k in required_fact_ids):
-            return resolved(False)
-        if not missing_fact_ids:
-            return resolved(True)
+        if all(k in values for k in required):
+            return result(required, True)
     elif rule_id == "1.2.3":
-        if known_values.get("independent") is True:
-            return resolved(False)
-        if not missing_fact_ids:
-            return resolved(
-                2 * known_values["audit_independent"] < known_values["audit_total"]
+        if all(k in values for k in required):
+            return result(
+                required, 2 * values["audit_independent"] < values["audit_total"]
             )
     elif rule_id == "1.3.1":
-        if known_values.get("board_chair") is False or known_values.get("ceo") is False:
-            return resolved(False)
-        if known_values.get("board_chair") is True and known_values.get("ceo") is True:
-            if known_values.get("founder") is False:
-                return resolved(True)
-            return {
-                **result,
-                "status": "incomplete",
-                "reason": "founder_exception_requires_review",
-                "concern": True,
-            }
+        if values.get("board_chair") is True and values.get("ceo") is True:
+            if values.get("founder") is False:
+                return result(required, True)
+            assessment = result(
+                required, True, reason="founder_exception_requires_review"
+            )
+            if assessment["status"] != "conflicting":
+                assessment["status"] = "incomplete"
+            return assessment
     elif rule_id == "2.1.1":
-        if (
-            known_values.get("board_count_min", 0) > 5
-            or known_values.get("chair_count_min", 0) > 2
-        ):
-            return resolved(True)
-        # Lower bounds cannot establish an absence of overboarding, nor resolve the discretionary branch.
-        return {
-            **result,
-            "status": "incomplete",
-            "reason": "incomplete_roles_or_discretionary_workload",
-        }
-    return result
+        for key, threshold in (("board_count_min", 5), ("chair_count_min", 2)):
+            if values.get(key, 0) > threshold:
+                return result([key], True)
+        assessment = result(
+            required, reason="incomplete_roles_or_discretionary_workload"
+        )
+        if assessment["status"] != "conflicting":
+            assessment["status"] = "incomplete"
+        return assessment
+    return result(required)
 
 
 def select_policy(
@@ -206,8 +206,10 @@ def select_policy(
                         "section_id",
                         "status",
                         "required_fact_ids",
+                        "supporting_fact_ids",
                         "missing_fact_ids",
                         "concern",
+                        "reason",
                     )
                 }
                 | {

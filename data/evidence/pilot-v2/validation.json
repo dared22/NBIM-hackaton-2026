@@ -1,0 +1,141 @@
+{
+  "schema_version": "3",
+  "inputs": "../pilot-v1/inputs.csv",
+  "live_validation": {
+    "status": "blocked",
+    "reason": "provider_budget_not_enforced",
+    "requested_max_cost_usd": 5,
+    "observed_key_limit_usd": 20,
+    "observed_key_limit_reset": "monthly",
+    "observed_include_byok_in_limit": false,
+    "model_calls": 0,
+    "cost_usd": 0
+  },
+  "offline_validation": {
+    "proposals": 20,
+    "meetings": 5,
+    "model_calls": 0,
+    "cost_usd": 0,
+    "report": "offline/summary.json",
+    "note": "Schema-3 model caches are absent. All 250 distinct facts remain unknown; this is not an extraction-accuracy result.",
+    "deterministic_packet_replay": true,
+    "mocked_schema3_cache_replay": "covered_by_RecoveryTests.test_schema3_collector_replays_cache_without_network"
+  },
+  "legacy_rule_logic_replay": {
+    "before": {
+      "ready": 34,
+      "incomplete": 102,
+      "not_implemented": 340,
+      "conflicting": 24
+    },
+    "after": {
+      "ready": 38,
+      "incomplete": 102,
+      "not_implemented": 340,
+      "conflicting": 14,
+      "not_applicable": 6
+    },
+    "changes": [
+      {
+        "meeting_id": "1923687",
+        "item_no": "1",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "ready",
+        "concern": false
+      },
+      {
+        "meeting_id": "1923687",
+        "item_no": "1",
+        "rule_id": "1.1.2",
+        "before": "conflicting",
+        "after": "ready",
+        "concern": false
+      },
+      {
+        "meeting_id": "1923687",
+        "item_no": "10",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      },
+      {
+        "meeting_id": "1923687",
+        "item_no": "11",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      },
+      {
+        "meeting_id": "1923687",
+        "item_no": "12",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      },
+      {
+        "meeting_id": "1974465",
+        "item_no": "1",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "ready",
+        "concern": false
+      },
+      {
+        "meeting_id": "1974465",
+        "item_no": "1",
+        "rule_id": "1.1.2",
+        "before": "conflicting",
+        "after": "ready",
+        "concern": false
+      },
+      {
+        "meeting_id": "1974465",
+        "item_no": "2",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      },
+      {
+        "meeting_id": "1974465",
+        "item_no": "3",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      },
+      {
+        "meeting_id": "1974465",
+        "item_no": "4",
+        "rule_id": "1.1.1",
+        "before": "conflicting",
+        "after": "not_applicable",
+        "concern": false
+      }
+    ],
+    "note": "Reassesses preserved schema-2 facts to isolate conditional-rule behavior. No population identity is migrated or newly verified. No supported positive concern is added."
+  },
+  "preserved_annotations": {
+    "annotated_facts": 23,
+    "previously_recovered": 21,
+    "previously_unresolved": [
+      "1923687/10/executive",
+      "1923687/10/ceo"
+    ],
+    "schema3_live_comparison": "not_available_until_budgeted_source_audited_run"
+  },
+  "limitations": [
+    "Selected development pilot only; no voting-performance claim.",
+    "Supplementary extraction and source accuracy require a live audit.",
+    "Model source verification is not independent human verification."
+  ],
+  "tests": {
+    "evidence_and_pilot": 42,
+    "benchmark": 9,
+    "result": "passed"
+  }
+}

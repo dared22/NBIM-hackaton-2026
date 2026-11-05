@@ -1,0 +1,29 @@
+{
+  "proposals": 20,
+  "meetings": 5,
+  "fact_statuses": {
+    "unknown": 340
+  },
+  "unique_fact_statuses": {
+    "unknown": 250
+  },
+  "gap_reasons": {
+    "offline_extraction_cache_miss": 250
+  },
+  "implemented_rule_statuses": {},
+  "rule_findings": {
+    "supported_concern": 0,
+    "cleared_concern": 0
+  },
+  "rule_blockers": {},
+  "facts_recovered": 0,
+  "truncated_requests": 20,
+  "rule_statuses": {},
+  "failures": {
+    "nominee_slate_not_verified": 20
+  },
+  "model_calls": 0,
+  "cache_hits": 0,
+  "cost": 0.0,
+  "seconds": 2.262
+}

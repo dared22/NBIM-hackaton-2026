@@ -37,12 +37,23 @@ class ProposalInput(TypedDict):
     mgmt_rec: str
 
 
+class Population(TypedDict):
+    issuer_cik: int
+    meeting_id: str
+    body: str
+    membership: str
+    basis: str
+    effective_date: str
+
+
 class Fact(TypedDict):
     status: str
     value: bool | int | str | None
     sources: list[dict]
     reason: str
     scope: str
+    population: Population | None
+    alternatives: list[dict]
 
 
 class CompanyEvidence(TypedDict):
@@ -86,7 +97,15 @@ def proposal_input(row: dict) -> ProposalInput:
 
 def unknown(reason: str) -> Fact:
     """Represent a gap without manufacturing a negative fact."""
-    return dict(status="unknown", value=None, sources=[], reason=reason, scope="")
+    return dict(
+        status="unknown",
+        value=None,
+        sources=[],
+        reason=reason,
+        scope="",
+        population=None,
+        alternatives=[],
+    )
 
 
 def build_decision_context(packet: EvidencePacket) -> dict:

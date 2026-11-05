@@ -173,7 +173,7 @@ class EvidenceTest(unittest.TestCase):
             "1:independent": dict(
                 status="known",
                 value=True,
-                quotes=[doc["text"]],
+                quotes=[dict(document_id=doc["sha256"], text=doc["text"])],
                 scope="current",
                 reason="",
             )
@@ -227,7 +227,12 @@ class EvidenceTest(unittest.TestCase):
                                 "1:board_count_min": dict(
                                     status="known",
                                     value=True,
-                                    quotes=[doc["text"]],
+                                    quotes=[
+                                        dict(
+                                            document_id=doc["sha256"], text=doc["text"]
+                                        )
+                                    ],
+                                    population=None,
                                     scope="current",
                                     reason="",
                                 )
@@ -278,7 +283,7 @@ class EvidenceTest(unittest.TestCase):
             "1:independent": dict(
                 status="known",
                 value=True,
-                quotes=[doc["text"]],
+                quotes=[dict(document_id=doc["sha256"], text=doc["text"])],
                 scope="current",
                 reason="",
             )
@@ -289,7 +294,7 @@ class EvidenceTest(unittest.TestCase):
             "1:independent": dict(
                 status="known",
                 value=False,
-                quotes=[doc["text"]],
+                quotes=[dict(document_id=doc["sha256"], text=doc["text"])],
                 scope="current",
                 reason="unrelated",
             )
@@ -325,7 +330,13 @@ class EvidenceTest(unittest.TestCase):
             for k in ["board_independent", "board_total"]
         }
         raw = {
-            k: dict(status="known", value=v, quotes=[text], scope="board", reason="")
+            k: dict(
+                status="known",
+                value=v,
+                quotes=[dict(document_id=doc["sha256"], text=text)],
+                scope="board",
+                reason="",
+            )
             for k, v in zip(requests, [3, 2])
         }
         self.assertTrue(

@@ -27,12 +27,30 @@ Omit `--meeting-id` for a whole year. Add `--item-no` to select one output item;
 extraction still uses the meeting's selected input rows for cache reuse.
 Only 2025 and 2026 US director-election rows are selected by the command.
 
-Replay the saved twenty-nominee development pilot without network credentials:
+Run the same twenty-nominee development input without network credentials:
 
 ```bash
 python3 src/evidence.py --inputs data/evidence/pilot-v1/inputs.csv \
   --year 2025 --offline --output-dir /tmp/director-evidence-replay
 ```
+
+Schema 3 uses new extraction caches. The preserved schema-2 pilot is not
+silently migrated; without new caches the command returns explicit gaps. This
+is not a comparison of extraction accuracy. See the
+[validation record](../../data/evidence/pilot-v2/validation.json).
+
+Run a live pilot only with a dedicated, nonresetting OpenRouter key whose
+provider-enforced limit is at most $5 and includes BYOK spending:
+
+```bash
+python3 src/evidence.py --inputs data/evidence/pilot-v1/inputs.csv \
+  --year 2025 --max-cost-usd 5 --output-dir /tmp/director-evidence-v3-live
+```
+
+`--max-cost-usd` checks key metadata before extraction and stops when the hard
+limit cannot be verified. It does not change your key or account settings.
+Offline runs never make the budget metadata request. Unguarded live commands
+retain their existing behavior; use the budget option for the capped pilot.
 
 Use `--cache` to choose a separate cache. An offline cache miss remains a gap.
 Use `--overrides` with a reviewed issuer mapping when exact normalized company
@@ -83,20 +101,42 @@ necessary because model verification can also make mistakes.
 
 Facts distinguish `known`, `partial`, `unknown`, and `conflicting`. Each sourced
 fact includes its typed value, source URL, filing date, raw-document hash,
-canonical-text offsets, quotation, and population/time scope. Offsets refer to
-the canonical text produced by `TextOnly`, not raw HTML byte positions.
+canonical-text offsets, quotation, and population/time scope. Board and
+committee counts add `population` with `issuer_cik`, `meeting_id`, `body`,
+`membership`, `basis`, and `effective_date`. Other facts use null. A model
+quotation uses `{"document_id": "<source SHA-256>", "text": "<exact excerpt>"}`.
+The stored source records resolve each quotation to that document's canonical
+text; offsets are not raw HTML byte positions. Unknown populations remain
+partial and are never supplied from the requested question alone.
 
 The collector requires a matching issuer, a meeting-notice/date association,
 and sourced evidence that each nominee is on the current election slate.
-Only definitive proxies filed strictly before the meeting are eligible.
-Recent publication alone does not establish meeting identity.
+The primary source is a definitive proxy filed strictly before the meeting.
+One follow-up per original batch can add a meeting-verified `DEFA14A` from the
+preceding 120 days and a latest `10-K` from the preceding 400 days. At most
+three supplement candidates and one annual report are downloaded. Annual
+reports may support explicit founder history only, never current roles.
+Same-day and future filings are excluded. Recent publication alone does not
+establish meeting identity.
 
 The policy module indexes all 25 candidate US election rules and selects up to
 three sections. Core coverage is independence (`1.1.1–1.1.3`), committee roles
 and independence (`1.2.1–1.2.3`), combined chair/CEO roles (`1.3.1`), and numeric
 outside-commitment concerns (`2.1.1`). Other checks are `not_implemented`.
 Sections rank by concerns, unresolved core facts, assessed checks, and numeric
-section order. Omitted rules retain coverage and concern metadata.
+section order. Omitted rules retain coverage and concern metadata. Each
+assessment includes `supporting_fact_ids`, plus branch-specific required and
+missing IDs. A cleared concern never establishes a blanket FOR recommendation.
+
+Reports distinguish per-packet `fact_statuses` from `unique_fact_statuses`,
+which counts each meeting fact once. `rule_blockers` retains rule-level reasons,
+including unresolved founder exceptions. `implemented_rule_statuses` excludes
+unimplemented rules; `rule_findings` separates supported and cleared concerns.
+`gap_reasons`, `facts_recovered`, and `truncated_requests` explain remaining
+coverage. Retrieval provenance records stage, document, request hash, selected
+ranges, and truncation. Model HTTP 402 responses become `budget_exhausted`
+gaps. Missing responses, invalid values, unestablished populations, rejected
+support, source failures, and insufficient passage coverage remain distinct.
 
 An incomplete board-role list does not establish an absence of overboarding.
 Missing cap classification is not inferred from SEC reporting categories.
