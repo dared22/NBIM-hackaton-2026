@@ -1,0 +1,179 @@
+"""One command that reproduces every result and writes one decision per proposal.
+
+Run from the repo root (about two minutes, no internet, no API key):
+    python3 src/run.py
+
+It writes two files in data/outputs/
+    decisions_2026.csv  one row per 2026 proposal: suggested vote, probability,
+                        band, whether a person must decide, reasons, guideline,
+                        evidence link, and what NBIM actually did
+    results.md          the full printed output of every evaluation script
+
+Two models feed the decisions
+    US executive pay votes   src/agent/pay_model.py   vote history + company facts
+    all other proposals      src/benchmark/model.py   vote history only
+
+How a decision is made
+    1. Guardrail. Instruction-like wording in the proposal text sends it to a
+       person with a security flag.
+    2. The model gives the probability that NBIM votes against the board.
+    3. Band. Below 5%: follow the board. At or above the model's cut-off:
+       vote against the board. In between: a person decides.
+    4. A person also decides when the board's recommendation is missing or the
+       company's figures look wrong.
+
+The tool only suggests. It never casts a vote. NBIM's actual vote is joined
+in at the very end, for scoring only.
+"""
+
+import collections
+import csv
+import os
+import subprocess
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "src"))
+sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
+
+from benchmark import model as bm  # noqa: E402
+import pay_model as pm  # noqa: E402
+import robustness as rb  # noqa: E402
+import rule_check as rc  # noqa: E402
+
+OUT = os.path.join(ROOT, "data", "outputs")
+YEAR = 2026
+SCRIPTS = [
+    ("History model, all proposal types", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv"]),
+    ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
+    ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
+    ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
+    ("Guideline rule check", ["src/agent/rule_check.py"]),
+    ("Resistance test and guardrail", ["src/agent/robustness.py"]),
+]
+COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
+        "probability_against_board", "band", "decided_by", "review_reason", "model", "reasons",
+        "guideline", "evidence_url", "actual_against_board", "actual_vote"]
+
+
+def opposite(vote):
+    return {"FOR": "MOT", "MOT": "FOR"}.get(vote, "")
+
+
+def decide(board, band, flags):
+    """Suggested vote and who decides. `flags` are reasons a person must look."""
+    if not board:
+        flags = flags + ["the board's recommendation is missing"]
+    if band == "send to human":
+        flags = ["the model is unsure"] + flags
+    vote = opposite(board) if band == "likely AGAINST board" and board else board
+    return vote, ("human review" if flags else "automatic"), "; ".join(flags)
+
+
+def general_decisions():
+    """All proposal types from NBIM's published votes, history model."""
+    rows = bm.read_votes(rc.VOTES)
+    sections = rc.load_guidelines()
+    cand = rc.candidate_sections(rows, sections)
+    _, val, _, _ = bm.run_year(rows, YEAR - 1)
+    _, test, w, thr = bm.run_year(rows, YEAR)
+    cache = rc.load_cache()
+    rc.attach_scores(val, cand, sections, cache)
+    rc.attach_scores(test, cand, sections, cache)
+    scored = [r for r in val if r["rule_p"] is not None]
+    rule_thr = bm.best_f1_threshold([r["rule_p"] for r in scored], [r["y"] for r in scored]) if scored else 1.0
+    out = []
+    for r in test:
+        flags = ["security flag: " + ", ".join(hits)] if (hits := rb.guard_patterns(r["proposal_text"])) else []
+        band = "send to human" if flags else r["band"]
+        vote, who, why = decide(r["mgmt_rec"], band, flags)
+        if r["rule_p"] is not None and r["rule_p"] >= rule_thr:
+            guide = f"GVG {r['rule_section']} (rule check, probability {r['rule_p']:.2f})"
+        elif band != "likely WITH board" and r["candidates"]:
+            guide = f"GVG {r['candidates'][0]} (NBIM's most common stated reason for this proposal type before 2025)"
+        else:
+            guide = ""
+        out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
+                    r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, "vote history",
+                    bm.reasons(w, r["x"]), guide, "", r["y"], r["nbim_vote"]])
+    return out
+
+
+def pay_decisions():
+    """US executive pay votes, history plus company facts."""
+    rows, _ = pm.load_rows()
+    _, test, w, ps, thr = pm.score_test_season(rows)
+    out = []
+    for r, p in zip(test, ps):
+        flags = list(pm.warnings_for(r))
+        if hits := rb.guard_patterns(r["forslag"]):
+            flags.append("security flag: " + ", ".join(hits))
+        band = "send to human" if any(f.startswith("security") for f in flags) else pm.band_of(p, thr)
+        # Every say-on-pay proposal is recommended FOR by the board.
+        vote, who, why = decide("FOR", band, flags if band != "likely WITH board" else
+                                [f for f in flags if f.startswith("security")])
+        why_pay = pm.reasons(r, w)
+        out.append(["NBIM pay votes, US filers", f"{r['cusip']}-{r['moetedato']}", r["moetedato"], r["utsteder"],
+                    r["forslag"], "FOR", vote, f"{p:.3f}", band, who, why, "vote history + company facts",
+                    " | ".join(t for t, _ in why_pay), ", ".join(sorted({c for _, c in why_pay if c})),
+                    r["c"].get("url", ""), r["y"], "MOT" if r["stemme"] in ("AGAINST", "WITHHOLD") else "FOR"])
+    return out
+
+
+def summary(rows, name):
+    """Counts that describe the human workload and what the machine gets right alone."""
+    n = len(rows)
+    col = {c: i for i, c in enumerate(COLS)}
+    against = [r for r in rows if r[col["actual_against_board"]] == 1]
+    auto = [r for r in rows if r[col["decided_by"]] == "automatic"]
+    auto_against = [r for r in auto if r[col["band"]] == "likely AGAINST board"]
+    review = [r for r in rows if r[col["decided_by"]] == "human review"]
+    hit = lambda group: sum(1 for r in group if r[col["actual_against_board"]] == 1)
+    lines = [f"### {name}",
+             f"- Proposals: {n}; NBIM voted against the board on {len(against)}.",
+             f"- Decided automatically: {len(auto)} ({len(auto) / n:.0%}). Sent to a person: {len(review)} ({len(review) / n:.0%}).",
+             f"- Automatic 'against the board' suggestions: {len(auto_against)}, of which {hit(auto_against)} were right "
+             f"(precision {hit(auto_against) / len(auto_against):.0%}, recall {hit(auto_against) / len(against):.0%})."
+             if auto_against else "- No automatic 'against the board' suggestions.",
+             f"- Against-votes inside the pile sent to a person: {hit(review)} "
+             f"({hit(review) / len(against):.0%} of all against-votes).",
+             f"- Against-votes the tool waved through with the board: "
+             f"{hit([r for r in auto if r[col['band']] == 'likely WITH board'])} "
+             f"({hit([r for r in auto if r[col['band']] == 'likely WITH board']) / len(against):.0%} of all against-votes).",
+             f"- With a person reading the review pile, {hit(auto_against) + hit(review)} of {len(against)} against-votes "
+             f"are either suggested or seen ({(hit(auto_against) + hit(review)) / len(against):.0%})."]
+    return "\n".join(lines)
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    parts = ["# Results", "", f"Produced by `python3 src/run.py`. Test year {YEAR}; nothing from {YEAR} is used to fit or tune.", ""]
+
+    general, pay = general_decisions(), pay_decisions()
+    with open(os.path.join(OUT, f"decisions_{YEAR}.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(COLS)
+        w.writerows(sorted(pay + general, key=lambda r: -float(r[7])))
+    parts += ["## Decisions", "", "One row per proposal is in `data/outputs/decisions_2026.csv`.", "",
+              summary(pay, "US executive pay votes (history + company facts)"), "",
+              summary(general, "All proposal types (history only)"), ""]
+
+    env = dict(os.environ, PYTHONPATH=os.path.join(ROOT, "src"))
+    for title, args in SCRIPTS:
+        print(f"running: {title} ...", flush=True)
+        done = subprocess.run([sys.executable] + args, cwd=ROOT, env=env, capture_output=True, text=True)
+        if done.returncode != 0:
+            raise SystemExit(f"{args[0]} failed:\n{done.stderr[-2000:]}")
+        parts += [f"## {title}", "", f"`python3 {' '.join(args)}`", "", "```text", done.stdout.rstrip(), "```", ""]
+
+    with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(parts))
+    print()
+    print(summary(pay, "US executive pay votes (history + company facts)"))
+    print()
+    print(summary(general, "All proposal types (history only)"))
+    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals) and data/outputs/results.md")
+
+
+if __name__ == "__main__":
+    main()
