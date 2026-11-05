@@ -1,0 +1,33 @@
+year,system,target,proposals,positives,precision,recall,f1,hits,false_alarms,review_share,reached,reached_share,never_seen,avg_precision
+2022,marie: Jev pipeline + facts,NBIM voted MOT,1772,112,0.5323,0.2946,0.3793,33,29,0.36,92,0.8214,20,0.3439
+2022,marie: Jev pipeline + facts,against the board,1772,117,0.5323,0.2821,0.3687,33,29,0.36,86,0.735,31,0.3207
+2022,main: history model,NBIM voted MOT,1772,112,0.3939,0.4643,0.4262,52,80,0.2173,73,0.6518,39,0.3115
+2022,main: history model,against the board,1772,117,0.447,0.5043,0.4739,59,73,0.2173,78,0.6667,39,0.4071
+2022,Follow the board,NBIM voted MOT,1772,112,0.68,0.1518,0.2482,17,8,0.0141,17,0.1518,95,0.1568
+2022,Follow the board,against the board,1772,117,0.32,0.0684,0.1127,8,17,0.0141,8,0.0684,109,0.0834
+2023,marie: Jev pipeline + facts,NBIM voted MOT,1761,100,0.7222,0.52,0.6047,52,20,0.4185,84,0.84,16,0.457
+2023,marie: Jev pipeline + facts,against the board,1761,83,0.4306,0.3735,0.4,31,41,0.4185,65,0.7831,18,0.3404
+2023,main: history model,NBIM voted MOT,1761,100,0.2743,0.31,0.2911,31,82,0.2635,57,0.57,43,0.2638
+2023,main: history model,against the board,1761,83,0.292,0.3976,0.3367,33,80,0.2635,55,0.6627,28,0.3193
+2023,Follow the board,NBIM voted MOT,1761,100,0.8519,0.23,0.3622,23,4,0.0153,23,0.23,77,0.2397
+2023,Follow the board,against the board,1761,83,0.1481,0.0482,0.0727,4,23,0.0153,4,0.0482,79,0.052
+2024,marie: Jev pipeline + facts,NBIM voted MOT,1883,98,0.6964,0.398,0.5065,39,17,0.419,94,0.9592,4,0.5391
+2024,marie: Jev pipeline + facts,against the board,1883,98,0.6429,0.3673,0.4675,36,20,0.419,93,0.949,5,0.4393
+2024,main: history model,NBIM voted MOT,1883,98,0.4792,0.2347,0.3151,23,25,0.2714,84,0.8571,14,0.3597
+2024,main: history model,against the board,1883,98,0.5625,0.2755,0.3699,27,21,0.2714,85,0.8673,13,0.438
+2024,Follow the board,NBIM voted MOT,1883,98,0.5263,0.102,0.1709,10,9,0.0101,10,0.102,88,0.1004
+2024,Follow the board,against the board,1883,98,0.4737,0.0918,0.1538,9,10,0.0101,9,0.0918,89,0.0908
+2025,marie: Jev pipeline + facts,NBIM voted MOT,1909,112,0.7636,0.375,0.503,42,13,0.3677,96,0.8571,16,0.5645
+2025,marie: Jev pipeline + facts,against the board,1909,103,0.6182,0.3301,0.4304,34,21,0.3677,87,0.8447,16,0.4254
+2025,main: history model,NBIM voted MOT,1909,112,0.5811,0.3839,0.4624,43,31,0.2472,86,0.7679,26,0.4461
+2025,main: history model,against the board,1909,103,0.5676,0.4078,0.4746,42,32,0.2472,78,0.7573,25,0.4668
+2025,Follow the board,NBIM voted MOT,1909,112,0.7647,0.1161,0.2016,13,4,0.0089,13,0.1161,99,0.1406
+2025,Follow the board,against the board,1909,103,0.2353,0.0388,0.0667,4,13,0.0089,4,0.0388,99,0.061
+2026,marie: Jev pipeline + facts,NBIM voted MOT,1539,66,0.6415,0.5152,0.5714,34,19,0.4107,63,0.9545,3,0.539
+2026,marie: Jev pipeline + facts,against the board,1539,66,0.566,0.4545,0.5042,30,23,0.4107,63,0.9545,3,0.4414
+2026,main: history model,NBIM voted MOT,1539,66,0.5641,0.3333,0.419,22,17,0.2508,45,0.6818,21,0.4252
+2026,main: history model,against the board,1539,66,0.6154,0.3636,0.4571,24,15,0.2508,48,0.7273,18,0.4531
+2026,Follow the board,NBIM voted MOT,1539,66,0.5714,0.1212,0.2,8,6,0.0091,8,0.1212,58,0.107
+2026,Follow the board,against the board,1539,66,0.4286,0.0909,0.15,6,8,0.0091,6,0.0909,60,0.0779
+2026,main: full system (2026 only),NBIM voted MOT,1539,66,0.625,0.4545,0.5263,30,18,0.2736,55,0.8333,11,0.4257
+2026,main: full system (2026 only),against the board,1539,66,0.5208,0.3788,0.4386,25,23,0.2736,52,0.7879,14,0.4537
