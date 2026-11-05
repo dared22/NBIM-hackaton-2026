@@ -1,0 +1,335 @@
+{
+  "meta": {
+    "tittel": "Global voting guidelines 2023",
+    "utgiver": "Norges Bank Investment Management",
+    "kildefil": "global-voting-guidelines-2023.pdf",
+    "antall_regler": 71,
+    "gjelder_fra": "2023-04-01",
+    "ikke_bindende": "These guidelines describe the fund's general views and are non-binding.",
+    "feltforklaring": {
+      "id": "Stabil ID for sitering: seksjon.underseksjon.punkt. Anti-takeover-punktene i 6.2 har egen nummerering i PDF-en og faar derfor ID-en 6.2-AT.n.",
+      "tekst": "Ordrett fra PDF-en. Bare linjeskift og orddeling er rettet, og typografiske anfoerselstegn og apostrofer er gjort om til rette.",
+      "innledning": "Ordrett fra PDF-en. Prinsippene foran de nummererte punktene i en underseksjon.",
+      "side": "Sidetall i PDF-en.",
+      "avledet": "IKKE fra PDF-en. Vaar egen tolkning av regelen, til filtrering og ruting.",
+      "avledet.handling": "Stemmen regelen peker mot naar vilkaaret er oppfylt: MOT for 'will not support', FOR for 'will support'.",
+      "avledet.forslagstype": "Hvilke typer forslag regelen gjelder.",
+      "avledet.marked": "Hvilke markeder eller selskaper regelen er avgrenset til.",
+      "avledet.skjonn": "true hvis regelen krever vurdering (for eksempel 'significant concerns' eller 'local-market best practice'), false hvis vilkaaret er konkret og kan sjekkes mot fakta.",
+      "meta.gjelder_fra": "IKKE fra PDF-en. Dato utgaven regnes som gjeldende fra: 1. april i tittelaaret. Eksakt publiseringsdato er ukjent. Valgt fordi NBIM-begrunnelser med 2020-ordlyd foerst dukker opp 2020-04-12 og 2023-ordlyd (3.2.8-11) 2023-05-10."
+    }
+  },
+  "prinsipper": [
+    {
+      "id": "P.1",
+      "tittel": "Voting principles",
+      "side": 2,
+      "tekst": "Our starting point when deciding how to vote is to support the board. We participate in electing the board and entrust it with running the company. When we consider that the board is not able to operate effectively or that our rights as a shareholder are not adequately protected, we would withhold our support."
+    },
+    {
+      "id": "P.2",
+      "tittel": "Voting decisions: predictability",
+      "side": 3,
+      "tekst": "Predictability means that companies can understand why we vote the way we do. Our voting guidelines are publicly available at www.nbim.no. Being open about how we have voted contributes to predictability. Our voting decisions are made public on our website. In cases where we vote against the board's recommendation, we provide an explanation."
+    },
+    {
+      "id": "P.3",
+      "tittel": "Voting decisions: consistency",
+      "side": 3,
+      "tekst": "Consistency means that our voting decisions can be explained on the basis of our principles. When we apply our principles, we evaluate company developments and take into account best practices in the local market. We recognise that local market regulation and best practices are under continuous development. The nature of some proposals requires that we consider them individually. In such cases, we have to use judgement when applying our principles. Consistency does not mean that we will vote in the same way each year, or at all companies and on all issues."
+    }
+  ],
+  "underseksjoner": [
+    {
+      "id": "1.1",
+      "pilar": "Effective boards",
+      "seksjon": "1. Board independence",
+      "tittel": "Independence of the board",
+      "side": 5,
+      "innledning": [
+        "The board should guide company strategy and monitor management performance without conflicts of interest.",
+        "A majority of shareholder-elected board members in a non-controlled company should be independent of management, dominant shareholders and related third parties.",
+        "In a majority-controlled company, at least a third of board members should be independent."
+      ]
+    },
+    {
+      "id": "1.2",
+      "pilar": "Effective boards",
+      "seksjon": "1. Board independence",
+      "tittel": "Independence of main committees",
+      "side": 6,
+      "innledning": [
+        "Board decisions that are particularly vulnerable to conflicts of interest should have additional safeguards.",
+        "Management should not serve on the audit or remuneration committees. The audit committee should have a majority of independent, shareholder-elected members."
+      ]
+    },
+    {
+      "id": "1.3",
+      "pilar": "Effective boards",
+      "seksjon": "1. Board independence",
+      "tittel": "Separation of chairperson and CEO",
+      "side": 6,
+      "innledning": [
+        "The board should exercise objective judgement on corporate affairs and be able to make decisions independently of management.",
+        "The roles of chairperson and CEO should not be held by the same individual. Where a company founder combines both roles, we may support this for a limited period, provided the board has put in place measures to mitigate any conflicts of interest."
+      ]
+    },
+    {
+      "id": "2.1",
+      "pilar": "Effective boards",
+      "seksjon": "2. Board composition",
+      "tittel": "Time commitment",
+      "side": 7,
+      "innledning": [
+        "Board members should devote sufficient time to fulfil their responsibilities effectively. The chairperson is responsible for leading all aspects of the board's work and should devote a significant amount of time to fulfil his or her responsibilities effectively.",
+        "Board members should contribute to effective discussions and decision-making by attending all meetings."
+      ]
+    },
+    {
+      "id": "2.2",
+      "pilar": "Effective boards",
+      "seksjon": "2. Board composition",
+      "tittel": "Industry expertise",
+      "side": 7,
+      "innledning": [
+        "The board should have a thorough understanding of the industry in which the company operates. The board should have sufficient industry expertise to monitor management's implementation of company strategy.",
+        "Shareholders should be able to understand which independent directors bring relevant industry expertise to the board."
+      ]
+    },
+    {
+      "id": "2.3",
+      "pilar": "Effective boards",
+      "seksjon": "2. Board composition",
+      "tittel": "Diversity",
+      "side": 8,
+      "innledning": [
+        "Diversity contributes to the overall effectiveness of the board and is a sign of an effective nomination process.",
+        "The board should ensure that it can bring a broad range of perspectives and approaches to its decision-making process.",
+        "The board should have an appropriate balance of competences and backgrounds."
+      ]
+    },
+    {
+      "id": "3.1",
+      "pilar": "Effective boards",
+      "seksjon": "3. Board accountability",
+      "tittel": "Board nomination and election",
+      "side": 9,
+      "innledning": [
+        "The company should have a robust nomination and election process to ensure an effective board that is accountable to shareholders.",
+        "Shareholders should be able to participate in frequent elections of all board members, preferably on an annual basis.",
+        "The company should establish reasonable procedures for shareholders to include proposals in the meeting material distributed by the company, including proposing board candidates."
+      ]
+    },
+    {
+      "id": "3.2",
+      "pilar": "Effective boards",
+      "seksjon": "3. Board accountability",
+      "tittel": "Board decisions and conduct",
+      "side": 10,
+      "innledning": [
+        "Shareholders should have the right to seek changes to the board when it does not act in their best interest.",
+        "We will consider whether the board has failed to act on material requests from shareholders, sought to circumvent a shareholder proposal or implemented governance changes limiting shareholders' rights without their approval.",
+        "When voting on a proposal to discharge the board of responsibilities, we will consider whether any information raises reasonable doubt about the board's actions.",
+        "We will also take into consideration unsatisfactory financial and strategic performance, mismanaged risk-taking, unacceptable treatment of stakeholders or undesired environmental or social outcomes from company operations."
+      ]
+    },
+    {
+      "id": "3.3",
+      "pilar": "Effective boards",
+      "seksjon": "3. Board accountability",
+      "tittel": "CEO remuneration",
+      "side": 12,
+      "innledning": [
+        "The board is responsible for attracting the right CEO and setting appropriate remuneration.",
+        "A substantial proportion of annual remuneration should be provided as shares that are locked in for five to ten years, regardless of resignation or retirement.",
+        "The board should provide transparency on total remuneration to avoid unacceptable outcomes.",
+        "The board should ensure that all benefits have a clear business rationale. Pensionable income should constitute a minor part of total remuneration."
+      ]
+    },
+    {
+      "id": "4.1",
+      "pilar": "Shareholder protection",
+      "seksjon": "4. Shareholder approval",
+      "tittel": "Voting rights",
+      "side": 14,
+      "innledning": [
+        "All shareholders should have the right to vote on fundamental corporate decisions, and voting rights should be proportionate to cash flow rights. One share should give one vote.",
+        "Any unequal voting rights should be time-limited and aligned with cash flow rights over time."
+      ]
+    },
+    {
+      "id": "4.2",
+      "pilar": "Shareholder protection",
+      "seksjon": "4. Shareholder approval",
+      "tittel": "Shareholder meeting",
+      "side": 14,
+      "innledning": [
+        "Shareholders should in certain circumstances have the opportunity to raise issues of material importance without having to wait for management to schedule a meeting.",
+        "All proposals subject to shareholder approval should be presented as individual items, and the vote tally should be published."
+      ]
+    },
+    {
+      "id": "4.3",
+      "pilar": "Shareholder protection",
+      "seksjon": "4. Shareholder approval",
+      "tittel": "Governing documents",
+      "side": 15,
+      "innledning": [
+        "The right to vote on fundamental changes affecting the company is a basic right of shareholders. This includes the right to approve changes to the company's governing documents."
+      ]
+    },
+    {
+      "id": "5.1",
+      "pilar": "Shareholder protection",
+      "seksjon": "5. Company reporting",
+      "tittel": "Auditor",
+      "side": 16,
+      "innledning": [
+        "The external auditor should act in an independent manner. We will consider the auditor's independence and any concerns about the accounts or audit procedures.",
+        "Excessive non-audit-related fees represent a potential conflict of interest and should be avoided."
+      ]
+    },
+    {
+      "id": "5.2",
+      "pilar": "Shareholder protection",
+      "seksjon": "5. Company reporting",
+      "tittel": "Financial statements",
+      "side": 17,
+      "innledning": [
+        "The board should use the annual report to present a fair, sensible and clear assessment of the company. The report should be reflective of the prior year, and include material risk factors.",
+        "We will consider whether any information available raises reasonable doubt about the financial statements. This includes misstatements, material goodwill write-offs, or material legal actions against the board."
+      ]
+    },
+    {
+      "id": "5.3",
+      "pilar": "Shareholder protection",
+      "seksjon": "5. Company reporting",
+      "tittel": "Sustainability",
+      "side": 17,
+      "innledning": [
+        "The board should account for material sustainability risks facing the company, and the broader environmental and social consequences of its operations and products.",
+        "Sustainability disclosures should be aligned with applicable global reporting standards and frameworks to support investors in their analysis of risks and opportunities.",
+        "Where a company's disclosure does not meet our needs as a financial investor, we will consider supporting a well-founded shareholder proposal calling for reasonable disclosure.",
+        "We will not support a shareholder proposal that appears to impose a strategy or prescribe detailed methods, unrealistic timeframes or targets for implementation."
+      ]
+    },
+    {
+      "id": "6.1",
+      "pilar": "Shareholder protection",
+      "seksjon": "6. Capital management",
+      "tittel": "Share issuance",
+      "side": 18,
+      "innledning": [
+        "Existing shareholders should have the right to approve share issuances in order to prevent the dilution of ownership without their prior consent.",
+        "Existing shareholders should have the right to participate pro rata to maintain their voting share and benefit from any discount offered.",
+        "The approval for a general authority should be reasonably close in time to the intended capital allocation to allow for an informed voting decision."
+      ]
+    },
+    {
+      "id": "6.2",
+      "pilar": "Shareholder protection",
+      "seksjon": "6. Capital management",
+      "tittel": "Mergers, acquisitions and other corporate transactions",
+      "side": 19,
+      "innledning": [
+        "Mergers, acquisitions and other corporate transactions should maximise shareholder value.",
+        "When evaluating corporate transactions, we will also consider whether there is sufficient transparency to make a fully informed decision, whether all shareholders are treated equitably, and whether there are conflicts of interest."
+      ]
+    },
+    {
+      "id": "6.2-AT",
+      "pilar": "Shareholder protection",
+      "seksjon": "6. Capital management",
+      "tittel": "Mergers, acquisitions and other corporate transactions: anti-takeover measures",
+      "side": 19,
+      "innledning": [
+        "Anti-takeover measures are generally not in the interest of shareholders, and the introduction of such measures should, at a minimum, be subject to shareholder approval. We define anti-takeover measures to include any mechanism likely to deter or frustrate takeovers."
+      ]
+    },
+    {
+      "id": "6.3",
+      "pilar": "Shareholder protection",
+      "seksjon": "6. Capital management",
+      "tittel": "Related party-transaction",
+      "side": 20,
+      "innledning": [
+        "Transactions with related parties should be carried out on market terms and be clearly beneficial to all shareholders.",
+        "The board should disclose its policies for handling related-party transactions.",
+        "For each material transaction, the board should disclose the transaction date, the name of each party involved, their affiliation, the business rationale and nature of the transaction, as well as its terms. Where an independent financial advisor is appointed, its opinion, including the assumptions it is based upon, should be disclosed."
+      ]
+    }
+  ],
+  "regler": [
+    {"id": "1.1.1", "underseksjon": "1.1", "side": 5, "tekst": "At a large- or mid-cap company in developed markets, we will not support the election of any non-executive, non-independent director if the board does not have at least 50 percent independent members.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "utviklede_large_mid", "skjonn": false}},
+    {"id": "1.1.2", "underseksjon": "1.1", "side": 5, "tekst": "At a large- or mid-cap, majority-controlled company in developed markets, we will not support the election of any non-executive, non-independent director if the board does not have at least one third independent members.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "utviklede_large_mid_majoritetskontrollert", "skjonn": false}},
+    {"id": "1.1.3", "underseksjon": "1.1", "side": 5, "tekst": "At a company in emerging markets or at a small-cap company in developed markets, we will not support the election of the chair of the nomination committee if the board does not have at least two independent members.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "fremvoksende_eller_utviklede_small", "skjonn": false}},
+    {"id": "1.1.4", "underseksjon": "1.1", "side": 5, "tekst": "We will support the election of minority-nominated candidates in markets with cumulative voting.", "avledet": {"handling": "FOR", "forslagstype": ["styrevalg"], "marked": "kumulativ_stemmegivning", "skjonn": false}},
+    {"id": "1.2.1", "underseksjon": "1.2", "side": 6, "tekst": "We will not support the election of an executive director who is a member of the remuneration committee.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": false}},
+    {"id": "1.2.2", "underseksjon": "1.2", "side": 6, "tekst": "We will not support the election of an executive director who is a member of the audit committee.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": false}},
+    {"id": "1.2.3", "underseksjon": "1.2", "side": 6, "tekst": "We will not support the election of any non-independent director if the audit committee does not have at least 50 percent independent members.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": false}},
+    {"id": "1.3.1", "underseksjon": "1.3", "side": 6, "tekst": "We will not support the election of a chairperson who is also the CEO of the company.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg", "styreleder_ceo"], "marked": "alle", "skjonn": false}},
+    {"id": "1.3.2", "underseksjon": "1.3", "side": 6, "tekst": "We will not support an authorisation for the chairperson to serve as CEO.", "avledet": {"handling": "MOT", "forslagstype": ["styreleder_ceo"], "marked": "alle", "skjonn": false}},
+    {"id": "1.3.3", "underseksjon": "1.3", "side": 6, "tekst": "We will support a proposal to separate the roles of chairperson and CEO.", "avledet": {"handling": "FOR", "forslagstype": ["styreleder_ceo"], "marked": "alle", "skjonn": false}},
+    {"id": "2.1.1", "underseksjon": "2.1", "side": 7, "tekst": "At a company in developed markets, we will not support the election of a director who sits on more than five boards, holds more than two board chairs, or otherwise has too many board or management roles to fulfil effectively his or her responsibilities at the company.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "utviklede", "skjonn": true}},
+    {"id": "2.1.2", "underseksjon": "2.1", "side": 7, "tekst": "We will not support the election of a director who has attended fewer than 75 percent of board meetings over the last two years.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": false}},
+    {"id": "2.2.1", "underseksjon": "2.2", "side": 7, "tekst": "At a company in developed markets, we will not support the re-election of the chair of the nomination committee if there is not at least one non-executive director who has worked in the industry.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "utviklede", "skjonn": false}},
+    {"id": "2.3.1", "underseksjon": "2.3", "side": 8, "tekst": "At a company in developed markets, we will not support the re-election of the chair of the nomination committee if the board does not include at least two members of each gender.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "utviklede", "skjonn": false}},
+    {"id": "3.1.1", "underseksjon": "3.1", "side": 9, "tekst": "We will not support a proposal to classify (stagger) the board.", "avledet": {"handling": "MOT", "forslagstype": ["valgordning"], "marked": "alle", "skjonn": false}},
+    {"id": "3.1.2", "underseksjon": "3.1", "side": 9, "tekst": "We will support a proposal to declassify the board.", "avledet": {"handling": "FOR", "forslagstype": ["valgordning"], "marked": "alle", "skjonn": false}},
+    {"id": "3.1.3", "underseksjon": "3.1", "side": 9, "tekst": "We will not support the election of a director with an election term longer than local-market best practice.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.1.4", "underseksjon": "3.1", "side": 9, "tekst": "We will support a proposal to shorten the election term of a director, with our preference being one year.", "avledet": {"handling": "FOR", "forslagstype": ["valgordning"], "marked": "alle", "skjonn": false}},
+    {"id": "3.1.5", "underseksjon": "3.1", "side": 9, "tekst": "We will support a proposal to introduce majority requirements in director elections.", "avledet": {"handling": "FOR", "forslagstype": ["valgordning"], "marked": "alle", "skjonn": false}},
+    {"id": "3.1.6", "underseksjon": "3.1", "side": 9, "tekst": "We will not support the election of a director whose name has not been disclosed in the proxy information, or where the disclosure is insufficient to assess his or her suitability.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.1.7", "underseksjon": "3.1", "side": 9, "tekst": "We will support a proposal to eliminate cumulative voting only if the company allows for shareholder input on election of directors.", "avledet": {"handling": "FOR", "forslagstype": ["valgordning"], "marked": "kumulativ_stemmegivning", "skjonn": false}},
+    {"id": "3.1.8", "underseksjon": "3.1", "side": 9, "tekst": "We will support a proposal to introduce proxy access with holding requirements of up to three years and up to three percent ownership.", "avledet": {"handling": "FOR", "forslagstype": ["valgordning"], "marked": "alle", "skjonn": false}},
+    {"id": "3.2.1", "underseksjon": "3.2", "side": 10, "tekst": "We will not support the re-election of members of the governance or nomination committee, or other directors, if the company has failed to act on material requests from shareholders where such requests received majority support the previous year.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.2", "underseksjon": "3.2", "side": 10, "tekst": "We will not support the re-election of members of the remuneration committee, or other board members, if the board received low shareholder support for its most recent pay-related proposal and we consider that the board has failed to address our concern.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.3", "underseksjon": "3.2", "side": 10, "tekst": "We will not support the re-election of members of the nomination or governance committee, or other board members, if the board has amended the company's governing documents without shareholder approval.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": false}},
+    {"id": "3.2.4", "underseksjon": "3.2", "side": 10, "tekst": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures of governance or risk oversight, or breaches of fiduciary responsibilities.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.5", "underseksjon": "3.2", "side": 10, "tekst": "We will not support the election of a director whose service on other boards has been associated with misconduct.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.6", "underseksjon": "3.2", "side": 11, "tekst": "We will not support a proposal to discharge a director or the board of liability for their activities if there is significant concern over the board's actions in previous years, including misstatements, material goodwill write-offs, or material legal actions against the board.", "avledet": {"handling": "MOT", "forslagstype": ["ansvarsfrihet"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.7", "underseksjon": "3.2", "side": 11, "tekst": "We will not support the re-election of any member of the audit committee, or other board members, if the company's financial statements received an adverse opinion from its auditor or the auditor flagged material weaknesses, and we consider that the board has failed adequately to address our concern.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.8", "underseksjon": "3.2", "side": 11, "tekst": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of environmental risks.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.9", "underseksjon": "3.2", "side": 11, "tekst": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of climate risks.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.10", "underseksjon": "3.2", "side": 11, "tekst": "We will not support the re-election of a director, or the entire board, if the company has experienced material failures in the oversight, management or disclosure of social risks.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.2.11", "underseksjon": "3.2", "side": 11, "tekst": "We will not support the re-election of a director, or the entire board, if shareholders have experienced unsatisfactory financial performance over time or we lack faith in the ability to implement a sufficiently profitable strategy.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.1", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where the vesting or holding period fails to meet local-market best practice.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.2", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where the accelerated vesting arrangement fails to meet local-market best practice.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.3", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where we have significant concerns over the structure of the remuneration.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.4", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where there is clear misalignment between remuneration and long-term value creation.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.5", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report if the board received low shareholder support for its most recent pay-related proposal and we consider that the board has failed adequately to address our concern.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.6", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where we have significant concerns over one-off payments, including golden hellos, golden parachutes and severance payments.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.7", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where the pension arrangements are considered excessive in the local market.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "3.3.8", "underseksjon": "3.3", "side": 12, "tekst": "We will not support a remuneration policy or report where outcomes could be unusually costly and the incentive structure does not clearly align with shareholders' interests.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true}},
+    {"id": "4.1.1", "underseksjon": "4.1", "side": 14, "tekst": "We will not support the creation of new or additional classes of common stock with unequal voting rights.", "avledet": {"handling": "MOT", "forslagstype": ["stemmerett"], "marked": "alle", "skjonn": false}},
+    {"id": "4.1.2", "underseksjon": "4.1", "side": 14, "tekst": "We will support the abolition of a class of common stock with unequal voting rights on equitable terms.", "avledet": {"handling": "FOR", "forslagstype": ["stemmerett"], "marked": "alle", "skjonn": true}},
+    {"id": "4.1.3", "underseksjon": "4.1", "side": 14, "tekst": "We will not support the introduction of voting caps.", "avledet": {"handling": "MOT", "forslagstype": ["stemmerett"], "marked": "alle", "skjonn": false}},
+    {"id": "4.2.1", "underseksjon": "4.2", "side": 14, "tekst": "We will support the right of shareholders to request a general meeting to be called, with a minimum ownership threshold of between 10 and 25 percent.", "avledet": {"handling": "FOR", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": false}},
+    {"id": "4.2.2", "underseksjon": "4.2", "side": 14, "tekst": "We will support the right of shareholders representing 50 percent of outstanding shares to act by written consent, i.e. act without calling a formal meeting of shareholders.", "avledet": {"handling": "FOR", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": false}},
+    {"id": "4.2.3", "underseksjon": "4.2", "side": 14, "tekst": "We will support a proposal to de-bundle all agenda items.", "avledet": {"handling": "FOR", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": false}},
+    {"id": "4.2.4", "underseksjon": "4.2", "side": 14, "tekst": "We will not support a bundled agenda item unless all included items are acceptable.", "avledet": {"handling": "MOT", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": true}},
+    {"id": "4.3.1", "underseksjon": "4.3", "side": 15, "tekst": "We will not support changes to a company's governing documents if there is a lack of disclosure.", "avledet": {"handling": "MOT", "forslagstype": ["vedtekter"], "marked": "alle", "skjonn": true}},
+    {"id": "4.3.2", "underseksjon": "4.3", "side": 15, "tekst": "We will not support changes to a company's governing documents that are not in the best interest of shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["vedtekter"], "marked": "alle", "skjonn": true}},
+    {"id": "4.3.3", "underseksjon": "4.3", "side": 15, "tekst": "We will not support changes to a company's governing documents that are aimed at circumventing a corresponding shareholder proposal.", "avledet": {"handling": "MOT", "forslagstype": ["vedtekter"], "marked": "alle", "skjonn": true}},
+    {"id": "5.1.1", "underseksjon": "5.1", "side": 16, "tekst": "We will not support the appointment of an auditor if the fees paid to the auditor for non-audit services exceed 50 percent of the total fees paid in two consecutive years.", "avledet": {"handling": "MOT", "forslagstype": ["revisor"], "marked": "alle", "skjonn": false}},
+    {"id": "5.1.2", "underseksjon": "5.1", "side": 16, "tekst": "We will not support the appointment of an auditor whose name is not disclosed.", "avledet": {"handling": "MOT", "forslagstype": ["revisor"], "marked": "alle", "skjonn": false}},
+    {"id": "5.1.3", "underseksjon": "5.1", "side": 16, "tekst": "We will not support the appointment of an auditor if the previous auditor was replaced without explanation.", "avledet": {"handling": "MOT", "forslagstype": ["revisor"], "marked": "alle", "skjonn": false}},
+    {"id": "5.1.4", "underseksjon": "5.1", "side": 16, "tekst": "We will not support the appointment of an auditor, statutory auditor, or audit committee member if there are serious concerns about the external auditor's ability to identify accounting irregularities.", "avledet": {"handling": "MOT", "forslagstype": ["revisor", "styrevalg"], "marked": "alle", "skjonn": true}},
+    {"id": "5.2.1", "underseksjon": "5.2", "side": 17, "tekst": "We will not support the approval of financial statements if there is insufficient disclosure, or if material weaknesses are flagged by the auditor.", "avledet": {"handling": "MOT", "forslagstype": ["regnskap"], "marked": "alle", "skjonn": true}},
+    {"id": "5.2.2", "underseksjon": "5.2", "side": 17, "tekst": "We will not support an agenda item if the information disclosed is insufficient to make an informed decision, e.g. the agenda item \"other business\".", "avledet": {"handling": "MOT", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": true}},
+    {"id": "5.3.1", "underseksjon": "5.3", "side": 17, "tekst": "We will support a proposal that requests reasonable disclosure of the company's governance, strategy, risk exposures and performance data related to material sustainability risks.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true}},
+    {"id": "5.3.2", "underseksjon": "5.3", "side": 17, "tekst": "We will support a proposal that requests the board to develop and implement a policy or framework where its management of a material sustainability risk appears inadequate.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true}},
+    {"id": "6.1.1", "underseksjon": "6.1", "side": 18, "tekst": "We will not support a general authority to issue shares with pre-emptive rights if the size of the issuance is considered excessive in relation to currently issued capital.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "alle", "skjonn": true}},
+    {"id": "6.1.2", "underseksjon": "6.1", "side": 18, "tekst": "In developed markets, we will not support a general authority to issue shares without pre-emptive rights above 20 percent of currently issued capital.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "utviklede", "skjonn": false}},
+    {"id": "6.1.3", "underseksjon": "6.1", "side": 18, "tekst": "In emerging markets, we will not support a general authority to issue shares without pre-emptive rights above 30 percent of currently issued capital.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "fremvoksende", "skjonn": false}},
+    {"id": "6.1.4", "underseksjon": "6.1", "side": 18, "tekst": "We will not support a share issuance that does not create long-term value for shareholders or does not treat all shareholders fairly.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "alle", "skjonn": true}},
+    {"id": "6.2.1", "underseksjon": "6.2", "side": 19, "tekst": "We will not support mergers, acquisitions and other corporate transactions where there is insufficient transparency.", "avledet": {"handling": "MOT", "forslagstype": ["transaksjon"], "marked": "alle", "skjonn": true}},
+    {"id": "6.2.2", "underseksjon": "6.2", "side": 19, "tekst": "We will not support mergers, acquisitions and other corporate transactions that do not treat all shareholders equitably, or where there are conflicts of interest that could negatively affect shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["transaksjon"], "marked": "alle", "skjonn": true}},
+    {"id": "6.2.3", "underseksjon": "6.2", "side": 19, "tekst": "We will not support mergers, acquisitions and other corporate transactions that do not create long-term value for shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["transaksjon"], "marked": "alle", "skjonn": true}},
+    {"id": "6.2-AT.1", "underseksjon": "6.2-AT", "side": 19, "tekst": "We will support a proposal that requires shareholder approval to adopt or amend anti-takeover measures.", "avledet": {"handling": "FOR", "forslagstype": ["oppkjopsvern"], "marked": "alle", "skjonn": false}},
+    {"id": "6.2-AT.2", "underseksjon": "6.2-AT", "side": 19, "tekst": "We will not support the introduction or renewal of anti-takeover measures, such as shareholder rights plans (poison pills), excessive capital authorisations, classified boards, supermajority vote requirements or other control-enhancing mechanisms.", "avledet": {"handling": "MOT", "forslagstype": ["oppkjopsvern"], "marked": "alle", "skjonn": false}},
+    {"id": "6.2-AT.3", "underseksjon": "6.2-AT", "side": 19, "tekst": "We will support a proposal to abolish anti-takeover measures.", "avledet": {"handling": "FOR", "forslagstype": ["oppkjopsvern"], "marked": "alle", "skjonn": false}},
+    {"id": "6.3.1", "underseksjon": "6.3", "side": 20, "tekst": "We will not support a related-party transaction where the disclosure is insufficient to assess the proposed transaction and its impact on minority shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["narstaende"], "marked": "alle", "skjonn": true}},
+    {"id": "6.3.2", "underseksjon": "6.3", "side": 20, "tekst": "We will not support a related-party transaction if the transaction is not clearly beneficial to all shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["narstaende"], "marked": "alle", "skjonn": true}}
+  ]
+}

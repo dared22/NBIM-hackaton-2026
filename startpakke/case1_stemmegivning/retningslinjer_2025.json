@@ -4,6 +4,7 @@
     "utgiver": "Norges Bank Investment Management",
     "kildefil": "global-voting-guildeines_2025.pdf",
     "antall_regler": 76,
+    "gjelder_fra": "2025-04-01",
     "ikke_bindende": "These guidelines describe the fund's general views and are non-binding.",
     "feltforklaring": {
       "id": "Stabil ID for sitering: seksjon.underseksjon.punkt. Anti-takeover-punktene i 6.2 har egen nummerering i PDF-en og faar derfor ID-en 6.2-AT.n.",

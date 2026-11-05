@@ -1,0 +1,426 @@
+{
+  "meta": {
+    "tittel": "Global voting guidelines 2016",
+    "utgiver": "Norges Bank Investment Management",
+    "kildefil": "global-voting-guidelines-2016.pdf",
+    "antall_regler": 36,
+    "gjelder_fra": "2016-04-01",
+    "merknad": "2016-utgaven har ingen nummererte stemmeregler, bare loepende tekst. 'regler' er derfor utvalgte setninger som kan knyttes til en stemme. Utvalget og retningen er vaar tolkning.",
+    "feltforklaring": {
+      "id": "Vaar egen ID: 2016-avsnitt.overskrift.setning. Finnes ikke i PDF-en. Forstavelsen hindrer forveksling med 2020-numrene.",
+      "tekst": "Ordrett fra PDF-en, inkludert PDF-ens egne skrivefeil. Bare linjeskift og orddeling er rettet, typografiske anfoerselstegn er gjort om til rette, og punktlister er skrevet ut med innledningen foran.",
+      "innledning": "Ordrett fra PDF-en. Utdrag av teksten under overskriften.",
+      "side": "Sidetall i PDF-filen, ikke det trykte sidetallet (PDF-side = trykt side + 2).",
+      "avledet": "IKKE fra PDF-en. Vaar tolkning, til filtrering og ruting.",
+      "avledet.handling": "Stemmen setningen peker mot naar den er brutt (styreforslag) eller oppfylt (aksjonaerforslag).",
+      "avledet.tilsvarer": "Underseksjoner i 2020-2025-utgavene som dekker samme tema, slik at koden kan bruke samme oppslag. 2016-2.9 (utbytte) har ingen egentlig motpart og er lagt under 5.2.",
+      "meta.gjelder_fra": "IKKE fra PDF-en. Dato utgaven regnes som gjeldende fra: 1. april i tittelaaret. Eksakt publiseringsdato er ukjent. Valgt fordi NBIM-begrunnelser med 2020-ordlyd foerst dukker opp 2020-04-12 og 2023-ordlyd (3.2.8-11) 2023-05-10."
+    }
+  },
+  "prinsipper": [
+    {
+      "id": "P.1",
+      "tittel": "The board",
+      "side": 6,
+      "tekst": "As a minority shareholder, we are one of many contributors of equity capital to a company. Most decision-making authority must therefore be delegated to the board of directors. For this delegation to function effectively there need to be a high degree of board accountability towards shareholders."
+    },
+    {
+      "id": "P.2",
+      "tittel": "Introduction",
+      "side": 4,
+      "tekst": "Norges Bank Investment Management's voting shall be predictable, transparent and in line with the fund's long-term strategy."
+    },
+    {
+      "id": "P.3",
+      "tittel": "Our approach to voting",
+      "side": 5,
+      "tekst": "We vote in the fund's long-term interests. Accordingly, we will vote in a principled and consistent manner to maximise the long term performance of the fund."
+    }
+  ],
+  "underseksjoner": [
+    {
+      "id": "2016-1.1",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Board nomination process",
+      "side": 6,
+      "tilsvarer": [
+        "3.1"
+      ],
+      "innledning": [
+        "The board should ensure a process whereby shareholder input into director evaluation and nomination process has been established. Board nomination processes should seek to establish an effective and diverse board."
+      ]
+    },
+    {
+      "id": "2016-1.2",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Frequent election of board members",
+      "side": 6,
+      "tilsvarer": [
+        "3.1"
+      ],
+      "innledning": []
+    },
+    {
+      "id": "2016-1.3",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Bundling of director elections",
+      "side": 6,
+      "tilsvarer": [
+        "3.1",
+        "4.2"
+      ],
+      "innledning": [
+        "Board members should be elected with an individual vote count at the shareholder meeting, and the vote tally published."
+      ]
+    },
+    {
+      "id": "2016-1.4",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Separation of CEO and Chairman roles",
+      "side": 6,
+      "tilsvarer": [
+        "1.3"
+      ],
+      "innledning": [
+        "The separation of roles will best ensure effective monitoring of management, and hence a balance of power in the governance of the company."
+      ]
+    },
+    {
+      "id": "2016-1.5",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Board independence",
+      "side": 6,
+      "tilsvarer": [
+        "1.1",
+        "1.2"
+      ],
+      "innledning": [
+        "Boards should be composed of highly qualified individuals with independent and diverse perspectives."
+      ]
+    },
+    {
+      "id": "2016-1.6",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Industry expertise",
+      "side": 7,
+      "tilsvarer": [
+        "2.2"
+      ],
+      "innledning": [
+        "We believe it is essential that boards have the necessary competence in order to meet the specific and changing needs of the company."
+      ]
+    },
+    {
+      "id": "2016-1.7",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Over commitment of board members",
+      "side": 7,
+      "tilsvarer": [
+        "2.1"
+      ],
+      "innledning": [
+        "Directors are expected to devote sufficient time to fulfil his/her duties."
+      ]
+    },
+    {
+      "id": "2016-1.8",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Reflection of shareholder decisions",
+      "side": 7,
+      "tilsvarer": [
+        "3.2"
+      ],
+      "innledning": [
+        "We will hold the board accountable for outcomes and reserve the right to seek changes to the board when it deviates from our expectations."
+      ]
+    },
+    {
+      "id": "2016-1.9",
+      "pilar": "The board",
+      "seksjon": "The board",
+      "tittel": "Remuneration",
+      "side": 7,
+      "tilsvarer": [
+        "3.3"
+      ],
+      "innledning": [
+        "Remuneration plans should be clear and easy to understand. The plans should be aligned with strategy and sensitive to risk."
+      ]
+    },
+    {
+      "id": "2016-2.1",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Approval rights",
+      "side": 8,
+      "tilsvarer": [
+        "4.3"
+      ],
+      "innledning": [
+        "This will include the right to: appoint and remove directors, approve changes to articles of association, approve changes concerning capital structure."
+      ]
+    },
+    {
+      "id": "2016-2.2",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Bundling of voting items",
+      "side": 8,
+      "tilsvarer": [
+        "4.2"
+      ],
+      "innledning": [
+        "All proposals subject to shareholder decision should be presented as individual items."
+      ]
+    },
+    {
+      "id": "2016-2.3",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Right to influence meeting agenda",
+      "side": 8,
+      "tilsvarer": [
+        "4.2"
+      ],
+      "innledning": []
+    },
+    {
+      "id": "2016-2.4",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "One-share-one-vote",
+      "side": 8,
+      "tilsvarer": [
+        "4.1"
+      ],
+      "innledning": [
+        "A well-functioning shareholder approval regime is best upheld when shareholder influence is proportional to capital invested."
+      ]
+    },
+    {
+      "id": "2016-2.5",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Anti-takeover measures",
+      "side": 9,
+      "tilsvarer": [
+        "6.2-AT"
+      ],
+      "innledning": [
+        "We define anti-takeover measures to include any mechanism by which company boards can shield themselves or management from shareholders."
+      ]
+    },
+    {
+      "id": "2016-2.6",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Related party transactions",
+      "side": 9,
+      "tilsvarer": [
+        "6.3"
+      ],
+      "innledning": []
+    },
+    {
+      "id": "2016-2.7",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Differential rights",
+      "side": 9,
+      "tilsvarer": [
+        "4.1"
+      ],
+      "innledning": [
+        "Shareholders in the same share class should receive equal treatment."
+      ]
+    },
+    {
+      "id": "2016-2.8",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Corporate transactions",
+      "side": 9,
+      "tilsvarer": [
+        "6.2"
+      ],
+      "innledning": [
+        "Mergers, acquisitions and other corporate transactions should optimize shareholder returns in the long term."
+      ]
+    },
+    {
+      "id": "2016-2.9",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Allocation of income",
+      "side": 9,
+      "tilsvarer": [
+        "5.2"
+      ],
+      "innledning": [
+        "We will take into account any conflict of interest that could influence the decision."
+      ]
+    },
+    {
+      "id": "2016-2.10",
+      "pilar": "Shareholder rights and equitable treatment of shareholders",
+      "seksjon": "Shareholder rights and equitable treatment of shareholders",
+      "tittel": "Pre-emption rights",
+      "side": 9,
+      "tilsvarer": [
+        "6.1"
+      ],
+      "innledning": [
+        "New issuances of shares should be offered proportionately to existing shareholders."
+      ]
+    },
+    {
+      "id": "2016-3.1",
+      "pilar": "Reporting, accounts and audit",
+      "seksjon": "Reporting, accounts and audit",
+      "tittel": "Annual report and accounts",
+      "side": 10,
+      "tilsvarer": [
+        "5.2"
+      ],
+      "innledning": [
+        "The annual report is a vital document for shareholders."
+      ]
+    },
+    {
+      "id": "2016-3.2",
+      "pilar": "Reporting, accounts and audit",
+      "seksjon": "Reporting, accounts and audit",
+      "tittel": "Discharge of directors and accounts",
+      "side": 10,
+      "tilsvarer": [
+        "3.2",
+        "5.2"
+      ],
+      "innledning": [
+        "This includes initiation of any legal action, material misstatements or goodwill write-offs and important governance failures."
+      ]
+    },
+    {
+      "id": "2016-3.3",
+      "pilar": "Reporting, accounts and audit",
+      "seksjon": "Reporting, accounts and audit",
+      "tittel": "Corporate governance code",
+      "side": 10,
+      "tilsvarer": [
+        "5.2"
+      ],
+      "innledning": [
+        "In those markets where a corporate governance code is recognized, companies should disclose whether they are in compliance with the local code of best practice."
+      ]
+    },
+    {
+      "id": "2016-3.4",
+      "pilar": "Reporting, accounts and audit",
+      "seksjon": "Reporting, accounts and audit",
+      "tittel": "External audit",
+      "side": 10,
+      "tilsvarer": [
+        "5.1"
+      ],
+      "innledning": [
+        "We expect the external auditor to act in an independent manner."
+      ]
+    },
+    {
+      "id": "2016-4.1",
+      "pilar": "Sustainable business practices",
+      "seksjon": "Sustainable business practices",
+      "tittel": "Risk management",
+      "side": 11,
+      "tilsvarer": [
+        "5.3"
+      ],
+      "innledning": [
+        "The company must address the impact of its activities on society and the environment."
+      ]
+    },
+    {
+      "id": "2016-4.2",
+      "pilar": "Sustainable business practices",
+      "seksjon": "Sustainable business practices",
+      "tittel": "Reporting of environmental and social risks",
+      "side": 11,
+      "tilsvarer": [
+        "5.3"
+      ],
+      "innledning": [
+        "This includes risks related to climate change, water, and child labour and human right violations."
+      ]
+    },
+    {
+      "id": "2016-4.3",
+      "pilar": "Sustainable business practices",
+      "seksjon": "Sustainable business practices",
+      "tittel": "Shareholder proposals",
+      "side": 11,
+      "tilsvarer": [
+        "5.3"
+      ],
+      "innledning": []
+    },
+    {
+      "id": "2016-4.4",
+      "pilar": "Sustainable business practices",
+      "seksjon": "Sustainable business practices",
+      "tittel": "Company interaction with regulators",
+      "side": 11,
+      "tilsvarer": [
+        "5.3"
+      ],
+      "innledning": [
+        "This includes political contributions and lobbying expenditures."
+      ]
+    }
+  ],
+  "regler": [
+    {"id": "2016-1.1.1", "underseksjon": "2016-1.1", "side": 6, "tekst": "The board must not establish a formal or informal process that aims to result in its self-perpetuation.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.1"]}},
+    {"id": "2016-1.2.1", "underseksjon": "2016-1.2", "side": 6, "tekst": "For board accountability to be effective, shareholders must be able to participate in frequent election of all board members of the board, the preference being annual elections.", "avledet": {"handling": "MOT", "forslagstype": ["valgordning", "styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.1"]}},
+    {"id": "2016-1.3.1", "underseksjon": "2016-1.3", "side": 6, "tekst": "In cases were votes are effectively bundled, we may vote against the board slate if we have serious concerns with individual board candidates.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.1", "4.2"]}},
+    {"id": "2016-1.4.1", "underseksjon": "2016-1.4", "side": 6, "tekst": "The roles of chairman and CEO are fundamentally different and should not be held by the same person.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg", "styreleder_ceo"], "marked": "alle", "skjonn": true, "tilsvarer": ["1.3"]}},
+    {"id": "2016-1.5.1", "underseksjon": "2016-1.5", "side": 6, "tekst": "In non-controlled companies, the majority of shareholder-elected board members should be independent from management, major owners and related third parties.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["1.1", "1.2"]}},
+    {"id": "2016-1.5.2", "underseksjon": "2016-1.5", "side": 7, "tekst": "Additionally, the board's audit, remuneration and nomination committees should be fully independent from management.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["1.1", "1.2"]}},
+    {"id": "2016-1.6.1", "underseksjon": "2016-1.6", "side": 7, "tekst": "Shareholders should be able to identify directors that bring relevant and current industry knowledge to the board.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["2.2"]}},
+    {"id": "2016-1.7.1", "underseksjon": "2016-1.7", "side": 7, "tekst": "To this end, board members must not become over-committed to other public and private roles.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["2.1"]}},
+    {"id": "2016-1.8.1", "underseksjon": "2016-1.8", "side": 7, "tekst": "In board elections, we will consider if the board has: Failed to act on material requests from shareholders", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2"]}},
+    {"id": "2016-1.8.2", "underseksjon": "2016-1.8", "side": 7, "tekst": "In board elections, we will consider if the board has: sought to circumvent shareholder proposals or has implemented governance changes limiting shareholders' rights to a larger extent than those already approved by shareholders", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2"]}},
+    {"id": "2016-1.8.3", "underseksjon": "2016-1.8", "side": 7, "tekst": "In board elections, we will consider if the board has: retained board members that failed to receive a majority of shareholder votes at the previous board election", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2"]}},
+    {"id": "2016-1.8.4", "underseksjon": "2016-1.8", "side": 7, "tekst": "In board elections, we will consider if the board has: implemented poor governance structures and practices, including anti-takeover measures, without submitting it to shareholder approval.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2"]}},
+    {"id": "2016-1.8.5", "underseksjon": "2016-1.8", "side": 7, "tekst": "More widely, unsatisfactory financial and strategic results, mismanaged risk taking, the unacceptable treatment of affected stakeholders or other undesired outcomes will be taken into consideration.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg", "ansvarsfrihet"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2"]}},
+    {"id": "2016-1.9.1", "underseksjon": "2016-1.9", "side": 7, "tekst": "The plans should focus on outcomes that reflects true value creation, and should be reflective of the time horizon of the business cycle.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.3"]}},
+    {"id": "2016-1.9.2", "underseksjon": "2016-1.9", "side": 7, "tekst": "We expect full disclosure on key elements of remuneration schemes.", "avledet": {"handling": "MOT", "forslagstype": ["lonn"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.3"]}},
+    {"id": "2016-1.9.3", "underseksjon": "2016-1.9", "side": 7, "tekst": "This may result in Norges Bank Investment Management voting against re-election of remuneration committee members, or any director responsible for remuneration in those markets where a remuneration committee does not exist.", "avledet": {"handling": "MOT", "forslagstype": ["styrevalg"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.3"]}},
+    {"id": "2016-2.1.1", "underseksjon": "2016-2.1", "side": 8, "tekst": "We consider the right to vote on material changes affecting the company to be a fundamental shareholder right.", "avledet": {"handling": "MOT", "forslagstype": ["vedtekter"], "marked": "alle", "skjonn": true, "tilsvarer": ["4.3"]}},
+    {"id": "2016-2.2.1", "underseksjon": "2016-2.2", "side": 8, "tekst": "In those incidences where voting items are bundled, we may need to vote against if we have serious concerns with individual elements of the proposal.", "avledet": {"handling": "MOT", "forslagstype": ["generalforsamling"], "marked": "alle", "skjonn": true, "tilsvarer": ["4.2"]}},
+    {"id": "2016-2.3.1", "underseksjon": "2016-2.3", "side": 8, "tekst": "Companies should establish reasonable conditions and procedures for shareholders to include proposals in the meeting material distributed by the company, including nominating board candidates.", "avledet": {"handling": "FOR", "forslagstype": ["generalforsamling", "valgordning"], "marked": "alle", "skjonn": true, "tilsvarer": ["4.2"]}},
+    {"id": "2016-2.4.1", "underseksjon": "2016-2.4", "side": 8, "tekst": "Any deviation from the principle of \"one-share-one-vote\" should demonstrably be beneficial to all shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["stemmerett"], "marked": "alle", "skjonn": true, "tilsvarer": ["4.1"]}},
+    {"id": "2016-2.5.1", "underseksjon": "2016-2.5", "side": 9, "tekst": "Anti-takeover measures are in general not in the interest of shareholders and the introduction of such measures should, at a minimum, be subject to shareholder approval.", "avledet": {"handling": "MOT", "forslagstype": ["oppkjopsvern"], "marked": "alle", "skjonn": true, "tilsvarer": ["6.2-AT"]}},
+    {"id": "2016-2.6.1", "underseksjon": "2016-2.6", "side": 9, "tekst": "Related party transactions, including parent-subsidiary transactions and commercial arrangements with board members, should be declined unless demonstrably beneficial for all shareholders.", "avledet": {"handling": "MOT", "forslagstype": ["narstaende"], "marked": "alle", "skjonn": true, "tilsvarer": ["6.3"]}},
+    {"id": "2016-2.7.1", "underseksjon": "2016-2.7", "side": 9, "tekst": "A decision to continue discrimination must be demonstrated to be beneficial to all shareholders and justified to shareholders at periodic intervals.", "avledet": {"handling": "MOT", "forslagstype": ["stemmerett"], "marked": "alle", "skjonn": true, "tilsvarer": ["4.1"]}},
+    {"id": "2016-2.8.1", "underseksjon": "2016-2.8", "side": 9, "tekst": "When evaluating such transactions we will consider if all shareholders are treated equally, if there are any unnecessary conflicts of interests, and if there is sufficient transparency of the transaction", "avledet": {"handling": "MOT", "forslagstype": ["transaksjon"], "marked": "alle", "skjonn": true, "tilsvarer": ["6.2"]}},
+    {"id": "2016-2.9.1", "underseksjon": "2016-2.9", "side": 9, "tekst": "Allocation of income including dividends and share buy-backs should be consistent with the company's financial position, strategy and with other reasonable investor expectations.", "avledet": {"handling": "MOT", "forslagstype": ["regnskap"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.2"]}},
+    {"id": "2016-2.10.1", "underseksjon": "2016-2.10", "side": 9, "tekst": "When the board seeks to waive current shareholders' pre-emption rights, including the issuance of convertible securities and other derivatives, it must ensure that the decision fairly benefits all shareholders and seek prior shareholder approval.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "alle", "skjonn": true, "tilsvarer": ["6.1"]}},
+    {"id": "2016-2.10.2", "underseksjon": "2016-2.10", "side": 9, "tekst": "Unlimited capital authorizations should be avoided.", "avledet": {"handling": "MOT", "forslagstype": ["aksjeemisjon"], "marked": "alle", "skjonn": true, "tilsvarer": ["6.1"]}},
+    {"id": "2016-3.1.1", "underseksjon": "2016-3.1", "side": 10, "tekst": "The approval of routine matters such as receiving financial statements and other reports from the board will be dependent upon the level of transparency provided by the company.", "avledet": {"handling": "MOT", "forslagstype": ["regnskap"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.2"]}},
+    {"id": "2016-3.2.1", "underseksjon": "2016-3.2", "side": 10, "tekst": "When validating the financial statements and discharging the board of responsibilities, we will consider whether any information available raises reasonable doubt about the financial statements or the board's actions.", "avledet": {"handling": "MOT", "forslagstype": ["ansvarsfrihet", "regnskap"], "marked": "alle", "skjonn": true, "tilsvarer": ["3.2", "5.2"]}},
+    {"id": "2016-3.3.1", "underseksjon": "2016-3.3", "side": 10, "tekst": "Any deviation should be identified and explained in a transparent manner.", "avledet": {"handling": "MOT", "forslagstype": ["regnskap"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.2"]}},
+    {"id": "2016-3.4.1", "underseksjon": "2016-3.4", "side": 10, "tekst": "We will assess the auditor's independence and consider concerns about the accounts or audit procedures.", "avledet": {"handling": "MOT", "forslagstype": ["revisor"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.1"]}},
+    {"id": "2016-3.4.2", "underseksjon": "2016-3.4", "side": 10, "tekst": "Excessive non-audit related fees represent a potential conflict of interest and should be avoided by the board.", "avledet": {"handling": "MOT", "forslagstype": ["revisor"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.1"]}},
+    {"id": "2016-4.1.1", "underseksjon": "2016-4.1", "side": 11, "tekst": "We expect companies to include relevant social and environmental risk factors in their long term strategic business planning, as these can have a significant effect on the value of a company's assets over time, and its ability to generate long term returns for shareholders.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.3"]}},
+    {"id": "2016-4.2.1", "underseksjon": "2016-4.2", "side": 11, "tekst": "We consider disclosure of code of conduct, policies, strategies, management plans and performance data with respect to environmental and social issues as well as impact assessments of specific projects or operations to be the first step towards better management of associated risks.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.3"]}},
+    {"id": "2016-4.3.1", "underseksjon": "2016-4.3", "side": 11, "tekst": "When assessing proposals on increased disclosure we will consider whether current disclosure is insufficient and the proposed action is considered to be reasonable with regard to what the company can be held accountable for.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.3"]}},
+    {"id": "2016-4.4.1", "underseksjon": "2016-4.4", "side": 11, "tekst": "We expect companies to be transparent about the purpose and extent of interactions with policy-makers and regulators.", "avledet": {"handling": "FOR", "forslagstype": ["baerekraft"], "marked": "alle", "skjonn": true, "tilsvarer": ["5.3"]}}
+  ]
+}
