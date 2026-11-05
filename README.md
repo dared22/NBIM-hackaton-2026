@@ -53,8 +53,9 @@ history. Its `proposal_text` is usually a short agenda title, so some decisions
 need a meeting notice or proxy statement dated before the meeting. Fetch and
 cache those documents per meeting, and record when a required fact is missing.
 
-The policy source is the
-[structured 2025 guidelines](startpakke/case1_stemmegivning/retningslinjer_2025.json).
+The policy sources are the
+[structured 2025 guidelines](startpakke/case1_stemmegivning/retningslinjer_2025.json)
+and NBIM's twelve [position papers](data/policy/position_papers.json).
 Check which guideline version applied to each meeting before claiming policy
 agreement. The optional N-PX CSV is a separate dataset; its `meeting_id` is
 not the same identifier as the one in `real_votes.csv`.
@@ -91,7 +92,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about three minutes
-python3 -m unittest discover -s tests     # 27 checks, including leakage audits
+python3 -m unittest discover -s tests     # 30 checks, including leakage audits
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
@@ -107,6 +108,7 @@ to one total.
 | `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 71 hits and 26 false alarms at 97 flags; "same as last season" has 42 and 55 |
 | `src/agent/director_rules.py` | US director elections in file A, 2019-2026: 1,742 nominees, 93 against. NBIM's written rules (chair who is also CEO; more than five boards) applied to SEC role data. No training, no AI model | 38 hits and 12 false alarms at 50 flags; "same as last time" has 36 and 37 at 73 flags. From 2019 to 2024 NBIM opposed 28 of 28 chair-and-CEO nominees; in 2026, 0 of 5 |
 | `src/agent/proposal_rules.py` | All proposals in file A, 2019-2026, whose title falls under a clear-cut NBIM rule (declassify the board, written consent, simple majority, proxy access, independent chair, poison pill). No training, no AI model | NBIM voted as its rule says on 29 of 29. As a predictor on shareholder proposals: 20 hits, 0 false alarms; "same as last time" has 11 and 1 |
+| `src/agent/position_papers_test.py` | NBIM's twelve position papers (`data/policy/position_papers.json`): do they add anything to the tool? | Citations yes: the tool names the same paper as NBIM on 28 of 31 director rule hits. Prediction no: given the papers, the decision model goes from 6 to 71 false alarms |
 | `src/agent/history_model.py` | Experiment on file A: does what the ballot reveals (director order, board size, labels) help? | No change on test years 2022-2025; not adopted |
 | `src/agent/data_audit.py` | Every column of all three vote files | Report in `data/outputs/data_audit.md` |
 | `src/agent/rule_check.py` | Decision model checks guideline sections against the proposal wording | Finds nothing the history model does not |

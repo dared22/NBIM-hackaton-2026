@@ -241,6 +241,32 @@ class ProposalRuleTests(unittest.TestCase):
             self.assertIsNone(self.rule(text), text)
 
 
+class PositionPaperTests(unittest.TestCase):
+    def test_every_paper_has_a_position_and_every_mapping_points_to_a_paper(self):
+        papers = rc.load_papers()
+        self.assertEqual(len(papers), 12)
+        for slug, p in papers.items():
+            self.assertTrue(p["position"], slug)
+            self.assertTrue(p["url"].startswith("https://www.nbim.no/"), slug)
+        for slug in list(rc.SECTION_PAPER.values()) + list(rc.RULE_PAPER.values()):
+            self.assertIn(slug, papers)
+
+    def test_papers_are_named_per_rule_where_a_section_covers_several_topics(self):
+        papers = rc.load_papers()
+        self.assertEqual(rc.paper_for(papers, "GVG 1.3")["slug"], "separation-of-chairperson-and-ceo")
+        self.assertEqual(rc.paper_for(papers, "GVG 3.1", "3.1.8")["slug"], "proxy-access-at-us-companies")
+        self.assertIsNone(rc.paper_for(papers, "GVG 3.1", "3.1.2"))     # declassifying the board has no paper
+
+    def test_request_without_papers_is_unchanged(self):
+        row = {"proposal_text": "Elect Director Jane Doe", "proposal_type": "DIRECTOR_ELECTION", "proponent": "Management",
+               "mgmt_rec": "FOR", "country": "Norway", "market": "DM"}
+        sections = rc.load_guidelines()
+        plain = rc.build_request(row, ["1.3"], sections)
+        with_papers = rc.build_request(row, ["1.3"], sections, rc.load_papers())
+        self.assertNotIn("position paper", str(plain))
+        self.assertIn("NBIM position paper", str(with_papers))
+
+
 class ProxyTextTests(unittest.TestCase):
     def test_prior_support_is_the_figure_next_to_the_result(self):
         text = ("Approval requires a majority (50%) of shares present. "

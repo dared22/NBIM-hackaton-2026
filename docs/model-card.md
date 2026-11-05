@@ -167,6 +167,32 @@ themselves are NBIM's. 21 of the 30 uncovered against-votes on shareholder
 proposals cite sustainability reporting (section 5.3), where every rule needs
 judgement, so those stay with a person.
 
+## NBIM's position papers
+
+The case names two policy sources: the Global Voting Guidelines and the
+position papers. All twelve papers are in `data/policy/position_papers.json`
+(`src/agent/fetch_position_papers.py`), and `src/agent/position_papers_test.py`
+tests what they add.
+
+- **Citations: they help.** NBIM names a position paper next to many of its
+  against-votes. Each decision now names the paper for the cited rule, with a
+  link. On the US director rule hits, NBIM named a paper for 31 and the tool
+  names the same one for 28. On the wording rules NBIM named a paper for 3 and
+  the tool names the same one for all 3; where NBIM named none, the tool names
+  none in 18 of 19.
+- **Prediction: they do not help.** Most papers restate the guidelines. One
+  new threshold could be checked: share issues without pre-emptive rights
+  "should not exceed 10 percent". Only 14 of 334 share issue proposals state a
+  percentage in the title, and NBIM opposed none of the 6 above 10 percent.
+- **In the decision model they make it worse.** Given each section's paper as
+  well as its rules, the decision model on the proposal wording goes from 13
+  flags (7 hits, 6 false alarms) to 83 flags (12 hits, 71 false alarms) on
+  2026, and finds one against-vote the history model had missed.
+
+The papers describe what NBIM thinks a good board does. They are written as
+"the board should", not "we will vote against", and they give no facts about
+any company.
+
 ## What was tried and did not help
 
 - A decision model (Microsoft-Decision-1) checking guideline sections against
@@ -239,6 +265,7 @@ persuasion text without trigger words, one harmless sentence.
 - Company facts: SEC EDGAR proxy statements and XBRL API, https://www.sec.gov/edgar
 - Director and officer roles: SEC Insider Transactions Data Sets,
   https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets
+- Position papers: https://www.nbim.no/en/responsible-investment/position-papers/
 - Guidelines: NBIM Global voting guidelines 2025,
   https://www.nbim.no/contentassets/01a7ee19b5d84a73a67a365e76a0fb01/global-voting-guildeines_2025.pdf
 - NBIM voting review, first half 2025,

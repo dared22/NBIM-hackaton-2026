@@ -334,6 +334,60 @@ Rule check by proposal type (types with at least 3 against-votes)
 Wrote 1539 rows to data/outputs/rule_check_2026.csv
 ```
 
+## Position papers: do they add anything?
+
+`python3 src/agent/position_papers_test.py`
+
+```text
+12 position papers loaded: Board diversity, Board independence, CEO remuneration, Corporate sustainability reporting, Individual vote count in board elections, Industry expertise on the board, Multiple share classes, Proxy access at US companies, Related-party transactions, Separation of chairperson and CEO, Shareholder rights in equity issuances, Time commitment of board members
+
+1. Statements with a number or threshold in NBIM's positions
+   [Board diversity] Boards where either gender has less than 30 percent representation should consider setting targets for gender diversity and report on progress.
+   [Board independence] A majority of shareholder-elected board members should be independent of management, dominant shareholders, and business relationships.
+   [Board independence] In majority-controlled companies, at least a third of board members should be independent.
+   [Board independence] The audit committee should have a majority of independent members, and management should not serve on the audit or remuneration committees.
+   [CEO remuneration] A substantial proportion of total annual remuneration should be provided as shares that are locked in for at least five and preferably ten years, regardless of resignation or retirement.
+   [Industry expertise on the board] A majority of independent board members should have fundamental industry insight.
+   [Industry expertise on the board] At least two of the independent members should have worked in the industry.
+   [Multiple share classes] One share should give one vote.
+   [Proxy access at US companies] We support the introduction of holding periods of up to three years and holding requirements of up to three percent.
+   [Proxy access at US companies] We will accept a limit on the number of board seats to be affected by proxy access candidates if at least two seats or 20 percent of the board can be filled by such candidates.
+   [Shareholder rights in equity issuances] Issuances without pre-emptive rights should not exceed 10 percent of the existing share capital.
+   [Shareholder rights in equity issuances] General authorities to issue shares should last no longer than 15 months, or until the next annual shareholder meeting.
+   [Time commitment of board members] Board members of listed companies should not serve on more than five boards at one time.
+
+   Most repeat the guidelines (five boards, half independent, a third at controlled companies,
+   three years and three percent for proxy access). New compared with the guidelines:
+   - share issues without pre-emptive rights should not exceed 10 percent; authorities at most 15 months
+   - a chair of a leading company should not chair another company
+   - boards with under 30 percent of either gender should set targets
+   - at least two independent members should have worked in the industry
+   - pay: shares locked in for five to ten years; no number for how much pay is too much
+
+2. The 10 percent threshold for share issues, against NBIM's votes
+   334 share issue proposals, 7 against the board. Only 14 state a percentage in the title.
+  Pre-emptive rights         |        Size | Proposals | NBIM against
+  ---------------------------+-------------+-----------+-------------
+  without pre-emptive rights | 10% or less |         8 |            1
+  without pre-emptive rights |    over 10% |         6 |            0
+   The threshold cannot be applied to most proposals (no percentage in the title), and where it can,
+   NBIM did not vote against the ones above 10 percent.
+
+3. Does the tool name the same position paper as NBIM?
+  Rules             | Rule hits | NBIM named a paper | Tool names the same paper | NBIM named none | Tool also names none
+  ------------------+-----------+--------------------+---------------------------+-----------------+---------------------
+  US director rules |        38 |                 31 |                        28 |               7 |                    0
+  wording rules     |        22 |                  3 |                         3 |              19 |                   18
+   NBIM's own pairing of guideline section and paper, all against-votes: GVG 1.1 -> Board independence (84); GVG 1.3 -> Separation of chairperson and CEO (50); GVG 2.1 -> Time commitment of board members (49); GVG 1.2 -> Board independence (46); GVG 3.3 -> CEO remuneration (43); GVG 5.3 -> Corporate sustainability reporting (21); GVG 2.3 -> Board diversity (17); GVG 3.2 -> Corporate sustainability reporting (16)
+
+4. Decision model on the proposal wording, 2026, with and without the papers
+  Decision model given         | Cut-off | Flags | Hits | False alarms | New vs history model: hits/flags | Top section = NBIM's section
+  -----------------------------+---------+-------+------+--------------+----------------------------------+-----------------------------
+  guidelines only              |   0.133 |    13 |    7 |            6 |                              0/6 |                        38/63
+  guidelines + position papers |   0.060 |    83 |   12 |           71 |                             1/70 |                        33/63
+   66 against-votes in 2026. The history model alone finds 24.
+```
+
 ## Resistance test and guardrail
 
 `python3 src/agent/robustness.py`

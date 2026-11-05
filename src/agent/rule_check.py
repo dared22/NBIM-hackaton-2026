@@ -42,6 +42,7 @@ from benchmark import model as bm  # noqa: E402
 GUIDELINES = os.path.join(ROOT, "startpakke", "case1_stemmegivning", "retningslinjer_2025.json")
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
 CACHE = os.path.join(ROOT, "src", "agent", "cache", "decisions.jsonl")
+PAPERS_FILE = os.path.join(ROOT, "data", "policy", "position_papers.json")
 URL = "https://openrouter.ai/api/alpha/decisions"
 MODEL = "microsoft/microsoft-decision-1"
 
@@ -66,6 +67,31 @@ FALLBACK_SECTIONS = {
     "SHARE_REPURCHASE": ["6.1"],
     "SHP_INDEP_CHAIR": ["1.3"],
 }
+
+
+# Which NBIM position paper belongs to which guideline section.
+SECTION_PAPER = {
+    "1.1": "board-independence", "1.2": "board-independence", "1.3": "separation-of-chairperson-and-ceo",
+    "2.1": "time-commitment-of-board-members", "2.2": "industry-expertise-on-the-board", "2.3": "board-diversity",
+    "3.3": "ceo-remuneration", "4.1": "multiple-share-classes",
+    "5.3": "corporate-sustainability-reporting", "6.1": "shareholder-rights-in-equity-issuances",
+    "6.3": "related-party-transactions",
+}
+
+
+# Section 3.1 covers several topics; only rule 3.1.8 is about proxy access.
+RULE_PAPER = {"3.1.8": "proxy-access-at-us-companies"}
+
+
+def paper_for(papers, section="", rule=""):
+    """The position paper for a rule id ('3.1.8') or a guideline section ('GVG 1.3'), or None."""
+    return papers.get(RULE_PAPER.get(rule) or SECTION_PAPER.get(section.replace("GVG ", ""), ""))
+
+
+def load_papers():
+    """slug -> {title, position, url, ...} for NBIM's position papers."""
+    with open(PAPERS_FILE, encoding="utf-8") as f:
+        return {p["slug"]: p for p in json.load(f)}
 
 
 def load_guidelines():
@@ -93,12 +119,19 @@ def candidate_sections(rows, sections):
     return out
 
 
-def build_request(row, section_ids, sections):
-    """The exact body sent to the decision model. No answer fields, no company name."""
+def build_request(row, section_ids, sections, papers=None):
+    """The exact body sent to the decision model. No answer fields, no company name.
+
+    With `papers`, NBIM's stated position from the matching position paper is
+    added after the section's rules.
+    """
     questions = {}
     for sid in section_ids:
         s = sections[sid]
         rules = " ".join(f"[{rid}] {text}" for rid, text in s["rules"])
+        paper = papers.get(SECTION_PAPER.get(sid, "")) if papers else None
+        if paper and paper["position"]:
+            rules += f" NBIM position paper \"{paper['title']}\": " + " ".join(paper["position"].split())
         questions["sec_" + sid.replace(".", "_").replace("-", "_")] = {
             "type": "noul",
             "instructions": (
@@ -208,11 +241,11 @@ def fill_cache(bodies, cache, workers=8):
     return done[0]
 
 
-def attach_scores(rows, cand, sections, cache):
+def attach_scores(rows, cand, sections, cache, papers=None):
     """Add rule-check score, cited section and evidence flag to each row."""
     for r in rows:
         ids = cand[r["proposal_type"]]
-        rec = cache.get(request_key(build_request(r, ids, sections)))
+        rec = cache.get(request_key(build_request(r, ids, sections, papers)))
         r["rule_p"], r["rule_section"], r["wording_enough"], r["candidates"] = 0.0, "", None, ids
         if not rec:
             r["rule_p"] = None

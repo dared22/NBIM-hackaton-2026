@@ -60,6 +60,7 @@ SCRIPTS = [
     ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
+    ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
@@ -89,6 +90,7 @@ def general_decisions():
     _, val, _, _ = bm.run_year(rows, YEAR - 1)
     train, test, w, thr = bm.run_year(rows, YEAR)
     known_companies = {r["company_id"] for r in train}
+    papers = rc.load_papers()
     cache = rc.load_cache()
     rc.attach_scores(val, cand, sections, cache)
     rc.attach_scores(test, cand, sections, cache)
@@ -127,6 +129,11 @@ def general_decisions():
             guide = ""
         evidence = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={d['f']['person_cik']}&type=4"
                     if d and d["rules"] and "f" in d else "")
+        if guide:   # name NBIM's position paper for the cited section, as NBIM does in its own rationales
+            rule_id = d["rule"][0] if d and d["rules"] and d.get("rule") else ""
+            paper = rc.paper_for(papers, guide.split(" (")[0].split(",")[0], rule_id)
+            if paper:
+                guide += f"; position paper: {paper['title']} ({paper['url']})"
         out.append(["NBIM votes, all proposal types", f"{r['meeting_id']}-{r['item_no']}", r["meeting_date"], r["company"],
                     r["proposal_text"], r["mgmt_rec"], vote, f"{r['p']:.3f}", band, who, why, model,
                     reasons, guide, evidence, r["y"], r["nbim_vote"]])
@@ -137,6 +144,7 @@ def pay_decisions():
     """US executive pay votes, history plus company facts."""
     rows, _ = pm.load_rows()
     _, test, w, ps, thr = pm.score_test_season(rows)
+    pay_paper = rc.paper_for(rc.load_papers(), "GVG 3.3")
     out = []
     for r, p in zip(test, ps):
         flags = [("low information: " if "no pay figure" in f else "check the figures: ") + f for f in pm.warnings_for(r)]
@@ -149,7 +157,9 @@ def pay_decisions():
         why_pay = pm.reasons(r, w)
         out.append(["NBIM pay votes, US filers", f"{r['cusip']}-{r['moetedato']}", r["moetedato"], r["utsteder"],
                     r["forslag"], "FOR", vote, f"{p:.3f}", band, who, why, "vote history + company facts",
-                    " | ".join(t for t, _ in why_pay), ", ".join(sorted({c for _, c in why_pay if c})),
+                    " | ".join(t for t, _ in why_pay),
+                    ", ".join(sorted({c for _, c in why_pay if c})) + (
+                        f"; position paper: {pay_paper['title']} ({pay_paper['url']})" if why_pay and pay_paper else ""),
                     r["c"].get("url", ""), r["y"], "MOT" if r["stemme"] in ("AGAINST", "WITHHOLD") else "FOR"])
     return out
 
