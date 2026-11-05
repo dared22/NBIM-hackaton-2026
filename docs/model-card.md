@@ -313,6 +313,11 @@ is scored by a model fitted on earlier years only.
   (`src/agent/pay_structure_test.py`). NBIM's stated reason for these votes
   is lock-in and how pay is built, but its votes at this pay level do not
   follow the ten things we could read.
+- A non-linear pay model (small boosted trees, on the model's inputs and on
+  the raw figures) in place of the logistic model. On the training seasons it
+  finds 73 against-votes where the logistic model finds 76 at the same number
+  of flags, with average precision 0.618 against 0.601. No clear gain, and
+  its reasons are harder to state, so the logistic model is kept.
 - The last pay model change (pay against similar companies, pay against
   returns) improved the training-season comparisons but did not move the 2026
   result beyond noise: 71 hits against 73 before, at 97 flags. Linking more

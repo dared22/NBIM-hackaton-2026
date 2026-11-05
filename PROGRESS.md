@@ -123,3 +123,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 20:40 Iftikhar: confidence and routing report (`src/agent/routing.py`); abstain rule in the pipeline; pay misses studied on the training seasons, five more inputs tested and left out.
 - Thu 21:03 Iftikhar: AI reader of pay structure built and piloted on 299 proxies (training seasons). No gain, so the rest were not read and the pay model is unchanged.
 - Thu 21:13 Iftikhar: US pay proposals that sit in both vote files now get one answer, from the pay model. One false alarm fewer on file A in 2026.
+- Thu 21:14 Iftikhar: a non-linear pay model (boosted trees) tested on the training seasons: no gain, logistic model kept.
