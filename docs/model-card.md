@@ -181,8 +181,8 @@ What the reader delivered: the proxy was found for 214 of 218 meetings, and
 CEO" the proxy and the SEC's insider filings, two independent sources, agree
 on 98.9% of nominees.
 
-Two reader mistakes were found by checking its answers against NBIM's votes
-and fixed. It took an executive of another company (a director who is CEO
+Three reader mistakes were found and fixed, two by checking its answers
+against NBIM's votes and one by the second reader (below). It took an executive of another company (a director who is CEO
 elsewhere) for an executive of this one: the question was sharpened, and code
 now overrules "executive" when the company calls the same person independent.
 It also applied an attendance sentence about one director to another: an
@@ -209,6 +209,21 @@ period"), and it shows in the votes. Attendance is applied with exceptions
 (illness, a director who joined mid-year). "Two women" was not NBIM's practice
 in 2019-2020 (0 of 6) and is from 2021 (4 of 6). Rules 1.1.1 and 1.2.3 never
 fire: every US board in the file states a majority of independent directors.
+
+How reliable the reader is (`src/agent/board_reader_check.py`). A second,
+stronger model (Claude Sonnet 5.5) read a random sample of 13 meetings again,
+with exactly the same passages, names and questions: 97 nominees. Where both
+answered, the two models gave the same answer on 1,143 of 1,164 facts
+(98.2%): independence 92 of 92, CEO 97 of 97, chair 97 of 97, audit and pay
+committee 97 of 97 each. NBIM's rules would fire on the same nominees for 95
+of 97. The two that differ are a count of other boards (the first reader
+counted private companies) and a count of women on one board. The check also
+exposed a third reader mistake, now corrected in code: "founder" was answered
+yes for people who founded some other firm, so the quote must now name this
+company. After the corrections the two readers do not disagree on any fact a
+rule rests on in the sample. Agreement between two models is not the same as
+being right, nobody checked the answers by hand, and 13 meetings is a small
+sample (16 were drawn; the account's credit check refused the last three).
 
 When the tool acts on its own. A signal has to earn trust: the tool suggests
 "against" by itself only when NBIM followed that signal at the last two
@@ -517,7 +532,8 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
-Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
+Claude Sonnet 5.5 through OpenRouter read 13 meetings a second time, to
+measure how often two models agree on the facts. Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by
 the director rules, which are plain code) and how CEO pay is built (675
 proxies; shown as evidence, not used by any model). The model only reads. It never sees NBIM's

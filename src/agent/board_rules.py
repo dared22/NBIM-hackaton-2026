@@ -67,6 +67,7 @@ trust rule and the scoring do.
 import collections
 import csv
 import os
+import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -103,6 +104,20 @@ def is_executive(n):
     return "no" if execu == "yes" and val(n, "independent") == "yes" else execu
 
 
+def mark_founder(n, company):
+    """Set n["founder_here"]: the proxy says the nominee founded THIS company. The reader also says
+    "founder" for people who founded some other firm, so the quote must name this company, or say
+    "our" or "the Company"."""
+    quote = n["founder"]["quote"].lower() if n.get("found") else ""
+    first_word = re.sub(r"[^a-z0-9 ]", " ", company.lower()).replace("the ", " ").split()[0]
+    n["founder_here"] = bool(n.get("found")) and val(n, "founder") == "yes" and bool(
+        re.search(r"\bour\b|\bthe company\b", quote) or first_word in quote)
+
+
+def is_founder(n):
+    return n["founder_here"] if "founder_here" in n else val(n, "founder") == "yes"
+
+
 def decide(n, b):
     """Rules the facts trigger for one nominee. Returns a list of
     (guideline section, reason starting with the rule number, every quote found?)."""
@@ -127,7 +142,7 @@ def decide(n, b):
         out.append(("GVG 1.2", f"rule 1.2.3: not independent, and {val(b, 'audit_committee_independent'):.0f} of "
                     f"{val(b, 'audit_committee_members'):.0f} audit committee members are independent",
                     sure(n, "independent") and sure(b, "audit_committee_independent")))
-    if val(n, "ceo") == "yes" and val(n, "board_chair") == "yes" and val(n, "founder") != "yes":
+    if val(n, "ceo") == "yes" and val(n, "board_chair") == "yes" and not is_founder(n):
         out.append(("GVG 1.3", "rule 1.3.1: the proxy names this nominee as both chair of the board and CEO",
                     sure(n, "ceo", "board_chair")))
     others = val(n, "other_public_boards")
@@ -163,7 +178,7 @@ def judgement_notes(n, b, opposed_pay_before):
     if val(n, "pay_committee") in ON and support is not None and support < 70:
         out.append(("GVG 3.2", f"rule 3.2.2 (judgement): on the pay committee, and the last pay vote had {support:.0f}% support",
                     "pay committee member, last pay vote under 70% support"))
-    if val(n, "ceo") == "yes" and val(n, "board_chair") == "yes" and val(n, "founder") == "yes":
+    if val(n, "ceo") == "yes" and val(n, "board_chair") == "yes" and is_founder(n):
         out.append(("GVG 1.3", "rule 1.3.1 (judgement): chair and CEO, and the proxy says the nominee founded the company; "
                     "the guidelines allow this for a limited period",
                     "chair and CEO who founded the company"))
@@ -248,6 +263,7 @@ def load_scored():
     for (company, date), rec in cache.items():
         count_women(rec["answers"]["board"], rec["answers"]["nominees"])
         for n in rec["answers"]["nominees"]:
+            mark_founder(n, rec["company"])
             by_name[(company, date, n["ballot_name"])] = (n, rec["answers"]["board"], rec["proxy"])
     # NBIM's own pay votes at earlier meetings of the same company (from the same file, earlier dates only).
     pay = collections.defaultdict(list)

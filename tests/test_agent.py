@@ -331,6 +331,18 @@ class BoardReaderTests(unittest.TestCase):
         self.assertEqual(self.br.decide(founder, self.board()), [])
         self.assertIn("chair and CEO who founded the company", [lab for _, _, lab in self.br.judgement_notes(founder, self.board(), False)])
 
+    def test_founder_counts_only_for_the_company_that_issued_the_proxy(self):
+        own = self.nominee(founder=self.fact("yes", quote="Mr. Dell's leadership experience as founder of Dell Inc."))
+        self.br.mark_founder(own, "Dell Technologies, Inc.")
+        self.assertTrue(own["founder_here"])
+        said_our = self.nominee(founder=self.fact("yes", quote="Ms. Spear co-founded our company"))
+        self.br.mark_founder(said_our, "FIGS, Inc.")
+        self.assertTrue(said_our["founder_here"])
+        elsewhere = self.nominee(ceo="yes", board_chair="yes", founder=self.fact("yes", quote="Mr. Musk is also a founder of The Boring Company"))
+        self.br.mark_founder(elsewhere, "Tesla, Inc.")
+        self.assertFalse(elsewhere["founder_here"])
+        self.assertEqual([t.split(":")[0] for _, t, _ in self.br.decide(elsewhere, self.board())], ["rule 1.3.1"])
+
     def test_an_executive_of_another_company_is_not_treated_as_this_companys_executive(self):
         outside = self.nominee(executive="yes", independent="yes", pay_committee=self.fact("member"), audit_committee=self.fact("member"))
         self.assertEqual(self.br.decide(outside, self.board()), [])

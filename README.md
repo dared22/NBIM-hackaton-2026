@@ -108,6 +108,7 @@ to one total.
 | `src/benchmark/model.py` | File A, `real_votes.csv`: all proposal types, 37 countries, 1,539 proposals, 66 against the board. Vote history only | 24 hits and 14 false alarms at 38 flags; "same as last time" has 22 and 16 |
 | `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 72 hits and 25 false alarms at 97 flags; "same as last season" has 42 and 55 |
 | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | US director elections in file A. An AI model reads each proxy and records facts with checked quotes (independent, executive, chair, CEO, committees, other boards, founder). Code applies nine NBIM rules. A rule acts alone only after NBIM followed it at two meetings in a row | Proxy found for 98% of nominees; the two fact sources agree on 98.9%. The tool acts alone on 45 nominees and is right on 39 (87%); "same as last time" is right on 36 of 73. Another 12 against-votes reach a person with the fact and its quote |
+| `src/agent/board_reader_check.py` | A second, stronger model read 13 of the meetings again with the same passages and questions | The two models give the same answer on 98.2% of 1,164 facts, and NBIM's rules fire on the same nominees for 95 of 97. One more reader mistake found and fixed |
 | `src/agent/director_rules.py` | US director elections in file A, 2019-2026: 1,742 nominees, 93 against. NBIM's written rules (chair who is also CEO; more than five boards) applied to SEC role data. No training, no AI model | 38 hits and 12 false alarms at 50 flags; "same as last time" has 36 and 37 at 73 flags. From 2019 to 2024 NBIM opposed 28 of 28 chair-and-CEO nominees; in 2026, 0 of 5 |
 | `src/agent/proposal_rules.py` | All proposals in file A, 2019-2026, whose title falls under an NBIM rule that can be read from the title ("other business", declassify the board, written consent, simple majority, proxy access, independent chair, poison pill). No training, no AI model | NBIM voted as its rule says on 79 of 79. The rule means "against the board" on 72, all 72 were, and 27 of them are first-time items "same as last time" cannot flag |
 | `src/agent/position_papers_test.py` | NBIM's twelve position papers (`data/policy/position_papers.json`): do they add anything to the tool? | Citations yes: the tool names the same paper as NBIM on 28 of 31 director rule hits. Prediction no: given the papers, the decision model goes from 6 to 71 false alarms |
@@ -154,6 +155,9 @@ The hackathon rules ask for this list.
 - Microsoft-Decision-1 through OpenRouter: the guideline rule check
   (`src/agent/rule_check.py`) and the resistance test. Answers are cached in
   `src/agent/cache/decisions.jsonl`.
+- Claude Sonnet 5.5 through OpenRouter: read 13 meetings a second time, to
+  check the first reader (`src/agent/board_reader_check.py`, cached in
+  `src/agent/cache/board_facts_check.jsonl`).
 - Claude Haiku 5.5 through OpenRouter: reads board and nominee facts from
   proxies (`src/agent/fetch_board_facts.py`, 214 meetings, cached in
   `src/agent/cache/board_facts.jsonl`), and how CEO pay is built

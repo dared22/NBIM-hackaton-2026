@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Thu 23:05.
+Last full update: Thu 23:18.
 
 ## What must be delivered
 
@@ -25,6 +25,7 @@ Last full update: Thu 23:05.
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
+| Check of the proxy reader by a second model | `src/agent/board_reader_check.py` | Done | 13 meetings, 97 nominees: same answer on 98.2% of facts; rules fire on the same nominees for 95 of 97 |
 | Director rules on SEC insider filings (second source) | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; agrees with the proxy reader on 98.9% of nominees |
 | Wording rules, all countries | `src/agent/proposal_rules.py` | Done | NBIM voted as its rule says on 79 of 79; 72 against-votes found with no false alarms, 27 of them first-time items |
 | NBIM's position papers | `data/policy/position_papers.json`, `src/agent/position_papers_test.py` | Done | Each decision names the paper NBIM would cite (28 of 31 match on director hits). No gain for prediction |
@@ -37,7 +38,7 @@ Last full update: Thu 23:05.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 53 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 54 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -99,8 +100,8 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
   numbers are from before the fifth scoring, which was a rejected experiment.
   This is stated in the model card.
 - Volkswagen holds 125 of the 744 against-votes in file A.
-- AI tools used must be listed in the README: Claude Code, Microsoft-Decision-1
-  and Claude Haiku 5.5 through OpenRouter, plus whatever the other branches
+- AI tools used must be listed in the README: Claude Code, Microsoft-Decision-1,
+  Claude Haiku 5.5 and Claude Sonnet 5.5 through OpenRouter, plus whatever the other branches
   used (DeepSeek, Jev).
 - Do not commit `.env`. It holds the OpenRouter key and is ignored by git.
 
@@ -129,3 +130,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 22:46 Iftikhar: proxy reader for US director elections. An AI model reads facts with checked quotes, code applies nine NBIM rules, and a rule acts alone only after NBIM followed it twice in a row. In the pipeline; file A 2026 now 35 automatic 'against' suggestions, 25 right, and 52 of 66 against-votes suggested or seen.
 - Thu 23:02 Iftikhar: pay reader extended to CEO pay of 25 million dollars or more. Better on the training seasons, worse on 2026, so not adopted. Its findings now appear as evidence with quotes on 152 pay decisions.
 - Thu 23:05 Iftikhar: wording rule for appointing one person as chair and managing director or CEO (rule 1.3.1, India): 6 of 6, none in 2026. Changes to governing documents looked at and left with a person.
+- Thu 23:18 Iftikhar: a second, stronger model re-read 13 meetings to check the proxy reader: 98.2% the same answers. It exposed a 'founder of another company' mistake, now fixed in code. OpenRouter key: about 3 dollars left of 10, and new calls are being refused by its credit check.

@@ -3,6 +3,7 @@
 Run from the repo root (needs internet and OPENROUTER_API_KEY in .env; resumes if stopped):
     python3 src/agent/fetch_board_facts.py --limit 8     # a few meetings, to look at the answers
     python3 src/agent/fetch_board_facts.py               # every US director election in NBIM's vote file
+    python3 src/agent/fetch_board_facts.py --check 16    # a second, stronger model reads 16 meetings again
 
 Why
     NBIM's guidelines hold clear-cut rules about directors that need facts the
@@ -72,6 +73,8 @@ PASSAGES = os.path.join(ROOT, "data", "evidence", "proxy_excerpts")
 OUT_MEETINGS = os.path.join(ROOT, "data", "evidence", "board_meetings.csv")
 OUT_NOMINEES = os.path.join(ROOT, "data", "evidence", "board_nominees.csv")
 MODEL = "anthropic/claude-haiku-5.5"
+CHECK_MODEL = "anthropic/claude-sonnet-5.5"     # a second, stronger reader for a sample (--check)
+CHECK_CACHE = os.path.join(ROOT, "src", "agent", "cache", "board_facts_check.jsonl")
 PASSAGE_CHARS = 160000
 CHUNK = 2000
 SPEND_LIMIT = 5.0   # dollars per run
@@ -176,10 +179,12 @@ def passages_of(text, names):
     return "".join(parts)
 
 
-def request_body(passages, names):
+def request_body(passages, names, model=MODEL):
     listed = "\n".join(f"{i + 1}. {n}" for i, n in enumerate(names))
-    # No sampling settings: the newest models reject them. Thinking is off, this is reading, not reasoning.
-    return {"model": MODEL, "max_tokens": 16000, "usage": {"include": True}, "reasoning": {"enabled": False},
+    # No sampling settings: the newest models reject them. Thinking is off for the first reader (this is
+    # reading, not reasoning); the second reader cannot turn it off, so it runs at low effort.
+    return {"model": model, "max_tokens": 16000, "usage": {"include": True},
+            "reasoning": {"enabled": False} if model == MODEL else {"effort": "low"},
             "messages": [{"role": "system", "content": SYSTEM + questions_text()},
                          {"role": "user", "content": "NOMINEES ON THE BALLOT:\n" + listed +
                           "\n\nPASSAGES FROM THE PROXY STATEMENT:\n\n" + passages}]}
@@ -237,10 +242,10 @@ def parse(reply, passages, names):
     return {"board": board, "nominees": nominees}
 
 
-def load_cache():
+def load_cache(path=CACHE):
     cache = {}
-    if os.path.exists(CACHE):
-        with open(CACHE, encoding="utf-8") as f:
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
             for line in f:
                 rec = json.loads(line)
                 cache[(rec["company_id"], rec["meeting_date"])] = rec
@@ -292,6 +297,50 @@ def proxy_text(meeting, filings):
     return passages, proxy
 
 
+def second_reader(n_meetings, seed=7):
+    """Have a second, stronger model read a random sample of the meetings already read: the same
+    passages, the same names, the same questions. Only the model differs. For board_reader_check.py."""
+    import random
+    first, done = load_cache(), load_cache(CHECK_CACHE)
+    sample = sorted(first)
+    random.Random(seed).shuffle(sample)
+    todo = [k for k in sample[:n_meetings] if k not in done]
+    print(f"Second reader ({CHECK_MODEL}): {len(done)} meetings already read, {len(todo)} to read")
+    key = rc.api_key()
+    if todo and not key:
+        raise SystemExit("No OPENROUTER_API_KEY in .env")
+    lock, spent = threading.Lock(), [0.0]
+
+    def work(k):
+        rec = first[k]
+        names = [n["ballot_name"] for n in rec["answers"]["nominees"]]
+        passages, _ = proxy_text({"cik": rec["cik"], "meeting_date": rec["meeting_date"], "names": names}, lambda cik: None)
+        if passages is None or hashlib.sha256(passages.encode("utf-8")).hexdigest() != rec["passages_sha256"]:
+            print(f"  skipped {rec['company']} {rec['meeting_date']}: the saved passages are not the ones the first reader saw", flush=True)
+            return
+        answers, cost = None, 0.0
+        for _ in range(2):
+            try:
+                reply = call_model(request_body(passages, names, CHECK_MODEL), key)
+            except RuntimeError as e:
+                print("  call failed:", str(e)[:120], flush=True)
+                break
+            cost += (reply.get("usage") or {}).get("cost") or 0.0
+            answers = parse(reply["choices"][0]["message"]["content"] or "", passages, names)
+            if answers:
+                break
+        with lock:
+            spent[0] += cost
+            if answers:
+                out = dict(rec, model=CHECK_MODEL, answers=answers)
+                with open(CHECK_CACHE, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(out, sort_keys=True, ensure_ascii=False) + "\n")
+
+    with concurrent.futures.ThreadPoolExecutor(4) as pool:
+        list(pool.map(work, todo))
+    print(f"Second reader done, ${spent[0]:.2f}. {len(load_cache(CHECK_CACHE))} meetings in {os.path.relpath(CHECK_CACHE, ROOT)}")
+
+
 def write_csv(cache):
     recs = sorted(cache.values(), key=lambda r: (r["company"], r["meeting_date"]))
     cols = ["company_id", "company", "meeting_date", "proxy_form", "proxy_filed", "proxy_url"]
@@ -325,7 +374,11 @@ def write_csv(cache):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0, help="read only this many meetings, spread over the file")
+    ap.add_argument("--check", type=int, default=0, help="have a second, stronger model read this many meetings again")
     a = ap.parse_args()
+    if a.check:
+        second_reader(a.check)
+        return
     cache = load_cache()
     todo = [m for m in meetings_to_read() if (m["company_id"], m["meeting_date"]) not in cache]
     print(f"{len(cache)} meetings already read, {len(todo)} to read")

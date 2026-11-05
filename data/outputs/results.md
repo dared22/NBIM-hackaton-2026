@@ -336,6 +336,67 @@ Proxy read for 1707 of them (98%); the nominee was found in the proxy for 1706.
 Wrote 1742 nominees to data/outputs/board_rules.csv
 ```
 
+## How reliable is the proxy reader? A second, stronger model read a sample again
+
+`python3 src/agent/board_reader_check.py`
+
+```text
+Meetings read by both models: 13 (12 companies), 97 nominees.
+First reader anthropic/claude-haiku-5.5, second reader anthropic/claude-sonnet-5.5. Same passages, names and questions.
+
+1. Facts about each nominee
+  Fact                  | Both answered | Same answer | Share | Only the first answered | Only the second answered
+  ----------------------+---------------+-------------+-------+-------------------------+-------------------------
+  independent           |            92 |          92 |  100% |                       0 |                        2
+  executive             |            97 |          95 |   98% |                       0 |                        0
+  ceo                   |            97 |          97 |  100% |                       0 |                        0
+  executive_elsewhere   |            87 |          83 |   95% |                       5 |                        3
+  board_chair           |            97 |          97 |  100% |                       0 |                        0
+  audit_committee       |            97 |          97 |  100% |                       0 |                        0
+  pay_committee         |            97 |          97 |  100% |                       0 |                        0
+  nomination_committee  |            95 |          93 |   98% |                       0 |                        2
+  other_public_boards   |            65 |          63 |   97% |                      11 |                        3
+  chairs_other_board    |            15 |          14 |   93% |                      42 |                        6
+  director_since        |            94 |          90 |   96% |                       0 |                        0
+  gender                |            97 |          97 |  100% |                       0 |                        0
+  attended_under_75_pct |            57 |          57 |  100% |                       0 |                       38
+  founder               |            77 |          71 |   92% |                       2 |                       17
+   Over all facts: the same answer on 1143 of 1164 (98.2%) where both answered.
+   'other_public_boards' counts as the same when both list the same number of companies.
+
+2. Facts about the board
+  Fact                           | Both answered | Same answer | Share | Only the first answered | Only the second answered
+  -------------------------------+---------------+-------------+-------+-------------------------+-------------------------
+  board_size                     |            13 |          12 |   92% |                       0 |                        0
+  independent_directors          |            11 |          10 |   91% |                       1 |                        0
+  women_directors                |             8 |           7 |   88% |                       1 |                        3
+  controlled_company             |             5 |           5 |  100% |                       1 |                        3
+  largest_holder_voting_pct      |             8 |           6 |   75% |                       0 |                        1
+  classified_board               |            12 |          12 |  100% |                       0 |                        1
+  audit_committee_members        |            13 |          13 |  100% |                       0 |                        0
+  audit_committee_independent    |            13 |          12 |   92% |                       0 |                        0
+  prior_pay_support_pct          |             6 |           6 |  100% |                       0 |                        0
+  majority_proposal_not_acted_on |             0 |           0 |     - |                       0 |                        1
+  bylaws_changed_without_vote    |             0 |           0 |     - |                       0 |                        0
+
+3. Would NBIM's rules fire on the same nominees?
+                             | Second reader: a rule fires | Second reader: none
+  ---------------------------+-----------------------------+--------------------
+  First reader: a rule fires |                           3 |                   2
+  First reader: none         |                           0 |                  92
+   The same rules fire, or none, for 95 of 97 nominees (97.9%).
+   differs: PACCAR Inc 2023-04-25, Dame Alison J. Carnwath: first reader ['2.1.1'], second reader none
+   differs: First Financial Bankshares, Inc. 2021-04-27, Tucker S. Bridwell: first reader ['2.3.1'], second reader none
+
+4. Where the two disagree on the facts the rules rest on, after the two corrections made in code
+   (an 'executive' the company calls independent is not one; 'founder' must be of this company)
+   None.
+
+   Reading this: agreement between two models is not the same as being right, and the sample is small.
+   It does show which facts are stable enough to act on (roles, independence, committees) and which
+   are not (counts that depend on what one calls a listed company).
+```
+
 ## Proposals whose wording decides the vote: NBIM's written rules applied to the title
 
 `python3 src/agent/proposal_rules.py`

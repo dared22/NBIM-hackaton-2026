@@ -73,6 +73,7 @@ SCRIPTS = [
     ("The same US pay proposals in both files: which model should answer?", ["src/agent/pay_overlap.py"]),
     ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
     ("Director elections at US companies: facts read from the proxy, and rules that must earn trust", ["src/agent/board_rules.py"]),
+    ("How reliable is the proxy reader? A second, stronger model read a sample again", ["src/agent/board_reader_check.py"]),
     ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
