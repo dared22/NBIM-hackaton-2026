@@ -1,0 +1,32 @@
+{
+  "status": "running",
+  "input": "data/prepared/inputs_us_director_election.csv",
+  "input_sha256": "08aada7bdbb44b0d0f52387933e31c7b3ce11d6092e252d99f0b9026d590d1de",
+  "input_rows": 1743,
+  "rows_by_year": {
+    "2019": 198,
+    "2020": 196,
+    "2021": 223,
+    "2022": 232,
+    "2023": 243,
+    "2024": 251,
+    "2025": 239,
+    "2026": 161
+  },
+  "attempted_years": [
+    "2025",
+    "2026"
+  ],
+  "supported_rows": 400,
+  "unsupported_year_rows": 1343,
+  "model": "deepseek/deepseek-v4.1-flash",
+  "budget": "User authorized use of the existing key remaining monthly balance.",
+  "limitations": [
+    "Fixed-2025-policy experiment; 2026 outcomes have already been inspected.",
+    "Evidence extraction only; no final Jev vote recommendations."
+  ],
+  "cache_by_year": {
+    "2025": "data/evidence/_cache",
+    "2026": "data/evidence/_cache/us-full-2026"
+  }
+}

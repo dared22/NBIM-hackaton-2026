@@ -1,0 +1,45 @@
+{
+  "status": "running",
+  "years": {
+    "2025": {
+      "proposals_written": 88,
+      "meetings_written": 7,
+      "completed": false,
+      "completed_meeting_cost_usd": 0.359012,
+      "nominee_statuses": {
+        "verified": 43,
+        "nominee_slate_not_verified": 7,
+        "no_verified_meeting_proxy": 38
+      },
+      "rule_statuses": {
+        "ready": 83,
+        "incomplete": 254,
+        "not_implemented": 731,
+        "not_applicable": 7
+      }
+    },
+    "2026": {
+      "proposals_written": 47,
+      "meetings_written": 4,
+      "completed": false,
+      "completed_meeting_cost_usd": 0.286777,
+      "nominee_statuses": {
+        "verified": 32,
+        "nominee_slate_not_verified": 3,
+        "no_verified_meeting_proxy": 12
+      },
+      "rule_statuses": {
+        "ready": 67,
+        "incomplete": 189,
+        "not_implemented": 544
+      }
+    }
+  },
+  "cached_responses": {
+    "core-model-v3": 34,
+    "targeted-model-v3": 30,
+    "grounding-v3": 51
+  },
+  "proposals_written": 135,
+  "completed_meeting_cost_usd": 0.645789
+}
