@@ -8,21 +8,21 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### US executive pay votes (history + company facts)
 - Proposals: 1200; NBIM voted against the board on 114.
-- Decided automatically: 903 (75%). Sent to a person: 297 (25%).
+- Decided automatically: 883 (74%). Sent to a person: 317 (26%).
 - Automatic 'against the board' suggestions: 101, of which 71 were right (precision 70%, recall 62%).
-- Against-votes inside the pile sent to a person: 31 (27% of all against-votes).
-- Against-votes the tool waved through with the board: 12 (11% of all against-votes).
-- With a person reading the review pile, 102 of 114 against-votes are either suggested or seen (89%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 75 proposals; 3 of them were against-votes.
+- Against-votes inside the pile sent to a person: 32 (28% of all against-votes).
+- Against-votes the tool waved through with the board: 11 (10% of all against-votes).
+- With a person reading the review pile, 103 of 114 against-votes are either suggested or seen (90%).
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 95 proposals; 4 of them were against-votes.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1159 (75%). Sent to a person: 380 (25%).
+- Decided automatically: 1158 (75%). Sent to a person: 381 (25%).
 - Automatic 'against the board' suggestions: 35, of which 25 were right (precision 71%, recall 38%).
 - Against-votes inside the pile sent to a person: 27 (41% of all against-votes).
 - Against-votes the tool waved through with the board: 14 (21% of all against-votes).
 - With a person reading the review pile, 52 of 66 against-votes are either suggested or seen (79%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 36 proposals; 4 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 37 proposals; 4 of them were against-votes.
 
 ## History model, all proposal types
 

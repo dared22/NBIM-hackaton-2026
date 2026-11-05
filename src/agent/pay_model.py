@@ -614,6 +614,20 @@ def warnings_for(r):
     return out
 
 
+LOW_SUPPORT = 70.0
+
+
+def low_support_note(r):
+    """Rule 3.3.5: the last pay vote had low support. A reason to send the vote to a person, never part
+    of the score. On the training seasons, votes the model would have waved through were against-votes
+    11% of the time when the last pay vote had under 70% support, and 1.6% of the time otherwise."""
+    c = r["c"]
+    if c.get("support") is not None and c["support"] < LOW_SUPPORT:
+        return (f"rule 3.3.5: the last pay vote had {c['support']:.0f}% support, so a person should check whether "
+                f"the board responded (\"{c['support_sentence']}\")")
+    return ""
+
+
 def develop(rows):
     """Compare input sets on the training seasons only (2024 and 2025).
 

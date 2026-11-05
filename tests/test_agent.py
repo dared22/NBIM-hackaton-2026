@@ -167,6 +167,17 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(self.pipe.decide("FOR", "likely AGAINST board", [])[0], "MOT")
         self.assertEqual(self.pipe.decide("MOT", "likely AGAINST board", [])[0], "FOR")
 
+    def test_low_support_at_the_last_pay_vote_sends_the_vote_to_a_person(self):
+        row = lambda support: {"c": {"support": support, "support_sentence": "our say-on-pay proposal received 51% support"}}
+        self.assertIn("rule 3.3.5", pm.low_support_note(row(51.0)))
+        self.assertEqual(pm.low_support_note(row(88.0)), "")
+        self.assertEqual(pm.low_support_note(row(None)), "")
+        import run
+        col = {c: i for i, c in enumerate(run.COLS)}
+        flagged = [d for d in run.pay_once() if "rule 3.3.5" in d[col["review_reason"]]]
+        self.assertGreater(len(flagged), 10)
+        self.assertTrue(all(d[col["decided_by"]] == "human review" for d in flagged))
+
     def test_what_the_ai_reader_found_is_evidence_and_never_a_pay_model_input(self):
         fact = lambda answer, ok=True: {"answer": answer, "quote": "q" if ok else "", "verified": ok}
         answers = {"special_award": fact("yes"), "performance_share_pct": fact(80.0), "prior_support_pct": fact(65.0)}

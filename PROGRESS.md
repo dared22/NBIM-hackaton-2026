@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 00:11.
+Last full update: Fri 00:30.
 
 ## What must be delivered
 
@@ -38,7 +38,7 @@ Last full update: Fri 00:11.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 54 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 55 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -133,3 +133,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 23:18 Iftikhar: a second, stronger model re-read 13 meetings to check the proxy reader: 98.2% the same answers. It exposed a 'founder of another company' mistake, now fixed in code. OpenRouter key: about 3 dollars left of 10, and new calls are being refused by its credit check.
 - Thu 23:33 Iftikhar: reader check completed to 16 meetings (the key works again). Pay vote and director votes at the same meeting tested: a link, but too few cases to act on.
 - Fri 00:11 Iftikhar: added the one-line rule 'against if CEO pay is 25 million dollars or more' as a baseline for the pay model. It finds 83 of 114 with 72 false alarms; the model finds 79 with 31.
+- Fri 00:30 Iftikhar: four fixes suggested from the 2026 pay misses were tested on the training seasons instead. One holds (last pay vote under 70% support, rule 3.3.5) and now sends the vote to a person. The others were weak or already covered.

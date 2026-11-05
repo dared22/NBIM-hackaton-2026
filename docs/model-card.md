@@ -81,10 +81,10 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 
 | | File A | File B |
 |---|---|---|
-| Decided automatically | 76% | 75% |
-| Sent to a person | 24% | 25% |
-| Against-votes suggested by the tool or sent to a person | 79% | 89% |
-| Against-votes the tool followed the board on by itself | 21% | 11% |
+| Decided automatically | 75% | 74% |
+| Sent to a person | 25% | 26% |
+| Against-votes suggested by the tool or sent to a person | 79% | 90% |
+| Against-votes the tool followed the board on by itself | 21% | 10% |
 | Precision of the automatic "against" suggestions | 71% | 70% |
 
 One answer per proposal. The annual pay vote of 36 US companies is in both
@@ -106,6 +106,25 @@ When 88 test votes had no pay figure, they sat in the automatic pile with a
 them. After more companies were linked (see below) only 27 test votes lack a
 figure. The gate now moves 75 votes on file B to a person, 3 of them
 against-votes.
+
+Low support at the last pay vote (rule 3.3.5). A teammate's review of the 2026
+misses suggested four fixes. Because they were found by looking at the test
+year's answers, each was tested on the training seasons instead, on the votes
+the model would have waved through (1,885 votes, 31 against, 1.6%):
+
+| Suggested reason to send a vote to a person | Votes | Against | Rate |
+|---|---|---|---|
+| The last pay vote had under 70% support | 36 | 4 | 11% |
+| CEO pay of 20 to 25 million dollars | 41 | 2 | 5% |
+| More than one CEO paid in the year | 116 | 3 | 3% |
+| NBIM voted against last season | 2 | 0 | - |
+| Other executives paid more than the CEO | 0 | 0 | already sent to a person |
+
+Only the first stands out, and it is also what rule 3.3.5 says. It is now a
+reason to send the vote to a person, with the sentence from the proxy. It
+never changes the score. On 2026 it sends 20 more votes to a person and one
+of them is an against-vote. A softer step from 20 to 25 million dollars had
+already been tested as a model input and gave nothing.
 
 Company coverage. 239 companies in the pay votes were first left without a
 link to the SEC, because the SEC's current ticker list only holds companies

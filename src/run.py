@@ -223,6 +223,9 @@ def pay_decisions():
         if hits:
             flags.append("security flag: " + ", ".join(hits))
         band = "send to human" if hits else pm.band_of(p, thr)
+        # Low support at the last pay vote: a vote the model would wave through goes to a person instead.
+        if band == "likely WITH board" and pm.low_support_note(r):
+            flags.append(pm.low_support_note(r))
         # Every say-on-pay proposal is recommended FOR by the board.
         vote, who, why = decide("FOR", band, flags)
         why_pay = pm.reasons(r, w)
