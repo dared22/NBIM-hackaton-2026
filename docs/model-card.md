@@ -691,6 +691,38 @@ is scored by a model fitted on earlier years only.
   no such history) and fires once, on a suggestion that was a false alarm
   anyway.
 
+### The reading dial
+
+The 5% level, below which the tool follows the board on its own, is a
+setting, and how much a person reads is the user's choice. `data/outputs/headline.md`
+shows what a lower level costs and catches on 2026:
+
+| Level | Sent to a person | Against-votes suggested or seen |
+|---|---|---|
+| 5% (the default) | 404 (26%) | 56 of 66 |
+| 3% | 610 (40%) | 64 of 66 |
+| Careful level, 2.1% | 751 (49%) | 65 of 66 |
+
+The careful level is the one that would have put 90% of the against-votes of
+2022-2025 in front of a person or in the tool's own suggestions
+(`combined_model.careful_level`); it was chosen on those years only. It reads
+more on 2026 than on those years, because more 2026 proposals sit between 2%
+and 5%.
+
+This is also the fair way to compare with the pipeline on branch `marie`,
+which sends every suggestion against the board to a person and reads 41% of
+2026 (633 proposals, 63 of 66 against-votes seen). At the same amount of
+reading main has 64 of 66 on 2026 and 358 against 340 of 401 on 2022-2025; cut
+to main's default reading, that pipeline has 55 of 66 and 296 of 401 where
+main has 56 and 319. So on 2026 the two are level, and on the earlier years
+main is ahead. Main uses that pipeline's two scores as inputs.
+
+A gate that would send a proposal to a person when that pipeline's second
+model says 5% or more and the combined model says less was tested on
+2022-2025: it caught 11 more against-votes, all in 2022 (ten discharge votes
+in Poland), and none in 2023, 2024 or 2025 for 165 more proposals read. Left
+out.
+
 ## What was tried and did not help
 
 - A decision model (Microsoft-Decision-1) checking guideline sections against

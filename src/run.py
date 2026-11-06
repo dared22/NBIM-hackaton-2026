@@ -366,6 +366,24 @@ def headline(general, pay):
               f"So {right + seen} of the {a} against-votes ({pct(right + seen, a)}) are either suggested by the tool or put in front of a person, "
               f"and {a - right - seen} are waved through.", ""]
 
+    # The reading dial: the 5% level is a setting. What a lower level costs and catches.
+    waved = sorted((r for r in general if r[col["decided_by"]] == "automatic" and r[col["band"]] == "likely WITH board"),
+                   key=lambda r: -float(r[col["probability_against_board"]]))
+    careful = cm.careful_level(YEAR)
+    lines += ["### If a person reads more", "",
+              f"The {cm.LOW:.0%} level, below which the tool follows the board on its own, is a setting. Lower it and more proposals go to a "
+              "person, in the order of the tool's own probability. The careful level is the one that would have put "
+              f"{cm.CAREFUL_TARGET:.0%} of the against-votes of the earlier years ({cm.DEVELOP[0]}-{cm.DEVELOP[-1]}) in front of a person or in "
+              f"the tool's own suggestions. It was chosen on those years only.", "",
+              "| Level | Sent to a person | Share | Against-votes suggested or seen | Waved through |", "|---|---|---|---|---|"]
+    for name, level in sorted(((f"{cm.LOW:.0%} (as above)", None), ("3%", 0.03), ("2%", 0.02), (f"Careful level, {careful:.1%}", careful), ("1%", 0.01)),
+                              key=lambda item: -(item[1] if item[1] is not None else cm.LOW)):
+        extra = [r for r in waved if level is not None and float(r[col["probability_against_board"]]) >= level]
+        caught = right + seen + sum(1 for r in extra if r[col["actual_against_board"]] == 1)
+        lines.append(f"| {name} | {person + len(extra)} | {pct(person + len(extra), n)} | {caught} of {a} ({pct(caught, a)}) | {a - caught} |")
+    lines += ["", "The proposals a lower level adds are the rows of `data/outputs/decisions_2026.csv` decided automatically with the board, "
+              "sorted by `probability_against_board`.", ""]
+
     pay_rows, _ = pm.load_rows()
     test_b = [r for r in pay_rows if r["season"] == pm.TEST_SEASON]
     last_b = [r for r in test_b if r["prev"] == 1]

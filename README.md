@@ -92,7 +92,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about five minutes
-python3 -m unittest discover -s tests     # 84 checks, including leakage audits and four end-to-end attack checks
+python3 -m unittest discover -s tests     # 85 checks, including leakage audits and four end-to-end attack checks
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,

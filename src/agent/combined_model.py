@@ -200,6 +200,40 @@ def fitted(year):
     return _FITS[year]
 
 
+CAREFUL_TARGET = 0.90
+_CAREFUL = {}
+
+
+def careful_level(year, target=CAREFUL_TARGET):
+    """The level for careful mode: how far down the list of waved-through proposals a person must read
+    for `target` of the against-votes of the earlier years to be suggested or seen.
+
+    Chosen on the years before `year` only. Each of those years is scored by a fit on the years before
+    it, and routed as src/run.py routes (rules on top, support needed to act alone, country facts).
+    Returns the lowest probability that still goes to a person; LOW if the target is met without it."""
+    if (year, target) not in _CAREFUL:
+        rows = bm.read_votes(VOTES)
+        directors, worded = rule_tables()
+        years = training_years(year)
+        data = {y: year_data(rows, y, directors, worded) for y in years}
+        scored = []
+        for y in years[1:]:
+            fit, level = fit_on(data, [u for u in years if u < y]), flag_level(data, y)
+            for r in data[y]:
+                p = score(fit, r["xc"])
+                says, human = decide(r, p, level, True, True)
+                scored.append((p, says or human, r["y"]))
+        total = sum(y for _, _, y in scored)
+        seen = sum(y for _, handled, y in scored if handled)
+        level = LOW
+        for p, _, y in sorted((s for s in scored if not s[1]), key=lambda s: -s[0]):
+            if seen >= target * total:
+                break
+            seen, level = seen + y, p
+        _CAREFUL[(year, target)] = level
+    return _CAREFUL[(year, target)]
+
+
 def top(scores, ys, share):
     k = int(round(share * len(ys)))
     return sum(ys[i] for i in sorted(range(len(ys)), key=lambda i: -scores[i])[:k])

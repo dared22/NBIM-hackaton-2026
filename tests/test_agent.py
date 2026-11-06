@@ -466,6 +466,15 @@ class CombinedModelTests(unittest.TestCase):
         self.assertEqual(self.cm.training_years(2026), [2021, 2022, 2023, 2024, 2025])
         self.assertEqual(self.cm.training_years(2022), [2021])
 
+    def test_the_careful_level_is_below_the_normal_level_and_falls_as_the_target_rises(self):
+        normal = self.cm.careful_level(2026)
+        self.assertLess(normal, self.cm.LOW)
+        self.assertGreater(normal, 0)
+        self.assertLessEqual(self.cm.careful_level(2026, 0.95), normal)
+        self.assertGreaterEqual(self.cm.careful_level(2026, 0.85), normal)
+        import inspect
+        self.assertIn("training_years(year)", inspect.getsource(self.cm.careful_level))   # earlier years only
+
     def test_jev_and_the_second_model_are_turned_around_when_the_board_recommends_against(self):
         comp = {"jev_p_mot": "0.9", "triage_p": "0.8", "jev_vote": "MOT"}
         with_board = self.cm.inputs_for({"mgmt_rec": "MOT", "p": 0.1}, comp, None, None)
