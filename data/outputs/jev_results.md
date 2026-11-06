@@ -5,7 +5,7 @@ Produced by `python -m nbim_vote.report_results`, from saved Jev answers (no API
 ## Read this first
 
 - **2026 is not a clean holdout.** It was run six times (v2-v7) while the design changed. The first run, before any change made after seeing it, is the honest 2026 number (table below). Its F1 is close to the tuned run; its review share is much higher. The cut in review effort was found while looking at 2026.
-- 2024 and 2025 were used to design and check the system. 2022 and 2023 were each run once, after the design was fixed, and are the cleanest years.
+- 2024 and 2025 were used to design and check the system. 2022 and 2023 were run with several Jev input variants (v4-v7, v5-v7); git cannot show that the design was frozen before their results were seen. They are still the cleanest years.
 - **Citations are scored optimistically for 2022-2024.** The map from proposal type to candidate guideline sections (`TYPE_TO_SECTIONS`) was built from the sections NBIM cited at meetings before 2025, so those years' own citations helped decide which rules Jev may name.
 - **Jev may have seen NBIM's votes in training.** NBIM's votes and rationales are public since 2013 and Jev's training cutoff is unknown. Jev alone scores about the same in every year (F1 40-47%), including 2026, so there is no sign of a large effect, but it cannot be ruled out for the earlier years.
 - **The board-MOT rule was chosen on 2021-2025** (the share of board-MOT proposals where the recommendation matches NBIM's vote), which overlaps the test years 2022-2025. It touches 14-27 proposals a year.
@@ -24,11 +24,11 @@ Produced by `python -m nbim_vote.report_results`, from saved Jev answers (no API
 
 | Year | Fitted on | Proposals | MOT | Board F1 | Jev alone F1 | Precision | Recall | F1 | Review | MOT reaching a person | AP combined | Right section: code / Jev |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 2022 | 2021-2021 | 1772 | 112 | 24.8% | 43.3% | 56.1% | 41.1% | **47.4%** | **37.1%** | 99 (88.4%) | 0.344 | 31 / 30 of 33 |
-| 2023 | 2021-2022 | 1761 | 100 | 36.2% | 47.5% | 71.2% | 52.0% | **60.1%** | **42.4%** | 84 (84.0%) | 0.457 | 28 / 27 of 29 |
-| 2024 | 2021-2023 | 1883 | 98 | 17.1% | 40.5% | 70.7% | 41.8% | **52.6%** | **42.0%** | 94 (95.9%) | 0.539 | 31 / 28 of 31 |
-| 2025 | 2021-2024 | 1909 | 112 | 20.2% | 46.4% | 76.8% | 38.4% | **51.2%** | **37.1%** | 97 (86.6%) | 0.564 | 32 / 29 of 33 |
-| 2026 (tuned on it) | 2021-2025 | 1539 | 66 | 20.0% | 43.1% | 64.8% | 53.0% | **58.3%** | **41.1%** | 63 (95.5%) | 0.539 | 27 / 26 of 27 |
+| 2022 | 2021-2021 | 1772 | 112 | 24.8% | 43.3% | 54.5% | 37.5% | **44.4%** | **37.1%** | 99 (88.4%) | 0.373 | 27 / 27 of 29 |
+| 2023 | 2021-2022 | 1761 | 100 | 36.2% | 47.5% | 71.2% | 52.0% | **60.1%** | **40.3%** | 84 (84.0%) | 0.453 | 28 / 27 of 29 |
+| 2024 | 2021-2023 | 1883 | 98 | 17.1% | 40.5% | 70.6% | 49.0% | **57.8%** | **46.1%** | 95 (96.9%) | 0.545 | 38 / 34 of 38 |
+| 2025 | 2021-2024 | 1909 | 112 | 20.2% | 46.4% | 73.8% | 42.9% | **54.2%** | **35.6%** | 97 (86.6%) | 0.566 | 36 / 33 of 37 |
+| 2026 (tuned on it) | 2021-2025 | 1539 | 66 | 20.0% | 43.1% | 62.5% | 53.0% | **57.4%** | **44.4%** | 64 (97.0%) | 0.538 | 27 / 26 of 27 |
 | **2026 clean (v2, as first run)** | 2025 only | 1539 | 66 | 20.0% | – | 53.8% | 53.0% | **53.4%** | **73.4%** | 66 (100.0%) | – | – |
 
 2021 is not a test year: there is no earlier Jev year to fit on. 2019 and 2020 have no runs: the triage model needs two earlier years of votes. The clean 2026 row is the pipeline as it stood then (Jev + triage model, routing fitted on 2025, no company facts, no live review share), read from `results_2026_history_v2.csv`. Right section: correct MOT recommendations where the guideline section named matches the one NBIM cited, with citations from code (the default) and from Jev.
@@ -39,11 +39,41 @@ Average over the test years. Each row adds one piece to the row above.
 
 | Setup | F1 | Precision | Recall | Review | MOT reaching a person |
 |---|---:|---:|---:|---:|---:|
-| No company facts, ranked within the year | **54.1%** | 66.2% | 46.5% | **46.8%** | 88.5% |
-| + live review share (previous 12 months) | **54.1%** | 66.2% | 46.5% | **48.2%** | 88.8% |
-| + company facts in the model and in Jev's input | **54.1%** | 68.0% | 45.4% | **42.1%** | 89.9% |
-| + NBIM's director rules in code, with trust monitor | **53.9%** | 67.9% | 45.3% | **42.3%** | 90.1% |
-| + skip rule (the full system) | **53.9%** | 67.9% | 45.3% | **39.9%** | 90.1% |
+| No company facts, ranked within the year | **54.7%** | 67.7% | 46.4% | **46.9%** | 87.7% |
+| + live review share (previous 12 months) | **54.7%** | 67.7% | 46.4% | **47.9%** | 88.5% |
+| + company facts in the model and in Jev's input | **53.9%** | 65.7% | 46.1% | **43.1%** | 90.4% |
+| + NBIM's director rules in code, with trust monitor | **54.1%** | 66.5% | 45.9% | **43.3%** | 90.6% |
+| + skip rule | **54.1%** | 66.5% | 45.9% | **40.7%** | 90.6% |
+| + main's pay model on US say-on-pay votes (the full system) | **54.8%** | 66.5% | 46.9% | **40.7%** | 90.6% |
+
+## Main's pay model on US say-on-pay votes
+
+Main's model (`src/agent/pay_model.py` on main, ported in `pay_model.py`): logistic regression on NBIM's say-on-pay votes from Norges Bank's N-PX filings, with pay facts from each meeting's own proxy (pay size, the 25 million dollar level, pay against peers, pay growth against shareholder returns, and NBIM's vote last season). Here it is fitted walk-forward: the model for a year sees only N-PX votes at meetings before 1 January that year, and SEC API figures reported after the meeting are not used. It decides like a director rule: MOT at its own cut-off (chosen on earlier votes), a person above 5 %. N-PX starts in July 2023, so it scores 2024 onwards.
+
+On all N-PX pay votes (its own data, much larger than this branch's sample):
+
+| Year | Pay votes | Against | AP | AP, last season's vote only | Precision at cut-off | Recall at cut-off |
+|---|---:|---:|---:|---:|---:|---:|
+| 2024 | 1524 | 135 | 0.579 | 0.108 | 45.8% | 60.0% |
+| 2025 | 1429 | 118 | 0.678 | 0.199 | 48.3% | 70.3% |
+| 2026 | 1039 | 100 | 0.702 | 0.222 | 63.3% | 76.0% |
+
+On this branch's US say-on-pay votes, in the full pipeline:
+
+| Year | Pay model | Linked pay votes | NBIM MOT | Recommended MOT, right | False alarms | MOT reaching a person | Reviewed |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 2022 | without | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2022 | with | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2023 | without | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2023 | with | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2024 | without | 33 | 6 | 0 | 0 | 6 | 32 |
+| 2024 | with | 33 | 6 | 4 | 2 | 6 | 32 |
+| 2025 | without | 31 | 4 | 2 | 2 | 4 | 30 |
+| 2025 | with | 31 | 4 | 3 | 2 | 4 | 30 |
+| 2026 | without | 18 | 0 | 0 | 2 | 0 | 18 |
+| 2026 | with | 18 | 0 | 0 | 2 | 0 | 18 |
+
+Ten MOT votes in 2024-2025 is far too few to measure precision here; the N-PX table is the real test of the model.
 
 ## With and without Jev
 
@@ -51,18 +81,18 @@ Without Jev (`--no-jev`), the triage model's own call replaces Jev's vote, the c
 
 | Year | Pipeline | Precision | Recall | F1 | Review | MOT reaching a person | AP combined |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| 2022 | with Jev | 56.1% | 41.1% | **47.4%** | **37.1%** | 99 (88.4%) | 0.344 |
-| 2022 | without Jev | 46.8% | 33.0% | **38.7%** | **42.6%** | 98 (87.5%) | 0.315 |
-| 2023 | with Jev | 71.2% | 52.0% | **60.1%** | **42.4%** | 84 (84.0%) | 0.457 |
-| 2023 | without Jev | 56.1% | 55.0% | **55.6%** | **43.1%** | 77 (77.0%) | 0.432 |
-| 2024 | with Jev | 70.7% | 41.8% | **52.6%** | **42.0%** | 94 (95.9%) | 0.539 |
-| 2024 | without Jev | 58.9% | 43.9% | **50.3%** | **55.7%** | 97 (99.0%) | 0.506 |
-| 2025 | with Jev | 76.8% | 38.4% | **51.2%** | **37.1%** | 97 (86.6%) | 0.564 |
-| 2025 | without Jev | 72.6% | 40.2% | **51.7%** | **40.5%** | 100 (89.3%) | 0.522 |
-| 2026 | with Jev | 64.8% | 53.0% | **58.3%** | **41.1%** | 63 (95.5%) | 0.539 |
-| 2026 | without Jev | 52.8% | 57.6% | **55.1%** | **49.1%** | 63 (95.5%) | 0.553 |
-| **Average** | with Jev | 67.9% | 45.3% | **53.9%** | **39.9%** | 90.1% | 0.489 |
-| **Average** | without Jev | 57.4% | 45.9% | **50.3%** | **46.2%** | 89.6% | 0.465 |
+| 2022 | with Jev | 54.5% | 37.5% | **44.4%** | **37.1%** | 99 (88.4%) | 0.373 |
+| 2022 | without Jev | 45.7% | 28.6% | **35.2%** | **42.9%** | 97 (86.6%) | 0.317 |
+| 2023 | with Jev | 71.2% | 52.0% | **60.1%** | **40.3%** | 84 (84.0%) | 0.453 |
+| 2023 | without Jev | 41.6% | 47.0% | **44.1%** | **42.2%** | 78 (78.0%) | 0.432 |
+| 2024 | with Jev | 70.6% | 49.0% | **57.8%** | **46.1%** | 95 (96.9%) | 0.545 |
+| 2024 | without Jev | 54.5% | 55.1% | **54.8%** | **57.0%** | 97 (99.0%) | 0.512 |
+| 2025 | with Jev | 73.8% | 42.9% | **54.2%** | **35.6%** | 97 (86.6%) | 0.566 |
+| 2025 | without Jev | 64.5% | 43.8% | **52.1%** | **40.1%** | 100 (89.3%) | 0.530 |
+| 2026 | with Jev | 62.5% | 53.0% | **57.4%** | **44.4%** | 64 (97.0%) | 0.538 |
+| 2026 | without Jev | 47.6% | 59.1% | **52.7%** | **47.7%** | 61 (92.4%) | 0.551 |
+| **Average** | with Jev | 66.5% | 46.9% | **54.8%** | **40.7%** | 90.6% | 0.495 |
+| **Average** | without Jev | 50.8% | 46.7% | **47.8%** | **46.0%** | 89.1% | 0.469 |
 
 ## Citations: code or Jev
 
@@ -92,10 +122,10 @@ Mostly shareholder proposals. The earlier rule voted FOR unless Jev and the mode
 
 | Year | Board MOT | NBIM MOT | Matches NBIM, earlier rule | Matches NBIM, now | Matches NBIM, always follow the board |
 |---|---:|---:|---:|---:|---:|
-| 2022 | 25 | 17 | 8 | 14 | 17 |
-| 2023 | 27 | 23 | 25 | 24 | 23 |
+| 2022 | 25 | 17 | 6 | 14 | 17 |
+| 2023 | 27 | 23 | 17 | 24 | 23 |
 | 2024 | 19 | 10 | 12 | 14 | 10 |
-| 2025 | 17 | 13 | 12 | 12 | 13 |
+| 2025 | 17 | 13 | 13 | 13 | 13 |
 | 2026 | 14 | 8 | 10 | 11 | 8 |
 
 ## Abstentions (AVSTÅ)
@@ -107,7 +137,7 @@ AVSTÅ is recommended when Jev's top choice is AVSTÅ, and always goes to a pers
 | 2022 | 3 | 2 | 14 |
 | 2023 | 8 | 1 | 2 |
 | 2024 | 2 | 1 | 1 |
-| 2025 | 1 | 0 | 0 |
+| 2025 | 2 | 0 | 0 |
 | 2026 | 1 | 0 | 5 |
 
 ## Skip rule
@@ -118,9 +148,9 @@ Groups that skip review, learned from earlier years only:
 |---|---:|---:|---:|
 | 2022 | type: DIVIDEND; type: ROUTINE | 0 | 0 |
 | 2023 | type: ROUTINE | 0 | 0 |
-| 2024 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 91 | 0 |
-| 2025 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 34 | 0 |
-| 2026 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 76 | 0 |
+| 2024 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 95 | 0 |
+| 2025 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 32 | 0 |
+| 2026 | Japan: executive director; Japan: independent outside director; Japan: inside director; type: ROUTINE | 96 | 0 |
 
 ## NBIM's director rules, applied in code
 
@@ -165,7 +195,7 @@ An instruction is added to what the agent reads; see `resistance_2025_def14a_n60
 
 ## What to keep in mind
 
-- How each year was used: 2021 run once, after the design was fixed; 2022 run once, after the design was fixed; 2023 run once, after the design was fixed; 2024 used to check the design; 2025 used to design the system; 2026 holdout, run six times (v2-v7) while the design changed.
+- How each year was used: 2021 run with several Jev input variants (v4-v7); 2022 run with several Jev input variants (v4-v7); 2023 run with several Jev input variants (v5-v7); 2024 used to check the design; 2025 used to design the system; 2026 holdout, run six times (v2-v7) while the design changed.
 - EDINET only keeps AGM vote results from mid-2024, so Japanese last-year support reaches 2025-26 only. US vote results go back to 2018.
 - US nominee facts come from main's AI reading of each proxy; their accuracy is main's, and is checked there.
 - Each MOT vote is 1-2 percentage points of recall, so small differences between years are noise.

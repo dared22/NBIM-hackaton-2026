@@ -26,7 +26,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import hstack
 
 from nbim_vote.director_rules import deciding_rule
-from nbim_vote.jev_mvp import TYPE_TO_SECTIONS, candidate_rules, item_key, strip_instructions
+from nbim_vote.jev_mvp import TYPE_TO_SECTIONS, candidate_rules, same_item, strip_instructions
 
 MIN_TRAIN = 50  # fewer earlier cited MOT votes than this: no text model
 
@@ -111,8 +111,7 @@ class Citer:
                 return rule, "rule in code"
         past = [p for p in history_index.get(row["company_id"], []) if p["meeting_date"] < row["meeting_date"]
                 and p["proposal_type"] == row["proposal_type"] and p["nbim_vote"] == "MOT" and nbim_section(p["rationale_section"])]
-        key = item_key(row)
-        for source, pool in (("NBIM's earlier reason, same item", [p for p in past if item_key(p) == key]),
+        for source, pool in (("NBIM's earlier reason, same item", [p for p in past if same_item(row, p)]),
                              ("NBIM's earlier reason, same company", past)):
             for p in reversed(pool):
                 rules = section_rules(nbim_section(p["rationale_section"]), by_section, "MOT")

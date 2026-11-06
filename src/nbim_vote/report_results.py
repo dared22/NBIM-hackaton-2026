@@ -53,6 +53,7 @@ from nbim_vote.fit_combination import fit
 from nbim_vote.explain import fact_reasons
 from nbim_vote.jev_mvp import (DATA, RUNS, VOTES, build_history_index, cited_section, combined_score, guidelines_for, live_review,
                      load_guideline_versions, load_votes, needs_person, recommend_vote, review_cutoff)
+from nbim_vote.pay_model import PayModel
 from nbim_vote.triage_model import score_year
 
 YEARS = (2021, 2022, 2023, 2024, 2025, 2026)  # years with saved Jev runs at history level
@@ -61,8 +62,8 @@ WITH, WITHOUT = "_v7", "_v5"                     # Jev runs with and without com
 CLEAN_HOLDOUT = RUNS / "results_2026_history_v2.csv"  # 2026 as first run, before any design change made after seeing it
 OUT = DATA / "outputs"
 SEEN = {
-    2021: "run once, after the design was fixed", 2022: "run once, after the design was fixed",
-    2023: "run once, after the design was fixed", 2024: "used to check the design",
+    2021: "run with several Jev input variants (v4-v7)", 2022: "run with several Jev input variants (v4-v7)",
+    2023: "run with several Jev input variants (v5-v7)", 2024: "used to check the design",
     2025: "used to design the system", 2026: "holdout, run six times (v2-v7) while the design changed",
 }
 SHARES = (0.10, 0.25, 0.40)  # review budgets for the equal-effort comparison
@@ -129,6 +130,7 @@ class Setup:
         self.versions = load_guideline_versions()
         self.rule_states = rule_states(self.rows, self.facts, guidelines_for, self.versions)
         self.citers = {y: Citer(self.rows, f"{y}-01-01") for y in YEARS}  # text model trained before each year
+        self.pay = PayModel(self.facts)  # main's say-on-pay model, fitted on N-PX votes before each year (pay_model.py)
         self._code = {}
 
     def code_section(self, year, key):
@@ -149,8 +151,10 @@ class Setup:
         dates = [self.by_key[r["meeting_id"], r["item_no"]]["meeting_date"] for r in results]
         return results, p_model, scores, dates
 
-    def walk_forward(self, year, facts, jev=True):
-        """Recommendation and routing for one year, fitted on earlier years only. jev False: the pipeline without Jev."""
+    def walk_forward(self, year, facts, jev=True, pay=True):
+        """Recommendation and routing for one year, fitted on earlier years only. jev False: the pipeline without Jev.
+        pay True: main's pay model decides US say-on-pay votes like a director rule (MOT at its cut-off, a person
+        above its low band)."""
         combo = fit([y for y in YEARS if y < year], self.rows, tag=WITH if facts else WITHOUT, triage=self.triage[facts], use_jev=jev)
         results, p_model, scores, dates = self.scored(year, facts, combo, jev)
         _, _, prev_scores, prev_dates = self.scored(year - 1, facts, combo, jev)
@@ -160,6 +164,9 @@ class Setup:
         signals = [self.rule_states.get((r["meeting_id"], r["item_no"]), []) if facts else [] for r in results]
         rule = np.array([deciding_rule(x) is not None for x in signals])
         rule_review = np.array([rule_needs_person(x) for x in signals])
+        pay_decisions = [self.pay.decision(self.by_key[r["meeting_id"], r["item_no"]]) if pay and facts else None for r in results]
+        pay_signal = np.array([d["signal"] if d else None for d in pay_decisions])
+        rule, rule_review = rule | (pay_signal == "MOT"), rule_review | (pay_signal == "review")
         # Without Jev, the triage model's own call stands in for Jev's vote (jev_mvp.model_answers).
         calls = [r["jev_vote"] if jev else ("MOT" if m >= flag else "FOR") for r, m in zip(results, p_model)]
         # Where "MOT" and "against the board" differ: abstention markets and proposals NBIM supports against the board.
@@ -180,7 +187,7 @@ class Setup:
                 "flag_against": votes != board, "scores_against": np.array([score_against(x, b) for x, b in zip(scores, board)]),
                 "triage_against": np.array([score_against(x, b) for x, b in zip(p_model, board)]),
                 "skip_groups": skip_groups, "votes": votes, "flagged": votes == "MOT", "flagged_no_rule": votes_no_rule == "MOT",
-                "person": person, "person_no_rule": person_no_rule, "rule_flag": rule, "rule_review": rule_review, "signals": signals, "safe": safe, "live": live,
+                "person": person, "person_no_rule": person_no_rule, "rule_flag": rule, "rule_review": rule_review, "signals": signals, "pay": pay_decisions, "safe": safe, "live": live,
                 "batch": batch, "reviewed": (live & ~safe) | person}
 
 
@@ -198,15 +205,50 @@ def clean_holdout():
     return metrics(flagged, reviewed, [float(r["p_model"]) for r in rows], actual), metrics(board, board, board, actual), len(rows)
 
 
-def my_report(s, runs, runs_nojev):
+def pay_section(runs, runs_nopay):
+    """Main's pay model: on its own data (all N-PX pay votes) and on this branch's US say-on-pay votes."""
+    from nbim_vote import pay_model as pm
+    rows = pm.load_rows()
+    lines = ["", "## Main's pay model on US say-on-pay votes", "",
+             "Main's model (`src/agent/pay_model.py` on main, ported in `pay_model.py`): logistic regression on NBIM's say-on-pay votes "
+             "from Norges Bank's N-PX filings, with pay facts from each meeting's own proxy (pay size, the 25 million dollar level, "
+             "pay against peers, pay growth against shareholder returns, and NBIM's vote last season). Here it is fitted walk-forward: "
+             "the model for a year sees only N-PX votes at meetings before 1 January that year, and SEC API figures reported after "
+             "the meeting are not used. It decides like a director rule: MOT at its own cut-off (chosen on earlier votes), "
+             "a person above 5 %. N-PX starts in July 2023, so it scores 2024 onwards.", "",
+             "On all N-PX pay votes (its own data, much larger than this branch's sample):", ""]
+    out = []
+    for year in (2024, 2025, 2026):
+        scored = pm.score_year(year)
+        ps = {id(v[2]): v[0] for v in scored.values()}
+        test = [r for r in rows if r["moetedato"][:4] == str(year) and id(r) in ps]
+        ys, p = [r["y"] for r in test], [ps[id(r)] for r in test]
+        cut = next(iter(scored.values()))[1]
+        prec, rec, _ = pm.prf([x >= cut for x in p], ys)
+        out.append([year, len(test), sum(ys), f"{pm.average_precision(p, ys):.3f}",
+                    f"{pm.average_precision([r['x'][0] for r in test], ys):.3f}", pct(prec), pct(rec)])
+    lines += table(["Year", "Pay votes", "Against", "AP", "AP, last season's vote only", "Precision at cut-off", "Recall at cut-off"], out)
+    lines += ["", "On this branch's US say-on-pay votes, in the full pipeline:", ""]
+    out = []
+    for year in TEST_YEARS:
+        for name, w in (("without", runs_nopay[year]), ("with", runs[(year, True)])):
+            us = np.array([d is not None for d in runs[(year, True)]["pay"]])
+            a, f, rv = w["actual"][us], w["flagged"][us], w["reviewed"][us]
+            out.append([year, name, int(us.sum()), int(a.sum()), int((a & f).sum()), int((f & ~a).sum()), int((a & rv).sum()), int(rv.sum())])
+    lines += table(["Year", "Pay model", "Linked pay votes", "NBIM MOT", "Recommended MOT, right", "False alarms", "MOT reaching a person", "Reviewed"], out)
+    lines += ["", "Ten MOT votes in 2024-2025 is far too few to measure precision here; the N-PX table is the real test of the model."]
+    return lines
+
+
+def my_report(s, runs, runs_nojev, runs_nopay):
     lines = ["# Jev pipeline: walk-forward results with company facts", "",
              "Produced by `python -m nbim_vote.report_results`, from saved Jev answers (no API calls).", "",
              "## Read this first", "",
              "- **2026 is not a clean holdout.** It was run six times (v2-v7) while the design changed. The first run, before any "
              "change made after seeing it, is the honest 2026 number (table below). Its F1 is close to the tuned run; "
              "its review share is much higher. The cut in review effort was found while looking at 2026.",
-             "- 2024 and 2025 were used to design and check the system. 2022 and 2023 were each run once, after the design was fixed, "
-             "and are the cleanest years.",
+             "- 2024 and 2025 were used to design and check the system. 2022 and 2023 were run with several Jev input variants (v4-v7, v5-v7); git cannot show that the design was frozen before their results were seen. "
+             "They are still the cleanest years.",
              "- **Citations are scored optimistically for 2022-2024.** The map from proposal type to candidate guideline "
              "sections (`TYPE_TO_SECTIONS`) was built from the sections NBIM cited at meetings before 2025, so those years' "
              "own citations helped decide which rules Jev may name.",
@@ -266,14 +308,17 @@ def my_report(s, runs, runs_nojev):
     for name, fn in (
         ("No company facts, ranked within the year", lambda y: row_metrics(runs[(y, False)], runs[(y, False)]["batch"] | runs[(y, False)]["person"])),
         ("+ live review share (previous 12 months)", lambda y: row_metrics(runs[(y, False)])),
-        ("+ company facts in the model and in Jev's input", lambda y: row_metrics(runs[(y, True)], runs[(y, True)]["live"] | runs[(y, True)]["person_no_rule"], runs[(y, True)]["flagged_no_rule"])),
-        ("+ NBIM's director rules in code, with trust monitor", lambda y: row_metrics(runs[(y, True)], runs[(y, True)]["live"] | runs[(y, True)]["person"])),
-        ("+ skip rule (the full system)", lambda y: row_metrics(runs[(y, True)])),
+        ("+ company facts in the model and in Jev's input", lambda y: row_metrics(runs_nopay[y], runs_nopay[y]["live"] | runs_nopay[y]["person_no_rule"], runs_nopay[y]["flagged_no_rule"])),
+        ("+ NBIM's director rules in code, with trust monitor", lambda y: row_metrics(runs_nopay[y], runs_nopay[y]["live"] | runs_nopay[y]["person"])),
+        ("+ skip rule", lambda y: row_metrics(runs_nopay[y])),
+        ("+ main's pay model on US say-on-pay votes (the full system)", lambda y: row_metrics(runs[(y, True)])),
     ):
         ms = [fn(y) for y in TEST_YEARS]
         mean = lambda k: sum(m[k] for m in ms) / len(ms)
         steps.append([name, f"**{pct(mean('f1'))}**", pct(mean("precision")), pct(mean("recall")), f"**{pct(mean('review_share'))}**", pct(mean("reached_share"))])
     lines += table(["Setup", "F1", "Precision", "Recall", "Review", "MOT reaching a person"], steps)
+
+    lines += pay_section(runs, runs_nopay)
 
     lines += ["", "## With and without Jev", "",
               "Without Jev (`--no-jev`), the triage model's own call replaces Jev's vote, the combination is refitted without Jev's "
@@ -705,7 +750,8 @@ def main():
     s = Setup()
     runs = {(y, f): s.walk_forward(y, f) for y in TEST_YEARS for f in (True, False)}
     runs_nojev = {y: s.walk_forward(y, True, jev=False) for y in TEST_YEARS}
-    (OUT / "jev_results.md").write_text("\n".join(my_report(s, runs, runs_nojev)), encoding="utf-8")
+    runs_nopay = {y: s.walk_forward(y, True, pay=False) for y in TEST_YEARS}
+    (OUT / "jev_results.md").write_text("\n".join(my_report(s, runs, runs_nojev, runs_nopay)), encoding="utf-8")
     print(f"Wrote {(OUT / 'jev_results.md').relative_to(DATA.parent)}")
     if a.main_dir:
         lines, csv_rows = compare(s, runs, a.main_dir, runs_nojev)

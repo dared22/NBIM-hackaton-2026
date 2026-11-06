@@ -241,6 +241,45 @@ def item_key(row):
     return "text:" + re.sub(r"\W+", " ", re.sub(r"\d+", " ", text.lower())).strip()
 
 
+@lru_cache(maxsize=None)
+def _item(text, proposal_type):
+    """(item_key of the whole text, item_key of its first sentence)."""
+    first = re.split(r"(?<=[.!?])\s+", " ".join(text.split()), maxsplit=1)[0]
+    return item_key({"proposal_text": text, "proposal_type": proposal_type}), item_key({"proposal_text": first, "proposal_type": proposal_type})
+
+
+def same_item(a, b):
+    """True when two proposals at a company are the same item: the same item_key, or one is the other's
+    wording followed by an extra sentence (how an appended instruction reads, see the resistance test).
+
+    Looser rules (nominee names contained in each other, plurals) were tried and lowered the triage model's
+    average precision on the development years 2022-2024 (0.470 to 0.452), so they are not used. On the
+    clean data this rule changes no item, so it only matters when a ballot text has been padded.
+    Reads only the texts, never a vote.
+    """
+    if a["proposal_type"] != b["proposal_type"]:
+        return False
+    (ka, fa), (kb, fb) = _item(a["proposal_text"], a["proposal_type"]), _item(b["proposal_text"], b["proposal_type"])
+    return ka == kb or fa == kb or fb == ka
+
+
+def canonical_items(rows):
+    """{id(row): item label}, where the same item at a company gets one label across years (same_item).
+
+    Rows are taken oldest first and a row takes the label of the first earlier item it matches, so a label
+    is fixed by texts that came before it. Uses only texts and dates.
+    """
+    seen, out = {}, {}
+    for r in sorted(rows, key=lambda r: r["meeting_date"]):
+        group = seen.setdefault((r["company_id"], r["proposal_type"]), [])
+        match = next((label for label, first in group if same_item(r, first)), None)
+        if match is None:
+            match = item_key(r)
+            group.append((match, r))
+        out[id(r)] = match
+    return out
+
+
 def past_vote(p):
     return {
         "meeting_date": p["meeting_date"],
@@ -259,16 +298,15 @@ def prior_votes(row, index):
     """
     past = [p for p in index.get(row["company_id"], []) if p["meeting_date"] < row["meeting_date"]]
     same_type = [p for p in past if p["proposal_type"] == row["proposal_type"]]
-    key = item_key(row)
-    same_item = [p for p in same_type if item_key(p) == key]
-    other_mot = [p for p in same_type if p["nbim_vote"] == "MOT" and item_key(p) != key]
+    same = [p for p in same_type if same_item(row, p)]
+    other_mot = [p for p in same_type if p["nbim_vote"] == "MOT" and not same_item(row, p)]
     last_date = past[-1]["meeting_date"] if past else None
     return {
-        "same_item": [past_vote(p) for p in same_item[-MAX_HISTORY:]],
+        "same_item": [past_vote(p) for p in same[-MAX_HISTORY:]],
         "other_mot_votes_same_type": [past_vote(p) for p in other_mot[-MAX_HISTORY:]],
         "counts": {
-            "same_item_votes": len(same_item),
-            "same_item_mot": sum(p["nbim_vote"] == "MOT" for p in same_item),
+            "same_item_votes": len(same),
+            "same_item_mot": sum(p["nbim_vote"] == "MOT" for p in same),
             "same_type_votes": len(same_type),
             "same_type_mot": sum(p["nbim_vote"] == "MOT" for p in same_type),
             "company_votes": len(past),

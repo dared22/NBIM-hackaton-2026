@@ -69,7 +69,7 @@ Demoen gir bare anbefalinger for møter der vi har selskapets dokumenter i datae
 ### Tester
 
 ```bash
-python -m pytest            # 73 tester, ca. 40 s, ingen API-kall
+python -m pytest            # 76 tester, ca. 2 min, ingen API-kall
 ```
 
 ### Andre kommandoer
@@ -121,6 +121,7 @@ Saksliste / stemmeseddel
    ├─ 5a. Triagemodell (triage_model.py): gradient boosting som gir p(NBIM stemmer MOT)
    ├─ 5b. Jev (valgfri, jev_mvp.py): språkmodell som leser forslag, retningslinjer og kontekst, og stemmer
    ├─ 5c. NBIMs regler for styrevalg, skrevet som kode (director_rules.py), med tillitsmonitor
+   ├─ 5d. Lønnsmodellen fra main for amerikanske say-on-pay-forslag (pay_model.py), tilpasset bare på tidligere år
    │
    ├─ 6. Kombinert score (logistisk, combination.json), rangert mot de siste 12 månedene
    ├─ 7. Beslutning: MOT / AVSTÅ / styrets anbefaling, pluss om forslaget skal til en person
@@ -133,6 +134,7 @@ Når modellen anbefaler **MOT**, skjer det på én av to måter:
 
 - Jev sier MOT og triagemodellen ligger over terskelen.
 - En av NBIMs regler for styrevalg slår til på verifiserte fakta, og regelen har ikke bommet nylig.
+- Lønnsmodellen fra main ligger over sin egen terskel på et amerikansk say-on-pay-forslag. Over 5 % går forslaget til en person.
 
 Modellen anbefaler **AVSTÅ** når det er Jevs førstevalg. Ellers følger den styret. Et unntak: når styret anbefaler MOT, men både Jev og triagemodellen mener NBIM ville stemt for, blir anbefalingen FOR. *I dataene våre, så skjer avstå nært aldri.*
 
@@ -155,6 +157,7 @@ Modellen anbefaler **AVSTÅ** når det er Jevs førstevalg. Ellers følger den s
 | `jev_mvp.py` | Kjernen: data, retningslinjer, Jev-klient med cache, beslutning, evaluering og resistenstest |
 | `triage_model.py` | Gradient boosting-modellen for p(MOT) |
 | `director_rules.py` | NBIMs regler for styrevalg som kode, med tillitsmonitor |
+| `pay_model.py` | Mains lønnsmodell (logistisk, på NBIMs N-PX-stemmer om lederlønn), walk-forward per år |
 | `company_facts.py`, `japan_facts.py` | Selskapsfakta fra SEC, EDINET og DART |
 | `citations.py` | Hvilken retningslinje som siteres, uten Jev |
 | `confidence.py` | Kalibrert sikkerhet |
@@ -190,7 +193,13 @@ Hovedfunn:
   - Eksplisitte instruksjoner i forslagsteksten blir fanget og fjernet i 100 % av tilfellene, og ingen stemmer endret seg.
   - Jev alene følger heller ikke omskrevne instruksjoner.
   - Svakheten er at omskrevet tekst kan bryte koblingen til historikken for samme sak. Det kostet 4 av 6 anbefalte MOT i testutvalget, men alle faktiske MOT nådde likevel en person.
+  - Tiltak (ikke målt ennå): en sak regnes nå som samme sak når teksten er den gamle teksten pluss en ekstra setning (`same_item` i `jev_mvp.py`). På de rene dataene endrer det ingen kobling, så tallene og Jevs lagrede svar er uendret. Effekten under angrep krever nye Jev-kall og er ikke kjørt.
   - Se `data/outputs/resistance_*.md`.
+- **Lønnsmodellen fra main:**
+  - På alle NBIMs say-on-pay-stemmer i N-PX, walk-forward: average precision 0,58 (2024), 0,68 (2025) og 0,70 (2026), mot 0,11–0,22 for «samme som i fjor».
+  - I denne grenens data finner den 4 av 6 MOT i 2024 (mot 0 før) og 3 av 4 i 2025 (mot 2), uten mer manuell vurdering. Snittet F1 går fra 54,1 % til 54,8 % på denne maskinen.
+  - Det er bare 10 MOT på lønn i 2024–2025 i dataene her, så N-PX-tallene er den egentlige testen. Se avsnittet om lønnsmodellen i `jev_results.md`.
+  - Forskjeller fra main: tilpasset bare på møter før 1. januar i året som scores, og ingen SEC API-tall rapportert etter møtet.
 - **Mot main-grenen:** på de samme forslagene er denne grenen signifikant bedre enn mains historikkmodell på MOT (+0,128 i average precision). Mot mains kombinerte modell er det jevnt: +0,03 på MOT, som ikke er signifikant. På målet «mot styret» er main signifikant bedre (+0,06). Se [data/outputs/comparison_with_main.md](data/outputs/comparison_with_main.md).
 
 **Forbehold:**
@@ -198,6 +207,12 @@ Hovedfunn:
 - **2026 er ikke et rent holdout-år:** designet ble justert etter at 2026 var kjørt. Den første, rene kjøringen ga F1 53,4 %, men hele 73,4 % til manuell vurdering.
 - **Siteringene for 2022–2024 er optimistiske:** avsnittene Jev fikk velge mellom ble satt opp ut fra NBIMs siteringer før 2025.
 - **Jev kan ha sett NBIMs stemmer under trening:** de er offentlige. Tallene er like i alle år, så det er ingen tegn til at det har mye å si, men det kan ikke utelukkes.
+- **Noen valg er tatt med testårene i sikte (design-lekkasje):** selve tilpasningen er walk-forward, men disse valgene er ikke det:
+  - Regelen for forslag der styret anbefaler MOT ble valgt ut fra 2021–2025, som overlapper testårene. Den påvirker 14–27 forslag i året.
+  - Reglene for styrevalg bygger på mains liste, som ifølge main ble laget etter å ha sett alle år.
+  - Faste parametre ble satt mens vi så på resultatene, også fra testårene: målrecall 90 % (`TARGET_RECALL`), regularisering (`C=0.3`), minst 100 forslag for å slippe manuell vurdering, tillitsmonitorens `TRUST_AFTER` og tidsvinduene for selskapsdokumenter (400 og 45 dager).
+- **2021–2023 er ikke garantert urørte:** Jev ble kjørt med flere varianter av input på disse årene (v4–v7 for 2021 og 2022, v5–v7 for 2023). Git-historikken kan ikke vise at designet var fryst før resultatene ble sett. De er likevel de reneste årene.
+- **Tallene er laget i et annet miljø enn dette:** med Python 3.14, scikit-learn 1.9.1 og numpy 2.5.1 gir den samme koden snittet F1 54,1 % og 40,7 % til manuell vurdering, mot 53,9 % og 39,9 % i tabellen over. Tallene per år avviker med opptil 3 prosentpoeng. Versjonene er ikke låst i `pyproject.toml`.
 
 ---
 
@@ -222,7 +237,7 @@ KI er brukt på to måter: som en del av selve systemet, og som verktøy for å 
 En kodeassistent (Claude Code) er brukt underveis til dette:
 
 - **Gjennomgang av koden:** lete etter datalekkasje (for eksempel dokumenter levert etter møtet og fremtidige begrunnelser), feil, og punkter som ikke svarte på caset.
-- **Rettelser med tester:** fikse funnene og skrive tester for dem. Testsuiten har nå 73 tester.
+- **Rettelser med tester:** fikse funnene og skrive tester for dem. Testsuiten har nå 76 tester.
 - **Evaluering:**
   - resistenstestene;
   - en mer rettferdig sammenligning med main: samme forslag, lik vurderingsinnsats og bootstrap over møter;

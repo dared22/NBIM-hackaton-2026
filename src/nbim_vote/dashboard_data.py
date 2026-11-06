@@ -53,13 +53,20 @@ def build(s, year, jev):
         facts_text = " ".join(fact_reasons(row, s.facts)[0])
         answers = saved_answers(saved) if jev else model_answers(w["p_model"][i], flag)
         found = has_instruction(row["proposal_text"])
+        pay = w["pay"][i]  # main's pay model on US say-on-pay votes (pay_model.py), or None
+        pay_rule = pay["rule"] if pay and pay["signal"] == "MOT" else None
         d = decide(answers, rules, row["mgmt_rec"], "history", p_model=float(w["p_model"][i]),
                    in_review_share=bool(w["live"][i] and not w["safe"][i]), instruction_found=found, model_flag=flag,
-                   rule_mot=deciding_rule(signals), rule_review=rule_needs_person(signals),
+                   rule_mot=deciding_rule(signals) or pay_rule,
+                   rule_review=rule_needs_person(signals) or bool(pay and pay["signal"] == "review"),
                    cite=lambda vote: citer.cite(row, vote, by_section, s.index, signals, facts_text),
                    support=differ.support(row)[0], abstain=differ.abstain(row)[0])
         mismatched += d["vote"] != w["votes"][i] or (d["route"] == "human_review") != bool(w["reviewed"][i])
         why = explain(row, d, rules, edition, s.index, s.facts, signals, found, differ)
+        if pay:
+            note = (f"Lønnsmodellen fra main: sannsynlighet {pay['p']:.0%} for MOT (terskel {pay['cut']:.0%})"
+                    + (": " + "; ".join(pay["reasons"]) if pay["reasons"] else ""))
+            why["reasons"] = " | ".join(x for x in (note, why["reasons"]) if x)
         score = float(w["scores"][i])
         docs = s.facts.meeting_documents(row)
         out.append({

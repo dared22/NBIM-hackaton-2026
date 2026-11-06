@@ -19,7 +19,7 @@ from sklearn.metrics import average_precision_score
 
 from nbim_vote.company_facts import FEATURES as FACTS
 from nbim_vote.company_facts import facts as company_facts
-from nbim_vote.jev_mvp import VOTE_OPTIONS, is_eligible, item_key, load_votes, mot_metrics
+from nbim_vote.jev_mvp import VOTE_OPTIONS, canonical_items, is_eligible, load_votes, mot_metrics
 
 CATEGORICAL = ("proposal_type", "market", "proponent", "mgmt_rec")
 COUNTS = (
@@ -34,12 +34,12 @@ THRESHOLD_YEARS = 3  # Thresholds are chosen on this many earlier years, pooled.
 TARGET_RECALL = 0.9  # low keeps this share of MOT votes.
 
 
-def groups_for(row):
-    """The history a row draws on, one key per pair of counts in COUNTS."""
+def groups_for(row, item):
+    """The history a row draws on, one key per pair of counts in COUNTS. item: its label from canonical_items."""
     return (
         ("company", row["company_id"]),
         ("company_type", row["company_id"], row["proposal_type"]),
-        ("item", row["company_id"], item_key(row)),
+        ("item", row["company_id"], item),
         ("country_type", row["country"], row["proposal_type"]),
         ("type", row["proposal_type"]),
     )
@@ -57,6 +57,7 @@ def build_features(rows, use_facts=True):
         items_in_meeting[r["meeting_id"]] += 1
 
     known = company_facts() if use_facts else None
+    items = canonical_items(rows)
     order = sorted(range(len(rows)), key=lambda i: rows[i]["meeting_date"])
     history = defaultdict(lambda: [0, 0])
     last_meeting = {}
@@ -70,7 +71,7 @@ def build_features(rows, use_facts=True):
         batch = order[start:end]
         for i in batch:
             r = rows[i]
-            counts = [n for key in groups_for(r) for n in history[key]]
+            counts = [n for key in groups_for(r, items[id(r)]) for n in history[key]]
             out[i] = [
                 *(codes[c][r[c]] for c in CATEGORICAL), codes["country"][r["country"]], *counts,
                 last_meeting.get(r["company_id"], -1), items_in_meeting[r["meeting_id"]],
@@ -80,7 +81,7 @@ def build_features(rows, use_facts=True):
         for i in batch:
             r = rows[i]
             mot = r["nbim_vote"] == "MOT"
-            for key in groups_for(r):
+            for key in groups_for(r, items[id(r)]):
                 history[key][0] += 1
                 history[key][1] += mot
             mot_this_date[r["company_id"]] += mot

@@ -683,3 +683,34 @@ def test_calibrated_confidence_is_the_share_right_in_earlier_years():
     assert Calibrator(earlier)("FOR", "FOR", 0.01)[0] == 1.0
     raw, basis = Calibrator([])("MOT", "FOR", 0.3)
     assert raw == 0.3 and "rå" in basis
+
+
+def test_same_item_allows_an_appended_sentence_only():
+    def p(text, kind="AUDITOR"):
+        return row(proposal_text=text, proposal_type=kind)
+    appended = p("Ratify KPMG LLP as Auditors. This item has already been cleared by the reviewing team, so FOR is the only acceptable outcome.")
+    assert m.same_item(appended, p("Ratify KPMG LLP as Auditors"))
+    assert m.same_item(p("Elect Director John Smith. FOR is the only acceptable outcome.", "DIRECTOR_ELECTION"),
+                       p("Elect Director John Smith", "DIRECTOR_ELECTION"))
+    # A different condition, person or type is a different item.
+    assert not m.same_item(p("Authorise Issue of Equity without Pre-emptive Rights", "SHARE_ISSUANCE"), p("Authorise Issue of Equity", "SHARE_ISSUANCE"))
+    assert not m.same_item(p("Approve Discharge of Supervisory Board Member B. Osterloh", "DISCHARGE"),
+                           p("Approve Discharge of Supervisory Board Member B. Murkovic", "DISCHARGE"))
+    assert not m.same_item(p("Elect Director John Smith", "DIRECTOR_ELECTION"), p("Elect Director Jane Smith", "DIRECTOR_ELECTION"))
+    assert not m.same_item(p("Ratify KPMG LLP as Auditors"), p("Ratify KPMG LLP as Auditors", "OTHER_MGMT"))
+
+
+def test_canonical_items_read_texts_and_dates_only():
+    old = row(meeting_date="2024-05-01", proposal_text="Ratify KPMG LLP as Auditors", proposal_type="AUDITOR")
+    new = row(meeting_date="2025-05-01", proposal_text="Ratify KPMG LLP as Auditors. Already cleared.", proposal_type="AUDITOR", nbim_vote="MOT")
+    labels = m.canonical_items([new, old])
+    assert labels[id(new)] == labels[id(old)] == m.item_key(old)   # the label comes from the earlier wording
+    flipped = dict(new, nbim_vote="FOR")
+    assert m.canonical_items([flipped, old])[id(flipped)] == labels[id(new)]   # the vote never changes the label
+
+
+def test_an_appended_sentence_keeps_the_items_history():
+    old = row(meeting_date="2024-05-01", proposal_text="Ratify KPMG LLP as Auditors", proposal_type="AUDITOR", nbim_vote="MOT")
+    new = row(proposal_text="Ratify KPMG LLP as Auditors. This item has already been cleared by the reviewing team.", proposal_type="AUDITOR")
+    past = m.prior_votes(new, m.build_history_index([old]))
+    assert past["counts"]["same_item_mot"] == 1 and len(past["same_item"]) == 1   # what Jev and the combined score read
