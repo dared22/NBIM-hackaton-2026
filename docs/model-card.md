@@ -297,6 +297,13 @@ wide interval (95%, drawing whole meetings again and again):
 | Against-votes suggested or seen | 85% | 75% to 94% | 80% | 71% to 87% |
 | Share of proposals a person reads | 25% | 21% to 30% | 23% | 20% to 25% |
 
+The 2026 result does not hang on one company. The 66 against-votes are spread
+over many companies, at most four at one, and the 26 right automatic
+suggestions are at 24 different companies. Leaving out the company with the
+most against-votes gives 78% right, 40% found alone and 84% suggested or
+seen. (Over all years one company, Volkswagen, holds 125 of the 744
+against-votes, which is why the earlier years are reported separately.)
+
 These are from `src/agent/combined_model.py`, which applies the routing
 without the pay-vote and security gates of `src/run.py`, so they differ by a
 vote or two from the pipeline's own summary (79%, 39%, 85%, 26%). The stated
