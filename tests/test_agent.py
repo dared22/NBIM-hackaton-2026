@@ -788,6 +788,38 @@ class DashboardExportTests(unittest.TestCase):
         self.assertEqual(self.ex.review_codes(""), "")
 
 
+class JevPayTests(unittest.TestCase):
+    """Jev as the pay model's twelfth input: what it is given."""
+
+    @classmethod
+    def setUpClass(cls):
+        import jev_pay
+        cls.jp = jev_pay
+        cls.rows, _ = pm.load_rows()
+
+    def test_jev_is_given_figures_and_last_seasons_vote_only(self):
+        labels = {"against the board", "with the board", "no earlier vote"}
+        for r in self.rows[::40]:
+            state = self.jp.state(r)
+            for key, value in state.items():
+                for v in (value if isinstance(value, list) else [value]):
+                    self.assertTrue(v is None or isinstance(v, (int, float, bool)) or v in labels, (key, v))
+            text = str(state).lower()
+            for word in ("stemme", "against_board", r["utsteder"].lower(), r["moetedato"], "support", "one_off"):
+                self.assertNotIn(word, text)
+
+    def test_the_vote_being_judged_does_not_change_what_jev_is_asked(self):
+        r = dict(self.rows[0])
+        before = self.jp.key_of(r)
+        r["y"], r["stemme"] = 1 - r["y"], "AGAINST" if r["stemme"] != "AGAINST" else "FOR"
+        self.assertEqual(self.jp.key_of(r), before)
+
+    def test_every_pay_vote_has_a_cached_answer(self):
+        cache = self.jp.load_cache()
+        self.assertTrue(all(self.jp.key_of(r) in cache for r in self.rows))
+        self.assertTrue(all(0 <= p <= 1 for p in cache.values()))
+
+
 class ProposalRuleTests(unittest.TestCase):
     def test_combined_chair_and_ceo_appointment_is_recognised_from_the_title(self):
         import proposal_rules as pr

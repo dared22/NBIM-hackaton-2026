@@ -96,6 +96,7 @@ SCRIPTS = [
     ("Policy watch: has NBIM reworded a rule since the stored edition?", ["src/agent/policy_watch.py"]),
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
+    ("Jev as a judge of US pay votes (the pay model's twelfth input)", ["src/agent/jev_pay.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
     ("Resistance test 2: a reworded instruction against the whole pipeline", ["src/agent/paraphrase_test.py"]),
     ("Resistance test 3: an instruction planted in the proxy the AI reader reads", ["src/agent/reader_injection_test.py"]),

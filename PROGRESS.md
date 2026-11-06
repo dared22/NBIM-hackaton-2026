@@ -14,7 +14,7 @@ Last full update: Fri 04:01.
 |---|---|---|
 | One-page response (the rules call it the most important) | With a teammate. Numbers: `data/outputs/headline.md`. Background: `docs/model-card.md` | teammate |
 | 5-minute demo, preferably running | With a teammate. `data/outputs/decisions_2026.csv` holds the content for it | teammate |
-| Code with a README where one command reproduces the main result | Done: `python3 src/run.py`. Checked twice on a fresh copy of `main` with no key: runs in about four minutes, 81 checks pass (checked again on a fresh copy at 06:25 Fri) | Iftikhar |
+| Code with a README where one command reproduces the main result | Done: `python3 src/run.py`. Checked twice on a fresh copy of `main` with no key: runs in about four minutes, 84 checks pass (checked again on a fresh copy at 06:25 Fri) | Iftikhar |
 | Answers to the three jury questions (target, production, one more week) | Not written. Notes in `docs/model-card.md` | |
 | E-mail to milad.tootoonchi@nmbu.no: subject "<group name> Hackathon H2026 demo", all names in the body | Not sent | |
 
@@ -108,8 +108,9 @@ The numbers for a slide are in `data/outputs/headline.md`, written by `python3 s
   The counts do not add up to one total.
 - `npx_votes.csv` is another investor, and its `against_board` column looks
   wrong. Proof in `data/outputs/data_audit.md`, section 2.
-- The 2026 season was scored five times for the pay model. The reported
-  numbers are from before the fifth scoring, which was a rejected experiment.
+- The 2026 season was scored six times for the pay model. The fifth was a
+  rejected experiment; the reported numbers are from the sixth, with the Jev
+  input that was adopted on the training seasons first.
   This is stated in the model card.
 - Volkswagen holds 125 of the 744 against-votes in file A.
 - AI tools used must be listed in the README: Claude Code, Microsoft-Decision-1,
@@ -172,3 +173,5 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 06:33 Iftikhar: fresh copy of main checked again with no key: one command runs in 3 min 55 s, all checks pass, same headline. For Marie: your demo (`src/dashboard.py`) shows your pipeline's files, so its numbers differ from the model card. `python3 src/run.py` on main now also writes `data/outputs/dashboard/predictions_main.csv`, main's 1,539 decisions for 2026 in your file's columns (same header, same route and review codes, JSON fields). To show it: copy the file to your branch and add `"Kombinert modell (main)": DATA / "predictions_main.csv"` to `FILES`. Your branch is untouched. Three new checks (80).
 - Fri 07:12 Iftikhar: tried `predictions_main.csv` in a scratch copy of Marie's demo (her branch at 318ea69, Streamlit's test runner, her branch untouched): it loads and every view renders without an error. The demo by default shows only proposals with a company document, so the export now carries her pipeline's document links (`data/evidence/jev_pipeline/documents_2026.csv`, 591 proposals, no votes in it). What the demo's tiles show for 2026, all proposals, at its default 50% minimum confidence: her 'Med Jev' 54 suggested MOT, 35 right, 633 to a person; main 46 suggested MOT, 31 right, 398 to a person. Note for whoever presents: the tile 'MOT som når en person' counts only MOT votes in the review pile. It reads 63 of 66 for her file and 30 of 63 for main, because main lets the tool act alone on against-votes backed by a rule, a fact or an earlier against-vote (26 right in 2026), and that tile does not count those. One new check (81).
 - Fri 07:44 Iftikhar: Marie moved her code to `src/nbim_vote/` (commit 16605c2). Tried `predictions_main.csv` again in a scratch copy of that commit: loads and renders without errors. The line to add is now in `src/nbim_vote/dashboard.py`: `"Kombinert modell (main)": DATA / "predictions_main.csv"` in `FILES`. Team decision still open: her branch now has its own README and package layout, main has the model card and the one-command run. Which of the two is handed in, or how they are combined, is for the team.
+- Fri 09:01 Iftikhar: Jev can be called with the OpenRouter key we already have (model `~typesafe/jev-latest` on the decisions endpoint, about 0.004 cents a call). No Typesafe key is needed. Tested as a second judge of US director nominees with main's facts, 2021-2025: about as good as the Haiku judge alone (0.557 against 0.533), no gain inside the pipeline (tool alone right 133 times either way). Left out.
+- Fri 09:01 Iftikhar: Jev added as the pay model's twelfth input (`src/agent/jev_pay.py`): it gets each pay vote's tagged figures and NBIM's pay rules, no name, no date, no proxy text. Training seasons, each scored by a fit on the other: average precision 0.658 to 0.710 and 0.541 to 0.548, better Brier score both ways, more votes waved through with the same misses. Adopted on that. 2026 then scored once with it (sixth scoring of that season): tool alone 93 flags, 69 right (74%, was 101 with 71 right, 70%); 371 votes to a person (was 317); 105 of 114 against-votes suggested or seen (was 103). Three new checks (84). Night spend on OpenRouter about $1.90 of the $8 cap.

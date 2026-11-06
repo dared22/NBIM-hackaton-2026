@@ -8,12 +8,12 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### US executive pay votes (history + company facts)
 - Proposals: 1200; NBIM voted against the board on 114.
-- Decided automatically: 883 (74%). Sent to a person: 317 (26%).
-- Automatic 'against the board' suggestions: 101, of which 71 were right (precision 70%, recall 62%).
-- Against-votes inside the pile sent to a person: 32 (28% of all against-votes).
-- Against-votes the tool waved through with the board: 11 (10% of all against-votes).
-- With a person reading the review pile, 103 of 114 against-votes are either suggested or seen (90%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 95 proposals; 4 of them were against-votes.
+- Decided automatically: 829 (69%). Sent to a person: 371 (31%).
+- Automatic 'against the board' suggestions: 93, of which 69 were right (precision 74%, recall 61%).
+- Against-votes inside the pile sent to a person: 36 (32% of all against-votes).
+- Against-votes the tool waved through with the board: 9 (8% of all against-votes).
+- With a person reading the review pile, 105 of 114 against-votes are either suggested or seen (92%).
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 85 proposals; 2 of them were against-votes.
 
 ### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
@@ -22,7 +22,7 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 - Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
 - Against-votes the tool waved through with the board: 10 (15% of all against-votes).
 - With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 48 proposals; 1 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 47 proposals; 1 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -85,41 +85,41 @@ Results on season 2026 (95% intervals from resampling votes)
   Always with board                                 |      0.0% |   0%-0% |   0.0% |   0%-0% |  0.0% |       0 |    0 |            0 |    114
   Same as last season                               |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
   History only, top 97                              |     43.3% | 34%-53% |  36.8% | 28%-46% | 39.8% |      97 |   42 |           55 |     72
-  History + company facts, top 97                   |     74.2% | 65%-83% |  63.2% | 55%-71% | 68.2% |      97 |   72 |           25 |     42
-  History + company facts, p >= 0.37                |     71.8% | 63%-80% |  69.3% | 61%-77% | 70.5% |     110 |   79 |           31 |     35
+  History + company facts, top 97                   |     75.3% | 66%-84% |  64.0% | 56%-72% | 69.2% |      97 |   73 |           24 |     41
+  History + company facts, p >= 0.44                |     75.8% | 67%-84% |  65.8% | 57%-74% | 70.4% |      99 |   75 |           24 |     39
   One-line rule: against if CEO pay is $25m or more |     53.5% | 46%-61% |  72.8% | 64%-81% | 61.7% |     155 |   83 |           72 |     31
-  History + company facts, top 155                  |     56.1% | 48%-64% |  76.3% | 68%-83% | 64.7% |     155 |   87 |           68 |     27
+  History + company facts, top 155                  |     57.4% | 49%-65% |  78.1% | 70%-85% | 66.2% |     155 |   89 |           66 |     25
   The one-line rule is a strong baseline. With as many flags (155) the model finds a few more against-votes; at its own cut-off it finds about as many with far fewer false alarms.
 
   'top 97' rows flag exactly as many votes as the same-as-last-season baseline, so they compare like for like.
-  Average precision: history + company facts 0.698, history only 0.246, random 0.095
-  Brier score (lower is better): model 0.0451, always saying 8.5% 0.0861
+  Average precision: history + company facts 0.705, history only 0.246, random 0.095
+  Brier score (lower is better): model 0.0445, always saying 8.5% 0.0861
 
 By what was known about the company
   What was known                   | Votes | Against | Found | Recall | False alarms
   ---------------------------------+-------+---------+-------+--------+-------------
-  CEO pay known                    |  1172 |     113 |    79 |    70% |           30
-  only other executives' pay known |     1 |       0 |     0 |      - |            1
+  CEO pay known                    |  1172 |     113 |    75 |    66% |           24
+  only other executives' pay known |     1 |       0 |     0 |      - |            0
   no pay figure                    |    27 |       1 |     0 |     0% |            0
 
 New situations: against-votes at companies NBIM did not oppose last season
-  72 such votes. Same-as-last-season finds 0 by construction; the model finds 38 in its top 97 and 43 at p >= 0.37.
+  72 such votes. Same-as-last-season finds 0 by construction; the model finds 39 in its top 97 and 41 at p >= 0.44.
 
 Bands on the test season
   Band                 | Votes | Share | Real against-votes | Share of all against | Against rate
   ---------------------+-------+-------+--------------------+----------------------+-------------
-  likely WITH board    |   877 |   73% |                 15 |                  13% |         1.7%
-  send to human        |   213 |   18% |                 20 |                  18% |         9.4%
-  likely AGAINST board |   110 |    9% |                 79 |                  69% |        71.8%
+  likely WITH board    |   821 |   68% |                 11 |                  10% |         1.3%
+  send to human        |   280 |   23% |                 28 |                  25% |        10.0%
+  likely AGAINST board |    99 |    8% |                 75 |                  66% |        75.8%
 
 Is the confidence honest? (predicted vs actual share against)
   Predicted | Votes | Model says | Actual
   ----------+-------+------------+-------
-  0%-5%     |   877 |       2.2% |   1.7%
-  5%-15%    |   116 |       8.1% |   6.0%
-  15%-35%   |    90 |      23.5% |  14.4%
-  35%-60%   |    29 |      43.2% |  34.5%
-  60%-100%  |    88 |      83.7% |  78.4%
+  0%-5%     |   821 |       1.9% |   1.3%
+  5%-15%    |   168 |       7.7% |   4.8%
+  15%-35%   |    97 |      23.6% |  15.5%
+  35%-60%   |    26 |      45.6% |  46.2%
+  60%-100%  |    88 |      82.0% |  77.3%
 
 Against rate by CEO pay, test season
   CEO total pay | Votes | Against | Against rate
@@ -131,17 +131,18 @@ Against rate by CEO pay, test season
   no CEO figure |    28 |       1 |           4%
 
 Model weights (positive = pushes towards AGAINST)
-   +1.49  prev_against   NBIM voted against this company's pay last season
-   -0.63  prev_for       NBIM supported this company's pay last season
-   -0.70  pay_size       size of the CEO's total pay
-   +1.52  pay_25m        CEO pay is at or above the 25 million dollar level NBIM reviews more strictly
-   +1.09  pay_doubled    CEO pay at least doubled from the year before
-   +0.58  ceo_vs_others  CEO pay is many times the other executives' average
-   +2.47  others_size    size of the other named executives' average pay
-   +0.33  high_pay_lost  CEO pay of 25 million dollars or more while shareholders have lost money
-   +0.46  ceo_changed    more than one CEO was paid during the year
-   +0.70  pay_vs_peers   CEO pay as a multiple of the median at companies of similar industry and size
-   +1.14  pay_outran_returns CEO pay has grown faster than shareholder returns over the years in the pay table
+   +0.54  prev_against   NBIM voted against this company's pay last season
+   -0.23  prev_for       NBIM supported this company's pay last season
+   -0.35  pay_size       size of the CEO's total pay
+   +1.56  pay_25m        CEO pay is at or above the 25 million dollar level NBIM reviews more strictly
+   +0.71  pay_doubled    CEO pay at least doubled from the year before
+   +0.53  ceo_vs_others  CEO pay is many times the other executives' average
+   +2.16  others_size    size of the other named executives' average pay
+   +0.07  high_pay_lost  CEO pay of 25 million dollars or more while shareholders have lost money
+   +0.24  ceo_changed    more than one CEO was paid during the year
+   +0.40  pay_vs_peers   CEO pay as a multiple of the median at companies of similar industry and size
+   +0.56  pay_outran_returns CEO pay has grown faster than shareholder returns over the years in the pay table
+   +0.39  jev_judge      the Jev decision model, given the pay figures and NBIM's pay rules, leans against
 
 Wrote 1200 scored votes to data/outputs/pay_votes_2026.csv
 ```
@@ -158,7 +159,8 @@ Training seasons only. AP = average precision (higher is better).
   company facts, first version |         0.629 |         0.514 |   0.572 |                     74
   + pay_vs_peers               |         0.650 |         0.533 |   0.591 |                     76
   + pay_outran_returns         |         0.639 |         0.534 |   0.586 |                     71
-  + all of them                |         0.658 |         0.544 |   0.601 |                     76
+  + jev_judge                  |         0.699 |         0.543 |   0.621 |                     76
+  + all of them                |         0.710 |         0.544 |   0.627 |                     78
 
   For comparison, 'same as last season' on 2025: 46 hits with 115 flags.
   Share of training votes with the measure: pay vs peers 95%, pay vs returns trend 92%
@@ -171,12 +173,12 @@ Training seasons only. AP = average precision (higher is better).
 ```text
   Year                              | US pay votes in NBIM's file | also in the SEC file | against the board | History model: flags | hits | Pay model: flags | hits | Pay model waved through an against-vote
   ----------------------------------+-----------------------------+----------------------+-------------------+----------------------+------+------------------+------+----------------------------------------
-  2024 (scored without the company) |                          33 |                   32 |                 5 |                    0 |    0 |                3 |    3 |                                       0
-  2025 (scored without the company) |                          31 |                   31 |                 3 |                    4 |    2 |                3 |    2 |                                       1
+  2024 (scored without the company) |                          33 |                   32 |                 5 |                    0 |    0 |                2 |    2 |                                       0
+  2025 (scored without the company) |                          31 |                   31 |                 3 |                    4 |    2 |                2 |    2 |                                       1
   2026 (the real test)              |                          18 |                   18 |                 0 |                    2 |    0 |                1 |    0 |                                       0
-  all three                         |                          82 |                   81 |                 8 |                    6 |    2 |                7 |    5 |                                       1
+  all three                         |                          82 |                   81 |                 8 |                    6 |    2 |                5 |    4 |                                       1
 
-  On the 81 proposals in both files the pay model finds 5 of the 8 against-votes with 7 flags.
+  On the 81 proposals in both files the pay model finds 4 of the 8 against-votes with 5 flags.
   The history model finds 2 with 6 flags. In 2026 there were no against-votes among them,
   and the pay model raises one false alarm where the history model raises two.
   src/run.py now gives these proposals the pay model's answer, so each proposal has one answer.
@@ -893,14 +895,14 @@ Proxies read: 301 votes, all 89 against-votes and 212 of the others (each stands
 2. Do the answers add anything to the current pay inputs? (the sample, five folds by company)
   Inputs                               | Average precision | Hits in the top 89
   -------------------------------------+-------------------+-------------------
-  current pay inputs                   |             0.574 |                 51
-  + no performance-based equity stated |             0.594 |                 50
-  + previous support under 70%         |             0.576 |                 51
-  + performance period over 3 years    |             0.567 |                 53
-  + CEO change in the text             |             0.580 |                 50
-  + one-off award                      |             0.566 |                 50
-  + pay raised by discretion           |             0.574 |                 49
-  + all six                            |             0.585 |                 51
+  current pay inputs                   |             0.627 |                 49
+  + no performance-based equity stated |             0.632 |                 49
+  + previous support under 70%         |             0.629 |                 50
+  + performance period over 3 years    |             0.622 |                 52
+  + CEO change in the text             |             0.625 |                 53
+  + one-off award                      |             0.625 |                 48
+  + pay raised by discretion           |             0.631 |                 52
+  + all six                            |             0.633 |                 55
    Flagging everything in this sample would give an average precision of 0.296.
    No input moves the hits by more than two. The differences are noise at this sample size.
 
@@ -938,14 +940,35 @@ Proxies read: 301 votes, all 89 against-votes and 212 of the others (each stands
 5. The three answers as inputs to the pay model (+1, 0 or -1 each; see pay_model.structure_inputs)
   Training seasons, company facts only | AP 2024 -> 2025 | AP 2025 -> 2024
   -------------------------------------+-----------------+----------------
-  pay model as it is                   |           0.658 |           0.544
-  with the three inputs                |           0.675 |           0.567
+  pay model as it is                   |           0.710 |           0.544
+  with the three inputs                |           0.710 |           0.565
   Test season 2026      | Average precision | Hits in the top 97 | Hits at its own cut-off | Brier score
   ----------------------+-------------------+--------------------+-------------------------+------------
-  pay model as it is    |             0.698 |                 72 |     79 of 110 (at 0.37) |      0.0451
-  with the three inputs |             0.660 |                 72 |     81 of 135 (at 0.27) |      0.0465
+  pay model as it is    |             0.705 |                 73 |      75 of 99 (at 0.44) |      0.0445
+  with the three inputs |             0.665 |                 72 |     85 of 140 (at 0.25) |      0.0460
    The three inputs helped on both training-season comparisons and hurt on the test season.
    The pay model is kept as it is. This was the fifth time the test season was scored.
+```
+
+## Jev as a judge of US pay votes (the pay model's twelfth input)
+
+`python3 src/agent/jev_pay.py`
+
+```text
+US pay votes: 4260. Answered by Jev: 4260.
+
+Training seasons only, each scored by a fit on the other (the test season is in src/agent/pay_model.py)
+  Seasons      |                 Model | Average precision | Flags right at its own cut-off | Recall | Under 5%, waved through | Brier score
+  -------------+-----------------------+-------------------+--------------------------------+--------+-------------------------+------------
+  2024 -> 2025 |             Jev alone |             0.469 |                              - |      - |                       - |           -
+  2024 -> 2025 | pay model without Jev |             0.658 |            84 of 149 (at 0.20) |    66% |        849 (16 against) |      0.0478
+  2024 -> 2025 |    pay model with Jev |             0.710 |            84 of 144 (at 0.20) |    66% |       1009 (16 against) |      0.0436
+  2025 -> 2024 |             Jev alone |             0.378 |                              - |      - |                       - |           -
+  2025 -> 2024 | pay model without Jev |             0.541 |            67 of 133 (at 0.31) |    50% |        813 (16 against) |      0.0550
+  2025 -> 2024 |    pay model with Jev |             0.548 |            69 of 147 (at 0.28) |    52% |        897 (16 against) |      0.0543
+
+   'Under 5%' is the band the tool follows the board on without a person. More votes there with the same
+   number of against-votes means less to read at no extra misses.
 ```
 
 ## Resistance test and guardrail

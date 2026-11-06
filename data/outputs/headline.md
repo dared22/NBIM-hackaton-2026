@@ -23,9 +23,9 @@ Always following the board is right on 90% of votes and finds none of the 114.
 | Always follow the board | 0 | 0 | 0 | - | 0% |
 | Same as last season | 97 | 42 | 55 | 43% | 37% |
 | Against if the CEO is paid 25 million dollars or more | 155 | 83 | 72 | 54% | 73% |
-| The tool, acting alone | 101 | 71 | 30 | 70% | 62% |
+| The tool, acting alone | 93 | 69 | 24 | 74% | 61% |
 
-The tool sends 317 votes (26%) to a person, and 32 against-votes are among them. So 103 of the 114 against-votes (90%) are either suggested or seen, and 11 are waved through.
+The tool sends 371 votes (31%) to a person, and 36 against-votes are among them. So 105 of the 114 against-votes (92%) are either suggested or seen, and 9 are waved through.
 
 ## How to read these
 

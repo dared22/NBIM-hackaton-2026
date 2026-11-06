@@ -98,9 +98,11 @@ FEATURES = [
     ("ceo_changed", "more than one CEO was paid during the year", "GVG 3.3.6"),
     ("pay_vs_peers", "CEO pay as a multiple of the median at companies of similar industry and size", "GVG 3.3.8"),
     ("pay_outran_returns", "CEO pay has grown faster than shareholder returns over the years in the pay table", "GVG 3.3.4"),
+    ("jev_judge", "the Jev decision model, given the pay figures and NBIM's pay rules, leans against", "GVG 3.3"),
 ]
-# The two last inputs follow the published ISS pay-for-performance screen
-# (Multiple of Median and Pay-TSR Alignment).
+# pay_vs_peers and pay_outran_returns follow the published ISS pay-for-performance screen
+# (Multiple of Median and Pay-TSR Alignment). jev_judge is a decision model's reading of the
+# same tagged figures against NBIM's pay rules (src/agent/jev_pay.py): figures in, no proxy text.
 #
 # Tested on the training seasons and left out because they did not help:
 #   - shareholder return against the company's own peer group
@@ -377,6 +379,8 @@ def peer_multiple(r, c, peers):
 def add_features(rows, link, api, proxy, meetings, source="proxy", peers=None, text=None, structure=None):
     text = text or {}
     structure = structure or {}
+    import jev_pay
+    jev_answers = jev_pay.load_cache() if source == "proxy" else {}
     prev = {(r["season"], r["cusip"]): r["y"] for r in rows}
     for r in rows:
         last = prev.get((r["season"] - 1, r["cusip"]))
@@ -412,6 +416,7 @@ def add_features(rows, link, api, proxy, meetings, source="proxy", peers=None, t
             max(-2.0, min(3.0, math.log2(c["peer_multiple"]))) if c["peer_multiple"] else 0.0,
             max(-1.0, min(1.0, -c["trend_gap"])) if c["trend_gap"] is not None else 0.0,
         ]
+        r["x"].append(jev_pay.model_input(r, jev_answers))
         # Experiment only (pay_structure_test.py): how the pay is built, where CEO pay is 25 million or more.
         c["structure"] = structure.get(key) if pay and pay >= STRICT_LEVEL and c["kind"] == "proxy" else None
         r["xs"] = structure_inputs(c["structure"])
@@ -505,6 +510,11 @@ def reasons(r, w):
                     f"of similar industry and size")
         elif name == "pay_outran_returns":
             text = "CEO pay has grown faster than shareholder returns over the years in the pay table"
+        elif name == "jev_judge":
+            p = 1 / (1 + math.exp(-r["x"][i]))
+            if p < 0.5:
+                continue
+            text = f"the Jev decision model, given the pay figures and NBIM's pay rules, puts a vote against at {p:.0%}"
         elif name == "high_pay_lost":
             text = (f"CEO pay is {money(c['pay'])} while 100 dollars invested at the start of the pay table "
                     f"is now worth {c['return']:.0f}")

@@ -29,7 +29,7 @@ Each proposal goes to the part that knows most about it. One command,
 
 | Part | Used for | What it knows | Described under |
 |---|---|---|---|
-| Pay model | US executive pay votes | CEO pay, pay against similar companies and against returns, from the proxy; last season's vote | Results on the test year |
+| Pay model | US executive pay votes | CEO pay, pay against similar companies and against returns, from the proxy; last season's vote; the Jev decision model's reading of those figures against NBIM's pay rules | Results on the test year |
 | Director rules | US director elections | Facts an AI model reads from the proxy, each with a checked quote; NBIM's rules applied in code | Director elections at US companies |
 | Judge | US director elections | An AI model weighs those facts against NBIM's rules and how often NBIM has followed each | The combined model |
 | Wording rules | Any country, when the title says what the proposal does | Ten NBIM rules | Proposals whose wording decides the vote |
@@ -81,19 +81,35 @@ baseline at the same number of flags.
 | A | Full pipeline with the combined model (now) | 33 | 26 | 7 | 79% | 39% |
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
-| B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
+| B | Pay model | 97 | 73 | 24 | 75% (66-84%) | 64% (56-72%) |
 | B | One-line rule: against if CEO pay is 25 million dollars or more | 155 | 83 | 72 | 54% | 73% |
-| B | Pay model, as many flags as the one-line rule | 155 | 87 | 68 | 56% | 76% |
-| B | Pay model at its own cut-off | 110 | 79 | 31 | 72% | 69% |
+| B | Pay model, as many flags as the one-line rule | 155 | 89 | 66 | 57% | 78% |
+| B | Pay model at its own cut-off | 99 | 75 | 24 | 76% | 66% |
 
 The one-line rule is the strongest simple comparison, and it needs the same
 pay figure the model uses. Against it the model's gain is in precision, not
-in how many against-votes it finds: with as many flags it finds 87 against
-83, and at its own cut-off it finds 79 with 31 false alarms where the rule
-has 72. The larger gap, 72 against 42, is against "same as last season",
+in how many against-votes it finds: with as many flags it finds 89 against
+83, and at its own cut-off it finds 75 with 24 false alarms where the rule
+has 72. The larger gap, 73 against 42, is against "same as last season",
 which uses no company facts.
 
 Brackets are 95% intervals from resampling votes.
+
+The pay model's twelfth input is the Jev decision model (`src/agent/jev_pay.py`).
+For each pay vote Jev is given the tagged figures the pay model holds (no
+company name, no date, no proxy text) and NBIM's eight remuneration rules, and
+returns a probability. It was added on the evidence of the two training
+seasons, each scored by a fit on the other: average precision 0.658 to 0.710
+and 0.541 to 0.548, a better Brier score both ways, and 160 and 84 more votes
+in the band the tool waves through with the same 16 against-votes in it. The
+test season was then scored once with it (the sixth scoring of that season).
+Before and after on 2026: average precision 0.698 to 0.705; with 97 flags, 72
+right to 73; at its own cut-off, 79 of 110 to 75 of 99. In the decision file
+the tool acting alone goes from 101 flags with 71 right (70%) to 93 with 69
+right (74%), a person sees 371 votes where it was 317, and 105 of the 114
+against-votes are suggested or seen where it was 103. So on 2026 the gain is
+in precision and in two more against-votes caught; the smaller reading pile
+seen on the training seasons did not carry over.
 
 The history model ties the baseline, also when the test is repeated for
 2022-2026 (150 against 155 hits). Two thirds of NBIM's against-votes are on
@@ -748,6 +764,14 @@ is scored by a model fitted on earlier years only.
   result beyond noise: 71 hits against 73 before, at 97 flags. Linking more
   companies afterwards gave 72.
 
+- Jev as a second judge of US director nominees. Given the same facts, rules
+  and record as the Haiku judge, Jev ranks the nominees about as well on its
+  own (average precision 0.557 against 0.533 on 2021-2025, 0.580 for the mean
+  of the two). Inside the pipeline on 2022-2025 it changes nothing that
+  matters: the tool alone is right 133 times either way, and a few more
+  against-votes are seen only by sending 22 to 79 more proposals to a person.
+  Left out.
+
 ## Checks against leakage
 
 - Time split everywhere. No random split.
@@ -756,11 +780,12 @@ is scored by a model fitted on earlier years only.
 - Every proxy used was filed 21 to 90 days before its meeting. An automatic
   test fails if one is filed on or after the meeting date.
 - Inputs for the pay model were chosen on the training seasons. The 2026
-  season was scored five times: once for each of three model versions, once
-  more after 239 more companies were linked with no change to the model, and
-  once with three inputs read from the proxy text, which were rejected because
-  that result was worse. The reported numbers are from the model as it stood
-  before that fifth scoring. All five results are in the commit history or in
+  season was scored six times: once for each of three model versions, once
+  more after 239 more companies were linked with no change to the model, once
+  with three inputs read from the proxy text, which were rejected because
+  that result was worse, and once with the Jev input, which was adopted on the
+  training seasons before the test season was scored with it. The reported
+  numbers are from that sixth scoring. All six results are in the commit history or in
   `data/outputs/results.md`.
 - The decision model never receives the company name, NBIM's vote or NBIM's
   rationale. An automatic test checks the request.
@@ -838,7 +863,8 @@ persuasion text without trigger words, one harmless sentence.
     would by a person reading it. The quote and the link to the filing are
     what a person checks.
 - Text cannot move the pay score. The pay model's inputs are tagged figures
-  and NBIM's earlier votes; nothing is built from the prose of a company's
+  and NBIM's earlier votes (Jev, its twelfth input, is given the same tagged
+  figures and nothing else; a test checks what it is sent); nothing is built from the prose of a company's
   filing. A sentence in a proxy claiming the package meets NBIM's guidelines
   has no input to act on. A test checks this.
 
@@ -880,7 +906,7 @@ through OpenRouter for the guideline rule check and the resistance test.
 Claude Haiku 5.5 through OpenRouter is also the judge for US director
 nominees (`src/agent/judge.py`): it is given facts, rules and NBIM's record
 without names, and its probability is one input to the combined model. Jev (a hosted decision model from Typesafe) is called by Marie's pipeline on
-her branch; its saved answers are one input to the combined model. Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
+her branch; its saved answers are one input to the combined model. Jev is also called through OpenRouter (`~typesafe/jev-latest`, the decisions endpoint) by `src/agent/jev_pay.py`: given the pay figures and NBIM's pay rules, its probability is the pay model's twelfth input. Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
 measure how often two models agree on the facts. Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by
 the director rules, which are plain code) and how CEO pay is built (675
