@@ -722,6 +722,12 @@ is scored by a model fitted on earlier years only.
   finds 73 against-votes where the logistic model finds 76 at the same number
   of flags, with average precision 0.618 against 0.601. No clear gain, and
   its reasons are harder to state, so the logistic model is kept.
+- A stricter level for when the pay model acts alone. On the training
+  seasons its suggestions are right 41% of the time at a stated 37 to 50
+  percent, 63% at 50 to 70, and 92% at 70 or more. Acting alone only from 70
+  percent would make it right nine times in ten, but it would find 31% of
+  the against-votes on its own instead of 50%. The cut-off was left where it
+  is; the stated probability carries this for the reviewer.
 - The last pay model change (pay against similar companies, pay against
   returns) improved the training-season comparisons but did not move the 2026
   result beyond noise: 71 hits against 73 before, at 97 flags. Linking more

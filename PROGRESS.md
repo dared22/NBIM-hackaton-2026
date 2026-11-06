@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 03:24.
+Last full update: Fri 03:27.
 
 ## What must be delivered
 
@@ -164,3 +164,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 03:08 Iftikhar: gave the judge last year's published support for each US director (from SEC vote results). Tested on 2021-2025: slightly worse (average precision 0.608 against 0.619), reverted.
 - Fri 03:16 Iftikhar: `data/outputs/headline.md` added (both test sets, the simple rules and the tool, on one page). Model card opening rewritten to describe the tool as it is now.
 - Fri 03:24 Iftikhar: night summary. Added tonight: combined model (main + Marie's Jev pipeline), support-based routing, Japan and Korea director facts, policy watch (NBIM softened rule 1.3.1), judge model for US directors, intervals, headline page. Tested and left out: same-year history, type-specific Jev weights, boosted trees, guideline editions, meeting-level signals, last year's vote results, cross-shareholdings, judge on pay votes, extra judge facts. OpenRouter spend tonight about 1 dollar.
+- Fri 03:27 Iftikhar: two more ideas tested, neither adopted. (1) Chair-and-CEO facts for Korea: the OpenDART executive tables name a board chair at only 3 of 12 companies, so no rule can be built. (2) Pay votes: letting the tool act alone only at 70% confidence or more would make it right 92% of the time on the training seasons, but it would then find 31% of against-votes alone instead of 50%, so the current cut-off stays. On the training seasons, suggestions at 0.37-0.50 are right 41% of the time and at 0.70 or more 92%, which the reviewer can read from the stated probability.
