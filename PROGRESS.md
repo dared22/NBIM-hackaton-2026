@@ -6,15 +6,15 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 03:16.
+Last full update: Fri 03:24.
 
 ## What must be delivered
 
 | Deliverable | Status | Who |
 |---|---|---|
-| One-page response (the rules call it the most important) | Not started. `docs/model-card.md` is close to a first draft | |
-| 5-minute demo, preferably running | Not started. `data/outputs/decisions_2026.csv` holds the content for it | |
-| Code with a README where one command reproduces the main result | Done: `python3 src/run.py` | |
+| One-page response (the rules call it the most important) | With a teammate. Numbers: `data/outputs/headline.md`. Background: `docs/model-card.md` | teammate |
+| 5-minute demo, preferably running | With a teammate. `data/outputs/decisions_2026.csv` holds the content for it | teammate |
+| Code with a README where one command reproduces the main result | Done: `python3 src/run.py`. Checked twice on a fresh copy of `main` with no key: runs in about three and a half minutes, 70 checks pass | Iftikhar |
 | Answers to the three jury questions (target, production, one more week) | Not written. Notes in `docs/model-card.md` | |
 | E-mail to milad.tootoonchi@nmbu.no: subject "<group name> Hackathon H2026 demo", all names in the body | Not sent | |
 
@@ -85,8 +85,10 @@ The numbers for a slide are in `data/outputs/headline.md`, written by `python3 s
 | 3 | Write and rehearse the three jury answers | |
 | 4 | Merge or park the open branches below, so `main` is what we hand in | |
 | 5 | Ask Andreas (Case 1 contact): is the `against_board` column in `npx_votes.csv` built correctly? Which investor is it? | |
-| 6 | Done: facts for US directors read from proxies (independence, committees, roles, boards) | Iftikhar |
-| 7 | Done, no gain: how pay is built for CEOs paid 10 to 25 million dollars, read from the proxy text by an AI model (pilot) | Iftikhar |
+| 6 | Needs Marie's Typesafe key: run Jev again with main's facts in its input (director signals with their records, the judge's reason). No key in `.env` here, so not tested | Marie |
+| 7 | If the OpenRouter key is topped up: a stronger judge model for the nominees the judge is unsure about; reader questions on share classes and takeover defences | |
+| 8 | Done: facts for US directors read from proxies (independence, committees, roles, boards) | Iftikhar |
+| 9 | Done, no gain: how pay is built for CEOs paid 10 to 25 million dollars, read from the proxy text by an AI model (pilot) | Iftikhar |
 
 ## Branches not yet in `main`
 
@@ -161,3 +163,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 02:59 Iftikhar: judge model tested on pay votes (training seasons, 1,430 votes): worse than the pay model and no gain together, left out. Added 95% intervals and a confidence check for the combined pipeline: 2026 precision 76% (62-90%), suggested or seen 85% (75-94%).
 - Fri 03:08 Iftikhar: gave the judge last year's published support for each US director (from SEC vote results). Tested on 2021-2025: slightly worse (average precision 0.608 against 0.619), reverted.
 - Fri 03:16 Iftikhar: `data/outputs/headline.md` added (both test sets, the simple rules and the tool, on one page). Model card opening rewritten to describe the tool as it is now.
+- Fri 03:24 Iftikhar: night summary. Added tonight: combined model (main + Marie's Jev pipeline), support-based routing, Japan and Korea director facts, policy watch (NBIM softened rule 1.3.1), judge model for US directors, intervals, headline page. Tested and left out: same-year history, type-specific Jev weights, boosted trees, guideline editions, meeting-level signals, last year's vote results, cross-shareholdings, judge on pay votes, extra judge facts. OpenRouter spend tonight about 1 dollar.
