@@ -57,7 +57,7 @@ baseline at the same number of flags.
 | A | Same as last time | 38 | 22 | 16 | 58% | 33% |
 | A | History model | 38 | 24 | 14 | 63% | 36% |
 | A | Full pipeline with the history model (before the combined model) | 35 | 25 | 10 | 71% | 38% |
-| A | Full pipeline with the combined model (now) | 58 | 32 | 26 | 55% | 48% |
+| A | Full pipeline with the combined model (now) | 36 | 26 | 10 | 72% | 39% |
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
 | B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
@@ -83,11 +83,11 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 
 | | File A | File B |
 |---|---|---|
-| Decided automatically | 75% | 74% |
-| Sent to a person | 25% | 26% |
+| Decided automatically | 74% | 74% |
+| Sent to a person | 26% | 26% |
 | Against-votes suggested by the tool or sent to a person | 85% | 90% |
 | Against-votes the tool followed the board on by itself | 15% | 10% |
-| Precision of the automatic "against" suggestions | 55% | 70% |
+| Precision of the automatic "against" suggestions | 72% | 70% |
 
 One answer per proposal. The annual pay vote of 36 US companies is in both
 files. The tool used to answer those twice, and the two answers could differ.
@@ -171,22 +171,57 @@ rule on those years, at the same reading load (20%), the combined model is
 right 183 times of 350 (52%) where the history model with the same rules is
 right 173 of 381 (45%).
 
-2026 was then scored once:
+When the tool acts alone. On 2022-2025, what a suggestion "against" rests on
+decides how often it is right:
 
-| 2026, 66 against-votes | Average precision | In the top 25% | Automatic "against": right of flags | Suggested or seen |
-|---|---|---|---|---|
-| Pipeline with the history model (before) | 0.453 | 48 | 25 of 35 (71%) | 52 (79%) |
-| Marie's pipeline, her own routing | 0.508 | 55 | 27 of 45 (60%) | 64 (97%), reading 44% |
-| Pipeline with the combined model (now) | 0.498 | 56 | 32 of 58 (55%) | 56 (85%) |
+| The suggestion rests on | Suggestions | Right |
+|---|---|---|
+| A rule with its fact | 74 | 60 (81%) |
+| NBIM opposed the same item last time, and Jev says against | 130 | 72 (55%) |
+| NBIM opposed the same item last time | 8 | 4 (50%) |
+| The models only: Jev says against, no earlier against-vote on the item | 89 | 32 (36%) |
+| The models only: neither | 48 | 14 (29%) |
 
-Reading this honestly. On 2026 the combined model finds more against-votes
-(32 against 25) and waves fewer through (10 against 14) at the same reading
-load (25%), but it is wrong more often when it says "against" (55% right,
-down from 71%). On 2022-2025 it was better on both counts. Its precision is
-steady around 50% across the years; the history model's swings between 45%
-and 71%. It ranks about as well as Marie's pipeline on 2026 and better on
-2022-2025. `USE_COMBINED` in `src/run.py` switches back to the earlier
-pipeline.
+So the tool acts on its own only when the suggestion rests on something a
+person can check: a rule with its fact, the pay figures, or NBIM's own
+against-vote on the same item last time. A suggestion that rests on the
+models only still appears, but goes to a person, marked as a model
+suggestion. On 2022-2025 this takes the precision of what the tool does alone
+from 52% to 67% and loses no against-vote from view (304 of 401 suggested or
+seen either way), for two more points of reading (22% against 20%).
+
+2026 was scored twice with the combined model: once with the first routing,
+once after the routing above was chosen on 2022-2025.
+
+| 2026, 66 against-votes, full pipeline | Acts alone on "against" | Right | Waved through | Suggested or seen | Sent to a person |
+|---|---|---|---|---|---|
+| History model (before the combined model) | 35 | 25 (71%) | 14 | 52 (79%) | 25% |
+| Combined model, acts on every suggestion (first scoring) | 58 | 32 (55%) | 10 | 56 (85%) | 25% |
+| Combined model, acts alone only with support (now) | 36 | 26 (72%) | 10 | 56 (85%) | 26% |
+
+Counting every suggestion "against", whether the tool acts alone or sends it
+to a person, the pipeline now makes 65 and 32 are right.
+
+For comparison, Marie's pipeline with her own routing on 2026: 27 right of 45
+suggestions against the board, 64 of 66 suggested or seen, with 44% sent to a
+person. In the ranking the combined model has 56 of the 66 in its top quarter,
+hers 55, the history model 48 (average precision 0.498, 0.508, 0.453).
+
+Reading this honestly. Against the earlier pipeline the combined model with
+the new routing is as precise when it acts alone (72% against 71%), waves
+through 10 against-votes where it used to wave through 14, and puts 56 of 66
+in front of the tool or a person where it used to put 52, for one more point
+of reading. The first routing found more on its own but was right only 55%
+of the time; that result is why the routing was looked at again, and it was
+then chosen on 2022-2025, not on 2026. `USE_COMBINED` in `src/run.py`
+switches back to the earlier pipeline.
+
+Tried on 2022-2025 and left out, because the plain seven-input combination was
+as good or better (average precision 0.484): the history model updated with
+votes from earlier in the same year (0.486), Jev's weight allowed to differ
+by proposal group (0.478), proposal group as inputs (0.477), "same item last
+time" as inputs (0.480), and boosted trees in place of the logistic
+combination (0.410).
 
 2026 is not a clean test of this model's pieces. Marie's notes say her design
 was final only after she had seen 2026 (there are seven saved Jev runs on

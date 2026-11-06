@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 01:25.
+Last full update: Fri 01:47.
 
 ## What must be delivered
 
@@ -22,7 +22,7 @@ Last full update: Fri 01:25.
 
 | Piece | File | Status | Result |
 |---|---|---|---|
-| Combined model, all proposal types (main + Marie's Jev pipeline) | `src/agent/combined_model.py` | Done, in the pipeline | 2022-2025: better than either system alone. 2026: 32 right of 58 automatic suggestions, 56 of 66 suggested or seen (before 25 of 35, and 52). `USE_COMBINED` in `src/run.py` switches it off |
+| Combined model, all proposal types (main + Marie's Jev pipeline) | `src/agent/combined_model.py` | Done, in the pipeline | 2022-2025: better than either system alone. 2026: 26 right of 36 automatic suggestions (72%), 10 waved through, 56 of 66 suggested or seen (before 25 of 35, 14, and 52). `USE_COMBINED` in `src/run.py` switches it off |
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
@@ -136,3 +136,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 00:11 Iftikhar: added the one-line rule 'against if CEO pay is 25 million dollars or more' as a baseline for the pay model. It finds 83 of 114 with 72 false alarms; the model finds 79 with 31.
 - Fri 00:30 Iftikhar: four fixes suggested from the 2026 pay misses were tested on the training seasons instead. One holds (last pay vote under 70% support, rule 3.3.5) and now sends the vote to a person. The others were weak or already covered.
 - Fri 01:25 Iftikhar: checked Marie's comparison with main, then built the combined model from both systems. Designed on 2022-2025, 2026 scored once. In the pipeline, with a switch.
+- Fri 01:47 Iftikhar: combined model improved on 2022-2025: the tool now acts alone only when a rule, a fact or NBIM's own last vote backs the suggestion (precision 52% to 67% there). Five other ideas tested and left out. 2026 has been scored twice with the combined model.

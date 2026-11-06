@@ -15,7 +15,7 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 - With a person reading the review pile, 103 of 114 against-votes are either suggested or seen (90%).
 - Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 95 proposals; 4 of them were against-votes.
 
-### All proposal types (history, plus NBIM rules for US directors and worded proposals)
+### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
 - Decided automatically: 1133 (74%). Sent to a person: 406 (26%).
 - Automatic 'against the board' suggestions: 36, of which 26 were right (precision 72%, recall 39%).

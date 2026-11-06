@@ -310,7 +310,7 @@ def main():
         w.writerows(sorted(pay + general, key=lambda r: -float(r[7])))
     parts += ["## Decisions", "", "One row per proposal is in `data/outputs/decisions_2026.csv`.", "",
               summary(pay, "US executive pay votes (history + company facts)"), "",
-              summary(general, "All proposal types (history, plus NBIM rules for US directors and worded proposals)"), ""]
+              summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"), ""]
 
     env = dict(os.environ, PYTHONPATH=os.path.join(ROOT, "src"))
     for title, args in SCRIPTS:
@@ -325,7 +325,7 @@ def main():
     print()
     print(summary(pay, "US executive pay votes (history + company facts)"))
     print()
-    print(summary(general, "All proposal types (history, plus NBIM rules for US directors and worded proposals)"))
+    print(summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"))
     print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals) and data/outputs/results.md")
 
 
