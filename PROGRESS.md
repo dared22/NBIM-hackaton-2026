@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 02:09.
+Last full update: Fri 02:23.
 
 ## What must be delivered
 
@@ -26,6 +26,7 @@ Last full update: Fri 02:09.
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Director facts for Japan and Korea | `src/agent/country_rules.py` | Done, in the pipeline | In Japan NBIM opposes only top executives (27 of 141, none of 739 others). Brings in a person: 11 more against-votes seen on 2022-2025, no change on 2026 |
+| Policy watch | `src/agent/policy_watch.py` | Done | NBIM's live guidelines against the stored 2025 edition: 75 of 76 rules identical, rule 1.3.1 softened from "will not" to "may not" |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
 | Check of the proxy reader by a second model | `src/agent/board_reader_check.py` | Done | 16 meetings, 122 nominees: same answer on 98.2% of facts; rules fire on the same nominees for 120 of 122 |
 | Director rules on SEC insider filings (second source) | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; agrees with the proxy reader on 98.9% of nominees |
@@ -40,7 +41,7 @@ Last full update: Fri 02:09.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 62 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 65 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -55,10 +56,13 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
    proxy, the tool finds 72 of 114 against-votes on US pay where the simple
    rule finds 42. With roles from SEC filings, NBIM's own rule "no chair who
    is also CEO" is right 84% of the time it fires.
-3. **Policy and practice differ.** NBIM opposed 28 of 28 chair-and-CEO
-   nominees in 2019-2024 and 0 of 5 in 2026, while the 2025 guidelines still
-   contain the rule. A rule that is wrong twice in a row is now suspended and
-   its cases go to a person.
+3. **The tool found a policy change from the votes, and the written rule had
+   changed too.** NBIM opposed 28 of 28 chair-and-CEO nominees in 2019-2024
+   and 0 of 5 in 2026, while the 2025 guidelines we were given say "will not
+   support". The tool takes a rule's trust away at the first miss and sends
+   later cases to a person. NBIM's guidelines web page now says "may not
+   support" for exactly that rule, the only one of 76 that was reworded
+   (`src/agent/policy_watch.py`).
 
 ## Decisions the team still has to make
 
@@ -149,3 +153,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 01:25 Iftikhar: checked Marie's comparison with main, then built the combined model from both systems. Designed on 2022-2025, 2026 scored once. In the pipeline, with a switch.
 - Fri 01:47 Iftikhar: combined model improved on 2022-2025: the tool now acts alone only when a rule, a fact or NBIM's own last vote backs the suggestion (precision 52% to 67% there). Five other ideas tested and left out. 2026 has been scored twice with the combined model.
 - Fri 02:09 Iftikhar: Japan and Korea director facts (from Marie's EDINET and OpenDART data) used as reasons to bring in a person. Night work continues; Gemini's files in `min-agent/` were checked and not run (see the note in this file).
+- Fri 02:23 Iftikhar: tested 'more policy'. The rules we use are in every edition since 2020, so edition dates do not explain misfires. But NBIM's live guidelines page has softened rule 1.3.1 to 'may not', the rule where 2026 votes changed. Policy watch added; no effect on test numbers. Meeting-level signals and vote results from last year's AGM tested on 2022-2025: no gain, left out.

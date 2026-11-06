@@ -43,6 +43,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 from director_rules import run_monitor  # noqa: E402
+import policy_watch as pw  # noqa: E402
 
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
 OUT = os.path.join(ROOT, "data", "outputs", "proposal_rules.csv")
@@ -101,6 +102,11 @@ def load_scored():
         r["rules"] = [(rule[1], f"rule {rule[0]}: the proposal asks to {rule[3]}; NBIM's rule says vote {rule[2]}, "
                                 f"the board recommends {r['mgmt_rec']}")] if against_board else []
     run_monitor(rows)
+    # Policy watch: a rule NBIM has reworded to "may not" is a judgement call from the day that was seen.
+    softer, since = pw.softened_rules()
+    for r in rows:
+        if r["rules"] and since and r["meeting_date"] >= since and r["rule"][0] in softer:
+            r["rule_state"] = {code: "suspended" for code in r["rule_state"]}
     return rows
 
 

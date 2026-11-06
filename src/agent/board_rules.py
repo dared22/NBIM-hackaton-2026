@@ -76,6 +76,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 import director_rules as dr  # noqa: E402
 import fetch_board_facts as fb  # noqa: E402
+import policy_watch as pw  # noqa: E402
 
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
 OUT = os.path.join(ROOT, "data", "outputs", "board_rules.csv")
@@ -279,6 +280,14 @@ def load_scored():
         r["notes"] = judgement_notes(n, b, bool(earlier) and earlier[-1][1] == 1)
         r["signals"] = signals_for(r)
     earn_trust(rows)
+    # Policy watch: a rule NBIM has reworded from "will not" to "may not" on its website is a judgement
+    # call from the day that was seen. No meeting in the file is that late, so no test is affected.
+    softer, since = pw.softened_rules()
+    for r in rows:
+        for g in r["signals"]:
+            if since and r["meeting_date"] >= since and g["name"].split(" ")[0] in softer:
+                g["trusted"] = False
+                g["record"] += "; NBIM has since reworded this rule to 'may not'"
     for r in rows:
         for g in r["signals"]:
             g["quotes"] = []

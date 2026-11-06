@@ -681,6 +681,26 @@ Japan: 1903 director nominees in NBIM's file, 40 against the board. EDINET repor
    put 11 more against-votes in front of a person for 78 more nominees read.
 ```
 
+## Policy watch: has NBIM reworded a rule since the stored edition?
+
+`python3 src/agent/policy_watch.py`
+
+```text
+Stored edition: Global voting guidelines 2025, 76 rules.
+NBIM's web page, fetched 2026-11-06: 80 rule sentences.
+
+Word for word the same: 75 rules.
+Reworded: 1.
+  [1.3.1] SOFTER
+     stored: We will not support the election of a chairperson who is also the CEO of the company.
+     live:   We may not support the election of a chairperson who is also the CEO of the company.
+In the stored edition, not found on the page: 0.
+On the page, not in the stored edition: 0.
+
+Rules that became softer: 1.3.1. From 2026-11-06 the tool treats them as judgement calls:
+their cases go to a person. They are not used to score meetings before that date.
+```
+
 ## Confidence and routing: when should the tool ask a person?
 
 `python3 src/agent/routing.py`

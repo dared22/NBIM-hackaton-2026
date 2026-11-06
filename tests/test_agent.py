@@ -502,6 +502,40 @@ class CountryRuleTests(unittest.TestCase):
         self.assertTrue(all(d[col["decided_by"]] == "human review" for d in fired))
 
 
+class PolicyWatchTests(unittest.TestCase):
+    """The comparison of NBIM's live guidelines with the stored edition."""
+
+    @classmethod
+    def setUpClass(cls):
+        import policy_watch
+        cls.pw = policy_watch
+
+    def test_a_softer_wording_is_recognised_and_a_plain_rewording_is_not(self):
+        rules = [{"id": "1.3.1", "tekst": "We will not support the election of a chairperson who is also the CEO of the company."},
+                 {"id": "3.1.2", "tekst": "We will support a proposal to declassify the board."},
+                 {"id": "9.9.9", "tekst": "We will not support a proposal that harms shareholders in a material way."}]
+        live = ["We may not support the election of a chairperson who is also the CEO of the company.",
+                "We will support a proposal to declassify the board.",
+                "We will not support a proposal that harms shareholders in any material way."]
+        same, reworded, gone, new = self.pw.compare(rules, live)
+        self.assertEqual(same, ["3.1.2"])
+        self.assertEqual({rid: soft for rid, _, _, soft in reworded}, {"1.3.1": True, "9.9.9": False})
+        self.assertEqual((gone, new), ([], []))
+
+    def test_the_saved_live_page_differs_from_the_stored_edition_in_one_rule(self):
+        softer, since = self.pw.softened_rules()
+        self.assertEqual(list(softer), ["1.3.1"])
+        self.assertIn("may not support", softer["1.3.1"])
+        self.assertGreaterEqual(since, "2026-11-06")
+
+    def test_the_softened_rule_changes_no_decision_in_the_test_data(self):
+        import board_rules
+        _, since = self.pw.softened_rules()
+        rows = board_rules.load_scored()
+        self.assertTrue(all(r["meeting_date"] < since for r in rows))
+        self.assertFalse(any("reworded" in g["record"] for r in rows for g in r["signals"]))
+
+
 class RoutingTests(unittest.TestCase):
     def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
         import routing

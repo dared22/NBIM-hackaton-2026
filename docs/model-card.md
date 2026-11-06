@@ -292,6 +292,20 @@ guidelines we were given still contain rule 1.3.1. So in 2026 NBIM's practice
 at these companies no longer followed that written rule, and a tool that
 applied it blindly would have been wrong five times.
 
+NBIM has since reworded that rule (`src/agent/policy_watch.py`). The tool
+compares NBIM's guidelines web page with the stored 2025 edition, sentence by
+sentence. On 6 November 2026, 75 of the 76 rules were word for word the same.
+One differed: rule 1.3.1 now reads "We may not support the election of a
+chairperson who is also the CEO of the company", where the 2025 PDF (dated May
+2025) says "We will not support". It is the only rule on the page that uses
+"may". NBIM's report on the first half of 2025 still describes opposing the
+chair and CEO at about 305 US companies, so the rewording came after that. The
+page carries no date, so we cannot show the softer wording was public before
+each 2026 meeting, and it is not used to score 2026. The order of events is
+the point: the tool found the change from NBIM's votes alone, and the written
+rule turned out to have changed too. From the day the page was fetched, a
+softened rule is a judgement call and its cases go to a person.
+
 Drift monitor. Each rule is watched: when NBIM has supported the board the
 last two times a rule fired, the rule is suspended and its later cases go to a
 person. With the monitor, 2019-2025 gives 37 hits in 42 automatic suggestions

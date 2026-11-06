@@ -88,6 +88,7 @@ SCRIPTS = [
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
     ("The combined model: both teams' systems in one score", ["src/agent/combined_model.py"]),
     ("Director elections in Japan and Korea: a company fact that brings in a person", ["src/agent/country_rules.py"]),
+    ("Policy watch: has NBIM reworded a rule since the stored edition?", ["src/agent/policy_watch.py"]),
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
