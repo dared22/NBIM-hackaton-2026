@@ -710,12 +710,14 @@ more on 2026 than on those years, because more 2026 proposals sit between 2%
 and 5%.
 
 This is also the fair way to compare with the pipeline on branch `marie`,
-which sends every suggestion against the board to a person and reads 41% of
-2026 (633 proposals, 63 of 66 against-votes seen). At the same amount of
-reading main has 64 of 66 on 2026 and 358 against 340 of 401 on 2022-2025; cut
-to main's default reading, that pipeline has 55 of 66 and 296 of 401 where
-main has 56 and 319. So on 2026 the two are level, and on the earlier years
-main is ahead. Main uses that pipeline's two scores as inputs.
+which sends every suggestion against the board to a person and, at its final
+commit (357ecb5), reads 44% of 2026 (684 proposals, 64 of 66 against-votes
+seen). At the same amount of reading main also has 64 of 66 on 2026, and 361
+against 341 of 401 on 2022-2025; cut to main's default reading, that pipeline
+has 55 of 66 and 294 of 401 where main has 56 and 319. So on 2026 the two are
+level, and on the earlier years main is ahead. Main uses that pipeline's two
+scores as inputs (as exported at a7d971a), and that pipeline now uses main's
+pay model.
 
 A gate that would send a proposal to a person when that pipeline's second
 model says 5% or more and the combined model says less was tested on
