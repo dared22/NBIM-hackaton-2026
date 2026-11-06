@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 03:27.
+Last full update: Fri 04:01.
 
 ## What must be delivered
 
@@ -95,6 +95,7 @@ The numbers for a slide are in `data/outputs/headline.md`, written by `python3 s
 | Branch | Who | What | Note |
 |---|---|---|---|
 | `llm_search` | dared22 | AI model reads proxies for director facts (independence, committees, chair, CEO), with a quote for each fact | Pilot on 5 meetings, no accuracy number yet. Adds `src/policy.py` |
+| `full_pipeline` | dared22 | Continues `llm_search`: director evidence for 2025 and 2026 with DeepSeek, still running (101 nominees verified) | Not merged. Compared with main's reader on the same nominees: same answer on 126 of 129 facts |
 | `policy-retrieval` | M03ZGH | Finds guideline rules that match a proposal by keywords | Reviewed, not needed in `main`. Valid JSON, but NBIM's own section is among its candidates for 27 of 63 against-votes in 2026; the picker in `main` gets 45. Its good idea, quoting each rule's text and page, is now in `decisions_2026.csv` |
 | `marie` | marie | Jev pipeline with company facts for the US, Japan and Korea | Her per-proposal scores are exported into `main` (`data/evidence/jev_pipeline/`) and used by the combined model. The branch itself is 5 GB (downloaded filings) and is not merged |
 | `rule-check` | Iftikhar | Same as `main` | Can be deleted |
@@ -165,3 +166,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 03:16 Iftikhar: `data/outputs/headline.md` added (both test sets, the simple rules and the tool, on one page). Model card opening rewritten to describe the tool as it is now.
 - Fri 03:24 Iftikhar: night summary. Added tonight: combined model (main + Marie's Jev pipeline), support-based routing, Japan and Korea director facts, policy watch (NBIM softened rule 1.3.1), judge model for US directors, intervals, headline page. Tested and left out: same-year history, type-specific Jev weights, boosted trees, guideline editions, meeting-level signals, last year's vote results, cross-shareholdings, judge on pay votes, extra judge facts. OpenRouter spend tonight about 1 dollar.
 - Fri 03:27 Iftikhar: two more ideas tested, neither adopted. (1) Chair-and-CEO facts for Korea: the OpenDART executive tables name a board chair at only 3 of 12 companies, so no rule can be built. (2) Pay votes: letting the tool act alone only at 70% confidence or more would make it right 92% of the time on the training seasons, but it would then find 31% of against-votes alone instead of 50%, so the current cut-off stays. On the training seasons, suggestions at 0.37-0.50 are right 41% of the time and at 0.70 or more 92%, which the reviewer can read from the stated probability.
+- Fri 04:01 Iftikhar: Daniel's new branch `full_pipeline` compared with main's reader (read-only, his branch untouched): same answer on 126 of 129 facts. The three that differ look like our reader's mistakes at one company in 2026.

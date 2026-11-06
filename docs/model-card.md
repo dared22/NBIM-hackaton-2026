@@ -495,6 +495,16 @@ is a link, but 8 chairs is too few to act on, and the pay vote at the same
 meeting is not known beforehand. The reviewer is shown the fact; the tool
 does not act on it.
 
+A third reader agrees too. Daniel's pipeline on branch `full_pipeline` reads
+the same proxies with a different model (DeepSeek) and its own code. For the
+101 nominees of 2025 and 2026 it has verified so far, the two readers both
+answered 129 facts and gave the same answer on 126 (97.7%). The three that
+differ are at one company in 2026, and his quotes suggest ours is the one in
+error there: two directors the proxy calls independent are marked not
+independent by our reader. His reader answers far fewer facts (129 where ours
+answers 1,145 for the same nominees), because it records a fact only when a
+sentence states it outright.
+
 When the tool acts on its own. A signal has to earn trust: the tool suggests
 "against" by itself only when NBIM followed that signal at the last two
 meetings where it fired. Before that, and after any miss, the nominee goes to
