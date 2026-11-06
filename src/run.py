@@ -405,6 +405,9 @@ def headline(general, pay):
 
 
 def main():
+    # --quick: only the decisions, the headline and the dashboard files (under a minute). The report
+    # scripts are skipped and data/outputs/results.md is left as it is. The decisions are the same.
+    quick = "--quick" in sys.argv[1:]
     os.makedirs(OUT, exist_ok=True)
     parts = ["# Results", "", f"Produced by `python3 src/run.py`. Test year {YEAR}; nothing from {YEAR} is used to fit or tune.", ""]
 
@@ -419,15 +422,16 @@ def main():
               summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"), ""]
 
     env = dict(os.environ, PYTHONPATH=os.path.join(ROOT, "src"))
-    for title, args in SCRIPTS:
+    for title, args in ([] if quick else SCRIPTS):
         print(f"running: {title} ...", flush=True)
         done = subprocess.run([sys.executable] + args, cwd=ROOT, env=env, capture_output=True, text=True)
         if done.returncode != 0:
             raise SystemExit(f"{args[0]} failed:\n{done.stderr[-2000:]}")
         parts += [f"## {title}", "", f"`python3 {' '.join(args)}`", "", "```text", done.stdout.rstrip(), "```", ""]
 
-    with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(parts))
+    if not quick:
+        with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
+            f.write("\n".join(parts))
     with open(os.path.join(OUT, "headline.md"), "w", encoding="utf-8") as f:
         f.write(headline(general, pay))
     print()
@@ -437,8 +441,9 @@ def main():
     # The same decisions in the column layout of the team's demo (branch marie, src/nbim_vote/dashboard.py).
     import export_for_dashboard
     export_for_dashboard.main()
-    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals), data/outputs/results.md "
-          f"and data/outputs/headline.md")
+    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals)"
+          + ("" if quick else ", data/outputs/results.md") + " and data/outputs/headline.md"
+          + (" (quick run: the report scripts were skipped; results.md is unchanged)" if quick else ""))
 
 
 if __name__ == "__main__":
