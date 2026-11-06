@@ -1,19 +1,17 @@
-"""Generate voting suggestions, summaries and dashboard files from saved data.
+"""One command that reproduces every result and writes one decision per proposal.
 
-Run from the repo root (no internet, no API key):
+Run from the repo root (about three minutes, no internet, no API key):
     python3 src/run.py
 
-It writes these files in data/outputs/
+It writes reports and decisions in data/outputs/
     decisions_2026.csv  one row per 2026 proposal: suggested vote, probability,
                         band, whether a person must decide, reasons, guideline,
                         the guideline's own words with its page number,
                         evidence link, and what NBIM actually did
-    results.md          MOT precision/recall/F1, baselines and decision summaries
-    headline.md         MOT comparisons and headline summary for each dataset
-    dashboard/predictions_main.csv      general proposals for the dashboard
-    dashboard/predictions_main_pay.csv  US pay proposals for the dashboard
+    results.md          MOT metric tables and every evaluation script
+    headline.md         headline results and MOT metric tables
 
-Experiments and evaluation scripts are run separately, not by this command.
+Use --quick to skip evaluation scripts and leave results.md unchanged.
 
 Three sources feed the decisions
     US executive pay votes   src/agent/pay_model.py       vote history + company facts
@@ -60,6 +58,7 @@ import collections
 import csv
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,6 +80,30 @@ import rule_check as rc  # noqa: E402
 OUT = os.path.join(ROOT, "data", "outputs")
 YEAR = 2026
 USE_COMBINED = True     # False: NBIM's vote file is scored by the history model alone, as before the combined model
+SCRIPTS = [
+    ("History model, all proposal types", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv"]),
+    ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
+    ("Pay model, US executive pay votes", ["src/agent/pay_model.py"]),
+    ("Pay model, how the inputs were chosen (training seasons only)", ["src/agent/pay_model.py", "--develop"]),
+    ("The same US pay proposals in both files: which model should answer?", ["src/agent/pay_overlap.py"]),
+    ("Director elections at US companies: NBIM's written rules applied to dated facts", ["src/agent/director_rules.py"]),
+    ("Director elections at US companies: facts read from the proxy, and rules that must earn trust", ["src/agent/board_rules.py"]),
+    ("How reliable is the proxy reader? A second, stronger model read a sample again", ["src/agent/board_reader_check.py"]),
+    ("Proposals whose wording decides the vote: NBIM's written rules applied to the title", ["src/agent/proposal_rules.py"]),
+    ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
+    ("Guideline rule check", ["src/agent/rule_check.py"]),
+    ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
+    ("The judge: an AI model weighs the gathered facts against NBIM's rules and record", ["src/agent/judge.py"]),
+    ("The combined model: both teams' systems in one score", ["src/agent/combined_model.py"]),
+    ("Director elections in Japan and Korea: a company fact that brings in a person", ["src/agent/country_rules.py"]),
+    ("Policy watch: has NBIM reworded a rule since the stored edition?", ["src/agent/policy_watch.py"]),
+    ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
+    ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
+    ("Jev as a judge of US pay votes (the pay model's twelfth input)", ["src/agent/jev_pay.py"]),
+    ("Resistance test and guardrail", ["src/agent/robustness.py"]),
+    ("Resistance test 2: a reworded instruction against the whole pipeline", ["src/agent/paraphrase_test.py"]),
+    ("Resistance test 3: an instruction planted in the proxy the AI reader reads", ["src/agent/reader_injection_test.py"]),
+]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
         "probability_against_board", "band", "decided_by", "review_reason", "model", "reasons",
         "guideline", "guideline_text", "evidence_url", "actual_against_board", "actual_vote"]
@@ -315,6 +338,75 @@ def summary(rows, name):
     return "\n".join(lines)
 
 
+def headline(general, pay):
+    """The numbers for a slide, as a short Markdown page: both test sets, the simple rules, the tool."""
+    col = {c: i for i, c in enumerate(COLS)}
+    pct = lambda a, b: f"{a / b:.0%}" if b else "-"
+
+    def tool(rows):
+        against = [r for r in rows if r[col["actual_against_board"]] == 1]
+        alone = [r for r in rows if r[col["band"]] == "likely AGAINST board" and r[col["decided_by"]] == "automatic"]
+        person = [r for r in rows if r[col["decided_by"]] == "human review"]
+        hit = lambda g: sum(1 for r in g if r[col["actual_against_board"]] == 1)
+        return len(rows), len(against), len(alone), hit(alone), len(person), hit(person)
+
+    def table(rows):
+        return ["| Method | Says against | Right | Wrong | Precision | Recall |", "|---|---|---|---|---|---|"] + [
+            f"| {name} | {flags} | {hits} | {flags - hits} | {pct(hits, flags)} | {pct(hits, total)} |" for name, flags, hits, total in rows]
+
+    votes = bm.read_votes(rc.VOTES)
+    _, test_a, _, _ = bm.run_year(votes, YEAR)
+    last_a = [r for r in test_a if r["prev_same_item"] == 1]
+    n, a, alone, right, person, seen = tool(general)
+    lines = [f"# Headline numbers, test year {YEAR}", "",
+             "Written by `python3 src/run.py`. The year was not used to fit or choose anything, except where "
+             "`docs/model-card.md` says how often it has been scored.", "",
+             f"## NBIM's vote file, all countries: {n} proposals, {a} against the board", "",
+             f"Always following the board is right on {pct(n - a, n)} of proposals and finds none of the {a}.", ""]
+    lines += table([("Always follow the board", 0, 0, a), ("Same as last time at this company", len(last_a), sum(r["y"] for r in last_a), a),
+                    ("The tool, acting alone", alone, right, a)])
+    lines += ["", f"The tool sends {person} proposals ({pct(person, n)}) to a person, and {seen} against-votes are among them. "
+              f"So {right + seen} of the {a} against-votes ({pct(right + seen, a)}) are either suggested by the tool or put in front of a person, "
+              f"and {a - right - seen} are waved through.", ""]
+
+    # The reading dial: the 5% level is a setting. What a lower level costs and catches.
+    waved = sorted((r for r in general if r[col["decided_by"]] == "automatic" and r[col["band"]] == "likely WITH board"),
+                   key=lambda r: -float(r[col["probability_against_board"]]))
+    careful = cm.careful_level(YEAR)
+    lines += ["### If a person reads more", "",
+              f"The {cm.LOW:.0%} level, below which the tool follows the board on its own, is a setting. Lower it and more proposals go to a "
+              "person, in the order of the tool's own probability. The careful level is the one that would have put "
+              f"{cm.CAREFUL_TARGET:.0%} of the against-votes of the earlier years ({cm.DEVELOP[0]}-{cm.DEVELOP[-1]}) in front of a person or in "
+              f"the tool's own suggestions. It was chosen on those years only.", "",
+              "| Level | Sent to a person | Share | Against-votes suggested or seen | Waved through |", "|---|---|---|---|---|"]
+    for name, level in sorted(((f"{cm.LOW:.0%} (as above)", None), ("3%", 0.03), ("2%", 0.02), (f"Careful level, {careful:.1%}", careful), ("1%", 0.01)),
+                              key=lambda item: -(item[1] if item[1] is not None else cm.LOW)):
+        extra = [r for r in waved if level is not None and float(r[col["probability_against_board"]]) >= level]
+        caught = right + seen + sum(1 for r in extra if r[col["actual_against_board"]] == 1)
+        lines.append(f"| {name} | {person + len(extra)} | {pct(person + len(extra), n)} | {caught} of {a} ({pct(caught, a)}) | {a - caught} |")
+    lines += ["", "The proposals a lower level adds are the rows of `data/outputs/decisions_2026.csv` decided automatically with the board, "
+              "sorted by `probability_against_board`.", ""]
+
+    pay_rows, _ = pm.load_rows()
+    test_b = [r for r in pay_rows if r["season"] == pm.TEST_SEASON]
+    last_b = [r for r in test_b if r["prev"] == 1]
+    big_b = [r for r in test_b if r["pay"] and r["pay"] >= pm.STRICT_LEVEL]
+    n, a, alone, right, person, seen = tool(pay)
+    lines += [f"## US executive pay votes: {n} votes, {a} against the board", "",
+              f"Always following the board is right on {pct(n - a, n)} of votes and finds none of the {a}.", ""]
+    lines += table([("Always follow the board", 0, 0, a), ("Same as last season", len(last_b), sum(r["y"] for r in last_b), a),
+                    ("Against if the CEO is paid 25 million dollars or more", len(big_b), sum(r["y"] for r in big_b), a),
+                    ("The tool, acting alone", alone, right, a)])
+    lines += ["", f"The tool sends {person} votes ({pct(person, n)}) to a person, and {seen} against-votes are among them. "
+              f"So {right + seen} of the {a} against-votes ({pct(right + seen, a)}) are either suggested or seen, "
+              f"and {a - right - seen} are waved through.", "",
+              "## How to read these", "",
+              "- \"Says against\" for the tool counts only what it suggests on its own. What it sends to a person is counted in the sentence under each table.",
+              "- The two test sets are separate files and do not add up to one total.",
+              "- Intervals, the earlier years and everything that was tested and left out are in `data/outputs/results.md` and `docs/model-card.md`.", ""]
+    return "\n".join(lines)
+
+
 def mot_metrics(actual: list[bool], predicted: list[bool]) -> tuple[int, int, int, float, float, float]:
     """MOT-class counts and metrics; undefined ratios are reported as zero."""
     tp = sum(a and p for a, p in zip(actual, predicted, strict=True))
@@ -380,33 +472,49 @@ def prediction_comparisons(pay: list[list], general: list[list]) -> str:
 
 
 def main():
+    # --quick: only the decisions, the headline and the dashboard files (under a minute). The report
+    # scripts are skipped and data/outputs/results.md is left as it is. The decisions are the same.
+    quick = "--quick" in sys.argv[1:]
     os.makedirs(OUT, exist_ok=True)
     parts = ["# Results", "", f"Produced by `python3 src/run.py`. Test year {YEAR}; nothing from {YEAR} is used to fit or tune.", ""]
 
-    print("Scoring US executive pay votes ...", flush=True)
     pay = pay_once()
-    print("Scoring general proposals with the combined model and NBIM rules ...", flush=True)
     general = general_decisions(pay=pay)
     with open(os.path.join(OUT, f"decisions_{YEAR}.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(COLS)
         w.writerows(sorted(pay + general, key=lambda r: -float(r[7])))
-    summaries = [summary(pay, "US executive pay votes (history + company facts)"), "",
-                 summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"), ""]
+    parts += ["## Decisions", "", "One row per proposal is in `data/outputs/decisions_2026.csv`.", "",
+              summary(pay, "US executive pay votes (history + company facts)"), "",
+              summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"), ""]
+
     comparisons = prediction_comparisons(pay, general)
     parts += [comparisons, ""]
-    parts += ["## Decisions", "", f"One row per proposal is in `data/outputs/decisions_{YEAR}.csv`.", ""] + summaries
 
-    with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(parts))
+    env = dict(os.environ, PYTHONPATH=os.path.join(ROOT, "src"))
+    for title, args in ([] if quick else SCRIPTS):
+        print(f"running: {title} ...", flush=True)
+        done = subprocess.run([sys.executable] + args, cwd=ROOT, env=env, capture_output=True, text=True)
+        if done.returncode != 0:
+            raise SystemExit(f"{args[0]} failed:\n{done.stderr[-2000:]}")
+        parts += [f"## {title}", "", f"`python3 {' '.join(args)}`", "", "```text", done.stdout.rstrip(), "```", ""]
+
+    if not quick:
+        with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
+            f.write("\n".join(parts))
     with open(os.path.join(OUT, "headline.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join([f"# Headline numbers, test year {YEAR}", "", comparisons, ""] + summaries))
-    print("\n" + comparisons + "\n\n" + "\n".join(summaries))
+        f.write(headline(general, pay) + "\n\n" + comparisons + "\n")
+    print("\n" + comparisons)
+    print()
+    print(summary(pay, "US executive pay votes (history + company facts)"))
+    print()
+    print(summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"))
     # The same decisions in the column layout of the team's demo (branch marie, src/nbim_vote/dashboard.py).
     import export_for_dashboard
     export_for_dashboard.main()
-    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals), data/outputs/results.md "
-          f"and data/outputs/headline.md")
+    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals)"
+          + ("" if quick else ", data/outputs/results.md") + " and data/outputs/headline.md"
+          + (" (quick run: the report scripts were skipped; results.md is unchanged)" if quick else ""))
 
 
 if __name__ == "__main__":

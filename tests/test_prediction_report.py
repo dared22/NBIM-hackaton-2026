@@ -1,15 +1,52 @@
 """Checks for MOT metrics and historical baselines in the CLI report."""
 
+import contextlib
+import io
 import os
+import subprocess
 import sys
+import tempfile
 import unittest
-from unittest.mock import patch
+from pathlib import Path
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "src"))
 import run
 
 
 class PredictionReportTests(unittest.TestCase):
+    def test_full_and_quick_runs_preserve_tables_and_incoming_report_behavior(self):
+        import export_for_dashboard
+
+        decision = {"actual_vote": "MOT", "suggested_vote": "MOT", "decided_by": "automatic",
+                    "board_recommendation": "FOR", "probability_against_board": "0.8"}
+        rows = [[decision.get(c, "") for c in run.COLS]]
+        comparisons = run.mot_table(rows, "Sample", [])
+        for quick in (False, True):
+            with self.subTest(quick=quick), tempfile.TemporaryDirectory() as tmp:
+                results = Path(tmp) / "results.md"
+                results.write_text("Existing report")
+                with patch.multiple(run, OUT=tmp, SCRIPTS=[("Evaluation", ["evaluate.py"])],
+                                    pay_once=Mock(return_value=rows), general_decisions=Mock(return_value=rows),
+                                    summary=Mock(return_value="Existing summary"), headline=Mock(return_value="Existing headline"),
+                                    prediction_comparisons=Mock(return_value=comparisons)), \
+                        patch.object(sys, "argv", ["run.py"] + (["--quick"] if quick else [])), \
+                        patch.object(run.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "Evaluation output")) as evaluate, \
+                        patch.object(export_for_dashboard, "main") as export, \
+                        contextlib.redirect_stdout(io.StringIO()) as terminal:
+                    run.main()
+                self.assertIn(comparisons, terminal.getvalue())
+                self.assertIn(comparisons, (Path(tmp) / "headline.md").read_text())
+                self.assertIn("Existing headline", (Path(tmp) / "headline.md").read_text())
+                export.assert_called_once()
+                if quick:
+                    evaluate.assert_not_called()
+                    self.assertEqual(results.read_text(), "Existing report")
+                else:
+                    evaluate.assert_called_once()
+                    self.assertIn(comparisons, results.read_text())
+                    self.assertIn("Evaluation output", results.read_text())
+
     def test_mot_metrics_count_false_positives_and_misses(self):
         tp, fp, fn, precision, recall, f1 = run.mot_metrics(
             [True, True, True, False], [True, False, False, True])

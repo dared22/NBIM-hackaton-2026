@@ -1,5 +1,52 @@
 # Headline numbers, test year 2026
 
+Written by `python3 src/run.py`. The year was not used to fit or choose anything, except where `docs/model-card.md` says how often it has been scored.
+
+## NBIM's vote file, all countries: 1539 proposals, 66 against the board
+
+Always following the board is right on 96% of proposals and finds none of the 66.
+
+| Method | Says against | Right | Wrong | Precision | Recall |
+|---|---|---|---|---|---|
+| Always follow the board | 0 | 0 | 0 | - | 0% |
+| Same as last time at this company | 38 | 22 | 16 | 58% | 33% |
+| The tool, acting alone | 33 | 26 | 7 | 79% | 39% |
+
+The tool sends 404 proposals (26%) to a person, and 30 against-votes are among them. So 56 of the 66 against-votes (85%) are either suggested by the tool or put in front of a person, and 10 are waved through.
+
+### If a person reads more
+
+The 5% level, below which the tool follows the board on its own, is a setting. Lower it and more proposals go to a person, in the order of the tool's own probability. The careful level is the one that would have put 90% of the against-votes of the earlier years (2022-2025) in front of a person or in the tool's own suggestions. It was chosen on those years only.
+
+| Level | Sent to a person | Share | Against-votes suggested or seen | Waved through |
+|---|---|---|---|---|
+| 5% (as above) | 404 | 26% | 56 of 66 (85%) | 10 |
+| 3% | 610 | 40% | 64 of 66 (97%) | 2 |
+| Careful level, 2.1% | 751 | 49% | 65 of 66 (98%) | 1 |
+| 2% | 811 | 53% | 65 of 66 (98%) | 1 |
+| 1% | 1139 | 74% | 66 of 66 (100%) | 0 |
+
+The proposals a lower level adds are the rows of `data/outputs/decisions_2026.csv` decided automatically with the board, sorted by `probability_against_board`.
+
+## US executive pay votes: 1200 votes, 114 against the board
+
+Always following the board is right on 90% of votes and finds none of the 114.
+
+| Method | Says against | Right | Wrong | Precision | Recall |
+|---|---|---|---|---|---|
+| Always follow the board | 0 | 0 | 0 | - | 0% |
+| Same as last season | 97 | 42 | 55 | 43% | 37% |
+| Against if the CEO is paid 25 million dollars or more | 155 | 83 | 72 | 54% | 73% |
+| The tool, acting alone | 93 | 69 | 24 | 74% | 61% |
+
+The tool sends 371 votes (31%) to a person, and 36 against-votes are among them. So 105 of the 114 against-votes (92%) are either suggested or seen, and 9 are waved through.
+
+## How to read these
+
+- "Says against" for the tool counts only what it suggests on its own. What it sends to a person is counted in the sentence under each table.
+- The two test sets are separate files and do not add up to one total.
+- Intervals, the earlier years and everything that was tested and left out are in `data/outputs/results.md` and `docs/model-card.md`.
+
 ## Prediction quality: MOT votes
 
 Positive class: actual vote MOT (US pay AGAINST/WITHHOLD is mapped to MOT). AVSTÅ is not MOT. Automatic-only recall uses all actual MOT votes, including those sent to review. TP = correct MOT, FP = incorrect MOT, FN = missed MOT. Undefined metrics are shown as 0%. History is frozen before the test year/season; missing history follows the board. The datasets are scored separately.
@@ -26,21 +73,3 @@ Positive class: actual vote MOT (US pay AGAINST/WITHHOLD is mapped to MOT). AVST
 | Baseline: follow board       | 0             | 0  | 0  | 114 | 0.0%      | 0.0%   | 0.0%  |
 | Baseline: repeat last season | 98            | 43 | 55 | 71  | 43.9%     | 37.7%  | 40.6% |
 | Baseline: CEO pay >= $25m    | 155           | 83 | 72 | 31  | 53.5%     | 72.8%  | 61.7% |
-
-### US executive pay votes (history + company facts)
-- Proposals: 1200; NBIM voted against the board on 114.
-- Decided automatically: 829 (69%). Sent to a person: 371 (31%).
-- Automatic 'against the board' suggestions: 93, of which 69 were right (precision 74%, recall 61%).
-- Against-votes inside the pile sent to a person: 36 (32% of all against-votes).
-- Against-votes the tool waved through with the board: 9 (8% of all against-votes).
-- With a person reading the review pile, 105 of 114 against-votes are either suggested or seen (92%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 85 proposals; 2 of them were against-votes.
-
-### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
-- Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1135 (74%). Sent to a person: 404 (26%).
-- Automatic 'against the board' suggestions: 33, of which 26 were right (precision 79%, recall 39%).
-- Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
-- Against-votes the tool waved through with the board: 10 (15% of all against-votes).
-- With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 47 proposals; 1 of them were against-votes.
