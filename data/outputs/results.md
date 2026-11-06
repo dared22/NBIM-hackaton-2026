@@ -144,7 +144,7 @@ Model weights (positive = pushes towards AGAINST)
    +0.56  pay_outran_returns CEO pay has grown faster than shareholder returns over the years in the pay table
    +0.39  jev_judge      the Jev decision model, given the pay figures and NBIM's pay rules, leans against
 
-Wrote 1200 scored votes to data/outputs/pay_votes_2026.csv
+Wrote 1200 scored votes to data\outputs\pay_votes_2026.csv
 ```
 
 ## Pay model, how the inputs were chosen (training seasons only)
@@ -246,7 +246,7 @@ Nominees matched to a person in the SEC data: 1660 (95%); of the against-votes: 
 6. Against-votes the rules do not explain, by NBIM's stated reason
     {'GVG 3.2': 24, 'none given': 9, 'GVG 1.1': 8, 'GVG 2.3': 5, 'GVG 2.1': 4, 'GVG 1.3': 3, 'GVG 1.2': 2}
 
-Wrote 1742 nominees to data/outputs/director_rules.csv
+Wrote 1742 nominees to data\outputs\director_rules.csv
 ```
 
 ## Director elections at US companies: facts read from the proxy, and rules that must earn trust
@@ -338,7 +338,7 @@ Proxy read for 1707 of them (98%); the nominee was found in the proxy for 1706.
    42 of 93: GVG 3.2 24, none given 8, GVG 1.1 8, GVG 2.1 1, GVG 1.3 1
    GVG 3.2 is 'board decisions and conduct': a reaction to something the company did, which a proxy does not state.
 
-Wrote 1742 nominees to data/outputs/board_rules.csv
+Wrote 1742 nominees to data\outputs\board_rules.csv
 ```
 
 ## How reliable is the proxy reader? A second, stronger model read a sample again
@@ -449,7 +449,7 @@ Proposals whose wording falls under a clear-cut rule: 79 (20 from shareholders, 
     {'GVG 5.3': 21, 'none given': 4, 'GVG 4.3': 2, 'GVG 3.1': 2, 'GVG 1.1': 1}
     GVG 5.3 is sustainability reporting, where every rule needs judgement.
 
-Wrote 79 proposals to data/outputs/proposal_rules.csv
+Wrote 79 proposals to data\outputs\proposal_rules.csv
 ```
 
 ## Experiment: do ballot details improve the history model? (test years 2022-2025)
@@ -512,7 +512,7 @@ Rule check by proposal type (types with at least 3 against-votes)
   SAY_ON_PAY        |        61 |      0.0% |   0.0% |   0.0% |       0 |    0 |            0 |      3
   ARTICLES          |        55 |      0.0% |   0.0% |   0.0% |       0 |    0 |            0 |      3
 
-Wrote 1539 rows to data/outputs/rule_check_2026.csv
+Wrote 1539 rows to data\outputs\rule_check_2026.csv
 ```
 
 ## Position papers: do they add anything?
@@ -1012,7 +1012,7 @@ Training seasons only, each scored by a fit on the other (the test season is in 
   NBIM votes (data/dirty/real_votes.csv)    | 13757 |              0 | 0.00% |                                 0/0
   Other investor (data/dirty/npx_votes.csv) | 52906 |              0 | 0.00% |                               0/141
 
-Wrote per-proposal history-model results to data/outputs/robustness_2026.csv
+Wrote per-proposal history-model results to data\outputs\robustness_2026.csv
 ```
 
 ## Resistance test 2: a reworded instruction against the whole pipeline

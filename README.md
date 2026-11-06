@@ -1,156 +1,113 @@
-# Stemmegivningsagenten — NBIM FinTech Hackathon H2026, case 1
+# NBIM voting agent — Case 1
 
-The tool suggests **FOR**, **MOT** or **AVSTÅ** on each proposal at a company's
-general meeting, the way NBIM would vote. For every proposal it gives the
-suggested vote, a probability, the NBIM guideline it rests on (with the
-guideline's own words and page), the reasons, and a link to the company
-document. It decides on its own only when it has something a person can check;
-everything it is unsure about goes to a person, with the reason.
+This project recommends **FOR**, **MOT**, or **AVSTÅ** for a shareholder
+proposal, cites the relevant NBIM voting guideline, and sends uncertain cases
+to a person. We evaluate recommendations against NBIM's published votes.
 
-It is measured against NBIM's published votes. Accuracy is not the measure:
-always following the board is right 96% of the time and finds no vote against
-the board. The measure is precision and recall on the votes against the board.
+The current repository contains the supplied data, a structured copy of the
+2025 guidelines, an architecture plan, and a historical benchmark. The voting
+agent itself is still to be built.
 
-## Results on the test year 2026
+## Project layout
 
-| | NBIM's vote file, all countries | US executive pay votes |
-|---|---|---|
-| Proposals / against the board | 1,539 / 66 | 1,200 / 114 |
-| Always follow the board | finds 0 | finds 0 |
-| Same as last time | 38 flags, 22 right | 97 flags, 42 right |
-| **The tool, acting alone** | **33 flags, 26 right (79% precision, 39% recall)** | **93 flags, 69 right (74% precision, 61% recall)** |
-| Sent to a person | 404 (26%) | 371 (31%) |
-| **Against-votes suggested or seen by a person** | **56 of 66 (85%)** | **105 of 114 (92%)** |
-
-How much a person reads is a setting. On the vote file, lowering the level
-from 5% to 3% sends 610 proposals (40%) to a person and puts 64 of the 66
-against-votes in front of them or in the tool's own suggestions.
-
-The numbers are written by the code to
-[`data/outputs/headline.md`](data/outputs/headline.md). Intervals, the earlier
-years, every time 2026 was scored, and everything that was tested and left out
-are in [`docs/model-card.md`](docs/model-card.md).
-
-## Run it
-
-Nothing to install and no API key: the pipeline uses Python's standard library
-only (3.9 or newer), and every AI answer and SEC figure is saved in the
-repository.
-
-```bash
-python3 src/run.py                        # everything, about five minutes
-python3 src/run.py --quick                # decisions, headline and dashboard files only, under a minute
-python3 -m unittest discover -s tests     # 87 checks, about two minutes
-```
-
-`src/run.py` writes:
-
-- `data/outputs/decisions_2026.csv`: one row per proposal (suggested vote,
-  probability, who decides and why, reasons, guideline with its words and page
-  number, evidence link, NBIM's actual vote)
-- `data/outputs/headline.md`: the headline numbers on one page
-- `data/outputs/results.md`: the full output of every script in the table below
-- `data/outputs/dashboard/`: the same decisions for the dashboard
-
-The dashboard (Streamlit, in Norwegian) shows every decision with its reasons:
-
-```bash
-pip install -r requirements.txt    # streamlit and pandas, for the dashboard only
-streamlit run src/dashboard.py
-```
-
-## How it works
-
-A diagram and a short walk-through in Norwegian are in
-[`docs/arkitektur.md`](docs/arkitektur.md). In short:
-
-1. **Guard (plain code).** Text that reads like an instruction, or unlike a
-   ballot item, goes straight to a person. So does a company document that
-   speaks to an automated reader.
-2. **Facts.** An AI model reads the company's proxy statement and records facts
-   about the board and the nominees. A fact a rule rests on needs a quote, and
-   the quote is checked word for word against the text. Pay figures come from
-   the tables in the proxy.
-3. **Signals.** NBIM's earlier votes; NBIM's written rules applied in code to
-   the facts (a rule is trusted only if NBIM followed it the last two times);
-   a judge model that weighs the facts against the rules; the Jev decision
-   model; and a second model from Marie's pipeline.
-4. **Models.** A combined model weighs the signals into one probability that
-   NBIM votes against the board, with weights fitted on earlier years. US pay
-   votes have their own model on pay figures.
-5. **Routing.** Below 5% the tool follows the board. It suggests a vote
-   against the board on its own only when that rests on a rule with its fact,
-   the pay figures, or NBIM's own against-vote on the same item last time.
-   Everything else goes to a person with the reason.
-6. **Checks.** 87 automatic tests (among them that the answer never leaks into
-   an input) and three attack tests: instructions in the proposal text, a
-   reworded instruction, and an instruction planted in the document the AI
-   reader reads.
-
-No AI model casts a vote: each gives facts or a probability, and code decides
-who decides.
-
-## Repository layout
+The paths marked **planned** are interfaces for the team. Add each file or
+directory when its first implementation is ready; empty scaffolding is not
+required.
 
 ```text
 .
-├── README.md, PROGRESS.md, requirements.txt
-├── src/
-│   ├── run.py                 # one command: all results and one decision per proposal
-│   ├── dashboard.py           # Streamlit dashboard (built by Marie, adapted to this branch)
-│   ├── benchmark/             # history model (NBIM's earlier votes)
-│   └── agent/                 # everything else: rules, AI reader, judge, combined model,
-│                              #   pay model, routing, attack tests, saved AI answers (cache/)
-├── tests/test_agent.py        # 87 checks
+├── README.md
 ├── data/
-│   ├── dirty/                 # the vote files as supplied (real_votes.csv is the answer key)
-│   ├── evidence/              # facts gathered before each meeting, and the scores from branch marie
-│   ├── policy/                # NBIM's position papers and a dated copy of its guidelines page
-│   └── outputs/               # decisions, headline, full results, dashboard files
+│   ├── dirty/                 # Supplied, unchanged CSVs
+│   │   ├── real_votes.csv     # NBIM API vote history; evaluation labels
+│   │   └── npx_votes.csv      # Optional SEC N-PX reference data
+│   ├── prepared/              # Planned: cleaned proposal inputs and splits
+│   ├── evidence/              # Planned: cached, dated meeting documents
+│   └── outputs/               # Planned: predictions and evaluation reports
 ├── docs/
-│   ├── model-card.md          # the full description: method, results, limits, what was left out
-│   ├── arkitektur.md          # diagram and walk-through (Norwegian)
-│   └── case1-architecture.md  # the team's original plan, kept for history
-└── startpakke/                # the organisers' material, including the 2025 guidelines
+│   └── case1-architecture.md  # Detailed design and benchmark protocol
+├── src/
+│   ├── prepare.py             # Planned: clean votes and separate inputs/labels
+│   ├── policy.py              # Planned: select and cite guideline sections
+│   ├── evidence.py            # Planned: retrieve pre-meeting company facts
+│   ├── decision.py            # Planned: Jev vote and human-review gate
+│   ├── evaluate.py            # Planned: baselines and holdout metrics
+│   ├── run.py                 # One command: all results and one decision per proposal
+│   ├── agent/                 # Existing pay model, rule check and resistance test
+│   └── benchmark/             # Existing historical disagreement model
+├── tests/                     # Checks for the proxy reader, guardrail and leakage
+└── startpakke/                # Organizers' materials and original scripts
 ```
 
-## The team's branches
+Keep each step's output small and explicit. A proposal input contains the
+meeting and item IDs, meeting date, company, proposal text, proposal type,
+proponent, and management recommendation. Evidence contains guideline IDs and
+exact text, plus any company facts with a source and publication date. A
+decision contains the recommended vote, class probabilities, citation, review
+status, and reason. Join the actual NBIM vote **only inside evaluation**.
 
-`main` is what we hand in. It builds on the other branches and credits them:
+## Data and sources
 
-- **`marie`** (Marie): a pipeline around the Jev decision model, with its own
-  demo. `main` uses its saved Jev answers and second-model scores as two of the
-  combined model's inputs, its company facts for Japan and Korea, and its
-  dashboard. Compared at the same amount of human reading the two are level on
-  2026 and `main` is ahead on 2022-2025 (see the model card, "The reading dial").
-- **`llm_search`, `full_pipeline`** (Daniel): a second way of reading director
-  facts from filings. Compared with `main`'s reader on the same nominees: the
-  same answer on 126 of 129 facts.
-- **`policy-retrieval`**: guideline retrieval; not used in `main`.
+Use [`data/dirty/real_votes.csv`](data/dirty/real_votes.csv) as the main vote
+history. Its `proposal_text` is usually a short agenda title, so some decisions
+need a meeting notice or proxy statement dated before the meeting. Fetch and
+cache those documents per meeting, and record when a required fact is missing.
 
-## Rules for the data
+The policy sources are the
+[structured 2025 guidelines](startpakke/case1_stemmegivning/retningslinjer_2025.json)
+and NBIM's twelve [position papers](data/policy/position_papers.json).
+Check which guideline version applied to each meeting before claiming policy
+agreement. The optional N-PX CSV is a separate dataset; its `meeting_id` is
+not the same identifier as the one in `real_votes.csv`.
 
-The fields `nbim_vote`, `nbim_vote_raw`, `against_board`, `rationale_text`,
-`rationale_section` and `position_paper` of a row reveal the answer or its
-explanation. They are never an input for that row; tests check this for the
-models' inputs and for what is sent to the AI models. Every company document used was filed before
-its meeting. Text from a proposal or a filing is treated as data, never as an
-instruction.
+Never pass `nbim_vote`, `nbim_vote_raw`, `against_board`, `rationale_text`,
+`rationale_section`, or `position_paper` from the same row into the decision
+pipeline. These fields reveal the answer or its explanation. Keep raw source
+documents as untrusted input: a sentence inside a proposal must not override
+the voting instructions.
 
-The two test sets are separate files and do not add up to one total: the
-organisers' `real_votes.csv` (all proposal types, 37 countries) and Norges
-Bank's own SEC Form N-PX filings (`data/dirty/nbim_pay_votes.csv`, US pay
-votes).
+## Run what exists today
 
-## What each script shows
+From the repository root, run the existing historical model with an explicit
+data path:
 
-Every script below is run by `src/run.py`, and its output is in
-`data/outputs/results.md`.
+```bash
+python3 src/benchmark/model.py --data data/dirty/real_votes.csv
+```
+
+It writes `src/benchmark/prediksjoner_2026.csv`. This model predicts whether
+NBIM **disagrees with management**, which is a useful comparison but is not
+the primary **NBIM votes MOT** target. Its output also includes actual labels,
+so use that CSV only for evaluation, never as input to Jev or the demo agent.
+
+Run its focused checks with:
+
+```bash
+PYTHONPATH=src python3 -m unittest discover -s src/benchmark -p 'test_model.py'
+```
+
+One command reproduces every result and writes one decision per proposal. It
+needs no API key and no internet: model answers and SEC figures are saved in
+the repository.
+
+```bash
+python3 src/run.py                        # about five minutes
+python3 -m unittest discover -s tests     # 87 checks, including leakage audits and four end-to-end attack checks
+```
+
+`src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
+probability, band, who decides, reasons, guideline with its own words and page
+number, evidence link),
+`data/outputs/headline.md` (the headline numbers on one page) and
+`data/outputs/results.md` (the full output of every script below).
+
+The two models are scored on two different files, so their counts do not add up
+to one total.
 
 | Script | What it shows | Result on 2026 |
 |---|---|---|
 | `src/benchmark/model.py` | File A, `real_votes.csv`: all proposal types, 37 countries, 1,539 proposals, 66 against the board. Vote history only | 24 hits and 14 false alarms at 38 flags; "same as last time" has 22 and 16 |
-| `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 73 hits and 24 false alarms at 97 flags; "same as last season" has 42 and 55 |
+| `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 72 hits and 25 false alarms at 97 flags; "same as last season" has 42 and 55 |
 | `src/agent/combined_model.py` | File A. One score from main's history model and rules plus the Jev decision model and second model exported from Marie's pipeline. Fitted on earlier years, designed on 2022-2025. The tool acts alone only when a rule, a fact or NBIM's own last vote on the item backs the suggestion | 2022-2025: 241 of 401 against-votes in the top 10% of its list (history model 220, Marie's pipeline 219). 2026 in the full pipeline: 26 right of 36 automatic suggestions (72%), 10 against-votes waved through, 56 of 66 suggested or seen (before: 25 of 35, 14, and 52) |
 | `src/agent/judge.py` | For US director nominees, an AI model is given the facts read from the proxy, NBIM's rules and how often NBIM has followed each rule, with no names, and returns a probability and a reason | When it says 50% or more it is right 30 times of 43 (2021-2025). In the pipeline: 2026 automatic suggestions 33 with 26 right (79%), same 56 of 66 suggested or seen |
 | `src/agent/country_rules.py` | Director elections in Japan and Korea, with facts from EDINET and OpenDART exported from Marie's branch | In Japan NBIM opposed 27 of 141 top executives and none of 739 nominees in other roles (to 2025). Used as a reason to bring in a person: 11 more against-votes seen on 2022-2025, no change on 2026 |
@@ -182,6 +139,40 @@ To rebuild the SEC data (about an hour, needs internet), run in this order:
 `src/agent/fetch_ceo_pay.py`, `fetch_director_roles.py`, `link_companies.py`,
 `fetch_proxy_pay.py`, `fetch_company_size.py`, `fetch_proxy_text.py`. To call the decision model for new proposals, put
 `OPENROUTER_API_KEY=...` in a `.env` file at the repository root.
+
+The `src/evaluate.py`, `src/policy.py` and other planned files in the layout above
+are not written yet. The [architecture plan](docs/case1-architecture.md)
+defines their intended pipeline and team boundaries.
+
+## Evaluation target
+
+Freeze a chronological split before tuning. Use earlier meetings for
+development and threshold selection, then a later holdout for the final
+comparison. Report MOT precision, recall, and F1; management-FOR/NBIM-MOT
+cases found; human-review workload; valid citations; and latency. Count a
+human-review case separately from an automatic MOT prediction. Compare every
+method on the same eligible rows and include the simple baseline of following
+`mgmt_rec`.
+
+For the full case requirements and source scripts, see the
+[organizers' Case 1 README](startpakke/case1_stemmegivning/README.md).
+
+## Dashboard
+
+A Streamlit page in Norwegian that shows every decision with its reasons, the
+cited guideline, the confidence, the link to the company document and NBIM's
+actual vote. Marie built it on branch `marie`; `src/dashboard.py` is a copy
+adapted to this branch's model. It has two data sets to choose from: NBIM's
+vote file for 2026 (combined model) and the US pay votes (pay model).
+
+```bash
+python3 src/run.py                 # writes data/outputs/dashboard/predictions_main*.csv
+pip install -r requirements.txt    # streamlit and pandas, for the dashboard only; the pipeline needs neither
+streamlit run src/dashboard.py
+```
+
+The "paste an agenda" tab of the original runs Marie's pipeline and is on her
+branch only.
 
 ## AI tools used
 
