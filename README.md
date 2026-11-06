@@ -21,6 +21,22 @@ pip install -e .            # installerer pakken nbim_vote og avhengighetene (py
 pip install -e ".[dev]"     # valgfritt: pytest og playwright for testene
 ```
 
+### Demo med Dashbord (Streamlit, på norsk)
+
+```bash
+python -m nbim_vote.dashboard_data          # én gang: lager data/outputs/dashboard/predictions_*.csv (ca. 2 min, ingen API-kall)
+streamlit run src/nbim_vote/dashboard.py
+```
+
+Dashbordet har tre faner:
+
+- **Oversikt:** alle forslag fra 2022 til 2026, med anbefalingene modellen ville gitt på møtedagen. Du kan filtrere og sortere på blant annet dato, manuell vurdering og sikkerhet. Detaljvisningen viser:
+  - begrunnelsen og fakta, med avsnittet fra dokumentet når du holder musepekeren over linjen;
+  - lenker til kildedokumentene;
+  - knappene Forrige og Neste, som også styres med piltastene.
+- **Ny saksliste:** den samme demoen som i terminalen.
+- **Om modellen:** forklaring av modellen og tallene.
+
 ### Demo i terminalen (ingen API-nøkkel trengs)
 
 ```bash
@@ -49,22 +65,6 @@ python -m nbim_vote.demo data/demo/hp_2026-04-16.txt --company "HP Inc." --date 
 - **Styrets anbefaling:** `[board: FOR]` eller `[board: MOT]` sist på linjen setter den.
 
 Demoen gir bare anbefalinger for møter der vi har selskapets dokumenter i dataene. Det gjelder SEC for USA, EDINET for Japan og DART for Sør-Korea. For andre møter sier demoen fra og stopper, i stedet for å gjette.
-
-### Dashbord (Streamlit, på norsk)
-
-```bash
-python -m nbim_vote.dashboard_data          # én gang: lager data/outputs/dashboard/predictions_*.csv (ca. 2 min, ingen API-kall)
-streamlit run src/nbim_vote/dashboard.py
-```
-
-Dashbordet har tre faner:
-
-- **Oversikt:** alle forslag fra 2022 til 2026, med anbefalingene modellen ville gitt på møtedagen. Du kan filtrere og sortere på blant annet dato, manuell vurdering og sikkerhet. Detaljvisningen viser:
-  - begrunnelsen og fakta, med avsnittet fra dokumentet når du holder musepekeren over linjen;
-  - lenker til kildedokumentene;
-  - knappene Forrige og Neste, som også styres med piltastene.
-- **Ny saksliste:** den samme demoen som i terminalen.
-- **Om modellen:** forklaring av modellen og tallene.
 
 ### Tester
 
