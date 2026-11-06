@@ -39,6 +39,7 @@ repository.
 
 ```bash
 python3 src/run.py                        # everything, about five minutes
+python3 src/run.py --quick                # decisions, headline and dashboard files only, under a minute
 python3 -m unittest discover -s tests     # 87 checks, about two minutes
 ```
 
