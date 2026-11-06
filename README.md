@@ -108,6 +108,7 @@ to one total.
 | `src/benchmark/model.py` | File A, `real_votes.csv`: all proposal types, 37 countries, 1,539 proposals, 66 against the board. Vote history only | 24 hits and 14 false alarms at 38 flags; "same as last time" has 22 and 16 |
 | `src/agent/pay_model.py` | File B, Norges Bank's N-PX filings: 1,200 US pay votes, 114 against the board. History plus company facts read from each meeting's proxy | 72 hits and 25 false alarms at 97 flags; "same as last season" has 42 and 55 |
 | `src/agent/combined_model.py` | File A. One score from main's history model and rules plus the Jev decision model and second model exported from Marie's pipeline. Fitted on earlier years, designed on 2022-2025. The tool acts alone only when a rule, a fact or NBIM's own last vote on the item backs the suggestion | 2022-2025: 241 of 401 against-votes in the top 10% of its list (history model 220, Marie's pipeline 219). 2026 in the full pipeline: 26 right of 36 automatic suggestions (72%), 10 against-votes waved through, 56 of 66 suggested or seen (before: 25 of 35, 14, and 52) |
+| `src/agent/judge.py` | For US director nominees, an AI model is given the facts read from the proxy, NBIM's rules and how often NBIM has followed each rule, with no names, and returns a probability and a reason | When it says 50% or more it is right 30 times of 43 (2021-2025). In the pipeline: 2026 automatic suggestions 33 with 26 right (79%), same 56 of 66 suggested or seen |
 | `src/agent/country_rules.py` | Director elections in Japan and Korea, with facts from EDINET and OpenDART exported from Marie's branch | In Japan NBIM opposed 27 of 141 top executives and none of 739 nominees in other roles (to 2025). Used as a reason to bring in a person: 11 more against-votes seen on 2022-2025, no change on 2026 |
 | `src/agent/policy_watch.py` | Compares NBIM's guidelines web page with the stored 2025 edition, rule by rule | 75 of 76 rules are word for word the same. One was softened: rule 1.3.1, chair who is also CEO, from "will not" to "may not". That is the rule where NBIM's 2026 votes changed (0 of 5 against, after 28 of 28) |
 | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | US director elections in file A. An AI model reads each proxy and records facts with checked quotes (independent, executive, chair, CEO, committees, other boards, founder). Code applies nine NBIM rules. A rule acts alone only after NBIM followed it at two meetings in a row | Proxy found for 98% of nominees; the two fact sources agree on 98.9%. The tool acts alone on 45 nominees and is right on 39 (87%); "same as last time" is right on 36 of 73. Another 12 against-votes reach a person with the fact and its quote |
@@ -161,6 +162,10 @@ The hackathon rules ask for this list.
 - Jev, a hosted decision model (Typesafe): called by Marie's pipeline on branch
   `marie`. Its saved answers (`data/evidence/jev_pipeline/`) are one input to
   the combined model.
+- Claude Haiku 5.5 through OpenRouter is also the judge for US director
+  nominees (`src/agent/judge.py`, cached in `src/agent/cache/judge.jsonl`). It
+  gets facts and NBIM's record without names, and returns a probability that
+  is one input to the combined model.
 - Claude Sonnet 5.5 through OpenRouter: read 16 meetings a second time, to
   check the first reader (`src/agent/board_reader_check.py`, cached in
   `src/agent/cache/board_facts_check.jsonl`).
@@ -173,7 +178,8 @@ The hackathon rules ask for this list.
 - Other branches not yet in `main` used DeepSeek through OpenRouter
   (`llm_search`) and Jev (`marie`). Add them here if those branches are merged.
 
-No AI model casts or decides a vote. A language model reads company filings
-and returns facts with quotes that are checked against the text. The
-suggestions in `data/outputs/decisions_2026.csv` come from the history model,
+No AI model casts a vote. A language model reads company filings and returns
+facts with quotes that are checked against the text; Jev and a judge model
+each give a probability that the combined model weighs with the rest. The
+suggestions in `data/outputs/decisions_2026.csv` come from the combined model,
 the pay model and NBIM's written rules applied in code.

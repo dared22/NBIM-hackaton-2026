@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 02:23.
+Last full update: Fri 02:48.
 
 ## What must be delivered
 
@@ -25,6 +25,7 @@ Last full update: Fri 02:23.
 | Combined model, all proposal types (main + Marie's Jev pipeline) | `src/agent/combined_model.py` | Done, in the pipeline | 2022-2025: better than either system alone. 2026: 26 right of 36 automatic suggestions (72%), 10 waved through, 56 of 66 suggested or seen (before 25 of 35, 14, and 52). `USE_COMBINED` in `src/run.py` switches it off |
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
+| Judge model for US director nominees | `src/agent/judge.py` | Done, in the pipeline | Weighs proxy facts against NBIM's rules and record, no names sent. Right 30 of 43 times when it says 50% or more (2021-2025). 2026 pipeline: 33 automatic suggestions, 26 right (79%) |
 | Director facts for Japan and Korea | `src/agent/country_rules.py` | Done, in the pipeline | In Japan NBIM opposes only top executives (27 of 141, none of 739 others). Brings in a person: 11 more against-votes seen on 2022-2025, no change on 2026 |
 | Policy watch | `src/agent/policy_watch.py` | Done | NBIM's live guidelines against the stored 2025 edition: 75 of 76 rules identical, rule 1.3.1 softened from "will not" to "may not" |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
@@ -41,7 +42,7 @@ Last full update: Fri 02:23.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 65 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 70 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -154,3 +155,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 01:47 Iftikhar: combined model improved on 2022-2025: the tool now acts alone only when a rule, a fact or NBIM's own last vote backs the suggestion (precision 52% to 67% there). Five other ideas tested and left out. 2026 has been scored twice with the combined model.
 - Fri 02:09 Iftikhar: Japan and Korea director facts (from Marie's EDINET and OpenDART data) used as reasons to bring in a person. Night work continues; Gemini's files in `min-agent/` were checked and not run (see the note in this file).
 - Fri 02:23 Iftikhar: tested 'more policy'. The rules we use are in every edition since 2020, so edition dates do not explain misfires. But NBIM's live guidelines page has softened rule 1.3.1 to 'may not', the rule where 2026 votes changed. Policy watch added; no effect on test numbers. Meeting-level signals and vote results from last year's AGM tested on 2022-2025: no gain, left out.
+- Fri 02:48 Iftikhar: tested 'AI gathers the facts, a judge decides' with Claude Haiku as judge (no Typesafe key for Jev). On US directors it ranks much better than the history model; in the pipeline it helps a little on 2022-2025 (suggested or seen 315 to 319 of 401) and is adopted. 2026 scored a third time: 33 automatic suggestions, 26 right. Cross-shareholdings in Japan tested: no clean rule, left out.

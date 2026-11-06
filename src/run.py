@@ -86,6 +86,7 @@ SCRIPTS = [
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
+    ("The judge: an AI model weighs the gathered facts against NBIM's rules and record", ["src/agent/judge.py"]),
     ("The combined model: both teams' systems in one score", ["src/agent/combined_model.py"]),
     ("Director elections in Japan and Korea: a company fact that brings in a person", ["src/agent/country_rules.py"]),
     ("Policy watch: has NBIM reworded a rule since the stored edition?", ["src/agent/policy_watch.py"]),
@@ -144,7 +145,7 @@ def general_decisions(rows=None, pay=None):
     known_companies = {r["company_id"] for r in train}
     # The combined model: the history model's probability, main's rules, and the two scores exported
     # from Marie's pipeline (Jev and her second model), weighted by a fit on earlier years.
-    combo_w, combo_level = cm.fitted(YEAR)
+    combo_fit, combo_level = cm.fitted(YEAR)
     components = cm.load_components(YEAR)
     abstain = routing.abstain_markets(train)
     papers = rc.load_papers()
@@ -166,9 +167,14 @@ def general_decisions(rows=None, pay=None):
         comp = components.get(key) if USE_COMBINED else None
         prob, band, model, reasons, guide = r["p"], r["band"], "vote history", bm.reasons(w, r["x"]), None
         if comp:
-            prob = bm.predict(combo_w, cm.inputs_for(r, comp, directors.get(key), worded.get(key)))
+            judged = cm.judge_answer(r, directors.get(key))
+            prob = cm.score(combo_fit, cm.inputs_for(r, comp, directors.get(key), worded.get(key), judged["p"] if judged else None))
             band = ("likely AGAINST board" if prob >= combo_level else "likely WITH board" if prob < cm.LOW else "send to human")
             model = "combined model: vote history, Jev and a second model"
+            if judged:
+                model = "combined model: vote history and a judge model weighing the proxy facts"
+                if judged["p"] >= 0.2:
+                    reasons += f" | the judge model puts this at {judged['p']:.0%}: {judged['reason']}"
             if comp["jev_vote"] != r["mgmt_rec"] and r["mgmt_rec"]:
                 reasons += (f" | the Jev decision model recommends {comp['jev_vote']}"
                             + (f", citing GVG {comp['jev_cited_section']}" if comp["jev_cited_section"] else ""))

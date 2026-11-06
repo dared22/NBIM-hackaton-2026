@@ -57,7 +57,7 @@ baseline at the same number of flags.
 | A | Same as last time | 38 | 22 | 16 | 58% | 33% |
 | A | History model | 38 | 24 | 14 | 63% | 36% |
 | A | Full pipeline with the history model (before the combined model) | 35 | 25 | 10 | 71% | 38% |
-| A | Full pipeline with the combined model (now) | 36 | 26 | 10 | 72% | 39% |
+| A | Full pipeline with the combined model (now) | 33 | 26 | 7 | 79% | 39% |
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
 | B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
@@ -83,11 +83,11 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 
 | | File A | File B |
 |---|---|---|
-| Decided automatically | 73% | 74% |
-| Sent to a person | 27% | 26% |
+| Decided automatically | 74% | 74% |
+| Sent to a person | 26% | 26% |
 | Against-votes suggested by the tool or sent to a person | 85% | 90% |
 | Against-votes the tool followed the board on by itself | 15% | 10% |
-| Precision of the automatic "against" suggestions | 72% | 70% |
+| Precision of the automatic "against" suggestions | 79% | 70% |
 
 One answer per proposal. The annual pay vote of 36 US companies is in both
 files. The tool used to answer those twice, and the two answers could differ.
@@ -198,7 +198,8 @@ once after the routing above was chosen on 2022-2025.
 | History model (before the combined model) | 35 | 25 (71%) | 14 | 52 (79%) | 25% |
 | Combined model, acts on every suggestion (first scoring) | 58 | 32 (55%) | 10 | 56 (85%) | 25% |
 | Combined model, acts alone only with support | 36 | 26 (72%) | 10 | 56 (85%) | 26% |
-| The same, with Japan and Korea facts bringing in a person (now) | 36 | 26 (72%) | 10 | 56 (85%) | 27% |
+| The same, with Japan and Korea facts bringing in a person | 36 | 26 (72%) | 10 | 56 (85%) | 27% |
+| The same, with the judge for US director nominees (now, third scoring) | 33 | 26 (79%) | 10 | 56 (85%) | 26% |
 
 Counting every suggestion "against", whether the tool acts alone or sends it
 to a person, the pipeline now makes 65 and 32 are right.
@@ -216,6 +217,49 @@ of reading. The first routing found more on its own but was right only 55%
 of the time; that result is why the routing was looked at again, and it was
 then chosen on 2022-2025, not on 2026. `USE_COMBINED` in `src/run.py`
 switches back to the earlier pipeline.
+
+The judge (`src/agent/judge.py`). The team's idea was to let an AI model
+gather the facts and let a judge decide. Jev could not be called from main (no
+Typesafe key), so the judge is Claude Haiku 5.5. For a US director nominee it
+is given the facts read from the proxy, NBIM's rules on directors in NBIM's
+words, NBIM's vote on the nominee last time, every rule whose condition is
+met, and how often NBIM followed that rule at earlier meetings. It is given
+no company name, no person's name and no year, and nothing from the meeting
+being judged or later. It returns a probability, a rule and a one-sentence
+reason. It is not trained on NBIM's votes, so every year is a test year.
+
+| US director nominees, 2021-2025 | Nominees | NBIM against |
+|---|---|---|
+| The judge says under 5% | 837 | 18 (2%) |
+| 5% to under 20% | 254 | 12 (5%) |
+| 20% to under 50% | 42 | 7 (17%) |
+| 50% or more | 43 | 30 (70%) |
+
+It ranks these nominees better than the history model in each of the five
+years (average precision 0.69, 0.60, 0.34, 0.93, 0.52 against 0.40, 0.48,
+0.19, 0.13, 0.35). In 2025 it has 15 of the 16 against-votes in its top fifth,
+the history model 7.
+
+In the whole pipeline the gain is smaller, because the director rules, Jev
+and the second model already cover much of it. A nominee the judge has
+answered is scored by a small fit on two inputs, the history model and the
+judge (the judge gets nearly all the weight). On 2022-2025 that takes average
+precision from 0.484 to 0.498 and against-votes suggested or seen from 315 to
+319 of 401, with 62 false alarms instead of 67 where the tool acts alone.
+Putting the judge in as two more inputs to the one shared fit gave nothing
+(0.483), which is why it has its own.
+
+2026 was then scored a third time with the combined model. In the full
+pipeline: 33 automatic "against" suggestions, 26 right (79%), 10 against-votes
+waved through, 56 of 66 suggested or seen, 26% sent to a person. The ranking
+on 2026 is slightly lower with the judge (average precision 0.490 against
+0.498). The judge was wrong about the nine 2026 nominees it put at 50% or
+more: they are chair-and-CEO nominees, which NBIM stopped opposing that year.
+The pipeline did not act on them, because that rule had lost its trust.
+
+Cost: 0.32 dollars for 1,335 nominees. A judge reads only what the tool gives
+it, so it adds no new information. What it adds is weighing many facts at
+once, and a reason in words for the reviewer.
 
 Director facts for Japan and Korea (`src/agent/country_rules.py`). Marie's
 branch holds each Japanese director's title and the independent share of the
@@ -704,7 +748,9 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
-Jev (a hosted decision model from Typesafe) is called by Marie's pipeline on
+Claude Haiku 5.5 through OpenRouter is also the judge for US director
+nominees (`src/agent/judge.py`): it is given facts, rules and NBIM's record
+without names, and its probability is one input to the combined model. Jev (a hosted decision model from Typesafe) is called by Marie's pipeline on
 her branch; its saved answers are one input to the combined model. Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
 measure how often two models agree on the facts. Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by

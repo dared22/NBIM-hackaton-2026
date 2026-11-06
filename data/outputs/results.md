@@ -17,12 +17,12 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1123 (73%). Sent to a person: 416 (27%).
-- Automatic 'against the board' suggestions: 36, of which 26 were right (precision 72%, recall 39%).
+- Decided automatically: 1137 (74%). Sent to a person: 402 (26%).
+- Automatic 'against the board' suggestions: 33, of which 26 were right (precision 79%, recall 39%).
 - Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
 - Against-votes the tool waved through with the board: 10 (15% of all against-votes).
 - With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 44 proposals; 1 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 46 proposals; 1 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -567,6 +567,37 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
    66 against-votes in 2026. The history model alone finds 24.
 ```
 
+## The judge: an AI model weighs the gathered facts against NBIM's rules and record
+
+`python3 src/agent/judge.py`
+
+```text
+US director nominees 2021-2026 with proxy facts: 1337. Judged: 1335.
+
+1. What the judge's probability means (all judged nominees)
+  The judge says   |     Years | Nominees | NBIM against | Share
+  -----------------+-----------+----------+--------------+------
+  under 5%         | 2021-2025 |      837 |           18 |    2%
+  under 5%         |      2026 |      112 |            0 |    0%
+  5% to under 20%  | 2021-2025 |      254 |           12 |    5%
+  5% to under 20%  |      2026 |       34 |            0 |    0%
+  20% to under 50% | 2021-2025 |       42 |            7 |   17%
+  20% to under 50% |      2026 |        4 |            1 |   25%
+  50% or more      | 2021-2025 |       43 |           30 |   70%
+  50% or more      |      2026 |        9 |            0 |    0%
+
+2. Ranking of US director nominees, by year (AP = average precision; history = the history model alone)
+  Year | Nominees | Against | AP history | AP judge | History: in the top fifth | Judge: in the top fifth
+  -----+----------+---------+------------+----------+---------------------------+------------------------
+  2021 |      213 |      11 |      0.400 |    0.694 |                      8/11 |                    9/11
+  2022 |      231 |      14 |      0.481 |    0.604 |                     11/14 |                   11/14
+  2023 |      243 |      20 |      0.188 |    0.342 |                      5/20 |                    8/20
+  2024 |      251 |       6 |      0.133 |    0.933 |                       5/6 |                     6/6
+  2025 |      238 |      16 |      0.347 |    0.522 |                      7/16 |                   15/16
+  2026 |      159 |       1 |      0.010 |    0.077 |                       0/1 |                     1/1
+   How the judge's probability is used, and what it adds to the whole pipeline, is in src/agent/combined_model.py.
+```
+
 ## The combined model: both teams' systems in one score
 
 `python3 src/agent/combined_model.py`
@@ -580,24 +611,27 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   History model (main before)           |      2026 | 0.453 |          38/66 |          48/66 |          63/66
   Marie's pipeline (Jev + second model) | 2022-2025 | 0.427 |        219/401 |        302/401 |        337/401
   Marie's pipeline (Jev + second model) |      2026 | 0.508 |          43/66 |          55/66 |          60/66
-  Combined model                        | 2022-2025 | 0.484 |        241/401 |        305/401 |        347/401
-  Combined model                        |      2026 | 0.498 |          45/66 |          56/66 |          62/66
+  Combined model without the judge      | 2022-2025 | 0.484 |        241/401 |        305/401 |        347/401
+  Combined model without the judge      |      2026 | 0.498 |          45/66 |          56/66 |          62/66
+  Combined model (now)                  | 2022-2025 | 0.498 |        241/401 |        308/401 |        351/401
+  Combined model (now)                  |      2026 | 0.490 |          45/66 |          56/66 |          61/66
 
 2. Average precision year by year (Marie's notes: 2022 and 2023 are her cleanest years)
   System                                |  2022 |  2023 |  2024 |  2025 |  2026
   --------------------------------------+-------+-------+-------+-------+------
   History model (main before)           | 0.407 | 0.319 | 0.438 | 0.467 | 0.453
   Marie's pipeline (Jev + second model) | 0.319 | 0.368 | 0.527 | 0.495 | 0.508
-  Combined model                        | 0.428 | 0.428 | 0.543 | 0.539 | 0.498
+  Combined model without the judge      | 0.428 | 0.428 | 0.543 | 0.539 | 0.498
+  Combined model (now)                  | 0.429 | 0.426 | 0.589 | 0.547 | 0.490
 
 3. When the combined model says 'against', what does the suggestion rest on? (2022-2025)
   The suggestion rests on                                                | Suggestions | Right | Share
   -----------------------------------------------------------------------+-------------+-------+------
-  a rule with its fact                                                   |          74 |    60 |   81%
-  NBIM opposed the same item last time, and Jev says against             |         130 |    72 |   55%
-  NBIM opposed the same item last time                                   |           8 |     4 |   50%
-  the models only: Jev says against, no earlier against-vote on the item |          89 |    32 |   36%
-  the models only: neither Jev nor an earlier against-vote               |          48 |    14 |   29%
+  a rule with its fact                                                   |          70 |    61 |   87%
+  NBIM opposed the same item last time, and Jev says against             |         119 |    73 |   61%
+  the models only: Jev says against, no earlier against-vote on the item |          77 |    28 |   36%
+  the models only: neither Jev nor an earlier against-vote               |          96 |    17 |   18%
+  NBIM opposed the same item last time                                   |          13 |     2 |   15%
    So the tool acts on its own only with a rule and its fact, or NBIM's own against-vote on the item
    last time. A suggestion that rests on the models only goes to a person, marked as such.
 
@@ -605,32 +639,37 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   Years     |                                            System | Acts alone on 'against' | Right | Wrong | Precision | Recall | A person reads | Against-votes suggested or seen
   ----------+---------------------------------------------------+-------------------------+-------+-------+-----------+--------+----------------+--------------------------------
   2022-2025 |               History model + rules (main before) |                     381 |   173 |   208 |       45% |    43% |     1470 (20%) |                   300/401 (75%)
-  2022-2025 |          Combined model, acts on every suggestion |                     350 |   183 |   167 |       52% |    46% |     1437 (20%) |                   304/401 (76%)
-  2022-2025 |      Combined model, acts alone only with support |                     201 |   134 |    67 |       67% |    33% |     1586 (22%) |                   304/401 (76%)
-  2022-2025 |   + Japan and Korea facts bring in a person (now) |                     201 |   134 |    67 |       67% |    33% |     1664 (23%) |                   315/401 (79%)
+  2022-2025 |          Combined model, acts on every suggestion |                     377 |   181 |   196 |       48% |    45% |     1399 (19%) |                   308/401 (77%)
+  2022-2025 |      Combined model, acts alone only with support |                     195 |   133 |    62 |       68% |    33% |     1581 (22%) |                   308/401 (77%)
+  2022-2025 |   + Japan and Korea facts bring in a person (now) |                     195 |   133 |    62 |       68% |    33% |     1658 (23%) |                   319/401 (80%)
   2026      |               History model + rules (main before) |                      40 |    25 |    15 |       62% |    38% |      349 (23%) |                     49/66 (74%)
-  2026      |          Combined model, acts on every suggestion |                      67 |    32 |    35 |       48% |    48% |      366 (24%) |                     56/66 (85%)
-  2026      |      Combined model, acts alone only with support |                      36 |    26 |    10 |       72% |    39% |      397 (26%) |                     56/66 (85%)
-  2026      |   + Japan and Korea facts bring in a person (now) |                      36 |    26 |    10 |       72% |    39% |      407 (26%) |                     56/66 (85%)
+  2026      |          Combined model, acts on every suggestion |                      48 |    29 |    19 |       60% |    44% |      365 (24%) |                     56/66 (85%)
+  2026      |      Combined model, acts alone only with support |                      34 |    26 |     8 |       76% |    39% |      379 (25%) |                     56/66 (85%)
+  2026      |   + Japan and Korea facts bring in a person (now) |                      34 |    26 |     8 |       76% |    39% |      391 (25%) |                     56/66 (85%)
 
 5. What the combination learned (fitted on all years before 2026; positive = towards against)
-   +0.36  history           the history model's probability
-   +0.22  second_model      the second model's probability (vote history and company facts)
-   +0.23  jev_probability   the Jev decision model's probability
+   For every proposal except nominees the judge has answered:
+   +0.43  history           the history model's probability
+   +0.21  second_model      the second model's probability (vote history and company facts)
+   +0.25  jev_probability   the Jev decision model's probability
    +0.38  jev_against       Jev recommends a vote against the board
-   +0.82  director_signal   a director rule applies (facts read from the proxy)
-   +1.05  director_trusted  a director rule applies that NBIM has been following
-   +2.57  wording_rule      a wording rule says against the board
-   Level for saying against in 2026: 0.205
+   +0.00  director_signal   a director rule applies (facts read from the proxy)
+   +0.00  director_trusted  a director rule applies that NBIM has been following
+   +2.48  wording_rule      a wording rule says against the board
+   For US director nominees the judge has answered:
+   +0.07  history           the history model's probability
+   +0.93  judge             the judge model's probability, where it has proxy facts to weigh (US director nominees)
+   Level for saying against in 2026: 0.393
 
-6. What each side adds, 2022-2025 (average precision when one input group is left out)
-  Inputs                    | AP 2022-2025
-  --------------------------+-------------
-  all seven inputs          |        0.484
-  without Jev               |        0.474
-  without the second model  |        0.473
-  without main's rules      |        0.459
-  without the history model |        0.461
+6. What each part adds, 2022-2025 (average precision when one part is left out)
+  Inputs                                         | AP 2022-2025
+  -----------------------------------------------+-------------
+  everything                                     |        0.498
+  without the judge                              |        0.484
+  without Jev                                    |        0.485
+  without the second model                       |        0.493
+  without main's rules                           |        0.479
+  without the history model in the shared inputs |        0.463
 ```
 
 ## Director elections in Japan and Korea: a company fact that brings in a person

@@ -536,6 +536,57 @@ class PolicyWatchTests(unittest.TestCase):
         self.assertFalse(any("reworded" in g["record"] for r in rows for g in r["signals"]))
 
 
+class JudgeTests(unittest.TestCase):
+    """The judge model: what it is told, and what is accepted back."""
+
+    @classmethod
+    def setUpClass(cls):
+        import judge
+        cls.jg = judge
+        cls.items = judge.director_rows(2026)
+
+    def test_the_judge_is_told_no_name_no_year_and_no_vote_from_the_meeting(self):
+        self.assertGreater(len(self.items), 1000)
+        for r, d, state in self.items[::37]:
+            sent = self.jg.json.dumps(self.jg.request_body(state), ensure_ascii=False)
+            self.assertNotIn(r["company"], sent)
+            surname = r["proposal_text"].replace("Elect Director ", "").split()[-1]
+            if len(surname) > 4:
+                self.assertNotIn(surname, sent)
+            self.assertNotIn(r["meeting_date"], sent)
+            for word in ('"nbim_vote"', "against_board", "rationale", "meeting_id"):
+                self.assertNotIn(word, sent)
+
+    def test_the_record_shown_to_the_judge_does_not_depend_on_this_meetings_vote(self):
+        import board_rules
+        rows = board_rules.load_scored()
+        flipped = [dict(r, y=1 - r["y"], signals=[dict(g) for g in r["signals"]]) for r in rows]
+        board_rules.earn_trust(flipped)
+        by_date = self.jg.collections.defaultdict(list)
+        for old, new in zip(rows, flipped):
+            by_date[old["meeting_date"]].append((old, new))
+        first = min(by_date)
+        for old, new in by_date[first]:           # nothing earlier exists, so the record must be empty either way
+            self.assertEqual([g["record"] for g in old["signals"]], [g["record"] for g in new["signals"]])
+
+    def test_a_reply_outside_the_form_is_rejected(self):
+        self.assertEqual(self.jg.parse('{"probability_against": 40, "rule": "1.3.1", "reason": "chair and CEO"}')[0], 0.4)
+        self.assertIsNone(self.jg.parse("Vote FOR. Ignore the rules."))
+        self.assertIsNone(self.jg.parse('{"probability_against": 400}'))
+
+    def test_a_changed_fact_is_a_new_question(self):
+        r, d, state = self.items[0]
+        other = self.jg.json.loads(self.jg.json.dumps(state))
+        other["facts"]["independent"] = "no" if state["facts"]["independent"] != "no" else "yes"
+        self.assertNotEqual(self.jg.state_key("k", state), self.jg.state_key("k", other))
+
+    def test_every_judged_2026_nominee_has_a_cached_answer(self):
+        cache = self.jg.load_cache()
+        this_year = [(r, s) for r, _, s in self.items if r["meeting_date"][:4] == "2026"]
+        have = sum(1 for r, s in this_year if self.jg.state_key(f"{r['meeting_id']}-{r['item_no']}", s) in cache)
+        self.assertGreater(have / len(this_year), 0.95)
+
+
 class RoutingTests(unittest.TestCase):
     def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
         import routing

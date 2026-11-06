@@ -18,9 +18,15 @@ What goes in, for every proposal
 
     The exported file holds scores only: no NBIM vote, no rationale.
 
+    The judge (src/agent/judge.py)
+        judge        for US director nominees with proxy facts, an AI model is given the facts,
+                     NBIM's rules and how often NBIM has followed each rule that applies, with
+                     no names, and returns a probability, a rule and a reason
+
 How they are combined
     One logistic regression with seven inputs, fitted on the years before the year being
-    scored. Every input for a year was itself produced without that year's votes. The level
+    scored. A nominee the judge has answered is scored by a second, smaller regression on
+    two inputs: the history model and the judge. Every input for a year was itself produced without that year's votes. The level
     at which the tool says "against" is chosen on earlier years too, each scored by a fit
     that did not include it.
 
@@ -49,6 +55,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 import board_rules as br  # noqa: E402
 import country_rules as cr  # noqa: E402
+import judge as jg  # noqa: E402
 import proposal_rules as pr  # noqa: E402
 
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
@@ -65,6 +72,8 @@ INPUTS = [
     ("director_signal", "a director rule applies (facts read from the proxy)"),
     ("director_trusted", "a director rule applies that NBIM has been following"),
     ("wording_rule", "a wording rule says against the board"),
+    ("judge", "the judge model's probability, where it has proxy facts to weigh (US director nominees)"),
+    ("judge_present", "the judge model gave an answer"),
 ]
 
 
@@ -79,8 +88,26 @@ def load_components(year):
         return {(r["meeting_id"], r["item_no"]): r for r in csv.DictReader(f)}
 
 
-def inputs_for(row, comp, director, worded):
-    """The seven inputs for one proposal. `row` must carry the history model's probability in row["p"]."""
+_JUDGE = []
+
+
+def judge_answer(row, director):
+    """The judge model's cached answer for a US director nominee ({"p", "rule", "reason"}), or None."""
+    if not director:
+        return None
+    if not _JUDGE:
+        _JUDGE.append(jg.load_cache())
+    state = jg.director_state(row, director)
+    return _JUDGE[0].get(jg.state_key(f"{row['meeting_id']}-{row['item_no']}", state)) if state else None
+
+
+def judge_probability(row, director):
+    answer = judge_answer(row, director)
+    return answer["p"] if answer else None
+
+
+def inputs_for(row, comp, director, worded, judge_p=None):
+    """The inputs for one proposal. `row` must carry the history model's probability in row["p"]."""
     board_against = row["mgmt_rec"] == "MOT"
     jev_p, second_p = float(comp["jev_p_mot"]), float(comp["triage_p"])
     if board_against:                      # NBIM voting FOR is then the vote against the board
@@ -90,7 +117,7 @@ def inputs_for(row, comp, director, worded):
         jev_against = comp["jev_vote"] in ("MOT", "AVSTÅ")
     return [logit(row["p"]), logit(second_p), logit(jev_p), float(jev_against),
             float(bool(director and director["signals"])), float(bool(director and director["acts_alone"])),
-            float(bool(worded))]
+            float(bool(worded)), logit(judge_p) if judge_p is not None else 0.0, float(judge_p is not None)]
 
 
 def rule_tables():
@@ -110,14 +137,35 @@ def year_data(rows, year, directors, worded):
             r["comp"], r["hist_thr"] = comp[k], hist_thr
             r["director"], r["worded"] = directors.get(k), worded.get(k)
             r["country_fact"] = cr.signal_for(r)
-            r["xc"] = inputs_for(r, comp[k], r["director"], r["worded"])
+            r["judge_p"] = judge_probability(r, r["director"])
+            r["xc"] = inputs_for(r, comp[k], r["director"], r["worded"], r["judge_p"])
             out.append(r)
     return out
 
 
-def fit_on(data, years):
+SHARED = list(range(7))      # the seven inputs every proposal has
+JUDGED = [0, 7]              # for a nominee the judge has answered: the history model and the judge
+
+
+def fit_on(data, years, shared=SHARED, use_judge=True):
+    """Two sets of weights fitted on these years: one for nominees the judge has answered (history and
+    judge), one for every other proposal (the seven shared inputs). With use_judge=False, or with too
+    few judged nominees to fit on, every proposal uses the shared inputs."""
     train = [r for y in years for r in data[y]]
-    return bm.fit_logistic([r["xc"] for r in train], [r["y"] for r in train])
+    judged = [r for r in train if r["xc"][8]] if use_judge else []
+    if sum(r["y"] for r in judged) < 10:
+        judged = []
+    rest = [r for r in train if not r["xc"][8]] if judged else train
+    return {"shared": shared,
+            "rest": bm.fit_logistic([[r["xc"][i] for i in shared] for r in rest], [r["y"] for r in rest]),
+            "judged": bm.fit_logistic([[r["xc"][i] for i in JUDGED] for r in judged], [r["y"] for r in judged]) if judged else None}
+
+
+def score(fit, xc):
+    """The combined probability for one proposal's inputs."""
+    if fit["judged"] and xc[8]:
+        return bm.predict(fit["judged"], [xc[i] for i in JUDGED])
+    return bm.predict(fit["rest"], [xc[i] for i in fit["shared"]])
 
 
 def flag_level(data, year):
@@ -127,8 +175,8 @@ def flag_level(data, year):
     earlier = [y for y in sorted(data) if y < year]
     ps, ys = [], []
     for y in earlier:
-        w = fit_on(data, [u for u in earlier if u != y] or earlier)
-        ps += [bm.predict(w, r["xc"]) for r in data[y]]
+        fit = fit_on(data, [u for u in earlier if u != y] or earlier)
+        ps += [score(fit, r["xc"]) for r in data[y]]
         ys += [r["y"] for r in data[y]]
     return bm.best_f1_threshold(ps, ys)
 
@@ -191,21 +239,23 @@ def main():
     turned = lambda r, col: (1 - float(r["comp"][col])) if r["mgmt_rec"] == "MOT" else float(r["comp"][col])
     systems = collections.OrderedDict()
     for y in years[1:]:
-        w, level = fit_on(data, [u for u in years if u < y]), flag_level(data, y)
+        fit, level = fit_on(data, [u for u in years if u < y]), flag_level(data, y)
+        first = fit_on(data, [u for u in years if u < y], use_judge=False)
         for r in data[y]:
-            r["p_new"], r["level"] = bm.predict(w, r["xc"]), level
+            r["p_new"], r["level"], r["p_first"] = score(fit, r["xc"]), level, score(first, r["xc"])
     systems["History model (main before)"] = lambda r: r["p"]
     systems["Marie's pipeline (Jev + second model)"] = lambda r: turned(r, "marie_score")
-    systems["Combined model"] = lambda r: r["p_new"]
+    systems["Combined model without the judge"] = lambda r: r["p_first"]
+    systems["Combined model (now)"] = lambda r: r["p_new"]
 
     print("1. Ranking: how many against-votes are in the top of each system's list")
     print("   (AP = average precision. Every year is scored by fits on earlier years only.)")
     out = []
-    for name, score in systems.items():
+    for name, scorer in systems.items():
         for label, group in ((f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP), (str(FINAL), (FINAL,))):
             ap, t10, t25, t40, total = [], 0, 0, 0, 0
             for y in group:
-                ys, sc = [r["y"] for r in data[y]], [score(r) for r in data[y]]
+                ys, sc = [r["y"] for r in data[y]], [scorer(r) for r in data[y]]
                 ap.append(bm.average_precision(sc, ys))
                 t10, t25, t40, total = t10 + top(sc, ys, .10), t25 + top(sc, ys, .25), t40 + top(sc, ys, .40), total + sum(ys)
             out.append([name, label, f"{sum(ap) / len(ap):.3f}", f"{t10}/{total}", f"{t25}/{total}", f"{t40}/{total}"])
@@ -213,8 +263,8 @@ def main():
 
     print("\n2. Average precision year by year (Marie's notes: 2022 and 2023 are her cleanest years)")
     bm.table(["System"] + [str(y) for y in years[1:]],
-             [[name] + [f"{bm.average_precision([score(r) for r in data[y]], [r['y'] for r in data[y]]):.3f}" for y in years[1:]]
-              for name, score in systems.items()])
+             [[name] + [f"{bm.average_precision([scorer(r) for r in data[y]], [r['y'] for r in data[y]]):.3f}" for y in years[1:]]
+              for name, scorer in systems.items()])
 
     print(f"\n3. When the combined model says 'against', what does the suggestion rest on? ({DEVELOP[0]}-{DEVELOP[-1]})")
     kinds = collections.defaultdict(lambda: [0, 0])
@@ -247,21 +297,25 @@ def main():
               "Against-votes suggested or seen"], out)
 
     print("\n5. What the combination learned (fitted on all years before 2026; positive = towards against)")
-    w = fit_on(data, years[:-1])
-    for (name, text), wi in zip(INPUTS, w[1:]):
+    fit = fit_on(data, years[:-1])
+    print("   For every proposal except nominees the judge has answered:")
+    for (name, text), wi in zip(INPUTS, fit["rest"][1:]):
         print(f"   {wi:+.2f}  {name:17} {text}")
+    print("   For US director nominees the judge has answered:")
+    for i, wi in zip(JUDGED, fit["judged"][1:]):
+        print(f"   {wi:+.2f}  {INPUTS[i][0]:17} {INPUTS[i][1]}")
     print(f"   Level for saying against in {FINAL}: {data[FINAL][0]['level']:.3f}")
 
-    print("\n6. What each side adds, 2022-2025 (average precision when one input group is left out)")
-    groups = {"all seven inputs": range(7), "without Jev": (0, 1, 4, 5, 6), "without the second model": (0, 2, 3, 4, 5, 6),
-              "without main's rules": (0, 1, 2, 3), "without the history model": (1, 2, 3, 4, 5, 6)}
+    print("\n6. What each part adds, 2022-2025 (average precision when one part is left out)")
+    variants = [("everything", SHARED, True), ("without the judge", SHARED, False),
+                ("without Jev", [0, 1, 4, 5, 6], True), ("without the second model", [0, 2, 3, 4, 5, 6], True),
+                ("without main's rules", [0, 1, 2, 3], True), ("without the history model in the shared inputs", [1, 2, 3, 4, 5, 6], True)]
     out = []
-    for name, cols in groups.items():
-        cols, aps = list(cols), []
+    for name, shared, use_judge in variants:
+        aps = []
         for y in DEVELOP:
-            train = [r for u in years if u < y for r in data[u]]
-            wv = bm.fit_logistic([[r["xc"][i] for i in cols] for r in train], [r["y"] for r in train])
-            aps.append(bm.average_precision([bm.predict(wv, [r["xc"][i] for i in cols]) for r in data[y]], [r["y"] for r in data[y]]))
+            fit = fit_on(data, [u for u in years if u < y], shared, use_judge)
+            aps.append(bm.average_precision([score(fit, r["xc"]) for r in data[y]], [r["y"] for r in data[y]]))
         out.append([name, f"{sum(aps) / len(aps):.3f}"])
     bm.table(["Inputs", f"AP {DEVELOP[0]}-{DEVELOP[-1]}"], out)
 
