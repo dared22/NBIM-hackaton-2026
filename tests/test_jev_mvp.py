@@ -4,8 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-import jev_mvp as m  # noqa: E402
+from nbim_vote import jev_mvp as m
 
 
 def row(**overrides):
@@ -255,13 +254,13 @@ def voted(meeting_id, date, vote):
 
 
 def test_japan_nominee_name_is_read_from_the_ballot():
-    from japan_facts import nominee_tokens
+    from nbim_vote.japan_facts import nominee_tokens
     assert nominee_tokens("Elect Director Saito, Noboru") == {"saito", "noboru"}
     assert nominee_tokens("Elect Director and Audit Committee Member Kitagawa, Yoji") == {"kitagawa", "yoji"}
 
 
 def test_japan_facts_never_use_a_report_filed_on_or_after_the_meeting():
-    from japan_facts import JapanFacts
+    from nbim_vote.japan_facts import JapanFacts
     jf = JapanFacts.__new__(JapanFacts)
     jf.ok = True
     jf.code = {"c1": "E1"}
@@ -279,7 +278,7 @@ def test_japan_facts_never_use_a_report_filed_on_or_after_the_meeting():
 
 
 def test_japan_facts_only_for_japanese_director_elections():
-    from japan_facts import JapanFacts
+    from nbim_vote.japan_facts import JapanFacts
     jf = JapanFacts.__new__(JapanFacts)
     jf.ok = True
     assert jf.for_row(row(country="United States", proposal_type="DIRECTOR_ELECTION")) is None
@@ -300,7 +299,7 @@ def fact_row(meeting_id, date, vote, proposal_type="ROUTINE"):
 
 
 def test_skip_rule_learns_only_from_earlier_meetings():
-    from company_facts import CompanyFacts, safe_groups
+    from nbim_vote.company_facts import CompanyFacts, safe_groups
     known = CompanyFacts.__new__(CompanyFacts)
     known.groups = lambda r: [f"type: {r['proposal_type']}"]
     rows = [fact_row(str(i), "2024-05-01", "FOR") for i in range(120)] + [fact_row("late", "2025-06-01", "MOT")]
@@ -316,7 +315,7 @@ def test_chair_ceo_rule_recommends_mot_and_cites_the_rule():
 
 
 def test_triage_features_ignore_padding_and_caught_instructions():
-    from triage_model import build_features
+    from nbim_vote.triage_model import build_features
     history = voted("a", "2024-05-01", "MOT")
     current = voted("b", "2025-05-01", "FOR")
     padded = {**current, "proposal_text": current["proposal_text"] + ATTACK}
@@ -324,7 +323,7 @@ def test_triage_features_ignore_padding_and_caught_instructions():
 
 
 def test_triage_features_ignore_same_day_and_future_votes():
-    from triage_model import FEATURES, build_features
+    from nbim_vote.triage_model import FEATURES, build_features
     col = FEATURES.index("company_mot")
     rows = [voted("a", "2024-05-01", "MOT"), voted("b", "2025-05-01", "FOR"), voted("c", "2025-05-01", "MOT"), voted("d", "2026-05-01", "FOR")]
     X = build_features(rows)
@@ -402,7 +401,7 @@ def test_proposal_attack_reaches_only_the_text_jev_reads():
 
 def test_us_nominee_needs_a_unique_name_match():
     from collections import defaultdict
-    from company_facts import CompanyFacts
+    from nbim_vote.company_facts import CompanyFacts
     known = CompanyFacts.__new__(CompanyFacts)
     key = ("c1", "2026-05-01")
     known.us_boards = {key: {"proxy_filed": "2026-03-01", "board_size": "9", "independent_directors": "7"}}
@@ -416,9 +415,9 @@ def test_us_nominee_needs_a_unique_name_match():
 
 
 def test_a_caught_instruction_does_not_change_company_fact_matching():
-    from company_facts import facts
-    from japan_facts import nominee_tokens
-    from instructions import strip_instructions
+    from nbim_vote.company_facts import facts
+    from nbim_vote.japan_facts import nominee_tokens
+    from nbim_vote.instructions import strip_instructions
     text = "Elect Director Saito, Noboru"
     assert nominee_tokens(strip_instructions(text + ATTACK)) == nominee_tokens(text)
     known = facts()
@@ -429,7 +428,7 @@ def test_a_caught_instruction_does_not_change_company_fact_matching():
 # ---------------------------------------------------------------- demo
 
 def test_agenda_parsing_reads_proponent_and_board():
-    from demo import parse_agenda
+    from nbim_vote.demo import parse_agenda
     items = parse_agenda("# comment\nElect Director Ann Berg\nSH: Require Independent Board Chair\nApprove Plan [board: MOT]\n\n")
     assert items == [("Elect Director Ann Berg", "Management", "FOR"),
                      ("Require Independent Board Chair", "Shareholder", "MOT"),
@@ -437,14 +436,14 @@ def test_agenda_parsing_reads_proponent_and_board():
 
 
 def test_demo_rows_carry_no_answer_key():
-    from demo import build_rows
+    from nbim_vote.demo import build_rows
     (r,) = build_rows([("Ratify KPMG as Auditors", "Management", "FOR")], "Acme", "c1", "Norway", "DM", "2026-05-01")
     assert r["proposal_type"] == "AUDITOR"
     assert all(r[k] == "" for k in ("nbim_vote", "against_board", "rationale_text", "rationale_section", "position_paper"))
 
 
 def test_classifier_reads_text_and_proponent_only():
-    from classify import proposal_type
+    from nbim_vote.classify import proposal_type
     assert proposal_type("Elect Director Tanaka, Kunihiko") == "DIRECTOR_ELECTION"
     assert proposal_type("Authorize Share Repurchase Program") == "SHARE_REPURCHASE"
     assert proposal_type("Report on Climate Lobbying", "Shareholder") == "SHP_SUSTAINABILITY"
@@ -454,8 +453,8 @@ def test_classifier_reads_text_and_proponent_only():
 # ---------------------------------------------------------------- explanations
 
 def _explain(r, history, vote="FOR", citation="P.1"):
-    from company_facts import facts
-    from explain import explain
+    from nbim_vote.company_facts import facts
+    from nbim_vote.explain import explain
     decision = {"vote": vote, "citation": citation, "p_mot": 0.1, "p_model": 0.1}
     return explain(r, decision, RULES, "2025", m.build_history_index(history), facts())
 
@@ -478,7 +477,7 @@ def test_explanation_quotes_nbims_earlier_rationale_but_not_later_ones():
 
 
 def test_guideline_text_has_edition_page_and_wording():
-    from explain import guideline_text
+    from nbim_vote.explain import guideline_text
     rule = RULES[0]
     text = guideline_text(rule["id"], RULES, "2025")
     assert text.startswith(f"GVG {rule['id']} (2025 edition") and rule["tekst"] in text
@@ -509,7 +508,7 @@ class StubFacts:
 
 
 def _fired(nominee, edition_date="2026-05-01"):
-    import director_rules as dr
+    from nbim_vote import director_rules as dr
     _, by_section = m.guidelines_for(edition_date, m.load_guideline_versions())
     return [x[:3] for x in dr.fired(row(proposal_type="DIRECTOR_ELECTION", meeting_date=edition_date), StubFacts(nominee), by_section)]
 
@@ -539,7 +538,7 @@ def test_gender_rule_follows_the_edition_in_force():
 
 
 def test_a_rule_is_trusted_only_after_nbim_followed_it_twice_in_a_row():
-    import director_rules as dr
+    from nbim_vote import director_rules as dr
     nominee = {**NOMINEE, "ceo": "yes", "board_chair": "yes", "executive": "yes", "independent": "no"}
     votes = [("a", "2021-05-01", "MOT"), ("b", "2022-05-01", "MOT"), ("c", "2023-05-01", "MOT"), ("d", "2023-05-01", "FOR"),
              ("e", "2024-05-01", "FOR"), ("f", "2025-05-01", "MOT")]
@@ -554,7 +553,7 @@ def test_a_rule_is_trusted_only_after_nbim_followed_it_twice_in_a_row():
 # ---------------------------------------------------------------- citations without Jev, optional Jev
 
 def test_code_citation_uses_nbims_earlier_reason_for_the_same_item():
-    from citations import Citer
+    from nbim_vote.citations import Citer
     rows = m.load_votes()
     citer = Citer(rows, "2026-01-01")
     before = {**director("Ann Berg", "2025-05-01", "MOT"), "rationale_section": "GVG 1.3"}
@@ -565,7 +564,7 @@ def test_code_citation_uses_nbims_earlier_reason_for_the_same_item():
 
 
 def test_code_citation_text_model_learns_only_from_earlier_years():
-    from citations import Citer
+    from nbim_vote.citations import Citer
     rows = [r for r in m.load_votes() if r["meeting_date"] < "2024-01-01"]
     future = [{**r, "meeting_date": "2025-06-01", "rationale_section": "GVG 9.9"} for r in rows if r["nbim_vote"] == "MOT"][:60]
     citer = Citer(rows + future, "2024-01-01")
@@ -573,7 +572,7 @@ def test_code_citation_text_model_learns_only_from_earlier_years():
 
 
 def test_following_the_board_and_abstaining_get_no_rule_from_code():
-    from citations import Citer
+    from nbim_vote.citations import Citer
     citer = Citer([], "2026-01-01")
     _, by_section = m.guidelines_for("2026-05-01", m.load_guideline_versions())
     assert citer.cite(row(mgmt_rec="FOR"), "FOR", by_section, {}) == (None, "voting principle")
@@ -613,7 +612,7 @@ def test_abstention_market_turns_mot_into_avsta_and_support_turns_board_mot_into
 
 
 def test_signals_learn_only_from_earlier_years():
-    from against_board import Signals
+    from nbim_vote.against_board import Signals
     sh = lambda date, vote: row(proposal_type="SHP_GOVERNANCE", proponent="Shareholder", mgmt_rec="MOT", meeting_date=date,
                                 nbim_vote=vote, proposal_text="Adopt Simple Majority Vote", country="United States")
     rows = [sh("2024-05-01", "FOR"), sh("2024-06-01", "FOR"), sh("2026-03-01", "MOT"), sh("2026-04-01", "MOT")]
@@ -625,20 +624,21 @@ def test_signals_learn_only_from_earlier_years():
 
 
 def test_against_score_turns_around_on_board_mot():
-    from against_board import score_against
+    from nbim_vote.against_board import score_against
     assert score_against(0.8, "FOR") == 0.8 and abs(score_against(0.8, "MOT") - 0.2) < 1e-12
 
 
 # ---------------------------------------------------------------- demo without Jev, without API keys
 
 ROOT = Path(__file__).resolve().parents[1]
-NO_KEYS = {"TYPESAFE_API_KEY": "", "EDINET_API_KEY": "", "OPENDART_API_KEY": "", "PYTHONIOENCODING": "utf-8"}
+NO_KEYS = {"TYPESAFE_API_KEY": "", "EDINET_API_KEY": "", "OPENDART_API_KEY": "", "PYTHONIOENCODING": "utf-8",
+           "PYTHONPATH": str(ROOT / "src")}
 
 
 def _demo(*args, stdin=None):
     import os
     import subprocess
-    return subprocess.run([sys.executable, str(ROOT / "src" / "demo.py"), *args], cwd=ROOT, input=stdin, capture_output=True,
+    return subprocess.run([sys.executable, "-m", "nbim_vote.demo", *args], cwd=ROOT, input=stdin, capture_output=True,
                           text=True, encoding="utf-8", env={**os.environ, **NO_KEYS}, timeout=300)
 
 
@@ -657,15 +657,15 @@ def test_demo_asks_for_a_key_only_when_jev_is_requested():
 
 
 def test_following_a_board_mot_without_a_named_reason_cites_the_voting_principle():
-    from citations import Citer
-    from demo import build_rows
+    from nbim_vote.citations import Citer
+    from nbim_vote.demo import build_rows
     r = build_rows([("Report on Climate Lobbying", "Shareholder", "MOT")], "New Co", "new:x", "Norway", "DM", "2026-05-01")[0]
     _, by_section = m.guidelines_for(r["meeting_date"], m.load_guideline_versions())
     assert Citer(m.load_votes(), "2026-01-01").cite(r, "MOT", by_section, {}) == (None, "voting principle")
 
 
 def test_guideline_text_finds_rules_outside_the_candidates():
-    from explain import guideline_text
+    from nbim_vote.explain import guideline_text
     assert guideline_text("3.3.3", [], "2025").startswith("GVG 3.3.3 (2025 edition")
 
 
@@ -675,7 +675,7 @@ def test_demo_gives_no_recommendation_without_company_documents():
 
 
 def test_calibrated_confidence_is_the_share_right_in_earlier_years():
-    from confidence import Calibrator
+    from nbim_vote.confidence import Calibrator
     earlier = [{"vote": "MOT", "mgmt_rec": "FOR", "p_combined": 0.3, "nbim_vote": "MOT" if i < 8 else "FOR"} for i in range(40)]
     earlier += [{"vote": "FOR", "mgmt_rec": "FOR", "p_combined": 0.01, "nbim_vote": "FOR"} for _ in range(40)]
     c, basis = Calibrator(earlier)("MOT", "FOR", 0.3)

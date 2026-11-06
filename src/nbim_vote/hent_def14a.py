@@ -21,8 +21,8 @@ status "feil" proeves igjen.
 
 Bruk:
 Kjoeres fra rotmappen. Dokumentene havner i data/def14a/.
-    python src/hent_def14a.py data/dirty/real_votes.csv --utvalg            # alle MOT + like mange uten
-    python src/hent_def14a.py data/dirty/real_votes.csv --utvalg --maks 20  # rask test
+    python -m nbim_vote.hent_def14a data/dirty/real_votes.csv --utvalg            # alle MOT + like mange uten
+    python -m nbim_vote.hent_def14a data/dirty/real_votes.csv --utvalg --maks 20  # rask test
 
 User-Agent settes i hent_npx.py.
 """
@@ -36,7 +36,7 @@ import re
 import urllib.error
 from pathlib import Path
 
-from hent_npx import hent
+from nbim_vote.hent_npx import hent
 
 MOT = {"AGAINST", "WITHHOLD"}
 USA = {"UNITED STATES", "USA", "US"}
@@ -227,7 +227,7 @@ def skriv_oppsummering(logg):
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("stemmefiler", nargs="+", help="en eller flere CSV-filer med stemmer")
-    p.add_argument("--ut", default=str(Path(__file__).resolve().parents[1] / "data" / "def14a"))
+    p.add_argument("--ut", default=str(Path(__file__).resolve().parents[2] / "data" / "def14a"))
     p.add_argument("--utvalg", action="store_true", help="alle moeter med MOT + like mange uten")
     p.add_argument("--maks", type=int, help="maks antall moeter, til testing")
     a = p.parse_args()

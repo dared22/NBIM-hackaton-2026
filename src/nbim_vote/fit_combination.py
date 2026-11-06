@@ -8,7 +8,7 @@ The share is the one that reaches TARGET_RECALL of the pooled years' MOT votes, 
 companies the fit did not see. The flag is chosen by the triage model on years before the
 last fitted year. Never fit on a holdout.
 
-    python src/fit_combination.py --years 2021 2022 2023 2024 2025 --tag _v6
+    python -m nbim_vote.fit_combination --years 2021 2022 2023 2024 2025 --tag _v6
 """
 
 import argparse
@@ -20,8 +20,8 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GroupKFold
 
-from jev_mvp import COMBINATION, COMBINATION_NO_JEV, RUNS, build_history_index, combination_features, load_votes
-from triage_model import TARGET_RECALL, score_year
+from nbim_vote.jev_mvp import COMBINATION, COMBINATION_NO_JEV, RUNS, build_history_index, combination_features, load_votes
+from nbim_vote.triage_model import TARGET_RECALL, score_year
 
 C = 0.3  # Light regularisation: rare proposal types have very few MOT votes.
 

@@ -7,11 +7,11 @@ calls), plus two columns main does not read yet:
     triage_p                  the triage model's probability of MOT, trained on earlier years only
     marie_score, marie_flag, marie_review   the walk-forward combined score and routing (2022 on)
     marie_vote                the pipeline's final recommendation: board-MOT rule, director rules, AVSTÅ (2022 on)
-    code_cited_section        the section the code citations give for MOT (src/citations.py, 2022 on)
+    code_cited_section        the section the code citations give for MOT (src/nbim_vote/citations.py, 2022 on)
 No NBIM vote and no rationale are written.
 
-    python src/export_components.py <out_dir>                 # main's format, from this branch
-    python src/export_components.py <out_dir> --final-vote    # jev_vote holds marie_vote instead (2022 on)
+    python -m nbim_vote.export_components <out_dir>                 # main's format, from this branch
+    python -m nbim_vote.export_components <out_dir> --final-vote    # jev_vote holds marie_vote instead (2022 on)
 
 --final-vote lets main's combined model read the pipeline's final recommendation where it reads Jev's vote.
 """
@@ -20,7 +20,7 @@ import argparse
 import csv
 from pathlib import Path
 
-import report_results as rr
+from nbim_vote import report_results as rr
 
 COLUMNS = ["meeting_id", "item_no", "jev_vote", "jev_p_mot", "jev_cited_section", "triage_p",
            "marie_score", "marie_flag", "marie_review", "marie_vote", "code_cited_section"]

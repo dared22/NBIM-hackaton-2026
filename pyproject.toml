@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nbim-vote"
+version = "0.1.0"
+description = "NBIM hackathon 2026, case 1: a voting agent that predicts FOR/MOT/AVSTÅ with guideline citations, confidence and routing to a person."
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "python-dotenv",
+    "requests",
+    "streamlit>=1.50",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "playwright"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

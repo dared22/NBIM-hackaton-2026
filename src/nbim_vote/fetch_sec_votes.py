@@ -1,7 +1,7 @@
 """Fetch last year's general-meeting vote results for the US companies, from SEC form 8-K item 5.07.
 
-Run from the repository root (needs internet; the SEC asks for a contact in the User-Agent, set in src/hent_npx.py):
-    python src/fetch_sec_votes.py
+Run from the repository root (needs internet; the SEC asks for a contact in the User-Agent, set in src/nbim_vote/hent_npx.py):
+    python -m nbim_vote.fetch_sec_votes
 
 Companies must report the results of a shareholder vote within four business days, in an 8-K
 under item 5.07. This reads the vote tables in those filings: votes for and against each director
@@ -24,9 +24,9 @@ import time
 import urllib.request
 from pathlib import Path
 
-from hent_npx import USER_AGENT
+from nbim_vote.hent_npx import USER_AGENT
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 LINK = ROOT / "data" / "evidence" / "main" / "director_issuer_link.csv"
 OUT = ROOT / "data" / "evidence" / "sec_votes"
 FIRST = "2018-01-01"

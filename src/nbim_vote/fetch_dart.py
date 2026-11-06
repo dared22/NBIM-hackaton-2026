@@ -1,7 +1,7 @@
 """Fetch the Korean companies' boards from OpenDART, the Korean Financial Supervisory Service's filing system.
 
 Run from the repository root. Needs OPENDART_API_KEY in .env (free, https://opendart.fss.or.kr).
-    python src/fetch_dart.py
+    python -m nbim_vote.fetch_dart
 
 For each company and business year, the annual report's list of executives (exctvSttus):
 every registered director as inside (사내이사), outside (사외이사) or other non-executive
@@ -22,7 +22,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "evidence" / "dart"
 VOTES = ROOT / "data" / "dirty" / "real_votes.csv"
 API = "https://opendart.fss.or.kr/api"

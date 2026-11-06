@@ -1,7 +1,7 @@
 """Build the data the dashboard shows: every proposal 2022-2026, recommended walk-forward, with its reasons.
 
 Run from the repository root (no API calls: Jev's answers come from the saved runs; a few minutes):
-    python src/dashboard_data.py
+    python -m nbim_vote.dashboard_data
 
 Writes data/outputs/dashboard/predictions_jev.csv (with Jev) and predictions_nojev.csv (without Jev).
 Each year is scored as in the evaluation (report_results.py): fitted on earlier years only, ranked against
@@ -15,14 +15,14 @@ can show how the system did. They are never used to make a recommendation.
 import csv
 import json
 
-from against_board import Signals
-from confidence import Calibrator
-from demo import vote_confidence
-from director_rules import deciding_rule
-from director_rules import needs_person as rule_needs_person
-from explain import explain, fact_reasons
-from jev_mvp import DATA, candidate_rules, decide, guidelines_for, has_instruction, model_answers
-import report_results as rr
+from nbim_vote.against_board import Signals
+from nbim_vote.confidence import Calibrator
+from nbim_vote.demo import vote_confidence
+from nbim_vote.director_rules import deciding_rule
+from nbim_vote.director_rules import needs_person as rule_needs_person
+from nbim_vote.explain import explain, fact_reasons
+from nbim_vote.jev_mvp import DATA, candidate_rules, decide, guidelines_for, has_instruction, model_answers
+from nbim_vote import report_results as rr
 
 OUT = DATA / "outputs" / "dashboard"
 COLUMNS = ["year", "meeting_date", "meeting_id", "item_no", "company_id", "company", "country", "market", "proposal_text", "proposal_type",

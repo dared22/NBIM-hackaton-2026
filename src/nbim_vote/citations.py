@@ -13,7 +13,7 @@ board is cited as the voting principle (P.1), also an MOT on a board MOT unless 
 
 Only earlier meetings and filings are used; the row's own vote and rationale are never read.
 
-    python src/citations.py        # how often each source names the section NBIM cited, 2022-2026
+    python -m nbim_vote.citations        # how often each source names the section NBIM cited, 2022-2026
 """
 
 import re
@@ -25,8 +25,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import hstack
 
-from director_rules import deciding_rule
-from jev_mvp import TYPE_TO_SECTIONS, candidate_rules, item_key, strip_instructions
+from nbim_vote.director_rules import deciding_rule
+from nbim_vote.jev_mvp import TYPE_TO_SECTIONS, candidate_rules, item_key, strip_instructions
 
 MIN_TRAIN = 50  # fewer earlier cited MOT votes than this: no text model
 
@@ -134,13 +134,10 @@ class Citer:
 
 def main():
     """How often each source names the section NBIM cited, on NBIM's MOT votes with a GVG section."""
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from company_facts import facts
-    from director_rules import rule_states
-    from explain import fact_reasons
-    from jev_mvp import build_history_index, cited_section, guidelines_for, load_guideline_versions, load_votes
+    from nbim_vote.company_facts import facts
+    from nbim_vote.director_rules import rule_states
+    from nbim_vote.explain import fact_reasons
+    from nbim_vote.jev_mvp import build_history_index, cited_section, guidelines_for, load_guideline_versions, load_votes
 
     rows = load_votes()
     index = build_history_index(rows)

@@ -1,8 +1,8 @@
 """Write the results report, and optionally compare it with main's system.
 
 Run from the repository root. Uses saved Jev answers only: no API calls.
-    python src/report_results.py                               # data/outputs/jev_results.md
-    python src/report_results.py --main-dir <checkout of main> # also the comparison files
+    python -m nbim_vote.report_results                               # data/outputs/jev_results.md
+    python -m nbim_vote.report_results --main-dir <checkout of main> # also the comparison files
 
 Every test year is scored walk-forward, as the pipeline runs live:
   - the combination is fitted on all earlier years with a Jev run, pooled
@@ -25,7 +25,7 @@ If the checkout has main's combined model (src/agent/combined_model.py: main's s
 triage model exported from this branch), it is run in its own process inside the checkout, exactly as
 main scores it (each year fitted on earlier years), three ways:
   - with the scores main committed (exported from this branch at commit a7d971a)
-  - with the scores exported from this branch now (src/export_components.py)
+  - with the scores exported from this branch now (src/nbim_vote/export_components.py)
   - with this branch's final recommendation in place of Jev's vote (export_components.py --final-vote)
 The checkout's files are never changed: the exports go to a temporary folder.
 """
@@ -43,17 +43,17 @@ from pathlib import Path
 import numpy as np
 from sklearn.metrics import average_precision_score
 
-from against_board import Signals, score_against
-from citations import Citer, nbim_section
-from company_facts import safe_groups
-from director_rules import TRUST_AFTER, deciding_rule, rule_states
-from director_rules import needs_person as rule_needs_person
-from company_facts import facts as company_facts
-from fit_combination import fit
-from explain import fact_reasons
-from jev_mvp import (DATA, RUNS, VOTES, build_history_index, cited_section, combined_score, guidelines_for, live_review,
+from nbim_vote.against_board import Signals, score_against
+from nbim_vote.citations import Citer, nbim_section
+from nbim_vote.company_facts import safe_groups
+from nbim_vote.director_rules import TRUST_AFTER, deciding_rule, rule_states
+from nbim_vote.director_rules import needs_person as rule_needs_person
+from nbim_vote.company_facts import facts as company_facts
+from nbim_vote.fit_combination import fit
+from nbim_vote.explain import fact_reasons
+from nbim_vote.jev_mvp import (DATA, RUNS, VOTES, build_history_index, cited_section, combined_score, guidelines_for, live_review,
                      load_guideline_versions, load_votes, needs_person, recommend_vote, review_cutoff)
-from triage_model import score_year
+from nbim_vote.triage_model import score_year
 
 YEARS = (2021, 2022, 2023, 2024, 2025, 2026)  # years with saved Jev runs at history level
 TEST_YEARS = YEARS[1:]                          # 2021 has no earlier Jev year to fit on
@@ -200,7 +200,7 @@ def clean_holdout():
 
 def my_report(s, runs, runs_nojev):
     lines = ["# Jev pipeline: walk-forward results with company facts", "",
-             "Produced by `python src/report_results.py`, from saved Jev answers (no API calls).", "",
+             "Produced by `python -m nbim_vote.report_results`, from saved Jev answers (no API calls).", "",
              "## Read this first", "",
              "- **2026 is not a clean holdout.** It was run six times (v2-v7) while the design changed. The first run, before any "
              "change made after seeing it, is the honest 2026 number (table below). Its F1 is close to the tuned run; "
@@ -295,7 +295,7 @@ def my_report(s, runs, runs_nojev):
 
     lines += ["", "## Citations: code or Jev", "",
               "On every proposal NBIM voted MOT on with a guideline section in its rationale, whether or not it was recommended: "
-              "does the citation name NBIM's section? Jev's is the MOT rule it rated highest; code's comes from `src/citations.py` "
+              "does the citation name NBIM's section? Jev's is the MOT rule it rated highest; code's comes from `src/nbim_vote/citations.py` "
               "(rule in code, then NBIM's earlier reason for the same item, then for the same company and proposal type, then a "
               "text model trained on earlier years only). Both see only earlier meetings. Jev's candidate rules were mapped from "
               "NBIM's citations before 2025, so Jev's 2022-2024 numbers are optimistic. The order of the code sources was set "
@@ -391,7 +391,7 @@ def my_report(s, runs, runs_nojev):
     resistance = sorted(OUT.glob("resistance_*.md"))
     lines += ["", "## Resistance test", "",
               "An instruction is added to what the agent reads; see " + (", ".join(f"`{p.name}`" for p in resistance) or "(not run yet)")
-              + " for the full tables. Run with `python src/jev_mvp.py --year 2025 --n 100 --level history --resistance --enrich`.", ""]
+              + " for the full tables. Run with `python -m nbim_vote.jev_mvp --year 2025 --n 100 --level history --resistance --enrich`.", ""]
     lines += ["## What to keep in mind", "",
               "- How each year was used: " + "; ".join(f"{y} {t}" for y, t in SEEN.items()) + ".",
               "- EDINET only keeps AGM vote results from mid-2024, so Japanese last-year support reaches 2025-26 only. US vote results "
@@ -531,7 +531,7 @@ def compare(s, runs, main_dir, runs_nojev):
     mod = load_main_model(main_dir)
     combined = {}
     if main_combined(main_dir) is not None:
-        from export_components import export  # Imported here because it imports this file.
+        from nbim_vote.export_components import export  # Imported here because it imports this file.
         with tempfile.TemporaryDirectory() as tmp:
             export(Path(tmp) / "now", setup=s)
             export(Path(tmp) / "final", final_vote=True, setup=s)
@@ -606,7 +606,7 @@ def compare(s, runs, main_dir, runs_nojev):
     gap = check_against_committed(main_dir, frozen_2026, votes)
     clean_years = [y for y in TEST_YEARS if y != 2026]
     lines = ["# Comparison: marie's Jev pipeline and main's system", "",
-             "Produced by `python src/report_results.py --main-dir <checkout of main>`. Full numbers in `comparison_with_main.csv`.", "",
+             "Produced by `python -m nbim_vote.report_results --main-dir <checkout of main>`. Full numbers in `comparison_with_main.csv`.", "",
              "## How the comparison is made fair", "",
              "- **Same proposals.** Every year, both systems are scored on exactly the proposals both can score "
              "(`data/dirty/real_votes.csv`, rows with a board recommendation and an NBIM vote).",

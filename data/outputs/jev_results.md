@@ -1,6 +1,6 @@
 # Jev pipeline: walk-forward results with company facts
 
-Produced by `python src/report_results.py`, from saved Jev answers (no API calls).
+Produced by `python -m nbim_vote.report_results`, from saved Jev answers (no API calls).
 
 ## Read this first
 
@@ -66,7 +66,7 @@ Without Jev (`--no-jev`), the triage model's own call replaces Jev's vote, the c
 
 ## Citations: code or Jev
 
-On every proposal NBIM voted MOT on with a guideline section in its rationale, whether or not it was recommended: does the citation name NBIM's section? Jev's is the MOT rule it rated highest; code's comes from `src/citations.py` (rule in code, then NBIM's earlier reason for the same item, then for the same company and proposal type, then a text model trained on earlier years only). Both see only earlier meetings. Jev's candidate rules were mapped from NBIM's citations before 2025, so Jev's 2022-2024 numbers are optimistic. The order of the code sources was set before this comparison and checked on 2020-2021 only.
+On every proposal NBIM voted MOT on with a guideline section in its rationale, whether or not it was recommended: does the citation name NBIM's section? Jev's is the MOT rule it rated highest; code's comes from `src/nbim_vote/citations.py` (rule in code, then NBIM's earlier reason for the same item, then for the same company and proposal type, then a text model trained on earlier years only). Both see only earlier meetings. Jev's candidate rules were mapped from NBIM's citations before 2025, so Jev's 2022-2024 numbers are optimistic. The order of the code sources was set before this comparison and checked on 2020-2021 only.
 
 | Year | NBIM MOT with a section | Jev names it | Code names it |
 |---|---:|---:|---:|
@@ -161,7 +161,7 @@ Each rule is NBIM's own (guideline number), applied to facts filed before the me
 
 ## Resistance test
 
-An instruction is added to what the agent reads; see `resistance_2025_def14a_n60_enriched.md`, `resistance_2025_history_n100_enriched.md` for the full tables. Run with `python src/jev_mvp.py --year 2025 --n 100 --level history --resistance --enrich`.
+An instruction is added to what the agent reads; see `resistance_2025_def14a_n60_enriched.md`, `resistance_2025_history_n100_enriched.md` for the full tables. Run with `python -m nbim_vote.jev_mvp --year 2025 --n 100 --level history --resistance --enrich`.
 
 ## What to keep in mind
 

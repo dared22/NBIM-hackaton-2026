@@ -21,20 +21,20 @@ fields from the current row, so nbim_vote, against_board and the rationale field
 of the row being predicted cannot reach Jev.
 
 Run from the repository root. Usage (needs TYPESAFE_API_KEY, see https://console.typesafe.ai/keys):
-    python src/jev_mvp.py --year 2025 --n 100 --enrich --level rules   # pilot
-    python src/jev_mvp.py --year 2025 --level history                  # development year
-    python src/jev_mvp.py --year 2026 --level history                  # final holdout
-    python src/jev_mvp.py --year 2025 --n 50 --level history --resistance  # injection in proposal text
-    python src/jev_mvp.py --year 2025 --n 50 --level def14a --resistance   # also in a filing
+    python -m nbim_vote.jev_mvp --year 2025 --n 100 --enrich --level rules   # pilot
+    python -m nbim_vote.jev_mvp --year 2025 --level history                  # development year
+    python -m nbim_vote.jev_mvp --year 2026 --level history                  # final holdout
+    python -m nbim_vote.jev_mvp --year 2025 --n 50 --level history --resistance  # injection in proposal text
+    python -m nbim_vote.jev_mvp --year 2025 --n 50 --level def14a --resistance   # also in a filing
 
 Jev is optional:
     --cite code (default)  guideline citations from rules in code, NBIM's earlier reasons and a text
-                           model (src/citations.py); Jev still scores the proposal
+                           model (src/nbim_vote/citations.py); Jev still scores the proposal
     --cite jev             citations from Jev's reason question, as in the first design
     --no-jev               no Jev at all: the triage model, the director rules and the code citations
                            decide, with data/combination_no_jev.json (fit_combination.py --no-jev)
 
-To run a new agenda (pasted or from a file), see src/demo.py.
+To run a new agenda (pasted or from a file), see src/nbim_vote/demo.py.
 
 --dry-run replaces Jev with a stub, to test the pipeline without a key.
 Its numbers say nothing about Jev.
@@ -60,11 +60,11 @@ load_dotenv()
 
 import requests
 
-from company_facts import safe_groups
-from instructions import INSTRUCTION, has_instruction, strip_instructions  # noqa: F401
-from company_facts import facts as company_facts
+from nbim_vote.company_facts import safe_groups
+from nbim_vote.instructions import INSTRUCTION, has_instruction, strip_instructions  # noqa: F401
+from nbim_vote.company_facts import facts as company_facts
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 VOTES = DATA / "dirty" / "real_votes.csv"
 GUIDELINE_DIR = DATA / "guidelines"
@@ -534,7 +534,7 @@ def live_review(dates, scores, share, earlier=()):
 def scores_for_year(year, level, combination, rows, history_index, use_jev=True):
     """(date, combined score) for a saved run, rescored with this combination. Empty if there is no run.
     Without Jev the saved run only gives the proposals; its Jev answers are not read."""
-    from triage_model import score_year
+    from nbim_vote.triage_model import score_year
     path = RUNS / f"results_{year}_{level}{RESULT_TAG}.csv"
     if not path.exists():
         return []
@@ -731,13 +731,13 @@ def run_resistance(all_rows, selected, client, versions, level, history_index, l
       In filing                 the attack is appended to the DEF 14A excerpt (def14a level only).
     Decisions use the same rules as a normal run, including rule 1.3.1 and the skip rule.
     """
-    from triage_model import score_year  # Imported here because it imports from this file.
+    from nbim_vote.triage_model import score_year  # Imported here because it imports from this file.
 
     combination = load_combination()
     known = company_facts()
     skip = safe_groups(all_rows, known, f"{year}-01-01")
-    from director_rules import deciding_rule, rule_states as director_rule_states
-    from director_rules import needs_person as rule_needs_person
+    from nbim_vote.director_rules import deciding_rule, rule_states as director_rule_states
+    from nbim_vote.director_rules import needs_person as rule_needs_person
     states = director_rule_states(all_rows, known, guidelines_for, versions)
 
     def ask(row, triage, filing_attack="", proposal_attack="", history_row=None):
@@ -865,9 +865,9 @@ def main():
             print(f"\nWrote {out}")
         return
 
-    from triage_model import score_year  # Imported here because it imports from this file.
+    from nbim_vote.triage_model import score_year  # Imported here because it imports from this file.
 
-    from citations import Citer
+    from nbim_vote.citations import Citer
 
     triage = score_year(rows, a.year)
     combination = load_combination(COMBINATION_NO_JEV if a.no_jev else COMBINATION)
@@ -903,12 +903,12 @@ def main():
     skip = safe_groups(rows, known, f"{a.year}-01-01")
     if skip:
         print(f"Skipping review for groups NBIM never opposed before {a.year}: {'; '.join(sorted(skip))}.")
-    from director_rules import deciding_rule, rule_states as director_rule_states
-    from director_rules import needs_person as rule_needs_person
-    from explain import explain, fact_reasons  # Imported here because they import from this file.
+    from nbim_vote.director_rules import deciding_rule, rule_states as director_rule_states
+    from nbim_vote.director_rules import needs_person as rule_needs_person
+    from nbim_vote.explain import explain, fact_reasons  # Imported here because they import from this file.
     states = director_rule_states(rows, known, guidelines_for, versions)
     citer = Citer(rows, f"{a.year}-01-01") if a.cite == "code" else None
-    from against_board import Signals
+    from nbim_vote.against_board import Signals
     differ = Signals(rows, f"{a.year}-01-01")  # where "MOT" and "against the board" differ
     results = []
     for (row, version, rules, answers, p_model, score, found), share_hit in zip(answered, in_share):

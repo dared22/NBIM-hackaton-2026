@@ -6,7 +6,7 @@ Every history feature uses strictly earlier meetings. The model for a year train
 earlier years only, and its review thresholds come from earlier years too, so nothing
 from the scored year sets them.
 
-    python src/triage_model.py --year 2025     # score a year and show how it does
+    python -m nbim_vote.triage_model --year 2025     # score a year and show how it does
 """
 
 import argparse
@@ -17,16 +17,16 @@ import numpy as np
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.metrics import average_precision_score
 
-from company_facts import FEATURES as FACTS
-from company_facts import facts as company_facts
-from jev_mvp import VOTE_OPTIONS, is_eligible, item_key, load_votes, mot_metrics
+from nbim_vote.company_facts import FEATURES as FACTS
+from nbim_vote.company_facts import facts as company_facts
+from nbim_vote.jev_mvp import VOTE_OPTIONS, is_eligible, item_key, load_votes, mot_metrics
 
 CATEGORICAL = ("proposal_type", "market", "proponent", "mgmt_rec")
 COUNTS = (
     "company_votes", "company_mot", "company_type_votes", "company_type_mot",
     "item_votes", "item_mot", "country_type_votes", "country_type_mot", "type_votes", "type_mot",
 )
-# Company facts from filings before the meeting (Japan, US, Korea): see src/company_facts.py. -1 where they do not apply.
+# Company facts from filings before the meeting (Japan, US, Korea): see src/nbim_vote/company_facts.py. -1 where they do not apply.
 # No text length: padding a proposal must not move its score.
 FEATURES = (*CATEGORICAL, "country", *COUNTS, "last_meeting_mot", "items_in_meeting", *FACTS)
 SEEDS = 3

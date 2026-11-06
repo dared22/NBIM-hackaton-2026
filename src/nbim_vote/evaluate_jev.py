@@ -3,10 +3,10 @@
 Thresholds are only ever chosen on the development year and then applied unchanged
 to the holdout year, so the holdout numbers are not tuned on the holdout.
 
-    python src/evaluate_jev.py --dev 2025                  # choose level and thresholds
-    python src/evaluate_jev.py --dev 2025 --test 2026 --level history   # final comparison
-    python src/evaluate_jev.py --dev 2025 --test 2026 --level history --tag _v2  # the clean holdout
-    python src/evaluate_jev.py --dev 2025 --tag ""         # the saved runs of the first design
+    python -m nbim_vote.evaluate_jev --dev 2025                  # choose level and thresholds
+    python -m nbim_vote.evaluate_jev --dev 2025 --test 2026 --level history   # final comparison
+    python -m nbim_vote.evaluate_jev --dev 2025 --test 2026 --level history --tag _v2  # the clean holdout
+    python -m nbim_vote.evaluate_jev --dev 2025 --tag ""         # the saved runs of the first design
 
 The human-review band is:
     p(MOT) >= high         recommend MOT automatically
@@ -19,7 +19,7 @@ import csv
 import random
 from pathlib import Path
 
-RUNS = Path(__file__).resolve().parents[1] / "data" / "jev_runs"
+RUNS = Path(__file__).resolve().parents[2] / "data" / "jev_runs"
 LEVELS = ("proposal", "rules", "history", "def14a")
 TARGET_RECALL = 0.9  # low: the review band should keep at least this share of MOT votes.
 TARGET_PRECISION = 0.8  # high: automatic MOT should be right at least this often.

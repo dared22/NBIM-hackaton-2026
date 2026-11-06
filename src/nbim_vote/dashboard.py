@@ -1,8 +1,8 @@
 """Stemmegivningsagenten: dashboard (Streamlit). The interface is in Norwegian.
 
 Run from the repository root:
-    python src/dashboard_data.py           # once: builds data/outputs/dashboard/predictions_*.csv (no API calls)
-    streamlit run src/dashboard.py
+    python -m nbim_vote.dashboard_data           # once: builds data/outputs/dashboard/predictions_*.csv (no API calls)
+    streamlit run src/nbim_vote/dashboard.py
 
 Tabs
     Oversikt        every proposal 2022-2026, recommended walk-forward: filter, sort, and see why
@@ -17,7 +17,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "outputs" / "dashboard"
 # "Med Jev" first: the overview uses Jev's saved answers (no API call), and its MOT recommendations are the more reliable.
 FILES = {"Med Jev": DATA / "predictions_jev.csv", "Uten Jev": DATA / "predictions_nojev.csv"}
@@ -314,7 +314,7 @@ tab_overview, tab_new, tab_about = st.tabs(["📊 Oversikt", "📝 Ny saksliste"
 with tab_overview:
     available = {k: v for k, v in FILES.items() if v.exists()}
     if not available:
-        st.warning("Fant ingen prediksjoner. Kjør `python src/dashboard_data.py` fra rotmappen først (ingen API-kall).")
+        st.warning("Fant ingen prediksjoner. Kjør `python -m nbim_vote.dashboard_data` fra rotmappen først (ingen API-kall).")
     else:
         with st.sidebar:
             st.header("Utvalg")
@@ -450,7 +450,7 @@ with tab_new:
         agenda = st.text_area("Saksliste", example, height=260)
         go = st.form_submit_button("Gi anbefalinger", type="primary")
     if go:
-        from demo import NoDataError, parse_agenda, run_agenda  # Loaded on demand: it reads all data and trains the models.
+        from nbim_vote.demo import NoDataError, parse_agenda, run_agenda  # Loaded on demand: it reads all data and trains the models.
 
         items = parse_agenda(agenda)
         if not items:

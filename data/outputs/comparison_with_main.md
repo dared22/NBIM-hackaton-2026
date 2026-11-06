@@ -1,6 +1,6 @@
 # Comparison: marie's Jev pipeline and main's system
 
-Produced by `python src/report_results.py --main-dir <checkout of main>`. Full numbers in `comparison_with_main.csv`.
+Produced by `python -m nbim_vote.report_results --main-dir <checkout of main>`. Full numbers in `comparison_with_main.csv`.
 
 ## How the comparison is made fair
 

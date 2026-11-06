@@ -3,7 +3,7 @@
 real_votes.csv comes with a proposal type. A pasted agenda does not, so this assigns one with
 ordered keyword rules: the first rule that matches wins. Run it to see how often it agrees with
 the types in real_votes.csv:
-    python src/classify.py
+    python -m nbim_vote.classify
 
 The rules read only the proposal text and the proponent, never a vote or rationale.
 """
@@ -58,11 +58,8 @@ def proposal_type(text, proponent="Management"):
 
 
 def main():
-    import sys
     from collections import Counter
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from jev_mvp import load_votes
+    from nbim_vote.jev_mvp import load_votes
     rows = [r for r in load_votes() if r["proposal_text"].strip()]
     right = [proposal_type(r["proposal_text"], r["proponent"]) == r["proposal_type"] for r in rows]
     mot = [ok for ok, r in zip(right, rows) if r["nbim_vote"] == "MOT"]

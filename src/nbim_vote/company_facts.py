@@ -1,7 +1,7 @@
 """Company facts for a proposal, from documents filed before the meeting. One place for every source.
 
 Sources (all fetched by the src/fetch_*.py scripts, or copied from main):
-    Japan  EDINET annual reports and AGM vote results          src/japan_facts.py
+    Japan  EDINET annual reports and AGM vote results          src/nbim_vote/japan_facts.py
     US     main's AI reading of each proxy (nominee role, independence, chair, attendance, board)
            data/evidence/main/board_nominees.csv and board_meetings.csv
            last year's vote results, SEC 8-K item 5.07          data/evidence/sec_votes/votes.csv
@@ -11,7 +11,7 @@ Sources (all fetched by the src/fetch_*.py scripts, or copied from main):
 What this gives each proposal
     features(row)   numbers for the triage model (-1 when a fact does not apply)
     state(row)      plain facts with their source, for Jev
-    groups(row)     labels for the skip rule (src/jev_mvp.py): proposal type and nominee role
+    groups(row)     labels for the skip rule (src/nbim_vote/jev_mvp.py): proposal type and nominee role
     chair_ceo(row)  True when a US nominee is both CEO and board chair (NBIM rule 1.3.1)
 
 No look-ahead: every source is filtered on its filing date, strictly before the meeting date.
@@ -24,11 +24,11 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from japan_facts import JapanFacts, nominee_group
+from nbim_vote.japan_facts import JapanFacts, nominee_group
 
-from instructions import strip_instructions
+from nbim_vote.instructions import strip_instructions
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = ROOT / "data" / "evidence"
 LAST_AGM_DAYS = 400  # last year's meeting: a vote result filed at most this long before the meeting
 NAME_NOISE = r"(?i)\b(elect|re-?elect|director|nominee|as|to|the|board|of|member|and|mr|ms|dr|jr|sr|ii|iii)\b"
@@ -135,7 +135,7 @@ class CompanyFacts:
             "board_size": size, "independent_share": independent / size if size else None,
             "controlled": board.get("controlled_company") == "yes",
             "last_support": min(own) if own else None, "lowest_director_support": min(directors) if directors else None,
-            # For explanations only (src/explain.py): the proxy rows the facts were read from, and last year's vote filing.
+            # For explanations only (src/nbim_vote/explain.py): the proxy rows the facts were read from, and last year's vote filing.
             "nominee_row": nominee, "board_row": board, "proxy_url": board.get("proxy_url", ""),
             "last_votes_url": votes[0]["url"] if votes else "", "last_votes_filed": votes[0]["filed"] if votes else "",
         }

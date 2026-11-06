@@ -1,8 +1,8 @@
 """Fetch the Japanese companies' filings from EDINET, the Japanese Financial Services Agency's filing system.
 
 Run from the repository root. Needs EDINET_API_KEY in .env (free, https://api.edinet-fsa.go.jp).
-    python src/fetch_edinet.py index      # list every filing by these companies, one request per day
-    python src/fetch_edinet.py download   # download the annual and extraordinary reports found
+    python -m nbim_vote.fetch_edinet index      # list every filing by these companies, one request per day
+    python -m nbim_vote.fetch_edinet download   # download the annual and extraordinary reports found
 
 What is kept
     120  annual securities report (yuho): directors, with outside and independent ones marked
@@ -31,7 +31,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "evidence" / "edinet"
 VOTES = ROOT / "data" / "dirty" / "real_votes.csv"
 API = "https://api.edinet-fsa.go.jp/api/v2"

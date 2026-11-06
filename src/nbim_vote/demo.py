@@ -7,11 +7,11 @@ triage model -> combined score against the previous 12 months -> decision and ci
 
 By default it runs without Jev and calls no API, so no API key is needed; it takes well under a minute.
 Run from the repository root:
-    python src/demo.py data/demo/hp_2026-04-16.txt --company "HP Inc." --date 2026-04-16
-    python src/demo.py - --company "Acme" --country Norway --date 2026-05-01 < agenda.txt
-    python src/demo.py data/demo/hp_2026-04-16.txt --company "HP Inc." --date 2026-04-16 --jev   # also ask Jev (TYPESAFE_API_KEY)
+    python -m nbim_vote.demo data/demo/hp_2026-04-16.txt --company "HP Inc." --date 2026-04-16
+    python -m nbim_vote.demo - --company "Acme" --country Norway --date 2026-05-01 < agenda.txt
+    python -m nbim_vote.demo data/demo/hp_2026-04-16.txt --company "HP Inc." --date 2026-04-16 --jev   # also ask Jev (TYPESAFE_API_KEY)
 
-Citations come from the rules in code, NBIM's earlier reasons and a text model (src/citations.py);
+Citations come from the rules in code, NBIM's earlier reasons and a text model (src/nbim_vote/citations.py);
 with --jev, --cite jev uses Jev's choice instead.
 
 Agenda format: one proposal per line, as on the ballot. Lines starting with "#" are ignored.
@@ -31,19 +31,19 @@ import re
 import sys
 from pathlib import Path
 
-from classify import proposal_type
-from explain import explain
-from company_facts import safe_groups
-from director_rules import deciding_rule, needs_person as rule_needs_person, rule_states
-from company_facts import facts as company_facts
-from against_board import Signals
-from citations import Citer
-from confidence import Calibrator, raw_confidence
-from explain import fact_reasons
-from jev_mvp import (COMBINATION, COMBINATION_NO_JEV, NO_JEV, RUNS, JevClient, build_history_index, build_questions, build_state, candidate_rules, combined_score,
+from nbim_vote.classify import proposal_type
+from nbim_vote.explain import explain
+from nbim_vote.company_facts import safe_groups
+from nbim_vote.director_rules import deciding_rule, needs_person as rule_needs_person, rule_states
+from nbim_vote.company_facts import facts as company_facts
+from nbim_vote.against_board import Signals
+from nbim_vote.citations import Citer
+from nbim_vote.confidence import Calibrator, raw_confidence
+from nbim_vote.explain import fact_reasons
+from nbim_vote.jev_mvp import (COMBINATION, COMBINATION_NO_JEV, NO_JEV, RUNS, JevClient, build_history_index, build_questions, build_state, candidate_rules, combined_score,
                      decide, guidelines_for, has_instruction, live_review, load_combination, load_guideline_versions,
                      load_votes, model_answers, scores_for_year)
-from triage_model import score_new
+from nbim_vote.triage_model import score_new
 
 BOARD = re.compile(r"\s*\[board:\s*(FOR|MOT)\]\s*$", re.I)
 
@@ -100,7 +100,7 @@ def vote_confidence(vote, p_mot):
 
 def calibrator(date, no_jev):
     """Calibrated confidence from the dashboard's built predictions before `date`, if they exist (dashboard_data.py)."""
-    path = Path(__file__).resolve().parents[1] / "data" / "outputs" / "dashboard" / f"predictions_{'nojev' if no_jev else 'jev'}.csv"
+    path = Path(__file__).resolve().parents[2] / "data" / "outputs" / "dashboard" / f"predictions_{'nojev' if no_jev else 'jev'}.csv"
     if not path.exists():
         return Calibrator([])
     with open(path, encoding="utf-8", newline="") as f:

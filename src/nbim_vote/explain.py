@@ -14,8 +14,8 @@ filings dated before the meeting (company_facts). The row's own vote and rationa
 from functools import lru_cache
 from urllib.parse import quote as url_quote
 
-from director_rules import deciding_rule, describe
-from jev_mvp import prior_votes
+from nbim_vote.director_rules import deciding_rule, describe
+from nbim_vote.jev_mvp import prior_votes
 
 QUOTE_CHARS = 220
 SUPPORT_NOTE = 80.0      # last year's support below this is worth showing
@@ -33,7 +33,7 @@ def short(text, n=QUOTE_CHARS):
 @lru_cache(maxsize=None)
 def edition_rules(edition):
     """Every rule in one edition by id: a citation from code can name a rule outside the proposal type's candidates."""
-    from jev_mvp import load_guideline_versions
+    from nbim_vote.jev_mvp import load_guideline_versions
     for _, year, by_section in load_guideline_versions():
         if year == str(edition):
             return {r["id"]: r for section in by_section.values() for r in section}
@@ -150,7 +150,7 @@ def fact_reasons(row, known, notes=None):
             passages.append(proxy_quote(b, "controlled_company"))
         if us["last_support"] is not None and us["last_support"] < SUPPORT_NOTE:
             out.append(f"the nominee got {us['last_support']:.1f}% support at last year's meeting (8-K filed {us['last_votes_filed']})")
-            from company_facts import name_tokens
+            from nbim_vote.company_facts import name_tokens
             wanted = name_tokens(row["proposal_text"])
             line = _vote_line(known, row, lambda v: len(wanted & name_tokens(v["label"])) >= 2)
             passages.append((f"{line['label']}: {line['support']} % for — fra 8-K: …{line['context']}", f"8-K levert {line['filed']}", line["url"])
@@ -173,7 +173,7 @@ def fact_reasons(row, known, notes=None):
         if pay["last_pay_support"] is not None:
             low = ", which is low" if pay["last_pay_support"] < PAY_SUPPORT_NOTE else ""
             out.append(f"last year's pay vote got {pay['last_pay_support']:.1f}% support{low} (8-K filed {pay['last_votes_filed']})")
-            from company_facts import is_pay_vote
+            from nbim_vote.company_facts import is_pay_vote
             line = _vote_line(known, row, is_pay_vote)
             if line:
                 note(notes, out[-1], f"{line['label']}: {line['support']} % for — fra 8-K: …{line['context']}",
@@ -183,7 +183,7 @@ def fact_reasons(row, known, notes=None):
         return out, pay["ceo_pay_url"] or pay["last_votes_url"]
     jp = known.japan.for_row(row)
     if jp and jp["found"]:
-        from japan_facts import nominee_group
+        from nbim_vote.japan_facts import nominee_group
         role = nominee_group(jp)
         out = [f"EDINET annual report {jp['report_doc_id']} submitted {jp['report_submitted']}"
                + (f": the nominee is a {role}" + (f", title \"{jp['nominee_title']}\"" if jp["nominee_title"] else "")
@@ -288,5 +288,5 @@ def notice_excerpt(row, known):
     link = getattr(known, "def14a", {}).get(row["meeting_id"])
     if not link:
         return None
-    from jev_mvp import def14a_excerpt
+    from nbim_vote.jev_mvp import def14a_excerpt
     return def14a_excerpt(row, {row["meeting_id"]: link})

@@ -1,7 +1,7 @@
 """Board facts for Japanese director elections, read from EDINET filings dated before the meeting.
 
-Run from the repository root after src/fetch_edinet.py:
-    python src/japan_facts.py        # writes data/evidence/edinet/boards.csv and votes.csv, then a summary
+Run from the repository root after src/nbim_vote/fetch_edinet.py:
+    python -m nbim_vote.japan_facts        # writes data/evidence/edinet/boards.csv and votes.csv, then a summary
 
 Sources
     Annual securities report (yuho, type 120/130), as XBRL converted to CSV by EDINET.
@@ -22,9 +22,9 @@ import zipfile
 from collections import defaultdict
 from pathlib import Path
 
-from instructions import strip_instructions
+from nbim_vote.instructions import strip_instructions
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EDINET = ROOT / "data" / "evidence" / "edinet"
 DOCS = EDINET / "docs"
 DIRECTOR = re.compile(r"取締役")
@@ -242,7 +242,7 @@ class JapanFacts:
             "nominee_representative": bool(nominee and "代表" in nominee["title"]),
             "nominee_title": nominee["title"] if nominee else "",
             "nominee_last_support": min(nominee_votes) if nominee_votes else None,
-            # For explanations only (src/explain.py): what was read, to show it beside the facts.
+            # For explanations only (src/nbim_vote/explain.py): what was read, to show it beside the facts.
             "nominee_name": nominee["name"] if nominee else "",
             "board_read": [(d["name"], d["title"], int(d["is_outside"]), int(d["is_independent"])) for d in board],
             "nominee_vote_line": min(nominee_lines, key=lambda x: x[2]) if nominee_lines else None,
