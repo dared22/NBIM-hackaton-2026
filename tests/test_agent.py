@@ -741,6 +741,45 @@ class ReaderInjectionTests(unittest.TestCase):
         self.assertTrue(all(d[col["decided_by"]] == "human review" for d in hit))
 
 
+class DashboardExportTests(unittest.TestCase):
+    """Main's decisions in the column layout of the team's demo."""
+
+    @classmethod
+    def setUpClass(cls):
+        import csv
+        import export_for_dashboard as ex
+        cls.ex = ex
+        with open(ex.OUT, encoding="utf-8", newline="") as f:
+            cls.rows = list(csv.DictReader(f))
+        with open(ex.DECISIONS, encoding="utf-8", newline="") as f:
+            cls.decisions = {d["key"]: d for d in csv.DictReader(f) if d["dataset"].startswith("NBIM votes")}
+
+    def test_every_decision_is_there_with_the_same_vote_and_route(self):
+        self.assertEqual(len(self.rows), len(self.decisions))
+        for r in self.rows:
+            d = self.decisions[f"{r['meeting_id']}-{r['item_no']}"]
+            self.assertEqual(r["vote"], d["suggested_vote"])
+            self.assertEqual(r["route"] == "human_review", d["decided_by"] == "human review")
+            self.assertEqual(r["route"] == "human_review", bool(r["review_reason"]))
+
+    def test_the_fields_have_the_form_the_demo_reads(self):
+        import json
+        codes = {"review_band", "rule_needs_person", "instruction_in_text", "no_citation", "low_confidence"}
+        for r in self.rows:
+            self.assertEqual(list(r), self.ex.COLUMNS)
+            self.assertTrue(set(r["review_reason"].split(";")) <= codes | {""}, r["review_reason"])
+            self.assertTrue(0 <= float(r["confidence"]) <= 1 and 0 <= float(r["p_combined"]) <= 1)
+            self.assertIsInstance(json.loads(r["documents"]), list)
+            self.assertIsInstance(json.loads(r["passages"]), dict)
+            self.assertIn(r["vote"], ("FOR", "MOT", "AVSTÅ", ""))
+
+    def test_review_reasons_are_mapped_to_the_nearest_code(self):
+        self.assertEqual(self.ex.review_codes("the model is unsure; low information: no earlier votes at this company"),
+                         "review_band;low_confidence")
+        self.assertEqual(self.ex.review_codes("security flag: the wording does not read like a ballot item"), "instruction_in_text")
+        self.assertEqual(self.ex.review_codes(""), "")
+
+
 class ProposalRuleTests(unittest.TestCase):
     def test_combined_chair_and_ceo_appointment_is_recognised_from_the_title(self):
         import proposal_rules as pr
