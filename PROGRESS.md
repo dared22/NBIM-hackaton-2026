@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 03:08.
+Last full update: Fri 03:16.
 
 ## What must be delivered
 
@@ -49,6 +49,8 @@ Run the checks: `python3 -m unittest discover -s tests`.
 On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
 
 ## The three results to present
+
+The numbers for a slide are in `data/outputs/headline.md`, written by `python3 src/run.py`.
 
 1. **Vote history alone is not enough.** On all proposal types it ties "vote
    the same as last time". Two thirds of NBIM's against-votes are on items it
@@ -158,3 +160,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 02:48 Iftikhar: tested 'AI gathers the facts, a judge decides' with Claude Haiku as judge (no Typesafe key for Jev). On US directors it ranks much better than the history model; in the pipeline it helps a little on 2022-2025 (suggested or seen 315 to 319 of 401) and is adopted. 2026 scored a third time: 33 automatic suggestions, 26 right. Cross-shareholdings in Japan tested: no clean rule, left out.
 - Fri 02:59 Iftikhar: judge model tested on pay votes (training seasons, 1,430 votes): worse than the pay model and no gain together, left out. Added 95% intervals and a confidence check for the combined pipeline: 2026 precision 76% (62-90%), suggested or seen 85% (75-94%).
 - Fri 03:08 Iftikhar: gave the judge last year's published support for each US director (from SEC vote results). Tested on 2021-2025: slightly worse (average precision 0.608 against 0.619), reverted.
+- Fri 03:16 Iftikhar: `data/outputs/headline.md` added (both test sets, the simple rules and the tool, on one page). Model card opening rewritten to describe the tool as it is now.

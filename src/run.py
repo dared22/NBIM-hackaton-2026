@@ -316,6 +316,57 @@ def summary(rows, name):
     return "\n".join(lines)
 
 
+def headline(general, pay):
+    """The numbers for a slide, as a short Markdown page: both test sets, the simple rules, the tool."""
+    col = {c: i for i, c in enumerate(COLS)}
+    pct = lambda a, b: f"{a / b:.0%}" if b else "-"
+
+    def tool(rows):
+        against = [r for r in rows if r[col["actual_against_board"]] == 1]
+        alone = [r for r in rows if r[col["band"]] == "likely AGAINST board" and r[col["decided_by"]] == "automatic"]
+        person = [r for r in rows if r[col["decided_by"]] == "human review"]
+        hit = lambda g: sum(1 for r in g if r[col["actual_against_board"]] == 1)
+        return len(rows), len(against), len(alone), hit(alone), len(person), hit(person)
+
+    def table(rows):
+        return ["| Method | Says against | Right | Wrong | Precision | Recall |", "|---|---|---|---|---|---|"] + [
+            f"| {name} | {flags} | {hits} | {flags - hits} | {pct(hits, flags)} | {pct(hits, total)} |" for name, flags, hits, total in rows]
+
+    votes = bm.read_votes(rc.VOTES)
+    _, test_a, _, _ = bm.run_year(votes, YEAR)
+    last_a = [r for r in test_a if r["prev_same_item"] == 1]
+    n, a, alone, right, person, seen = tool(general)
+    lines = [f"# Headline numbers, test year {YEAR}", "",
+             "Written by `python3 src/run.py`. The year was not used to fit or choose anything, except where "
+             "`docs/model-card.md` says how often it has been scored.", "",
+             f"## NBIM's vote file, all countries: {n} proposals, {a} against the board", "",
+             f"Always following the board is right on {pct(n - a, n)} of proposals and finds none of the {a}.", ""]
+    lines += table([("Always follow the board", 0, 0, a), ("Same as last time at this company", len(last_a), sum(r["y"] for r in last_a), a),
+                    ("The tool, acting alone", alone, right, a)])
+    lines += ["", f"The tool sends {person} proposals ({pct(person, n)}) to a person, and {seen} against-votes are among them. "
+              f"So {right + seen} of the {a} against-votes ({pct(right + seen, a)}) are either suggested by the tool or put in front of a person, "
+              f"and {a - right - seen} are waved through.", ""]
+
+    pay_rows, _ = pm.load_rows()
+    test_b = [r for r in pay_rows if r["season"] == pm.TEST_SEASON]
+    last_b = [r for r in test_b if r["prev"] == 1]
+    big_b = [r for r in test_b if r["pay"] and r["pay"] >= pm.STRICT_LEVEL]
+    n, a, alone, right, person, seen = tool(pay)
+    lines += [f"## US executive pay votes: {n} votes, {a} against the board", "",
+              f"Always following the board is right on {pct(n - a, n)} of votes and finds none of the {a}.", ""]
+    lines += table([("Always follow the board", 0, 0, a), ("Same as last season", len(last_b), sum(r["y"] for r in last_b), a),
+                    ("Against if the CEO is paid 25 million dollars or more", len(big_b), sum(r["y"] for r in big_b), a),
+                    ("The tool, acting alone", alone, right, a)])
+    lines += ["", f"The tool sends {person} votes ({pct(person, n)}) to a person, and {seen} against-votes are among them. "
+              f"So {right + seen} of the {a} against-votes ({pct(right + seen, a)}) are either suggested or seen, "
+              f"and {a - right - seen} are waved through.", "",
+              "## How to read these", "",
+              "- \"Says against\" for the tool counts only what it suggests on its own. What it sends to a person is counted in the sentence under each table.",
+              "- The two test sets are separate files and do not add up to one total.",
+              "- Intervals, the earlier years and everything that was tested and left out are in `data/outputs/results.md` and `docs/model-card.md`.", ""]
+    return "\n".join(lines)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     parts = ["# Results", "", f"Produced by `python3 src/run.py`. Test year {YEAR}; nothing from {YEAR} is used to fit or tune.", ""]
@@ -340,11 +391,14 @@ def main():
 
     with open(os.path.join(OUT, "results.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(parts))
+    with open(os.path.join(OUT, "headline.md"), "w", encoding="utf-8") as f:
+        f.write(headline(general, pay))
     print()
     print(summary(pay, "US executive pay votes (history + company facts)"))
     print()
     print(summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"))
-    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals) and data/outputs/results.md")
+    print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals), data/outputs/results.md "
+          f"and data/outputs/headline.md")
 
 
 if __name__ == "__main__":

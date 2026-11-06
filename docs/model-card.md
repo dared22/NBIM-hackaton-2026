@@ -22,9 +22,29 @@ writing, is the vote against the board. For management proposals the two
 targets are the same. The decisions file states the suggested vote as FOR,
 MOT or AVSTÅ, so either target can be scored from it.
 
-## Two models and a rule engine
+## How it is built
 
-The rule engine for US director elections is described further down.
+Each proposal goes to the part that knows most about it. One command,
+`python3 src/run.py`, runs all of it and writes one decision per proposal.
+
+| Part | Used for | What it knows | Described under |
+|---|---|---|---|
+| Pay model | US executive pay votes | CEO pay, pay against similar companies and against returns, from the proxy; last season's vote | Results on the test year |
+| Director rules | US director elections | Facts an AI model reads from the proxy, each with a checked quote; NBIM's rules applied in code | Director elections at US companies |
+| Judge | US director elections | An AI model weighs those facts against NBIM's rules and how often NBIM has followed each | The combined model |
+| Wording rules | Any country, when the title says what the proposal does | Ten NBIM rules | Proposals whose wording decides the vote |
+| Japan and Korea facts | Director elections there | The nominee's role and the board's independence, from national filings | The combined model |
+| Combined model | Every proposal in NBIM's vote file | All of the above, the history model, the Jev decision model and a second model from Marie's pipeline, weighted by a fit on earlier years | The combined model |
+
+Then the routing. The tool acts on its own only when the suggestion rests on
+something a person can check: a rule with its fact that NBIM has followed at
+the last two meetings where it applied, the pay figures, or NBIM's own
+against-vote on the same item last time. Everything else it is unsure about
+goes to a person with the reasons: a suggestion that rests on the models
+only, a rule NBIM has not been following, a company it has no facts for,
+suspicious text in the proposal, low support at the last pay vote.
+
+The two models fitted on NBIM's votes:
 
 | | History model | Pay model |
 |---|---|---|
@@ -36,8 +56,9 @@ The rule engine for US director elections is described further down.
 
 ## Results on the test year
 
-The two models are scored on two different files. They are not parts of one
-total, which is why the second file has more against-votes than the first.
+The tool is scored on two different files. They are not parts of one total,
+which is why the second file has more against-votes than the first. The
+shortest version of the results is `data/outputs/headline.md`.
 
 | | File A: all proposal types | File B: US executive pay votes |
 |---|---|---|
@@ -45,7 +66,7 @@ total, which is why the second file has more against-votes than the first.
 | Companies | 194, in 37 countries | 1,786, US filers |
 | Test set | 2026: 1,539 proposals | Season 2026: 1,200 pay votes |
 | Against the board in the test set | 66 (4.3%) | 114 (9.5%) |
-| Model | History model | Pay model |
+| Scored here | Combined model and rules | Pay model |
 
 Baseline: "vote the same as last time at this company". "Always follow the
 board" finds no against-votes by construction. Each model is compared with the

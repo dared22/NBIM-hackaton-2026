@@ -91,13 +91,14 @@ needs no API key and no internet: model answers and SEC figures are saved in
 the repository.
 
 ```bash
-python3 src/run.py                        # about three minutes
-python3 -m unittest discover -s tests     # 32 checks, including leakage audits and two end-to-end attack checks
+python3 src/run.py                        # about five minutes
+python3 -m unittest discover -s tests     # 70 checks, including leakage audits and two end-to-end attack checks
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
 probability, band, who decides, reasons, guideline with its own words and page
-number, evidence link) and
+number, evidence link),
+`data/outputs/headline.md` (the headline numbers on one page) and
 `data/outputs/results.md` (the full output of every script below).
 
 The two models are scored on two different files, so their counts do not add up
