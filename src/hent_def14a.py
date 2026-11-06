@@ -139,9 +139,9 @@ def tidligst_levert(moetedato):
 
 
 def velg_filing(filer, moetedato):
-    """Siste DEF 14A levert innen vinduet foer moetet, eller None."""
+    """Siste DEF 14A levert innen vinduet foer moetet (ikke samme dag), eller None."""
     fra = tidligst_levert(moetedato)
-    kandidater = [f for f in filer if fra <= f[0] <= moetedato]
+    kandidater = [f for f in filer if fra <= f[0] < moetedato]
     return max(kandidater) if kandidater else None
 
 

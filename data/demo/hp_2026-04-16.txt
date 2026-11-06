@@ -1,0 +1,19 @@
+# HP Inc., annual meeting 2026-04-16. One proposal per line, as on the ballot.
+# "SH:" marks a shareholder proposal (the board is assumed to recommend MOT).
+# Add "[board: FOR]" or "[board: MOT]" at the end of a line to set the board's recommendation.
+Elect Director Chip Bergh
+Elect Director Bruce Broussard
+Elect Director Stacy Brown-Philpot
+Elect Director Stephanie A. Burns
+Elect Director Mary Anne Citrino
+Elect Director Richard L. Clemmer
+Elect Director Fama Francisco
+Elect Director David Meline
+Elect Director Judith "Jami" Miscik
+Elect Director Gianluca Pettiti
+Elect Director Kim K.W. Rucker
+Elect Director Songyee Yoon
+Ratify Ernst & Young LLP as Auditors
+Advisory Vote to Ratify Named Executive Officers' Compensation
+Amend Omnibus Stock Plan
+SH: Require Independent Board Chair

@@ -20,16 +20,17 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GroupKFold
 
-from jev_mvp import COMBINATION, RUNS, build_history_index, combination_features, load_votes
+from jev_mvp import COMBINATION, COMBINATION_NO_JEV, RUNS, build_history_index, combination_features, load_votes
 from triage_model import TARGET_RECALL, score_year
 
 C = 0.3  # Light regularisation: rare proposal types have very few MOT votes.
 
 
-def fit(years, rows=None, tag="_v6", level="history", triage=None):
+def fit(years, rows=None, tag="_v6", level="history", triage=None, use_jev=True):
     """The combination fitted on these years, as a dict. Nothing is written.
 
     triage: optional {year: Triage}, to avoid retraining the triage model for every fit.
+    use_jev False: leave Jev's feature out; the saved runs then only give the proposals.
     """
     years = sorted(years)
     rows = rows or load_votes()
@@ -42,7 +43,7 @@ def fit(years, rows=None, tag="_v6", level="history", triage=None):
         with open(RUNS / f"results_{year}_{level}{tag}.csv", encoding="utf-8", newline="") as f:
             for r in csv.DictReader(f):
                 row = by_key[r["meeting_id"], r["item_no"]]
-                features.append(combination_features(row, float(r["p_mot"]), scores[r["meeting_id"], r["item_no"]], index))
+                features.append(combination_features(row, float(r["p_mot"]) if use_jev else None, scores[r["meeting_id"], r["item_no"]], index))
                 y.append(row["nbim_vote"] == "MOT")
                 companies.append(row["company_id"])
     vectorizer = DictVectorizer(sparse=False)
@@ -58,7 +59,7 @@ def fit(years, rows=None, tag="_v6", level="history", triage=None):
     flag = (triage.get(years[-1]) or score_year(rows, years[-1])).flag
     return {
         "fitted_on": years,
-        "level": level,
+        "level": level if use_jev else "no Jev",
         "results": f"data/jev_runs/results_<year>_{level}{tag}.csv",
         "target_recall": TARGET_RECALL,
         "review_share": round(float((held_out >= cutoff).mean()), 4),
@@ -73,11 +74,13 @@ def main():
     p.add_argument("--years", type=int, nargs="+", required=True)
     p.add_argument("--tag", default="_v7", help="which saved Jev runs to read")
     p.add_argument("--level", default="history")
+    p.add_argument("--no-jev", action="store_true", help="fit without Jev's feature; writes data/combination_no_jev.json")
     a = p.parse_args()
-    combination = fit(a.years, tag=a.tag, level=a.level)
-    COMBINATION.write_text(json.dumps(combination, indent=2) + "\n", encoding="utf-8")
+    combination = fit(a.years, tag=a.tag, level=a.level, use_jev=not a.no_jev)
+    target = COMBINATION_NO_JEV if a.no_jev else COMBINATION
+    target.write_text(json.dumps(combination, indent=2) + "\n", encoding="utf-8")
     print(f"Fitted on {a.years} ({a.level} level): review the top {combination['review_share']:.1%}, "
-          f"model flag {combination['model_flag']}. Wrote {COMBINATION.relative_to(COMBINATION.parents[1])}.")
+          f"model flag {combination['model_flag']}. Wrote {target.relative_to(target.parents[1])}.")
 
 
 if __name__ == "__main__":

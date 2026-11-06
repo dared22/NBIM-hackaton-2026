@@ -26,6 +26,8 @@ from pathlib import Path
 
 from japan_facts import JapanFacts, nominee_group
 
+from instructions import strip_instructions
+
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "data" / "evidence"
 LAST_AGM_DAYS = 400  # last year's meeting: a vote result filed at most this long before the meeting
@@ -92,7 +94,15 @@ class CompanyFacts:
             if r["tag"] == "PeoTotalCompAmt" and r["value"]:
                 k = (r["cik"], r["meeting_date"])
                 if r["period_end"] >= self.ceo_pay.get(k, ("", 0, ""))[0]:
-                    self.ceo_pay[k] = (r["period_end"], float(r["value"]), r["filed"])
+                    self.ceo_pay[k] = (r["period_end"], float(r["value"]), r["filed"], r["accession"])
+        # Documents behind each meeting, for the dashboard's links (meeting_documents()).
+        self.def14a = {r["meeting_id"]: r for r in read(ROOT / "data" / "def14a" / "kobling.csv") if r["status"] == "ok" and r["url"]}
+        self.proxies = {(r["cik"], r["meeting_date"]): r for r in read(EVIDENCE / "main" / "proxy_meetings.csv")
+                        if r["status"] == "ok" and r["url"]}
+        self.edinet_docs = defaultdict(list)  # edinet code -> [(submitted, doc id, type, description)]
+        for r in read(EVIDENCE / "edinet" / "filings.csv"):
+            if r["docTypeCode"] in ("120", "130", "180") and r["withdrawalStatus"] in ("0", ""):
+                self.edinet_docs[r["edinetCode"]].append((r["submitDateTime"][:10], r["docID"], r["docTypeCode"], r["docDescription"]))
         # Korea: registered directors per report.
         self.kr_reports = defaultdict(lambda: defaultdict(list))
         for r in read(EVIDENCE / "dart" / "executives.csv"):
@@ -106,12 +116,13 @@ class CompanyFacts:
         board = self.us_boards.get((row["company_id"], row["meeting_date"]))
         if not board or not board.get("proxy_filed") or board["proxy_filed"] >= row["meeting_date"]:
             return {"found": False}
-        wanted = name_tokens(row["proposal_text"])
-        nominee = next((n for n in self.us_nominees[(row["company_id"], row["meeting_date"])]
-                        if n["found"] == "1" and wanted and name_tokens(n["ballot_name"]) <= wanted | name_tokens(n["ballot_name"])
-                        and len(wanted & name_tokens(n["ballot_name"])) >= min(2, len(wanted))), None)
-        if nominee is None:
+        wanted = name_tokens(strip_instructions(row["proposal_text"]))
+        # At least two shared name words (one if the ballot gives only one), and exactly one such nominee.
+        matches = [n for n in self.us_nominees[(row["company_id"], row["meeting_date"])]
+                   if n["found"] == "1" and wanted and len(wanted & name_tokens(n["ballot_name"])) >= min(2, len(wanted))]
+        if len(matches) != 1:
             return {"found": False}
+        nominee = matches[0]
         size = float(board["board_size"] or 0)
         independent = float(board["independent_directors"] or 0)
         votes = self.last_votes(row)
@@ -124,6 +135,9 @@ class CompanyFacts:
             "board_size": size, "independent_share": independent / size if size else None,
             "controlled": board.get("controlled_company") == "yes",
             "last_support": min(own) if own else None, "lowest_director_support": min(directors) if directors else None,
+            # For explanations only (src/explain.py): the proxy rows the facts were read from, and last year's vote filing.
+            "nominee_row": nominee, "board_row": board, "proxy_url": board.get("proxy_url", ""),
+            "last_votes_url": votes[0]["url"] if votes else "", "last_votes_filed": votes[0]["filed"] if votes else "",
         }
 
     def last_votes(self, row):
@@ -151,6 +165,9 @@ class CompanyFacts:
             "ceo_pay_source": f"proxy statement filed {pay[2]}" if pay else "",
             "last_pay_support": min(pay_votes) if pay_votes else None,
             "majority_shareholder_proposal": any(s > 50 for s in shareholder),
+            # For explanations only: where the pay figure and last year's votes were filed.
+            "ceo_pay_url": f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{pay[3].replace('-', '')}/" if pay and pay[2] < row["meeting_date"] and pay[3] else "",
+            "last_votes_url": votes[0]["url"] if votes else "", "last_votes_filed": votes[0]["filed"] if votes else "",
         }
 
     # ------------------------------------------------------------------ Korea
@@ -158,14 +175,15 @@ class CompanyFacts:
         if row["country"] != "South Korea" or row["proposal_type"] != "DIRECTOR_ELECTION":
             return None
         reports = sorted(k for k in self.kr_reports.get(row["company_id"], {}) if k[0] < row["meeting_date"])
-        role = korean_role(row["proposal_text"])
+        role = korean_role(strip_instructions(row["proposal_text"]))
         if not reports:
             return {"found": False, "nominee_role": role}
         filed, rcept = reports[-1]
         board = self.kr_reports[row["company_id"]][(filed, rcept)]
         outside = sum(d["registered"] == "사외이사" for d in board)
         ceo_chair = any("대표이사" in d["duties"] + d["position"] and "의장" in d["duties"] for d in board)
-        return {"found": True, "source": f"DART report filed {filed} (receipt {rcept})", "board_size": len(board),
+        return {"found": True, "source": f"DART report filed {filed} (receipt {rcept})", "filed": filed,
+                "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcept}", "board_size": len(board),
                 "outside": outside, "outside_share": outside / len(board), "ceo_chairs_board": ceo_chair, "nominee_role": role}
 
     # ------------------------------------------------------------------ outputs
@@ -249,6 +267,60 @@ class CompanyFacts:
             out.append(f"US: {role}")
         return out
 
+    def meeting_documents(self, row):
+        """Every input document for this proposal's meeting, filed before the meeting date, the main one first.
+
+        [{"label", "url", "filed", "about"}]. url is "" where no public link exists. EDINET links open EDINET's
+        public document viewer by document ID (disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?<id>); the address works
+        but is not documented by EDINET.
+        """
+        date, out, seen = row["meeting_date"], [], set()
+
+        def add(label, url, filed, about):
+            if filed and filed[:10] >= date:
+                return  # filed on or after the meeting: not an input
+            if url and url in seen:
+                return
+            seen.add(url)
+            out.append({"label": label, "url": url, "filed": (filed or "")[:10], "about": about})
+
+        # US: the proxy statement (notice of meeting), last year's vote results, the CEO pay filing.
+        link = self.def14a.get(row["meeting_id"])
+        if link:
+            add("Innkalling / proxy (DEF 14A)", link["url"], link["filing_date"], "Sakslisten, styrets anbefalinger og fakta om kandidatene")
+        cik = self.cik_by_name.get(norm_company(row["company"]))
+        proxy = self.proxies.get((cik, date)) if cik else None
+        if proxy:
+            add(f"Innkalling / proxy ({proxy['form']})", proxy["url"], proxy["filed"], "Sakslisten, lederlønn og styrets anbefalinger")
+        board = self.us_boards.get((row["company_id"], date))
+        if board and board.get("proxy_url"):
+            add("Innkalling / proxy (lest av main sin AI-leser)", board["proxy_url"], board.get("proxy_filed", ""),
+                "Fakta om styret og kandidatene, med sitater")
+        votes = self.last_votes(row) if row["country"] == "United States" else []
+        if votes:
+            add("Fjorårets stemmeresultater (8-K, punkt 5.07)", votes[0]["url"], votes[0]["filed"], "Oppslutning om hver sak på forrige generalforsamling")
+        pay = self.ceo_pay.get((cik, date)) if cik else None
+        if pay and pay[3]:
+            add("Lønnstabell i proxy (XBRL)", f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{pay[3].replace('-', '')}/",
+                pay[2], "Konsernsjefens samlede lønn")
+        # Japan: the annual securities report and last year's vote results, from EDINET.
+        code = self.japan.code.get(row["company_id"]) if self.japan.ok else None
+        if code:
+            docs = sorted(d for d in self.edinet_docs.get(code, []) if d[0] < date)
+            annual = [d for d in docs if d[2] in ("120", "130")]
+            results = [d for d in docs if d[2] == "180" and days_between(d[0], date) <= LAST_AGM_DAYS]
+            picked = ([(annual[-1], "Årsrapport (EDINET, 有価証券報告書)")] if annual else []) + \
+                     ([(results[-1], "Fjorårets stemmeresultater (EDINET, 臨時報告書)")] if results else [])
+            for (filed, doc, _, about), label in picked:
+                add(f"{label} {doc}", f"https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?{doc}", filed, about)
+        # Korea: the latest DART report on the board.
+        reports = sorted(k for k in self.kr_reports.get(row["company_id"], {}) if k[0] < date)
+        if reports:
+            filed, rcept = reports[-1]
+            add(f"Rapport til DART ({self.kr_reports[row['company_id']][(filed, rcept)][0]['report']})",
+                f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcept}", filed, "Registrerte styremedlemmer og roller")
+        return out
+
     def chair_ceo(self, row):
         us = self.us_director(row)
         return bool(us and us["found"] and us["ceo"] and us["board_chair"])
@@ -287,7 +359,6 @@ def korean_role(text):
 
 
 SAFE_MIN_ELECTIONS = 100  # A group skips review only after this many earlier proposals with no MOT.
-MISSES_TO_SUSPEND = 2     # The chair-and-CEO rule is suspended after NBIM supported its last two cases.
 
 
 def safe_groups(rows, company, before_date):
@@ -300,24 +371,6 @@ def safe_groups(rows, company, before_date):
             seen[g][0] += 1
             seen[g][1] += r["nbim_vote"] == "MOT"
     return {g for g, (n, mot) in seen.items() if n >= SAFE_MIN_ELECTIONS and mot == 0}
-
-
-def chair_ceo_states(rows, company):
-    """For every US nominee who is both CEO and chair: is NBIM's rule 1.3.1 still active on that date?
-
-    A drift monitor, as on main: the rule is suspended once NBIM supported the board on its last
-    MISSES_TO_SUSPEND cases. Only earlier meeting dates count; cases on the same date do not see each other.
-    """
-    fired = sorted((r for r in rows if r["nbim_vote"] in ("FOR", "MOT", "AVSTÅ") and company.chair_ceo(r)), key=lambda r: r["meeting_date"])
-    states, misses, i = {}, 0, 0
-    while i < len(fired):
-        same_day = [r for r in fired[i:] if r["meeting_date"] == fired[i]["meeting_date"]]
-        for r in same_day:
-            states[(r["meeting_id"], r["item_no"])] = "suspended" if misses >= MISSES_TO_SUSPEND else "active"
-        for r in same_day:
-            misses = 0 if r["nbim_vote"] == "MOT" else misses + 1
-        i += len(same_day)
-    return states
 
 
 _FACTS = None

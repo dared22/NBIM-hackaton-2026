@@ -135,6 +135,28 @@ def score_year(rows, year, use_facts=True):
     return Triage(dict(zip(keys, map(float, scores))), low, flag)
 
 
+def score_new(rows, new_rows, use_facts=True):
+    """Scores for proposals with no vote yet (a pasted agenda), as score_year would score them.
+
+    History comes from voted meetings strictly before each new proposal's date; the model trains on
+    years before the new meeting's year, so a meeting is scored the same way as in the evaluation.
+    """
+    date = min(r["meeting_date"] for r in new_rows)
+    year = int(date[:4])
+    voted = [r for r in rows if r["nbim_vote"] in VOTE_OPTIONS and r["meeting_date"] < date]
+    unvoted = [{**r, "nbim_vote": ""} for r in new_rows]
+    X = build_features(voted + unvoted, use_facts)
+    y = np.array([r["nbim_vote"] == "MOT" for r in voted] + [False] * len(unvoted))
+    years = np.array([int(r["year"]) for r in voted] + [year] * len(unvoted))
+    train = np.zeros(len(years), bool)
+    train[: len(voted)] = years[: len(voted)] < year
+    if len({int(r["year"]) for r in voted}) < 2:
+        raise SystemExit("The triage model needs at least two earlier years of votes.")
+    target = np.zeros(len(years), bool)
+    target[len(voted):] = True
+    return list(map(float, fit_and_score(X, y, train, target)))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--year", type=int, required=True)

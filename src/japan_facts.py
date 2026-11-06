@@ -22,6 +22,8 @@ import zipfile
 from collections import defaultdict
 from pathlib import Path
 
+from instructions import strip_instructions
+
 ROOT = Path(__file__).resolve().parents[1]
 EDINET = ROOT / "data" / "evidence" / "edinet"
 DOCS = EDINET / "docs"
@@ -200,28 +202,28 @@ class JapanFacts:
                     self.votes[r["edinet_code"]].append((r["submitted"], r["item"], float(r["support_pct"])))
 
     def board_for(self, code, meeting_date):
-        """(board, report date, proposed?) from the latest annual report submitted before the meeting."""
+        """(board, report date, proposed?, document ID) from the latest annual report submitted before the meeting."""
         earlier = sorted(k for k in self.reports.get(code, {}) if k[0] < meeting_date)
         if not earlier:
-            return None, None, False
+            return None, None, False, None
         submitted, doc = earlier[-1]
         parts = self.reports[code][(submitted, doc)]
         days = (_date(meeting_date) - _date(submitted)).days
         if days <= PROPOSED_WINDOW_DAYS and parts.get("proposal"):
-            return parts["proposal"], submitted, True
-        return parts.get("current") or parts.get("proposal"), submitted, False
+            return parts["proposal"], submitted, True, doc
+        return parts.get("current") or parts.get("proposal"), submitted, False, doc
 
     def for_row(self, row):
         if not self.ok or row["country"] != "Japan" or row["proposal_type"] != "DIRECTOR_ELECTION":
             return None
         code = self.code.get(row["company_id"])
-        board, submitted, proposed = self.board_for(code, row["meeting_date"]) if code else (None, None, False)
+        board, submitted, proposed, doc = self.board_for(code, row["meeting_date"]) if code else (None, None, False, None)
         if not board:
             return {"found": False}
         size = len(board)
         outside = sum(int(d["is_outside"]) for d in board)
         independent = sum(int(d["is_independent"]) for d in board)
-        wanted = nominee_tokens(row["proposal_text"])
+        wanted = nominee_tokens(strip_instructions(row["proposal_text"]))
         match = [d for d in board if wanted and wanted <= set(d["tokens"].split())]
         nominee = match[0] if len(match) == 1 else None
         last = [v for v in self.votes.get(code, []) if v[0] < row["meeting_date"] and (_date(row["meeting_date"]) - _date(v[0])).days <= 400]
@@ -229,7 +231,7 @@ class JapanFacts:
         director_votes = [s for _, item, s in last if any(n and n in item for n in board_names)]
         nominee_votes = [s for _, item, s in last if nominee and nominee["name"] in item]
         return {
-            "found": True, "report_submitted": submitted, "proposed_board": proposed,
+            "found": True, "report_submitted": submitted, "report_doc_id": doc, "proposed_board": proposed,
             "board_size": size, "outside": outside, "independent": independent,
             "independent_share": independent / size,
             "nominee_found": nominee is not None,
@@ -243,9 +245,6 @@ class JapanFacts:
         }
 
 
-SAFE_MIN_ELECTIONS = 100  # A nominee group is skipped only after this many earlier elections with no MOT.
-
-
 def nominee_group(facts):
     """The nominee's role, for the skip rule. None when the nominee or the board is unknown."""
     if not facts or not facts.get("found") or not facts.get("nominee_found"):
@@ -257,22 +256,6 @@ def nominee_group(facts):
     if facts["nominee_outside"]:
         return "outside director"
     return "executive director" if facts["nominee_executive"] else "inside director"
-
-
-def safe_groups(rows, japan, before_date):
-    """Nominee groups NBIM never opposed in at least SAFE_MIN_ELECTIONS earlier elections.
-
-    Only votes from meetings before before_date are used, so this can be applied to later meetings.
-    """
-    seen = defaultdict(lambda: [0, 0])
-    for r in rows:
-        if r["meeting_date"] >= before_date or r["nbim_vote"] not in ("FOR", "MOT", "AVSTÅ"):
-            continue
-        group = nominee_group(japan.for_row(r))
-        if group:
-            seen[group][0] += 1
-            seen[group][1] += r["nbim_vote"] == "MOT"
-    return {g for g, (n, mot) in seen.items() if n >= SAFE_MIN_ELECTIONS and mot == 0}
 
 
 def _date(text):
