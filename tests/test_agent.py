@@ -467,6 +467,41 @@ class CombinedModelTests(unittest.TestCase):
         self.assertTrue(all(d[col["decided_by"]] == "human review" for d in held))
 
 
+class CountryRuleTests(unittest.TestCase):
+    """Japan and Korea: company facts that bring in a person."""
+
+    @classmethod
+    def setUpClass(cls):
+        import country_rules
+        cls.cr = country_rules
+
+    def fact(self, **over):
+        base = {"jp_found": "1", "jp_nominee_found": "1", "jp_nominee_representative": "1", "jp_nominee_outside": "0",
+                "jp_nominee_executive": "1", "jp_independent_share": "0.3", "jp_nominee_title": "代表取締役社長"}
+        base.update(over)
+        return base
+
+    def test_the_fact_file_holds_no_answer(self):
+        with open(self.cr.FACTS, encoding="utf-8") as f:
+            header = f.readline().lower()
+        for word in ("nbim_vote", "against_board", "rationale", "actual"):
+            self.assertNotIn(word, header)
+
+    def test_only_the_chairman_or_president_counts_as_top_executive(self):
+        self.assertEqual(self.cr.japan_role(self.fact()), "top executive")
+        self.assertEqual(self.cr.japan_role(self.fact(jp_nominee_title="代表取締役会長")), "top executive")
+        self.assertEqual(self.cr.japan_role(self.fact(jp_nominee_title="代表取締役副社長")), "other representative director")
+        self.assertEqual(self.cr.japan_role(self.fact(jp_nominee_representative="0", jp_nominee_outside="1")), "outside director")
+        self.assertIsNone(self.cr.japan_role(self.fact(jp_found="0")))
+
+    def test_a_country_fact_never_lets_the_tool_act_alone(self):
+        import run
+        col = {c: i for i, c in enumerate(run.COLS)}
+        fired = [d for d in run.general_decisions() if "a company fact applies" in d[col["review_reason"]]]
+        self.assertGreater(len(fired), 10)
+        self.assertTrue(all(d[col["decided_by"]] == "human review" for d in fired))
+
+
 class RoutingTests(unittest.TestCase):
     def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
         import routing

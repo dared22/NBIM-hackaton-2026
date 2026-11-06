@@ -61,6 +61,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 import board_rules as br  # noqa: E402
 import combined_model as cm  # noqa: E402
+import country_rules as cr  # noqa: E402
 import director_rules as dr  # noqa: E402
 import pay_overlap as po  # noqa: E402
 import pay_model as pm  # noqa: E402
@@ -86,6 +87,7 @@ SCRIPTS = [
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
     ("The combined model: both teams' systems in one score", ["src/agent/combined_model.py"]),
+    ("Director elections in Japan and Korea: a company fact that brings in a person", ["src/agent/country_rules.py"]),
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
@@ -201,6 +203,13 @@ def general_decisions(rows=None, pay=None):
                 and r["prev_same_item"] != 1):
             flags.append("the models suggest a vote against the board, but no rule, fact or earlier "
                          "against-vote on this item backs it")
+        # Japan and Korea: a company fact NBIM often acts on brings in a person, unless the tool
+        # is already acting alone on "against".
+        fact = cr.signal_for(r)
+        if fact:
+            reasons += " | " + fact[1]
+            if not (band == "likely AGAINST board" and not flags):
+                flags.append("a company fact applies that NBIM often acts on (see the reasons)")
         vote, who, why = decide(r["mgmt_rec"], band, flags)
         market = (r["country"], r["proposal_type"])
         if vote == "MOT" and band == "likely AGAINST board" and market in abstain:
@@ -210,6 +219,8 @@ def general_decisions(rows=None, pay=None):
                         f"against-votes on this proposal type as abstentions")
         if guide:
             pass
+        elif fact and fact[0]:
+            guide = f"{fact[0]} (NBIM's usual stated reason for against-votes on directors in this market)"
         elif r["rule_p"] is not None and r["rule_p"] >= rule_thr:
             guide = f"GVG {r['rule_section']} (rule check, probability {r['rule_p']:.2f})"
         elif comp and comp["jev_cited_section"] and comp["jev_vote"] != r["mgmt_rec"] and band != "likely WITH board":

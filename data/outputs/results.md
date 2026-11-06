@@ -17,12 +17,12 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1133 (74%). Sent to a person: 406 (26%).
+- Decided automatically: 1123 (73%). Sent to a person: 416 (27%).
 - Automatic 'against the board' suggestions: 36, of which 26 were right (precision 72%, recall 39%).
 - Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
 - Against-votes the tool waved through with the board: 10 (15% of all against-votes).
 - With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 34 proposals; 1 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 44 proposals; 1 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -602,14 +602,16 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
    last time. A suggestion that rests on the models only goes to a person, marked as such.
 
 4. As a decision rule, with the director and wording rules on top and the 5% level kept
-  Years     |                                       System | Acts alone on 'against' | Right | Wrong | Precision | Recall | A person reads | Against-votes suggested or seen
-  ----------+----------------------------------------------+-------------------------+-------+-------+-----------+--------+----------------+--------------------------------
-  2022-2025 |          History model + rules (main before) |                     381 |   173 |   208 |       45% |    43% |     1470 (20%) |                   300/401 (75%)
-  2022-2025 |     Combined model, acts on every suggestion |                     350 |   183 |   167 |       52% |    46% |     1437 (20%) |                   304/401 (76%)
-  2022-2025 | Combined model, acts alone only with support |                     201 |   134 |    67 |       67% |    33% |     1586 (22%) |                   304/401 (76%)
-  2026      |          History model + rules (main before) |                      40 |    25 |    15 |       62% |    38% |      349 (23%) |                     49/66 (74%)
-  2026      |     Combined model, acts on every suggestion |                      67 |    32 |    35 |       48% |    48% |      366 (24%) |                     56/66 (85%)
-  2026      | Combined model, acts alone only with support |                      36 |    26 |    10 |       72% |    39% |      397 (26%) |                     56/66 (85%)
+  Years     |                                            System | Acts alone on 'against' | Right | Wrong | Precision | Recall | A person reads | Against-votes suggested or seen
+  ----------+---------------------------------------------------+-------------------------+-------+-------+-----------+--------+----------------+--------------------------------
+  2022-2025 |               History model + rules (main before) |                     381 |   173 |   208 |       45% |    43% |     1470 (20%) |                   300/401 (75%)
+  2022-2025 |          Combined model, acts on every suggestion |                     350 |   183 |   167 |       52% |    46% |     1437 (20%) |                   304/401 (76%)
+  2022-2025 |      Combined model, acts alone only with support |                     201 |   134 |    67 |       67% |    33% |     1586 (22%) |                   304/401 (76%)
+  2022-2025 |   + Japan and Korea facts bring in a person (now) |                     201 |   134 |    67 |       67% |    33% |     1664 (23%) |                   315/401 (79%)
+  2026      |               History model + rules (main before) |                      40 |    25 |    15 |       62% |    38% |      349 (23%) |                     49/66 (74%)
+  2026      |          Combined model, acts on every suggestion |                      67 |    32 |    35 |       48% |    48% |      366 (24%) |                     56/66 (85%)
+  2026      |      Combined model, acts alone only with support |                      36 |    26 |    10 |       72% |    39% |      397 (26%) |                     56/66 (85%)
+  2026      |   + Japan and Korea facts bring in a person (now) |                      36 |    26 |    10 |       72% |    39% |      407 (26%) |                     56/66 (85%)
 
 5. What the combination learned (fitted on all years before 2026; positive = towards against)
    +0.36  history           the history model's probability
@@ -629,6 +631,54 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   without the second model  |        0.473
   without main's rules      |        0.459
   without the history model |        0.461
+```
+
+## Director elections in Japan and Korea: a company fact that brings in a person
+
+`python3 src/agent/country_rules.py`
+
+```text
+Japan: 1903 director nominees in NBIM's file, 40 against the board. EDINET report found for 1330.
+
+1. By the nominee's role in the report
+  Years   |                          Role | Nominees | NBIM against | Share
+  --------+-------------------------------+----------+--------------+------
+  to 2025 |               inside director |      187 |            0 |  0.0%
+  to 2025 |               other executive |      183 |            0 |  0.0%
+  to 2025 | other representative director |       56 |            0 |  0.0%
+  to 2025 |              outside director |      313 |            0 |  0.0%
+  to 2025 |   report or nominee not found |      797 |            6 |  0.8%
+  to 2025 |                 top executive |      141 |           27 | 19.1%
+  2026    |               inside director |       37 |            0 |  0.0%
+  2026    |               other executive |       38 |            0 |  0.0%
+  2026    | other representative director |       13 |            0 |  0.0%
+  2026    |              outside director |       79 |            0 |  0.0%
+  2026    |   report or nominee not found |       29 |            0 |  0.0%
+  2026    |                 top executive |       30 |            7 | 23.3%
+
+2. Top executives, by how much of the proposed board is independent
+  Years   | Independent share of the board | Top executives | NBIM against | Share
+  --------+--------------------------------+----------------+--------------+------
+  to 2025 |          a third to under half |             58 |           11 |   19%
+  to 2025 |                   half or more |             27 |            2 |    7%
+  to 2025 |                  under a third |             56 |           14 |   25%
+  2026    |          a third to under half |             15 |            3 |   20%
+  2026    |                   half or more |              7 |            1 |   14%
+  2026    |                  under a third |              8 |            3 |   38%
+
+3. The two facts as reasons to bring in a person, by year
+  Year | Japan: top executive, board under half independent | NBIM against | Korea: inside director | NBIM against
+  -----+----------------------------------------------------+--------------+------------------------+-------------
+  2019 |                                                  0 |            0 |                      8 |            1
+  2020 |                                                  0 |            0 |                      9 |            2
+  2021 |                                                 18 |            1 |                     12 |            4
+  2022 |                                                 25 |            3 |                     12 |            0
+  2023 |                                                 24 |            8 |                     13 |            5
+  2024 |                                                 21 |            7 |                     16 |            5
+  2025 |                                                 26 |            6 |                     13 |            5
+  2026 |                                                 23 |            6 |                      7 |            1
+   What these add to the pipeline is in src/agent/combined_model.py and the model card: on 2022-2025 they
+   put 11 more against-votes in front of a person for 78 more nominees read.
 ```
 
 ## Confidence and routing: when should the tool ask a person?

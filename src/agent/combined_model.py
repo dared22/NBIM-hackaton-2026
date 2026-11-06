@@ -48,6 +48,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 from benchmark import model as bm  # noqa: E402
 import board_rules as br  # noqa: E402
+import country_rules as cr  # noqa: E402
 import proposal_rules as pr  # noqa: E402
 
 VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
@@ -108,6 +109,7 @@ def year_data(rows, year, directors, worded):
         if k in comp:
             r["comp"], r["hist_thr"] = comp[k], hist_thr
             r["director"], r["worded"] = directors.get(k), worded.get(k)
+            r["country_fact"] = cr.signal_for(r)
             r["xc"] = inputs_for(r, comp[k], r["director"], r["worded"])
             out.append(r)
     return out
@@ -154,7 +156,7 @@ def top(scores, ys, share):
     return sum(ys[i] for i in sorted(range(len(ys)), key=lambda i: -scores[i])[:k])
 
 
-def decide(r, p, level, need_support=False):
+def decide(r, p, level, need_support=False, country_facts=False):
     """(acts alone on "against", sent to a person) with the rules on top, as src/run.py does it.
 
     need_support: a probability above the level is not enough for the tool to act alone. The
@@ -168,7 +170,7 @@ def decide(r, p, level, need_support=False):
         says = bool(rule_alone or (strong and r["prev_same_item"] == 1 and not rule_held))
     else:
         says = bool(rule_alone or strong)
-    return says, bool(not says and (p >= LOW or rule_held))
+    return says, bool(not says and (p >= LOW or rule_held or (country_facts and r["country_fact"])))
 
 
 def kind_of_flag(r):
@@ -231,7 +233,8 @@ def main():
     for label, group in ((f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP), (str(FINAL), (FINAL,))):
         for name, pick in (("History model + rules (main before)", lambda r: (r["p"], r["hist_thr"], False)),
                            ("Combined model, acts on every suggestion", lambda r: (r["p_new"], r["level"], False)),
-                           ("Combined model, acts alone only with support", lambda r: (r["p_new"], r["level"], True))):
+                           ("Combined model, acts alone only with support", lambda r: (r["p_new"], r["level"], True)),
+                           ("  + Japan and Korea facts bring in a person (now)", lambda r: (r["p_new"], r["level"], True, True))):
             n = against = says = right = person = seen = 0
             for y in group:
                 for r in data[y]:

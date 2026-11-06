@@ -83,8 +83,8 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 
 | | File A | File B |
 |---|---|---|
-| Decided automatically | 74% | 74% |
-| Sent to a person | 26% | 26% |
+| Decided automatically | 73% | 74% |
+| Sent to a person | 27% | 26% |
 | Against-votes suggested by the tool or sent to a person | 85% | 90% |
 | Against-votes the tool followed the board on by itself | 15% | 10% |
 | Precision of the automatic "against" suggestions | 72% | 70% |
@@ -197,7 +197,8 @@ once after the routing above was chosen on 2022-2025.
 |---|---|---|---|---|---|
 | History model (before the combined model) | 35 | 25 (71%) | 14 | 52 (79%) | 25% |
 | Combined model, acts on every suggestion (first scoring) | 58 | 32 (55%) | 10 | 56 (85%) | 25% |
-| Combined model, acts alone only with support (now) | 36 | 26 (72%) | 10 | 56 (85%) | 26% |
+| Combined model, acts alone only with support | 36 | 26 (72%) | 10 | 56 (85%) | 26% |
+| The same, with Japan and Korea facts bringing in a person (now) | 36 | 26 (72%) | 10 | 56 (85%) | 27% |
 
 Counting every suggestion "against", whether the tool acts alone or sends it
 to a person, the pipeline now makes 65 and 32 are right.
@@ -215,6 +216,23 @@ of reading. The first routing found more on its own but was right only 55%
 of the time; that result is why the routing was looked at again, and it was
 then chosen on 2022-2025, not on 2026. `USE_COMBINED` in `src/run.py`
 switches back to the earlier pipeline.
+
+Director facts for Japan and Korea (`src/agent/country_rules.py`). Marie's
+branch holds each Japanese director's title and the independent share of the
+proposed board from EDINET reports, and Korean board data from OpenDART. They
+are exported per proposal to `data/evidence/jev_pipeline/company_facts.csv`.
+In Japan, up to 2025, NBIM opposed 27 of 141 top executives (a representative
+director titled chairman or president) and none of the 739 nominees matched to
+any other role. Among top executives it opposed 25% where under a third of the
+board is independent, 19% between a third and a half, and 7% at half or more.
+In Korea it opposed 19 of 66 nominees the ballot calls inside directors
+(2021-2025). Neither is close to a rule, and as inputs to the combined model
+they add nothing, because her second model already holds them. They are used
+as reasons to bring in a person: on 2022-2025 that puts 11 more against-votes
+in front of a person (315 of 401, from 304) for 78 more nominees read. On 2026
+the total stays at 56 of 66: the Japanese against-votes that year, all seven
+of them top executives, were already suggested or seen. The title pattern and
+the "under half" level were chosen on votes up to 2025.
 
 Tried on 2022-2025 and left out, because the plain seven-input combination was
 as good or better (average precision 0.484): the history model updated with

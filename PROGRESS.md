@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 01:47.
+Last full update: Fri 02:09.
 
 ## What must be delivered
 
@@ -25,6 +25,7 @@ Last full update: Fri 01:47.
 | Combined model, all proposal types (main + Marie's Jev pipeline) | `src/agent/combined_model.py` | Done, in the pipeline | 2022-2025: better than either system alone. 2026: 26 right of 36 automatic suggestions (72%), 10 waved through, 56 of 66 suggested or seen (before 25 of 35, 14, and 52). `USE_COMBINED` in `src/run.py` switches it off |
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
+| Director facts for Japan and Korea | `src/agent/country_rules.py` | Done, in the pipeline | In Japan NBIM opposes only top executives (27 of 141, none of 739 others). Brings in a person: 11 more against-votes seen on 2022-2025, no change on 2026 |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
 | Check of the proxy reader by a second model | `src/agent/board_reader_check.py` | Done | 16 meetings, 122 nominees: same answer on 98.2% of facts; rules fire on the same nominees for 120 of 122 |
 | Director rules on SEC insider filings (second source) | `src/agent/director_rules.py` | Done | 38 hits and 12 false alarms; agrees with the proxy reader on 98.9% of nominees |
@@ -39,7 +40,7 @@ Last full update: Fri 01:47.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 59 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 62 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -106,6 +107,16 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
   used (DeepSeek, Jev).
 - Do not commit `.env`. It holds the OpenRouter key and is ignored by git.
 
+## Note on `min-agent/`
+
+The three files Gemini wrote were read and not run. They refer to files this repo does not
+have (`modell.py`, `motstandstest.py`, `kravrespons.md`, `EXPERIMENTS.md`), their five
+backlog items are all already done or tested here, and the loop they describe keeps a
+change when the 2026 score goes up and reverts it otherwise. That is tuning on the test
+year, which the rules penalise, and its `git checkout -- .` would also wipe uncommitted
+files. The useful part, one idea per round with a log, is how the night work is run:
+ideas are chosen on 2022-2025, and every scoring of 2026 is written down.
+
 ## Log
 
 Add newest at the bottom: day, time, name, what changed.
@@ -137,3 +148,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 00:30 Iftikhar: four fixes suggested from the 2026 pay misses were tested on the training seasons instead. One holds (last pay vote under 70% support, rule 3.3.5) and now sends the vote to a person. The others were weak or already covered.
 - Fri 01:25 Iftikhar: checked Marie's comparison with main, then built the combined model from both systems. Designed on 2022-2025, 2026 scored once. In the pipeline, with a switch.
 - Fri 01:47 Iftikhar: combined model improved on 2022-2025: the tool now acts alone only when a rule, a fact or NBIM's own last vote backs the suggestion (precision 52% to 67% there). Five other ideas tested and left out. 2026 has been scored twice with the combined model.
+- Fri 02:09 Iftikhar: Japan and Korea director facts (from Marie's EDINET and OpenDART data) used as reasons to bring in a person. Night work continues; Gemini's files in `min-agent/` were checked and not run (see the note in this file).
