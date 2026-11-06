@@ -1,4 +1,4 @@
-# Only the dashboard needs these (streamlit run src/dashboard.py).
+# Only the dashboard needs these (streamlit run src/dashboard.py). Tried with streamlit 1.67 and pandas 3.1.
 # The pipeline (python3 src/run.py) and the tests need nothing beyond Python's standard library.
-streamlit>=1.40
-pandas>=2.0
+streamlit>=1.67
+pandas>=2.2
