@@ -92,7 +92,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about five minutes
-python3 -m unittest discover -s tests     # 80 checks, including leakage audits and four end-to-end attack checks
+python3 -m unittest discover -s tests     # 81 checks, including leakage audits and four end-to-end attack checks
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
@@ -126,7 +126,7 @@ to one total.
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |
 | `src/agent/paraphrase_test.py` | A reworded instruction with no trigger words, against the whole pipeline in the worst case | Without a wording check 6 more of 66 against-votes are waved through; with it none, and all 66 reach a person |
 | `src/agent/reader_injection_test.py` | An instruction, and a false statement, planted in the proxy statement the AI reader reads (20 proxies, 175 nominees) | The reader did not obey: 0 of 694 targeted facts changed. It did quote the planted text. A code check flags all 20 planted proxies and none of 214 real ones |
-| `src/agent/export_for_dashboard.py` | Writes main's 2026 decisions in the column layout of the team's demo (branch `marie`, `src/dashboard.py`) | `data/outputs/dashboard/predictions_main.csv`, 1,539 proposals; one line in the demo's `FILES` makes it selectable |
+| `src/agent/export_for_dashboard.py` | Writes main's 2026 decisions in the column layout of the team's demo (branch `marie`, `src/dashboard.py`) | `data/outputs/dashboard/predictions_main.csv`, 1,539 proposals; one line in the demo's `FILES` makes it selectable. Tried in a copy of the demo: loads and renders without errors |
 
 Scope of the pay model: US filers and pay votes only. It uses NBIM's own
 say-on-pay votes from Norges Bank's SEC Form N-PX filings

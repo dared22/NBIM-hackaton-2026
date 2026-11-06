@@ -21,3 +21,12 @@ and makes no API calls. Jev itself is a hosted model (Typesafe), called by her
 What Marie's notes say about how the years were used: 2021-2023 were run once after her
 design was fixed, 2024 was used to check the design, 2025 to design it, and 2026 was seen
 before the design was final.
+
+## documents_2026.csv
+
+The company documents behind each 2026 proposal in the demo on branch `marie`
+(`data/outputs/dashboard/predictions_jev.csv` at commit 318ea69): the link, a label and
+the list the demo shows (SEC proxy, EDINET annual report, DART report; each filed before
+the meeting). 591 of the 1,539 proposals have one. No vote, rationale or score is in the
+file. Used only by `src/agent/export_for_dashboard.py`, so that main's decisions can be
+shown in that demo with the same document links.

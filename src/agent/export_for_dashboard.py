@@ -20,8 +20,15 @@ What is and is not carried over
       board, p when it suggests voting against.
     - Where main cites no guideline it follows the board, which is NBIM's first voting
       principle (P.1); that principle is shown, as the demo does for its own rows.
-    - Not checked inside the running demo. The column names, the codes and the JSON fields
-      are checked against the demo's own file format by tests/test_agent.py.
+    - The demo shows by default only proposals with a company document behind them. Those
+      links (SEC proxy, EDINET, DART; each filed before the meeting) come from the demo's
+      own file on branch marie and are stored in data/evidence/jev_pipeline/documents_2026.csv.
+      They are the documents behind the two scores and the Japan and Korea facts that the
+      combined model takes from that pipeline. Where main has its own evidence link (the
+      proxy a rule's fact was read from), that link is listed first.
+    - Tried in a copy of the demo (branch marie at 318ea69, Streamlit's test runner): the file
+      loads and every view renders without an error. The column names, the codes and the
+      JSON fields are also checked by tests/test_agent.py.
 """
 
 import csv
@@ -38,6 +45,7 @@ import rule_check as rc  # noqa: E402
 YEAR = 2026
 DECISIONS = os.path.join(ROOT, "data", "outputs", f"decisions_{YEAR}.csv")
 COMPONENTS = os.path.join(ROOT, "data", "evidence", "jev_pipeline", f"components_{YEAR}.csv")
+DOCUMENTS = os.path.join(ROOT, "data", "evidence", "jev_pipeline", f"documents_{YEAR}.csv")
 OUT = os.path.join(ROOT, "data", "outputs", "dashboard", "predictions_main.csv")
 COLUMNS = ["year", "meeting_date", "meeting_id", "item_no", "company_id", "company", "country", "market", "proposal_text",
            "proposal_type", "proponent", "mgmt_rec", "vote", "confidence", "confidence_basis", "confidence_raw", "p_combined",
@@ -79,6 +87,8 @@ def main():
         jev = {f"{r['meeting_id']}-{r['item_no']}": r["jev_p_mot"] for r in csv.DictReader(f)}
     with open(DECISIONS, encoding="utf-8", newline="") as f:
         decisions = [d for d in csv.DictReader(f) if d["dataset"].startswith("NBIM votes")]
+    with open(DOCUMENTS, encoding="utf-8", newline="") as f:
+        filed = {f"{r['meeting_id']}-{r['item_no']}": r for r in csv.DictReader(f)}
     rows = []
     for d in decisions:
         v = votes[d["key"]]
@@ -88,8 +98,12 @@ def main():
         if not section and not against:
             section, source, words = "P.1", "voting principle", "Voting principle (not a numbered guideline): " + principle
         reasons = [x for x in ([d["review_reason"]] if d["review_reason"] else []) + d["reasons"].split(" | ") if x]
-        url = d["evidence_url"]
-        documents = [{"label": "Selskapets dokument hos SEC", "url": url, "filed": "før møtet", "about": "kilde for faktaene"}] if url else []
+        url, label = d["evidence_url"], "Selskapets dokument hos SEC" if d["evidence_url"] else ""
+        documents = [{"label": label, "url": url, "filed": "før møtet", "about": "kilde for faktaene"}] if url else []
+        doc = filed.get(d["key"])
+        if doc:
+            documents += [x for x in json.loads(doc["documents"]) if x.get("url") != url]
+            url, label = url or doc["document_url"], label or doc["document_label"]
         rows.append({
             "year": YEAR, "meeting_date": d["meeting_date"], "meeting_id": v["meeting_id"], "item_no": v["item_no"],
             "company_id": v.get("company_id", ""), "company": d["company"], "country": v.get("country", ""), "market": v.get("market", ""),
@@ -100,7 +114,7 @@ def main():
             "route": "human_review" if d["decided_by"] == "human review" else "automatic",
             "review_reason": review_codes(d["review_reason"]), "citation": section, "citation_source": source,
             "guideline_text": words, "guideline_edition": "2025", "reasons": " | ".join(reasons), "passages": "{}",
-            "evidence_url": url, "document_url": url, "document_label": "Selskapets dokument hos SEC" if url else "",
+            "evidence_url": d["evidence_url"], "document_url": url, "document_label": label,
             "documents": json.dumps(documents, ensure_ascii=False), "nbim_vote": d["actual_vote"],
             "rationale_section": v.get("rationale_section", ""), "rationale_text": v.get("rationale_text", ""),
         })

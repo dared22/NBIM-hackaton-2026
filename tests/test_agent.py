@@ -773,6 +773,14 @@ class DashboardExportTests(unittest.TestCase):
             self.assertIsInstance(json.loads(r["passages"]), dict)
             self.assertIn(r["vote"], ("FOR", "MOT", "AVSTÅ", ""))
 
+    def test_the_document_links_hold_no_answer(self):
+        with open(self.ex.DOCUMENTS, encoding="utf-8") as f:
+            text = f.read().lower()
+        self.assertEqual(text.split("\n")[0], "meeting_id,item_no,document_url,document_label,documents")
+        for word in ("nbim_vote", "against_board", "rationale", "voted"):
+            self.assertNotIn(word, text)
+        self.assertGreater(sum(1 for r in self.rows if r["document_url"]), 500)
+
     def test_review_reasons_are_mapped_to_the_nearest_code(self):
         self.assertEqual(self.ex.review_codes("the model is unsure; low information: no earlier votes at this company"),
                          "review_band;low_confidence")
