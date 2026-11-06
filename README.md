@@ -92,7 +92,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about five minutes
-python3 -m unittest discover -s tests     # 70 checks, including leakage audits and two end-to-end attack checks
+python3 -m unittest discover -s tests     # 73 checks, including leakage audits and three end-to-end attack checks
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
@@ -124,6 +124,7 @@ to one total.
 | `src/agent/routing.py` | Is the confidence honest, what does a lower "ask a person" level cost, and when does NBIM abstain | Below 5% the tool is wrong about 2% of the time and nothing in the vote file picks those out; abstaining is a market habit the tool now follows |
 | `src/agent/fetch_pay_structure.py`, `src/agent/pay_structure_test.py` | An AI model reads how the CEO's pay is built from the proxy, with a checked quote for every answer. 675 proxies | No gain at CEO pay of 10 to 25 million dollars. At 25 million or more three answers helped on the training seasons and hurt on 2026 (average precision 0.660 against 0.698), so the pay model is unchanged. The findings are shown as evidence on 152 pay decisions |
 | `src/agent/robustness.py` | Instructions hidden in the proposal text, with and without a guardrail | Both models can be thrown off; the guardrail flags every instruction attack with no false alarms on 66,663 real texts |
+| `src/agent/paraphrase_test.py` | A reworded instruction with no trigger words, against the whole pipeline in the worst case | Without a wording check 6 more of 66 against-votes are waved through; with it none, and all 66 reach a person |
 
 Scope of the pay model: US filers and pay votes only. It uses NBIM's own
 say-on-pay votes from Norges Bank's SEC Form N-PX filings

@@ -32,7 +32,9 @@ one answer.
 How a decision is made
     1. Guardrail. Instruction-like wording in the proposal text sends it to a
        person with a security flag. Extra words added to a known item do not
-       break the lookup of that item's history.
+       break the lookup of that item's history. Wording that does not read
+       like a ballot item (words no earlier ballot used) also brings in a
+       person, so a reworded instruction needs no trigger word to be caught.
     2. The model gives the probability that NBIM votes against the board.
     3. Band. Below 5%: follow the board. At or above the model's cut-off:
        vote against the board. In between: a person decides.
@@ -93,6 +95,7 @@ SCRIPTS = [
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
+    ("Resistance test 2: a reworded instruction against the whole pipeline", ["src/agent/paraphrase_test.py"]),
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
         "probability_against_board", "band", "decided_by", "review_reason", "model", "reasons",
@@ -143,6 +146,7 @@ def general_decisions(rows=None, pay=None):
     _, val, _, _ = bm.run_year(rows, YEAR - 1)
     train, test, w, thr = bm.run_year(rows, YEAR)
     known_companies = {r["company_id"] for r in train}
+    vocabulary = rb.ballot_vocabulary(r["proposal_text"] for r in train)
     # The combined model: the history model's probability, main's rules, and the two scores exported
     # from Marie's pipeline (Jev and her second model), weighted by a fit on earlier years.
     combo_fit, combo_level = cm.fitted(YEAR)
@@ -204,6 +208,12 @@ def general_decisions(rows=None, pay=None):
             flags = (["security flag: " + ", ".join(hits)] if hits else []) + [
                 f for f in by_pay[col["review_reason"]].split("; ")
                 if f and f != "the model is unsure" and not f.startswith("security flag")]
+        # Guardrail, part 3: wording that does not read like a ballot item brings in a person, whatever
+        # the models say. The suggestion is kept; the person decides.
+        odd = rb.unusual_wording(r["proposal_text"], vocabulary)
+        if odd and not hits:
+            flags.append("security flag: the wording does not read like a ballot item (words no earlier ballot used: "
+                         + ", ".join(odd[:6]) + ")")
         # The tool acts alone on "against" only when the suggestion rests on something a person can
         # check: a rule with its fact, the pay figures, or NBIM's own against-vote on the item last time.
         if (comp and not by_pay and band == "likely AGAINST board" and not (d and d["rules"])

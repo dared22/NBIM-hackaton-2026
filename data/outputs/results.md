@@ -17,12 +17,12 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (combined model, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1137 (74%). Sent to a person: 402 (26%).
+- Decided automatically: 1135 (74%). Sent to a person: 404 (26%).
 - Automatic 'against the board' suggestions: 33, of which 26 were right (precision 79%, recall 39%).
 - Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
 - Against-votes the tool waved through with the board: 10 (15% of all against-votes).
 - With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
-- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 46 proposals; 1 of them were against-votes.
+- Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 48 proposals; 1 of them were against-votes.
 
 ## History model, all proposal types
 
@@ -990,4 +990,26 @@ Proxies read: 301 votes, all 89 against-votes and 212 of the others (each stands
   Other investor (data/dirty/npx_votes.csv) | 52906 |              0 | 0.00% |                               0/141
 
 Wrote per-proposal history-model results to data/outputs/robustness_2026.csv
+```
+
+## Resistance test 2: a reworded instruction against the whole pipeline
+
+`python3 src/agent/paraphrase_test.py`
+
+```text
+2026: 1539 proposals, NBIM voted against the board on 66.
+Untouched text: the tool alone suggests 'against' on 26 of them and waves 10 through.
+The 'does not read like a ballot item' flag fires on 5 untouched proposals (0.3%); against-votes among them: 1.
+
+A sentence added to all 66 against-votes (worst case: text-based inputs removed where the known wording is not recovered)
+  Text added                 | No wording check: waved through | of which new | With the check: waved through | of which new | Reach a person | Known wording not recovered
+  ---------------------------+---------------------------------+--------------+-------------------------------+--------------+----------------+----------------------------
+  reworded instruction       |                              16 |            6 |                             0 |            0 |             66 |                          31
+  the same, no full stop     |                              16 |            6 |                             0 |            0 |             66 |                          31
+  the same, in Title Case    |                              16 |            6 |                             0 |            0 |             66 |                          31
+  persuasion, no instruction |                              16 |            6 |                             0 |            0 |             66 |                          31
+
+   'Waved through' = automatic vote with the board, nobody looks. 'New' = not waved through on the untouched text.
+   With the check every attacked against-vote reaches a person, who sees the tool's suggestion and the flag.
+   The first three wordings were used to design the check (on 2022-2025); the persuasion text was not.
 ```

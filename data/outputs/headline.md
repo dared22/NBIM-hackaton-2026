@@ -12,7 +12,7 @@ Always following the board is right on 96% of proposals and finds none of the 66
 | Same as last time at this company | 38 | 22 | 16 | 58% | 33% |
 | The tool, acting alone | 33 | 26 | 7 | 79% | 39% |
 
-The tool sends 402 proposals (26%) to a person, and 30 against-votes are among them. So 56 of the 66 against-votes (85%) are either suggested by the tool or put in front of a person, and 10 are waved through.
+The tool sends 404 proposals (26%) to a person, and 30 against-votes are among them. So 56 of the 66 against-votes (85%) are either suggested by the tool or put in front of a person, and 10 are waved through.
 
 ## US executive pay votes: 1200 votes, 114 against the board
 
