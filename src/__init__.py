@@ -1,0 +1,1 @@
+"""NBIM voting application."""

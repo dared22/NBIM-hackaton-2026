@@ -34,3 +34,6 @@ dist/
 
 # Proxy passages sent to the AI reader (downloaded, large)
 data/evidence/proxy_excerpts/
+
+# Predictions and reports are rebuilt by the prediction command
+data/outputs/
