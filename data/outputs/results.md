@@ -17,9 +17,9 @@ One row per proposal is in `data/outputs/decisions_2026.csv`.
 
 ### All proposal types (history, plus NBIM rules for US directors and worded proposals)
 - Proposals: 1539; NBIM voted against the board on 66.
-- Decided automatically: 1155 (75%). Sent to a person: 384 (25%).
-- Automatic 'against the board' suggestions: 58, of which 32 were right (precision 55%, recall 48%).
-- Against-votes inside the pile sent to a person: 24 (36% of all against-votes).
+- Decided automatically: 1133 (74%). Sent to a person: 406 (26%).
+- Automatic 'against the board' suggestions: 36, of which 26 were right (precision 72%, recall 39%).
+- Against-votes inside the pile sent to a person: 30 (45% of all against-votes).
 - Against-votes the tool waved through with the board: 10 (15% of all against-votes).
 - With a person reading the review pile, 56 of 66 against-votes are either suggested or seen (85%).
 - Sent to a person although the model's probability was low (nothing to go on, or a rule applies that the tool does not act on alone): 34 proposals; 1 of them were against-votes.
@@ -590,15 +590,28 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
   Marie's pipeline (Jev + second model) | 0.319 | 0.368 | 0.527 | 0.495 | 0.508
   Combined model                        | 0.428 | 0.428 | 0.543 | 0.539 | 0.498
 
-3. As a decision rule, with the director and wording rules on top and the 5% level kept
-  Years     |                              System | Says against | Right | Wrong | Precision | Recall | A person reads | Against-votes suggested or seen
-  ----------+-------------------------------------+--------------+-------+-------+-----------+--------+----------------+--------------------------------
-  2022-2025 | History model + rules (main before) |          381 |   173 |   208 |       45% |    43% |     1470 (20%) |                   300/401 (75%)
-  2022-2025 |              Combined model + rules |          350 |   183 |   167 |       52% |    46% |     1437 (20%) |                   304/401 (76%)
-  2026      | History model + rules (main before) |           40 |    25 |    15 |       62% |    38% |      349 (23%) |                     49/66 (74%)
-  2026      |              Combined model + rules |           67 |    32 |    35 |       48% |    48% |      366 (24%) |                     56/66 (85%)
+3. When the combined model says 'against', what does the suggestion rest on? (2022-2025)
+  The suggestion rests on                                                | Suggestions | Right | Share
+  -----------------------------------------------------------------------+-------------+-------+------
+  a rule with its fact                                                   |          74 |    60 |   81%
+  NBIM opposed the same item last time, and Jev says against             |         130 |    72 |   55%
+  NBIM opposed the same item last time                                   |           8 |     4 |   50%
+  the models only: Jev says against, no earlier against-vote on the item |          89 |    32 |   36%
+  the models only: neither Jev nor an earlier against-vote               |          48 |    14 |   29%
+   So the tool acts on its own only with a rule and its fact, or NBIM's own against-vote on the item
+   last time. A suggestion that rests on the models only goes to a person, marked as such.
 
-4. What the combination learned (fitted on all years before 2026; positive = towards against)
+4. As a decision rule, with the director and wording rules on top and the 5% level kept
+  Years     |                                       System | Acts alone on 'against' | Right | Wrong | Precision | Recall | A person reads | Against-votes suggested or seen
+  ----------+----------------------------------------------+-------------------------+-------+-------+-----------+--------+----------------+--------------------------------
+  2022-2025 |          History model + rules (main before) |                     381 |   173 |   208 |       45% |    43% |     1470 (20%) |                   300/401 (75%)
+  2022-2025 |     Combined model, acts on every suggestion |                     350 |   183 |   167 |       52% |    46% |     1437 (20%) |                   304/401 (76%)
+  2022-2025 | Combined model, acts alone only with support |                     201 |   134 |    67 |       67% |    33% |     1586 (22%) |                   304/401 (76%)
+  2026      |          History model + rules (main before) |                      40 |    25 |    15 |       62% |    38% |      349 (23%) |                     49/66 (74%)
+  2026      |     Combined model, acts on every suggestion |                      67 |    32 |    35 |       48% |    48% |      366 (24%) |                     56/66 (85%)
+  2026      | Combined model, acts alone only with support |                      36 |    26 |    10 |       72% |    39% |      397 (26%) |                     56/66 (85%)
+
+5. What the combination learned (fitted on all years before 2026; positive = towards against)
    +0.36  history           the history model's probability
    +0.22  second_model      the second model's probability (vote history and company facts)
    +0.23  jev_probability   the Jev decision model's probability
@@ -608,7 +621,7 @@ Wrote 1539 rows to data/outputs/rule_check_2026.csv
    +2.57  wording_rule      a wording rule says against the board
    Level for saying against in 2026: 0.205
 
-5. What each side adds, 2022-2025 (average precision when one input group is left out)
+6. What each side adds, 2022-2025 (average precision when one input group is left out)
   Inputs                    | AP 2022-2025
   --------------------------+-------------
   all seven inputs          |        0.484

@@ -154,12 +154,31 @@ def top(scores, ys, share):
     return sum(ys[i] for i in sorted(range(len(ys)), key=lambda i: -scores[i])[:k])
 
 
-def decide(r, p, level):
-    """(says against, sent to a person) with the rules on top, as src/run.py does it."""
+def decide(r, p, level, need_support=False):
+    """(acts alone on "against", sent to a person) with the rules on top, as src/run.py does it.
+
+    need_support: a probability above the level is not enough for the tool to act alone. The
+    suggestion must also rest on something a person can check: a rule with its fact, or NBIM's
+    own against-vote on the same item last time. Without that it goes to a person as a
+    suggestion from the models."""
     rule_alone = (r["director"] and r["director"]["acts_alone"]) or r["worded"]
     rule_held = r["director"] and r["director"]["signals"] and not r["director"]["acts_alone"]
-    says = bool(rule_alone or p >= level)
+    strong = p >= level
+    if need_support:
+        says = bool(rule_alone or (strong and r["prev_same_item"] == 1 and not rule_held))
+    else:
+        says = bool(rule_alone or strong)
     return says, bool(not says and (p >= LOW or rule_held))
+
+
+def kind_of_flag(r):
+    """What a suggestion "against" rests on."""
+    jev = r["xc"][3] == 1.0
+    if (r["director"] and r["director"]["signals"]) or r["worded"]:
+        return "a rule with its fact"
+    if r["prev_same_item"] == 1:
+        return "NBIM opposed the same item last time" + (", and Jev says against" if jev else "")
+    return "the models only: " + ("Jev says against, no earlier against-vote on the item" if jev else "neither Jev nor an earlier against-vote")
 
 
 def main():
@@ -195,11 +214,24 @@ def main():
              [[name] + [f"{bm.average_precision([score(r) for r in data[y]], [r['y'] for r in data[y]]):.3f}" for y in years[1:]]
               for name, score in systems.items()])
 
-    print("\n3. As a decision rule, with the director and wording rules on top and the 5% level kept")
+    print(f"\n3. When the combined model says 'against', what does the suggestion rest on? ({DEVELOP[0]}-{DEVELOP[-1]})")
+    kinds = collections.defaultdict(lambda: [0, 0])
+    for y in DEVELOP:
+        for r in data[y]:
+            if r["p_new"] >= r["level"]:
+                kinds[kind_of_flag(r)][0] += 1
+                kinds[kind_of_flag(r)][1] += r["y"]
+    bm.table(["The suggestion rests on", "Suggestions", "Right", "Share"],
+             [[k, n, hit, f"{hit / n:.0%}"] for k, (n, hit) in sorted(kinds.items(), key=lambda kv: -kv[1][1] / kv[1][0])])
+    print("   So the tool acts on its own only with a rule and its fact, or NBIM's own against-vote on the item")
+    print("   last time. A suggestion that rests on the models only goes to a person, marked as such.")
+
+    print("\n4. As a decision rule, with the director and wording rules on top and the 5% level kept")
     out = []
     for label, group in ((f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP), (str(FINAL), (FINAL,))):
-        for name, pick in (("History model + rules (main before)", lambda r: (r["p"], r["hist_thr"])),
-                           ("Combined model + rules", lambda r: (r["p_new"], r["level"]))):
+        for name, pick in (("History model + rules (main before)", lambda r: (r["p"], r["hist_thr"], False)),
+                           ("Combined model, acts on every suggestion", lambda r: (r["p_new"], r["level"], False)),
+                           ("Combined model, acts alone only with support", lambda r: (r["p_new"], r["level"], True))):
             n = against = says = right = person = seen = 0
             for y in group:
                 for r in data[y]:
@@ -208,16 +240,16 @@ def main():
                     person, seen = person + h, seen + (h and r["y"])
             out.append([label, name, says, right, says - right, f"{right / says:.0%}", f"{right / against:.0%}",
                         f"{person} ({person / n:.0%})", f"{right + seen}/{against} ({(right + seen) / against:.0%})"])
-    bm.table(["Years", "System", "Says against", "Right", "Wrong", "Precision", "Recall", "A person reads",
+    bm.table(["Years", "System", "Acts alone on 'against'", "Right", "Wrong", "Precision", "Recall", "A person reads",
               "Against-votes suggested or seen"], out)
 
-    print("\n4. What the combination learned (fitted on all years before 2026; positive = towards against)")
+    print("\n5. What the combination learned (fitted on all years before 2026; positive = towards against)")
     w = fit_on(data, years[:-1])
     for (name, text), wi in zip(INPUTS, w[1:]):
         print(f"   {wi:+.2f}  {name:17} {text}")
     print(f"   Level for saying against in {FINAL}: {data[FINAL][0]['level']:.3f}")
 
-    print("\n5. What each side adds, 2022-2025 (average precision when one input group is left out)")
+    print("\n6. What each side adds, 2022-2025 (average precision when one input group is left out)")
     groups = {"all seven inputs": range(7), "without Jev": (0, 1, 4, 5, 6), "without the second model": (0, 2, 3, 4, 5, 6),
               "without main's rules": (0, 1, 2, 3), "without the history model": (1, 2, 3, 4, 5, 6)}
     out = []

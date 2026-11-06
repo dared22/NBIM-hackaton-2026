@@ -195,6 +195,12 @@ def general_decisions(rows=None, pay=None):
             flags = (["security flag: " + ", ".join(hits)] if hits else []) + [
                 f for f in by_pay[col["review_reason"]].split("; ")
                 if f and f != "the model is unsure" and not f.startswith("security flag")]
+        # The tool acts alone on "against" only when the suggestion rests on something a person can
+        # check: a rule with its fact, the pay figures, or NBIM's own against-vote on the item last time.
+        if (comp and not by_pay and band == "likely AGAINST board" and not (d and d["rules"])
+                and r["prev_same_item"] != 1):
+            flags.append("the models suggest a vote against the board, but no rule, fact or earlier "
+                         "against-vote on this item backs it")
         vote, who, why = decide(r["mgmt_rec"], band, flags)
         market = (r["country"], r["proposal_type"])
         if vote == "MOT" and band == "likely AGAINST board" and market in abstain:
