@@ -1,4 +1,4 @@
-"""Main's decisions for the test year, in the column layout of the team's demo (branch marie, src/dashboard.py).
+"""Main's decisions for the test year, in the column layout of the team's demo (branch marie, src/nbim_vote/dashboard.py).
 
 Run from the repo root, after python3 src/run.py (no internet, no API key):
     python3 src/agent/export_for_dashboard.py
@@ -8,7 +8,7 @@ Why
     branch's own pipeline. This writes the decisions of the model described in
     docs/model-card.md in the same columns, so the demo can show the same model as the
     report. To use it on that branch, copy the file to data/outputs/dashboard/ and add one
-    entry to FILES in src/dashboard.py:
+    entry to FILES in src/nbim_vote/dashboard.py:
         "Kombinert modell (main)": DATA / "predictions_main.csv"
 
 What is and is not carried over
@@ -26,7 +26,7 @@ What is and is not carried over
       They are the documents behind the two scores and the Japan and Korea facts that the
       combined model takes from that pipeline. Where main has its own evidence link (the
       proxy a rule's fact was read from), that link is listed first.
-    - Tried in a copy of the demo (branch marie at 318ea69, Streamlit's test runner): the file
+    - Tried in a copy of the demo (branch marie at 318ea69 and again at 16605c2, Streamlit's test runner): the file
       loads and every view renders without an error. The column names, the codes and the
       JSON fields are also checked by tests/test_agent.py.
 """

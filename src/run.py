@@ -415,7 +415,7 @@ def main():
     print(summary(pay, "US executive pay votes (history + company facts)"))
     print()
     print(summary(general, "All proposal types (combined model, plus NBIM rules for US directors and worded proposals)"))
-    # The same decisions in the column layout of the team's demo (branch marie, src/dashboard.py).
+    # The same decisions in the column layout of the team's demo (branch marie, src/nbim_vote/dashboard.py).
     import export_for_dashboard
     export_for_dashboard.main()
     print(f"\nWrote data/outputs/decisions_{YEAR}.csv ({len(pay) + len(general)} proposals), data/outputs/results.md "
