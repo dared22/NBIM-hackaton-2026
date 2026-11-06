@@ -47,6 +47,7 @@ DECISIONS = os.path.join(ROOT, "data", "outputs", f"decisions_{YEAR}.csv")
 COMPONENTS = os.path.join(ROOT, "data", "evidence", "jev_pipeline", f"components_{YEAR}.csv")
 DOCUMENTS = os.path.join(ROOT, "data", "evidence", "jev_pipeline", f"documents_{YEAR}.csv")
 OUT = os.path.join(ROOT, "data", "outputs", "dashboard", "predictions_main.csv")
+OUT_PAY = os.path.join(ROOT, "data", "outputs", "dashboard", "predictions_main_pay.csv")
 COLUMNS = ["year", "meeting_date", "meeting_id", "item_no", "company_id", "company", "country", "market", "proposal_text",
            "proposal_type", "proponent", "mgmt_rec", "vote", "confidence", "confidence_basis", "confidence_raw", "p_combined",
            "p_mot", "p_model", "route", "review_reason", "citation", "citation_source", "guideline_text", "guideline_edition",
@@ -78,13 +79,47 @@ def citation(d):
     return m.group(1), source, d["guideline_text"]
 
 
+def write_pay():
+    """The US pay votes (Norges Bank's SEC filings, scored by the pay model) in the same columns."""
+    with open(DECISIONS, encoding="utf-8", newline="") as f:
+        decisions = [d for d in csv.DictReader(f) if d["dataset"].startswith("NBIM pay")]
+    rows = []
+    for i, d in enumerate(decisions):
+        p = float(d["probability_against_board"])
+        against = d["suggested_vote"] != d["board_recommendation"]
+        section, _, words = citation(d)
+        reasons = [x for x in ([d["review_reason"]] if d["review_reason"] else []) + d["reasons"].split(" | ") if x]
+        url = d["evidence_url"]
+        label = "Innkalling / proxy (DEF 14A)" if url else ""
+        documents = [{"label": label, "url": url, "filed": "før møtet", "about": "lønnstallene er hentet herfra"}] if url else []
+        rows.append({
+            "year": YEAR, "meeting_date": d["meeting_date"], "meeting_id": d["key"], "item_no": str(i + 1), "company_id": "",
+            "company": d["company"], "country": "United States", "market": "DM", "proposal_text": d["proposal"],
+            "proposal_type": "SAY_ON_PAY", "proponent": "Management", "mgmt_rec": d["board_recommendation"], "vote": d["suggested_vote"],
+            "confidence": round(p if against else 1 - p, 4),
+            "confidence_basis": "lønnsmodellen (main): lønnstall fra innkallingen, NBIMs stemme forrige sesong og Jev",
+            "confidence_raw": round(p if against else 1 - p, 4), "p_combined": round(p, 4), "p_mot": "", "p_model": "",
+            "route": "human_review" if d["decided_by"] == "human review" else "automatic",
+            "review_reason": review_codes(d["review_reason"]), "citation": section, "citation_source": "the pay model's reasons" if section else "",
+            "guideline_text": words, "guideline_edition": "2025", "reasons": " | ".join(reasons), "passages": "{}",
+            "evidence_url": url, "document_url": url, "document_label": label,
+            "documents": json.dumps(documents, ensure_ascii=False), "nbim_vote": d["actual_vote"], "rationale_section": "", "rationale_text": "",
+        })
+    with open(OUT_PAY, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    print(f"Wrote {os.path.relpath(OUT_PAY, ROOT)}: {len(rows)} US pay votes for season {YEAR}.")
+
+
 def main():
     with open(rc.GUIDELINES, encoding="utf-8") as f:
         principle = next(p["tekst"] for p in json.load(f)["prinsipper"] if p["id"] == "P.1")
     with open(rc.VOTES, encoding="utf-8-sig", newline="") as f:
         votes = {f"{r['meeting_id']}-{r['item_no']}": r for r in csv.DictReader(f)}
     with open(COMPONENTS, encoding="utf-8", newline="") as f:
-        jev = {f"{r['meeting_id']}-{r['item_no']}": r["jev_p_mot"] for r in csv.DictReader(f)}
+        comp = {f"{r['meeting_id']}-{r['item_no']}": r for r in csv.DictReader(f)}
+    jev = {k: r["jev_p_mot"] for k, r in comp.items()}
     with open(DECISIONS, encoding="utf-8", newline="") as f:
         decisions = [d for d in csv.DictReader(f) if d["dataset"].startswith("NBIM votes")]
     with open(DOCUMENTS, encoding="utf-8", newline="") as f:
@@ -110,7 +145,7 @@ def main():
             "proposal_text": d["proposal"], "proposal_type": v.get("proposal_type", ""), "proponent": v.get("proponent", ""),
             "mgmt_rec": d["board_recommendation"], "vote": d["suggested_vote"],
             "confidence": round(p if against else 1 - p, 4), "confidence_basis": BASIS, "confidence_raw": round(p if against else 1 - p, 4),
-            "p_combined": round(p, 4), "p_mot": jev.get(d["key"], ""), "p_model": round(p, 4),
+            "p_combined": round(p, 4), "p_mot": jev.get(d["key"], ""), "p_model": comp[d["key"]]["triage_p"] if d["key"] in comp else "",
             "route": "human_review" if d["decided_by"] == "human review" else "automatic",
             "review_reason": review_codes(d["review_reason"]), "citation": section, "citation_source": source,
             "guideline_text": words, "guideline_edition": "2025", "reasons": " | ".join(reasons), "passages": "{}",
@@ -123,6 +158,7 @@ def main():
         w = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
+    write_pay()
     mot = [r for r in rows if r["nbim_vote"] == "MOT"]
     said = [r for r in rows if r["vote"] == "MOT"]
     hit = sum(1 for r in said if r["nbim_vote"] == "MOT")

@@ -92,7 +92,7 @@ the repository.
 
 ```bash
 python3 src/run.py                        # about five minutes
-python3 -m unittest discover -s tests     # 85 checks, including leakage audits and four end-to-end attack checks
+python3 -m unittest discover -s tests     # 87 checks, including leakage audits and four end-to-end attack checks
 ```
 
 `src/run.py` writes `data/outputs/decisions_2026.csv` (suggested vote,
@@ -127,6 +127,7 @@ to one total.
 | `src/agent/paraphrase_test.py` | A reworded instruction with no trigger words, against the whole pipeline in the worst case | Without a wording check 6 more of 66 against-votes are waved through; with it none, and all 66 reach a person |
 | `src/agent/reader_injection_test.py` | An instruction, and a false statement, planted in the proxy statement the AI reader reads (20 proxies, 175 nominees) | The reader did not obey: 0 of 694 targeted facts changed. It did quote the planted text. A code check flags all 20 planted proxies and none of 214 real ones |
 | `src/agent/jev_pay.py` | Jev (a decision model, through OpenRouter) weighs each US pay vote's tagged figures against NBIM's pay rules; its probability is the pay model's twelfth input | Training seasons: average precision 0.658 to 0.710 and 0.541 to 0.548. 2026: tool alone 93 flags, 69 right (74%); 105 of 114 against-votes suggested or seen |
+| `src/dashboard.py` | The Streamlit dashboard, copied from branch `marie` and adapted to this branch's two decision files | Tried with Streamlit's test runner: both data sets, filters and the detail view render without errors; key figures match the headline (56 of 66, 105 of 114) |
 | `src/agent/export_for_dashboard.py` | Writes main's 2026 decisions in the column layout of the team's demo (branch `marie`, `src/nbim_vote/dashboard.py`) | `data/outputs/dashboard/predictions_main.csv`, 1,539 proposals; one line in the demo's `FILES` makes it selectable. Tried in a copy of the demo: loads and renders without errors |
 
 Scope of the pay model: US filers and pay votes only. It uses NBIM's own
@@ -155,6 +156,23 @@ method on the same eligible rows and include the simple baseline of following
 
 For the full case requirements and source scripts, see the
 [organizers' Case 1 README](startpakke/case1_stemmegivning/README.md).
+
+## Dashboard
+
+A Streamlit page in Norwegian that shows every decision with its reasons, the
+cited guideline, the confidence, the link to the company document and NBIM's
+actual vote. Marie built it on branch `marie`; `src/dashboard.py` is a copy
+adapted to this branch's model. It has two data sets to choose from: NBIM's
+vote file for 2026 (combined model) and the US pay votes (pay model).
+
+```bash
+python3 src/run.py                 # writes data/outputs/dashboard/predictions_main*.csv
+pip install streamlit pandas       # the dashboard's only requirements; the pipeline needs neither
+streamlit run src/dashboard.py
+```
+
+The "paste an agenda" tab of the original runs Marie's pipeline and is on her
+branch only.
 
 ## AI tools used
 

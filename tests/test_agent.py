@@ -790,6 +790,30 @@ class DashboardExportTests(unittest.TestCase):
             self.assertNotIn(word, text)
         self.assertGreater(sum(1 for r in self.rows if r["document_url"]), 500)
 
+    def test_the_pay_votes_are_exported_with_the_same_vote_and_route(self):
+        import csv
+        with open(self.ex.OUT_PAY, encoding="utf-8", newline="") as f:
+            rows = list(csv.DictReader(f))
+        with open(self.ex.DECISIONS, encoding="utf-8", newline="") as f:
+            pay = [d for d in csv.DictReader(f) if d["dataset"].startswith("NBIM pay")]
+        self.assertEqual(len(rows), len(pay))
+        for r, d in zip(rows, pay):
+            self.assertEqual(list(r), self.ex.COLUMNS)
+            self.assertEqual((r["vote"], r["nbim_vote"]), (d["suggested_vote"], d["actual_vote"]))
+            self.assertEqual(r["route"] == "human_review", d["decided_by"] == "human review")
+
+    def test_the_dashboard_reads_this_branchs_files_and_needs_no_other_branch(self):
+        import ast
+        path = os.path.join(ROOT, "src", "dashboard.py")
+        with open(path, encoding="utf-8") as f:
+            source = f.read()
+        tree = ast.parse(source)
+        imported = {a.name.split(".")[0] for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names} | {
+            n.module.split(".")[0] for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.module}
+        self.assertEqual(imported, {"json", "re", "pathlib", "pandas", "streamlit"})
+        self.assertIn("predictions_main.csv", source)
+        self.assertIn("predictions_main_pay.csv", source)
+
     def test_review_reasons_are_mapped_to_the_nearest_code(self):
         self.assertEqual(self.ex.review_codes("the model is unsure; low information: no earlier votes at this company"),
                          "review_band;low_confidence")
