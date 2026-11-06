@@ -80,6 +80,8 @@ def build_features(rows, use_facts=True):
         mot_this_date = defaultdict(int)
         for i in batch:
             r = rows[i]
+            if r["nbim_vote"] not in VOTE_OPTIONS:
+                continue  # a proposal without a known vote (a pasted agenda, a hidden holdout) adds nothing to the history
             mot = r["nbim_vote"] == "MOT"
             for key in groups_for(r, items[id(r)]):
                 history[key][0] += 1

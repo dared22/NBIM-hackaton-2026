@@ -208,7 +208,6 @@ def clean_holdout():
 def pay_section(runs, runs_nopay):
     """Main's pay model: on its own data (all N-PX pay votes) and on this branch's US say-on-pay votes."""
     from nbim_vote import pay_model as pm
-    rows = pm.load_rows()
     lines = ["", "## Main's pay model on US say-on-pay votes", "",
              "Main's model (`src/agent/pay_model.py` on main, ported in `pay_model.py`): logistic regression on NBIM's say-on-pay votes "
              "from Norges Bank's N-PX filings, with pay facts from each meeting's own proxy (pay size, the 25 million dollar level, "
@@ -220,9 +219,8 @@ def pay_section(runs, runs_nopay):
     out = []
     for year in (2024, 2025, 2026):
         scored = pm.score_year(year)
-        ps = {id(v[2]): v[0] for v in scored.values()}
-        test = [r for r in rows if r["moetedato"][:4] == str(year) and id(r) in ps]
-        ys, p = [r["y"] for r in test], [ps[id(r)] for r in test]
+        test = [v[2]["answer"] for v in scored.values()]
+        ys, p = [r["y"] for r in test], [v[0] for v in scored.values()]
         cut = next(iter(scored.values()))[1]
         prec, rec, _ = pm.prf([x >= cut for x in p], ys)
         out.append([year, len(test), sum(ys), f"{pm.average_precision(p, ys):.3f}",

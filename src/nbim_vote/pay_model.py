@@ -321,18 +321,26 @@ def fit_calibrated(train, test, k=5):
     return w, [apply(predict(w, r["x"])) for r in test], best_f1_threshold([apply(p) for p in honest], [r["y"] for r in train])
 
 
-@lru_cache(maxsize=None)
-def score_year(year):
-    """{(SEC number, meeting date): (p against, cut-off, row, weights)} for the N-PX pay votes at meetings in `year`,
-    from a model fitted on votes at meetings before 1 January `year`. Empty before FIRST_YEAR."""
-    if year < FIRST_YEAR:
-        return {}
+def score_window(train_from, test_from, test_to, freeze=False):
+    """{(SEC number, meeting date): (p against, cut-off, row, weights)} for N-PX pay votes at meetings in
+    [test_from, test_to), from a model fitted on votes at meetings in [train_from, test_from).
+
+    freeze: also hide NBIM's vote last season when that meeting is on or after test_from, so nothing from
+    the scored period is seen (a strict holdout). Without it, a vote earlier in the scored period counts as
+    known, as it is on the meeting date. The test rows' own votes are never read."""
     rows = load_rows()
-    start = f"{year}-01-01"
-    train = [r for r in rows if r["moetedato"] < start]
-    test = [r for r in rows if start <= r["moetedato"] < f"{year + 1}-01-01"]
+    train = [r for r in rows if train_from <= r["moetedato"] < test_from]
+    test = [r for r in rows if test_from <= r["moetedato"] < test_to]
     if not train or not test or not sum(r["y"] for r in train):
         return {}
+    if freeze:
+        dates = collections.defaultdict(list)
+        for r in rows:
+            dates[(r["season"], r["cusip"])].append(r["moetedato"])
+        test = [dict(r, x=[0.0, 0.0, *r["x"][2:]]) if any(d >= test_from for d in dates.get((r["season"] - 1, r["cusip"]), ())) else r
+                for r in test]
+    # The scored votes' own outcome is not passed on; "answer" keeps the original row for evaluation only.
+    test = [dict(r, y=None, answer=r) for r in test]
     w, ps, cut = fit_calibrated(train, test)
     out = {}
     for r, p in zip(test, ps):
@@ -343,11 +351,21 @@ def score_year(year):
     return out
 
 
+@lru_cache(maxsize=None)
+def score_year(year):
+    """{(SEC number, meeting date): (p against, cut-off, row, weights)} for the N-PX pay votes at meetings in `year`,
+    from a model fitted on votes at meetings before 1 January `year`. Empty before FIRST_YEAR."""
+    if year < FIRST_YEAR:
+        return {}
+    return score_window("", f"{year}-01-01", f"{year + 1}-01-01")
+
+
 class PayModel:
     """Main's pay score for a proposal in this branch's data: US say-on-pay votes linked to an N-PX vote."""
 
-    def __init__(self, known):
+    def __init__(self, known, scores=None):
         self.known = known  # company_facts.CompanyFacts: company name to SEC number
+        self.scores = scores or score_year  # year -> scores; a strict holdout passes its own
 
     def lookup(self, row):
         """(p against, cut-off, N-PX row, weights) or None."""
@@ -355,7 +373,7 @@ class PayModel:
             return None
         from nbim_vote.company_facts import norm_company
         cik = self.known.cik_by_name.get(norm_company(row["company"]))
-        return score_year(int(row["meeting_date"][:4])).get((int(cik), row["meeting_date"])) if cik else None
+        return self.scores(int(row["meeting_date"][:4])).get((int(cik), row["meeting_date"])) if cik else None
 
     def signal(self, row):
         """'MOT' when the score is at or above the model's own cut-off, 'review' at or above LOW, else None."""
@@ -411,11 +429,8 @@ def main():
     print("|---|---:|---:|---:|---:|---:|---:|---:|---:|")
     for year in (2024, 2025, 2026):
         scored = score_year(year)
-        test = [r for r in rows if r["moetedato"][:4] == str(year)]
-        ps = {id(v[2]): v[0] for v in scored.values()}
-        test = [r for r in test if id(r) in ps]
-        ys = [r["y"] for r in test]
-        p = [ps[id(r)] for r in test]
+        test = [v[2]["answer"] for v in scored.values()]
+        ys, p = [r["y"] for r in test], [v[0] for v in scored.values()]
         cut = next(iter(scored.values()))[1]
         prec, rec, _ = prf([x >= cut for x in p], ys)
         n_train = sum(1 for r in rows if r["moetedato"] < f"{year}-01-01")
