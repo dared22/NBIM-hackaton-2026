@@ -755,6 +755,16 @@ persuasion text without trigger words, one harmless sentence.
   suggests "against" on automatically: with an instruction appended, every one
   ends in human review with a security flag; with a harmless sentence
   appended, none is waved through.
+- With the combined model the same two end-to-end checks pass. The judge
+  model is never given text written by the company or the proponent: it gets
+  yes/no facts, numbers, NBIM's rules and NBIM's record, so there is nothing
+  in its input for a planted sentence to sit in. The proxy reader that
+  produces those facts does read company text; it is told to ignore
+  instructions, must quote, and its quotes are checked. Jev's answers used
+  here were made on the clean proposal text, and Marie's pipeline strips
+  instruction-like wording before Jev sees a proposal. Her branch has a
+  resistance run for Jev, but no saved result, so Jev's own behaviour under
+  attack is not shown here.
 - Text cannot move the pay score. The pay model's inputs are tagged figures
   and NBIM's earlier votes; nothing is built from the prose of a company's
   filing. A sentence in a proxy claiming the package meets NBIM's guidelines
