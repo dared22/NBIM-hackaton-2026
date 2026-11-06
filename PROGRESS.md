@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 00:30.
+Last full update: Fri 01:25.
 
 ## What must be delivered
 
@@ -22,6 +22,7 @@ Last full update: Fri 00:30.
 
 | Piece | File | Status | Result |
 |---|---|---|---|
+| Combined model, all proposal types (main + Marie's Jev pipeline) | `src/agent/combined_model.py` | Done, in the pipeline | 2022-2025: better than either system alone. 2026: 32 right of 58 automatic suggestions, 56 of 66 suggested or seen (before 25 of 35, and 52). `USE_COMBINED` in `src/run.py` switches it off |
 | History model, all proposal types | `src/benchmark/model.py` | Done | Ties the simple rule: 24 hits against 22 on 2026 |
 | Pay model, US pay votes | `src/agent/pay_model.py` | Done | 72 hits against 42 at the same number of flags, season 2026. CEO pay known for 98% of test votes |
 | Proxy reader for US director elections (AI model reads, code decides) | `src/agent/fetch_board_facts.py`, `src/agent/board_rules.py` | Done | Facts with checked quotes for 98% of 1,742 nominees. Tool acts alone on 45, right on 39 (87%); simple rule 36 of 73. 12 more against-votes reach a person with the fact |
@@ -38,7 +39,7 @@ Last full update: Fri 00:30.
 | One decision per proposal | `data/outputs/decisions_2026.csv` | Done | 2,739 proposals with vote, probability, band, reasons, guideline, the guideline's own words and page number, evidence link |
 | Data audit of all three vote files | `src/agent/data_audit.py` | Done | Report in `data/outputs/data_audit.md` |
 | Model card | `docs/model-card.md` | Done | Target, data, results, limits, sources |
-| Checks | `tests/test_agent.py` | Done | 55 pass, including leakage audits and two end-to-end attack checks |
+| Checks | `tests/test_agent.py` | Done | 59 pass, including leakage audits and two end-to-end attack checks |
 
 Run everything: `python3 src/run.py` (about three minutes, no key, no internet).
 Run the checks: `python3 -m unittest discover -s tests`.
@@ -85,7 +86,7 @@ On a Mac where `python3` fails on certificates, use `/usr/bin/python3`.
 |---|---|---|---|
 | `llm_search` | dared22 | AI model reads proxies for director facts (independence, committees, chair, CEO), with a quote for each fact | Pilot on 5 meetings, no accuracy number yet. Adds `src/policy.py` |
 | `policy-retrieval` | M03ZGH | Finds guideline rules that match a proposal by keywords | Reviewed, not needed in `main`. Valid JSON, but NBIM's own section is among its candidates for 27 of 63 against-votes in 2026; the picker in `main` gets 45. Its good idea, quoting each rule's text and page, is now in `decisions_2026.csv` |
-| `marie` | marie | Jev decision model on NBIM votes; new guidelines file | Very large: 249 files changed. Check what should go into `main` |
+| `marie` | marie | Jev pipeline with company facts for the US, Japan and Korea | Her per-proposal scores are exported into `main` (`data/evidence/jev_pipeline/`) and used by the combined model. The branch itself is 5 GB (downloaded filings) and is not merged |
 | `rule-check` | Iftikhar | Same as `main` | Can be deleted |
 
 ## Things to know before presenting
@@ -134,3 +135,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Thu 23:33 Iftikhar: reader check completed to 16 meetings (the key works again). Pay vote and director votes at the same meeting tested: a link, but too few cases to act on.
 - Fri 00:11 Iftikhar: added the one-line rule 'against if CEO pay is 25 million dollars or more' as a baseline for the pay model. It finds 83 of 114 with 72 false alarms; the model finds 79 with 31.
 - Fri 00:30 Iftikhar: four fixes suggested from the 2026 pay misses were tested on the training seasons instead. One holds (last pay vote under 70% support, rule 3.3.5) and now sends the vote to a person. The others were weak or already covered.
+- Fri 01:25 Iftikhar: checked Marie's comparison with main, then built the combined model from both systems. Designed on 2022-2025, 2026 scored once. In the pipeline, with a switch.

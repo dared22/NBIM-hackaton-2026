@@ -1,0 +1,235 @@
+"""The combined model: both teams' systems in one score, for NBIM's vote file (all countries).
+
+Run from the repo root (no internet, no API key, about a minute):
+    python3 src/agent/combined_model.py
+
+What goes in, for every proposal
+    From main
+        history      the history model's probability (src/benchmark/model.py)
+        director     a director signal fired (NBIM rule + facts read from the US proxy), and
+                     whether that signal has earned trust (src/agent/board_rules.py)
+        wording      a wording rule says "against the board" (src/agent/proposal_rules.py)
+    From Marie's pipeline (branch marie, exported by src/agent/export_jev_components.py)
+        Jev          the Jev decision model's vote and its probability. Jev is given the
+                     proposal, the guidelines in force, NBIM's earlier votes at the company and
+                     company facts (US, Japan, Korea), and names a guideline
+        second model her gradient-boosted model on vote history and company facts, trained on
+                     earlier years only
+
+    The exported file holds scores only: no NBIM vote, no rationale.
+
+How they are combined
+    One logistic regression with seven inputs, fitted on the years before the year being
+    scored. Every input for a year was itself produced without that year's votes. The level
+    at which the tool says "against" is chosen on earlier years too, each scored by a fit
+    that did not include it.
+
+How it was designed, and what that means for 2026
+    The seven inputs are simply both systems' signals side by side. That choice, and the
+    decision rule, were made on 2022-2025 only (the comparison below). 2026 was then scored
+    once. But 2026 is not a clean test of the pieces: Marie's notes say her design was
+    final only after she had seen 2026, and main's rule patterns were written with all
+    years visible. Her cleanest years are 2022 and 2023 (Jev run once, after the design was
+    fixed), so the per-year table matters more than the 2026 line.
+
+Target: NBIM voted against the board's recommendation. Jev and the second model predict
+"NBIM voted MOT", so on proposals the board recommends against, their probability is turned
+around.
+"""
+
+import collections
+import csv
+import math
+import os
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "src"))
+sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
+from benchmark import model as bm  # noqa: E402
+import board_rules as br  # noqa: E402
+import proposal_rules as pr  # noqa: E402
+
+VOTES = os.path.join(ROOT, "data", "dirty", "real_votes.csv")
+COMPONENTS = os.path.join(ROOT, "data", "evidence", "jev_pipeline", "components_{year}.csv")
+FIRST = 2021                       # first year with a saved Jev run
+DEVELOP = (2022, 2023, 2024, 2025)
+FINAL = 2026
+LOW = bm.LOW                       # below this the tool follows the board on its own
+INPUTS = [
+    ("history", "the history model's probability"),
+    ("second_model", "the second model's probability (vote history and company facts)"),
+    ("jev_probability", "the Jev decision model's probability"),
+    ("jev_against", "Jev recommends a vote against the board"),
+    ("director_signal", "a director rule applies (facts read from the proxy)"),
+    ("director_trusted", "a director rule applies that NBIM has been following"),
+    ("wording_rule", "a wording rule says against the board"),
+]
+
+
+def logit(p):
+    p = min(max(p, 1e-3), 1 - 1e-3)
+    return math.log(p / (1 - p))
+
+
+def load_components(year):
+    """Marie's exported scores for one year, by (meeting, item). No votes in this file."""
+    with open(COMPONENTS.format(year=year), encoding="utf-8", newline="") as f:
+        return {(r["meeting_id"], r["item_no"]): r for r in csv.DictReader(f)}
+
+
+def inputs_for(row, comp, director, worded):
+    """The seven inputs for one proposal. `row` must carry the history model's probability in row["p"]."""
+    board_against = row["mgmt_rec"] == "MOT"
+    jev_p, second_p = float(comp["jev_p_mot"]), float(comp["triage_p"])
+    if board_against:                      # NBIM voting FOR is then the vote against the board
+        jev_p, second_p = 1 - jev_p, 1 - second_p
+        jev_against = comp["jev_vote"] == "FOR"
+    else:
+        jev_against = comp["jev_vote"] in ("MOT", "AVSTÅ")
+    return [logit(row["p"]), logit(second_p), logit(jev_p), float(jev_against),
+            float(bool(director and director["signals"])), float(bool(director and director["acts_alone"])),
+            float(bool(worded))]
+
+
+def rule_tables():
+    directors = {(r["meeting_id"], r["item_no"]): r for r in br.load_scored()}
+    worded = {(r["meeting_id"], r["item_no"]): r for r in pr.load_scored() if r["rules"]}
+    return directors, worded
+
+
+def year_data(rows, year, directors, worded):
+    """Every proposal of one year with its inputs, scored by a history model fitted on earlier years."""
+    _, test, _, hist_thr = bm.run_year(rows, year)
+    comp = load_components(year)
+    out = []
+    for r in test:
+        k = (r["meeting_id"], r["item_no"])
+        if k in comp:
+            r["comp"], r["hist_thr"] = comp[k], hist_thr
+            r["director"], r["worded"] = directors.get(k), worded.get(k)
+            r["xc"] = inputs_for(r, comp[k], r["director"], r["worded"])
+            out.append(r)
+    return out
+
+
+def fit_on(data, years):
+    train = [r for y in years for r in data[y]]
+    return bm.fit_logistic([r["xc"] for r in train], [r["y"] for r in train])
+
+
+def flag_level(data, year):
+    """The probability at which the tool says "against", chosen for best F1 on earlier years.
+    Each earlier year is scored by a fit on the other earlier years, so the level is not
+    chosen on scores the fit has already seen (except when there is only one earlier year)."""
+    earlier = [y for y in sorted(data) if y < year]
+    ps, ys = [], []
+    for y in earlier:
+        w = fit_on(data, [u for u in earlier if u != y] or earlier)
+        ps += [bm.predict(w, r["xc"]) for r in data[y]]
+        ys += [r["y"] for r in data[y]]
+    return bm.best_f1_threshold(ps, ys)
+
+
+_FITS = {}
+
+
+def training_years(year):
+    """The years a fit for `year` may learn from: every year with a saved Jev run before it."""
+    return list(range(FIRST, year))
+
+
+def fitted(year):
+    """Weights and the "against" level for scoring `year`, from the years before it. Computed once."""
+    if year not in _FITS:
+        rows = bm.read_votes(VOTES)
+        directors, worded = rule_tables()
+        data = {y: year_data(rows, y, directors, worded) for y in training_years(year)}
+        _FITS[year] = (fit_on(data, sorted(data)), flag_level(data, year))
+    return _FITS[year]
+
+
+def top(scores, ys, share):
+    k = int(round(share * len(ys)))
+    return sum(ys[i] for i in sorted(range(len(ys)), key=lambda i: -scores[i])[:k])
+
+
+def decide(r, p, level):
+    """(says against, sent to a person) with the rules on top, as src/run.py does it."""
+    rule_alone = (r["director"] and r["director"]["acts_alone"]) or r["worded"]
+    rule_held = r["director"] and r["director"]["signals"] and not r["director"]["acts_alone"]
+    says = bool(rule_alone or p >= level)
+    return says, bool(not says and (p >= LOW or rule_held))
+
+
+def main():
+    rows = bm.read_votes(VOTES)
+    directors, worded = rule_tables()
+    years = [FIRST] + list(DEVELOP) + [FINAL]
+    data = {y: year_data(rows, y, directors, worded) for y in years}
+    turned = lambda r, col: (1 - float(r["comp"][col])) if r["mgmt_rec"] == "MOT" else float(r["comp"][col])
+    systems = collections.OrderedDict()
+    for y in years[1:]:
+        w, level = fit_on(data, [u for u in years if u < y]), flag_level(data, y)
+        for r in data[y]:
+            r["p_new"], r["level"] = bm.predict(w, r["xc"]), level
+    systems["History model (main before)"] = lambda r: r["p"]
+    systems["Marie's pipeline (Jev + second model)"] = lambda r: turned(r, "marie_score")
+    systems["Combined model"] = lambda r: r["p_new"]
+
+    print("1. Ranking: how many against-votes are in the top of each system's list")
+    print("   (AP = average precision. Every year is scored by fits on earlier years only.)")
+    out = []
+    for name, score in systems.items():
+        for label, group in ((f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP), (str(FINAL), (FINAL,))):
+            ap, t10, t25, t40, total = [], 0, 0, 0, 0
+            for y in group:
+                ys, sc = [r["y"] for r in data[y]], [score(r) for r in data[y]]
+                ap.append(bm.average_precision(sc, ys))
+                t10, t25, t40, total = t10 + top(sc, ys, .10), t25 + top(sc, ys, .25), t40 + top(sc, ys, .40), total + sum(ys)
+            out.append([name, label, f"{sum(ap) / len(ap):.3f}", f"{t10}/{total}", f"{t25}/{total}", f"{t40}/{total}"])
+    bm.table(["System", "Years", "AP", "In the top 10%", "In the top 25%", "In the top 40%"], out)
+
+    print("\n2. Average precision year by year (Marie's notes: 2022 and 2023 are her cleanest years)")
+    bm.table(["System"] + [str(y) for y in years[1:]],
+             [[name] + [f"{bm.average_precision([score(r) for r in data[y]], [r['y'] for r in data[y]]):.3f}" for y in years[1:]]
+              for name, score in systems.items()])
+
+    print("\n3. As a decision rule, with the director and wording rules on top and the 5% level kept")
+    out = []
+    for label, group in ((f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP), (str(FINAL), (FINAL,))):
+        for name, pick in (("History model + rules (main before)", lambda r: (r["p"], r["hist_thr"])),
+                           ("Combined model + rules", lambda r: (r["p_new"], r["level"]))):
+            n = against = says = right = person = seen = 0
+            for y in group:
+                for r in data[y]:
+                    s, h = decide(r, *pick(r))
+                    n, against, says, right = n + 1, against + r["y"], says + s, right + (s and r["y"])
+                    person, seen = person + h, seen + (h and r["y"])
+            out.append([label, name, says, right, says - right, f"{right / says:.0%}", f"{right / against:.0%}",
+                        f"{person} ({person / n:.0%})", f"{right + seen}/{against} ({(right + seen) / against:.0%})"])
+    bm.table(["Years", "System", "Says against", "Right", "Wrong", "Precision", "Recall", "A person reads",
+              "Against-votes suggested or seen"], out)
+
+    print("\n4. What the combination learned (fitted on all years before 2026; positive = towards against)")
+    w = fit_on(data, years[:-1])
+    for (name, text), wi in zip(INPUTS, w[1:]):
+        print(f"   {wi:+.2f}  {name:17} {text}")
+    print(f"   Level for saying against in {FINAL}: {data[FINAL][0]['level']:.3f}")
+
+    print("\n5. What each side adds, 2022-2025 (average precision when one input group is left out)")
+    groups = {"all seven inputs": range(7), "without Jev": (0, 1, 4, 5, 6), "without the second model": (0, 2, 3, 4, 5, 6),
+              "without main's rules": (0, 1, 2, 3), "without the history model": (1, 2, 3, 4, 5, 6)}
+    out = []
+    for name, cols in groups.items():
+        cols, aps = list(cols), []
+        for y in DEVELOP:
+            train = [r for u in years if u < y for r in data[u]]
+            wv = bm.fit_logistic([[r["xc"][i] for i in cols] for r in train], [r["y"] for r in train])
+            aps.append(bm.average_precision([bm.predict(wv, [r["xc"][i] for i in cols]) for r in data[y]], [r["y"] for r in data[y]]))
+        out.append([name, f"{sum(aps) / len(aps):.3f}"])
+    bm.table(["Inputs", f"AP {DEVELOP[0]}-{DEVELOP[-1]}"], out)
+
+
+if __name__ == "__main__":
+    main()

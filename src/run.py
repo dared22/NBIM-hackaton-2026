@@ -20,6 +20,11 @@ Three sources feed the decisions
     decides the vote                                      title, on top of the history model
     all other proposals      src/benchmark/model.py       vote history only
 
+For NBIM's vote file, the probability comes from the combined model
+(src/agent/combined_model.py): the history model, main's rules, and the Jev
+decision model and second model from Marie's pipeline, weighted by a fit on
+earlier years.
+
 A US company's annual pay vote in NBIM's vote file that is also in the SEC file
 gets the pay model's answer (src/agent/pay_overlap.py), so each proposal has
 one answer.
@@ -55,6 +60,7 @@ sys.path.insert(0, os.path.join(ROOT, "src", "agent"))
 
 from benchmark import model as bm  # noqa: E402
 import board_rules as br  # noqa: E402
+import combined_model as cm  # noqa: E402
 import director_rules as dr  # noqa: E402
 import pay_overlap as po  # noqa: E402
 import pay_model as pm  # noqa: E402
@@ -65,6 +71,7 @@ import rule_check as rc  # noqa: E402
 
 OUT = os.path.join(ROOT, "data", "outputs")
 YEAR = 2026
+USE_COMBINED = True     # False: NBIM's vote file is scored by the history model alone, as before the combined model
 SCRIPTS = [
     ("History model, all proposal types", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv"]),
     ("History model, repeated for 2022-2026", ["src/benchmark/model.py", "--data", "data/dirty/real_votes.csv", "--walk-forward"]),
@@ -78,6 +85,7 @@ SCRIPTS = [
     ("Experiment: do ballot details improve the history model? (test years 2022-2025)", ["src/agent/history_model.py"]),
     ("Guideline rule check", ["src/agent/rule_check.py"]),
     ("Position papers: do they add anything?", ["src/agent/position_papers_test.py"]),
+    ("The combined model: both teams' systems in one score", ["src/agent/combined_model.py"]),
     ("Confidence and routing: when should the tool ask a person?", ["src/agent/routing.py"]),
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
@@ -131,6 +139,10 @@ def general_decisions(rows=None, pay=None):
     _, val, _, _ = bm.run_year(rows, YEAR - 1)
     train, test, w, thr = bm.run_year(rows, YEAR)
     known_companies = {r["company_id"] for r in train}
+    # The combined model: the history model's probability, main's rules, and the two scores exported
+    # from Marie's pipeline (Jev and her second model), weighted by a fit on earlier years.
+    combo_w, combo_level = cm.fitted(YEAR)
+    components = cm.load_components(YEAR)
     abstain = routing.abstain_markets(train)
     papers = rc.load_papers()
     citations = rc.load_citations()
@@ -147,9 +159,18 @@ def general_decisions(rows=None, pay=None):
         flags = ["security flag: " + ", ".join(hits)] if hits else []
         if r["company_id"] not in known_companies:
             flags.append("low information: no earlier votes at this company")
-        band = "send to human" if hits else r["band"]
-        model, reasons, guide = "vote history", bm.reasons(w, r["x"]), None
         key = (r["meeting_id"], r["item_no"])
+        comp = components.get(key) if USE_COMBINED else None
+        prob, band, model, reasons, guide = r["p"], r["band"], "vote history", bm.reasons(w, r["x"]), None
+        if comp:
+            prob = bm.predict(combo_w, cm.inputs_for(r, comp, directors.get(key), worded.get(key)))
+            band = ("likely AGAINST board" if prob >= combo_level else "likely WITH board" if prob < cm.LOW else "send to human")
+            model = "combined model: vote history, Jev and a second model"
+            if comp["jev_vote"] != r["mgmt_rec"] and r["mgmt_rec"]:
+                reasons += (f" | the Jev decision model recommends {comp['jev_vote']}"
+                            + (f", citing GVG {comp['jev_cited_section']}" if comp["jev_cited_section"] else ""))
+        if hits:
+            band = "send to human"
         d = directors.get(key) if directors.get(key, {}).get("rules") else worded.get(key)
         if d and d["rules"]:
             active = [(c, t) for c, t in d["rules"] if d["rule_state"][c] == "active"]
@@ -165,7 +186,7 @@ def general_decisions(rows=None, pay=None):
             else:
                 flags.append("rule suspended: NBIM supported the board the last two times " +
                              ", ".join(c for c, _ in d["rules"]) + " applied")
-        prob, by_pay = r["p"], po.find(pay_index, r["company"], r["meeting_date"]) if po.is_annual_pay_vote(r) else None
+        by_pay = po.find(pay_index, r["company"], r["meeting_date"]) if po.is_annual_pay_vote(r) else None
         if by_pay:
             # The same proposal is scored with company facts by the pay model: use that answer.
             model, prob = "vote history + company facts (pay model)", float(by_pay[col["probability_against_board"]])
@@ -185,6 +206,8 @@ def general_decisions(rows=None, pay=None):
             pass
         elif r["rule_p"] is not None and r["rule_p"] >= rule_thr:
             guide = f"GVG {r['rule_section']} (rule check, probability {r['rule_p']:.2f})"
+        elif comp and comp["jev_cited_section"] and comp["jev_vote"] != r["mgmt_rec"] and band != "likely WITH board":
+            guide = f"GVG {comp['jev_cited_section']} (named by the Jev decision model)"
         elif band != "likely WITH board" and r["candidates"]:
             guide = f"GVG {r['candidates'][0]} (NBIM's most common stated reason for this proposal type before 2025)"
         else:

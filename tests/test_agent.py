@@ -430,6 +430,43 @@ class PayOverlapTests(unittest.TestCase):
                 self.assertEqual(d[col[name]], other[col[name]], (d[col["company"]], name))
 
 
+class CombinedModelTests(unittest.TestCase):
+    """The combined model: what it may read and what it may learn from."""
+
+    @classmethod
+    def setUpClass(cls):
+        import combined_model
+        cls.cm = combined_model
+
+    def test_the_exported_scores_hold_no_answer(self):
+        for year in range(self.cm.FIRST, self.cm.FINAL + 1):
+            with open(self.cm.COMPONENTS.format(year=year), encoding="utf-8") as f:
+                header = f.readline().lower()
+            for word in ("nbim_vote", "against_board", "rationale", "actual"):
+                self.assertNotIn(word, header, year)
+
+    def test_a_year_is_fitted_on_earlier_years_only(self):
+        self.assertEqual(self.cm.training_years(2026), [2021, 2022, 2023, 2024, 2025])
+        self.assertEqual(self.cm.training_years(2022), [2021])
+
+    def test_jev_and_the_second_model_are_turned_around_when_the_board_recommends_against(self):
+        comp = {"jev_p_mot": "0.9", "triage_p": "0.8", "jev_vote": "MOT"}
+        with_board = self.cm.inputs_for({"mgmt_rec": "MOT", "p": 0.1}, comp, None, None)
+        against = self.cm.inputs_for({"mgmt_rec": "FOR", "p": 0.1}, comp, None, None)
+        self.assertLess(with_board[1], 0)          # second model: MOT agrees with the board
+        self.assertLess(with_board[2], 0)          # Jev likewise
+        self.assertEqual(with_board[3], 0.0)       # Jev's MOT is not a vote against this board
+        self.assertGreater(against[1], 0)
+        self.assertEqual(against[3], 1.0)
+
+    def test_a_rule_the_tool_does_not_trust_still_goes_to_a_person_in_the_pipeline(self):
+        import run
+        col = {c: i for i, c in enumerate(run.COLS)}
+        held = [d for d in run.general_decisions() if "does not act on it alone" in d[col["review_reason"]]]
+        self.assertGreater(len(held), 5)
+        self.assertTrue(all(d[col["decided_by"]] == "human review" for d in held))
+
+
 class RoutingTests(unittest.TestCase):
     def test_abstain_habit_needs_a_majority_of_earlier_against_votes(self):
         import routing

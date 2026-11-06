@@ -56,6 +56,8 @@ baseline at the same number of flags.
 | A | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | A | Same as last time | 38 | 22 | 16 | 58% | 33% |
 | A | History model | 38 | 24 | 14 | 63% | 36% |
+| A | Full pipeline with the history model (before the combined model) | 35 | 25 | 10 | 71% | 38% |
+| A | Full pipeline with the combined model (now) | 58 | 32 | 26 | 55% | 48% |
 | B | Always follow the board | 0 | 0 | 0 | 0% | 0% |
 | B | Same as last season | 97 | 42 | 55 | 43% (34-53%) | 37% (28-46%) |
 | B | Pay model | 97 | 72 | 25 | 74% (65-83%) | 63% (55-71%) |
@@ -83,9 +85,9 @@ Who decides, on the test sets (from `data/outputs/decisions_2026.csv`):
 |---|---|---|
 | Decided automatically | 75% | 74% |
 | Sent to a person | 25% | 26% |
-| Against-votes suggested by the tool or sent to a person | 79% | 90% |
-| Against-votes the tool followed the board on by itself | 21% | 10% |
-| Precision of the automatic "against" suggestions | 71% | 70% |
+| Against-votes suggested by the tool or sent to a person | 85% | 90% |
+| Against-votes the tool followed the board on by itself | 15% | 10% |
+| Precision of the automatic "against" suggestions | 55% | 70% |
 
 One answer per proposal. The annual pay vote of 36 US companies is in both
 files. The tool used to answer those twice, and the two answers could differ.
@@ -136,6 +138,71 @@ and gave 72 hits at 97 flags on 2026, against 71 before.
 
 Confidence, pay model: where it says 84%, 78% were against. Where it says 24%,
 14% were against, so it is too confident in that range.
+
+## The combined model: both teams' systems in one score
+
+`src/agent/combined_model.py`, for file A. The team built two systems for the
+same file. main: a history model, director rules on facts read from US
+proxies, and wording rules. Marie's branch: the Jev decision model, which is
+given the proposal, the guidelines in force, NBIM's earlier votes and company
+facts (US, Japan and Korea) and names a guideline, plus a second model trained
+on vote history and those facts. On 2026 the two were about level: at the same
+reading load each put 55 of the 66 MOT votes in front of a person, and they
+found mostly the same votes (both 29, only hers 5, only main's 1).
+
+The combined model takes both: seven inputs (the history model's probability,
+her second model's probability, Jev's probability, whether Jev recommends
+against the board, whether a director rule applies, whether that rule has
+earned trust, whether a wording rule applies) in one logistic regression
+fitted on the years before the one being scored. Her scores are exported to
+`data/evidence/jev_pipeline/`; the files hold no votes.
+
+Designed on 2022-2025 only:
+
+| 2022-2025, 401 against-votes | Average precision | In the top 10% of the list | In the top 25% |
+|---|---|---|---|
+| History model (main before) | 0.408 | 220 | 293 |
+| Marie's pipeline | 0.427 | 219 | 302 |
+| Combined model | 0.484 | 241 | 305 |
+
+Each side adds something: without Jev 0.474, without her second model 0.473,
+without main's rules 0.459, without the history model 0.461. As a decision
+rule on those years, at the same reading load (20%), the combined model is
+right 183 times of 350 (52%) where the history model with the same rules is
+right 173 of 381 (45%).
+
+2026 was then scored once:
+
+| 2026, 66 against-votes | Average precision | In the top 25% | Automatic "against": right of flags | Suggested or seen |
+|---|---|---|---|---|
+| Pipeline with the history model (before) | 0.453 | 48 | 25 of 35 (71%) | 52 (79%) |
+| Marie's pipeline, her own routing | 0.508 | 55 | 27 of 45 (60%) | 64 (97%), reading 44% |
+| Pipeline with the combined model (now) | 0.498 | 56 | 32 of 58 (55%) | 56 (85%) |
+
+Reading this honestly. On 2026 the combined model finds more against-votes
+(32 against 25) and waves fewer through (10 against 14) at the same reading
+load (25%), but it is wrong more often when it says "against" (55% right,
+down from 71%). On 2022-2025 it was better on both counts. Its precision is
+steady around 50% across the years; the history model's swings between 45%
+and 71%. It ranks about as well as Marie's pipeline on 2026 and better on
+2022-2025. `USE_COMBINED` in `src/run.py` switches back to the earlier
+pipeline.
+
+2026 is not a clean test of this model's pieces. Marie's notes say her design
+was final only after she had seen 2026 (there are seven saved Jev runs on
+that year), and main's rule patterns were written with all years visible.
+Her cleanest years are 2022 and 2023, where the combined model scores 0.428
+and 0.428 against 0.407 and 0.319 for the history model and 0.319 and 0.368
+for her pipeline. Jev is a hosted model and is given the company name and
+meeting date; main's own model requests leave those out.
+
+A check of her comparison report (`data/outputs/comparison_with_main.md` on
+her branch) found three things: re-running it from her saved answers does not
+reproduce the committed figures exactly (her five-year average F1 comes out
+at 49.8%, not 51.3%); the row for main's full system on "against the board"
+counts MOT suggestions, which understates main (25 right and 15 wrong with
+the matching definition, not 25 and 23); and her "reaching a person" lead
+came from sending 44% of proposals to a person against main's 27%.
 
 ## Director elections at US companies: written rules applied to facts
 
@@ -570,7 +637,8 @@ persuasion text without trigger words, one harmless sentence.
 
 Claude Code (Anthropic) for research, code and evaluation. Microsoft-Decision-1
 through OpenRouter for the guideline rule check and the resistance test.
-Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
+Jev (a hosted decision model from Typesafe) is called by Marie's pipeline on
+her branch; its saved answers are one input to the combined model. Claude Sonnet 5.5 through OpenRouter read 16 meetings a second time, to
 measure how often two models agree on the facts. Claude Haiku 5.5 through OpenRouter reads proxies in two places: board and
 nominee facts for US director elections (214 meetings; the facts are used by
 the director rules, which are plain code) and how CEO pay is built (675
