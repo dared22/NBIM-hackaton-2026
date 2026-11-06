@@ -230,6 +230,7 @@ class JapanFacts:
         board_names = {d["name"] for d in board}
         director_votes = [s for _, item, s in last if any(n and n in item for n in board_names)]
         nominee_votes = [s for _, item, s in last if nominee and nominee["name"] in item]
+        nominee_lines = [(sub, item, s) for sub, item, s in last if nominee and nominee["name"] in item]
         return {
             "found": True, "report_submitted": submitted, "report_doc_id": doc, "proposed_board": proposed,
             "board_size": size, "outside": outside, "independent": independent,
@@ -241,6 +242,10 @@ class JapanFacts:
             "nominee_representative": bool(nominee and "代表" in nominee["title"]),
             "nominee_title": nominee["title"] if nominee else "",
             "nominee_last_support": min(nominee_votes) if nominee_votes else None,
+            # For explanations only (src/explain.py): what was read, to show it beside the facts.
+            "nominee_name": nominee["name"] if nominee else "",
+            "board_read": [(d["name"], d["title"], int(d["is_outside"]), int(d["is_independent"])) for d in board],
+            "nominee_vote_line": min(nominee_lines, key=lambda x: x[2]) if nominee_lines else None,
             "lowest_director_support_last_agm": min(director_votes) if director_votes else None,
         }
 

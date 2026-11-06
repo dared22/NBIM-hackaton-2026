@@ -53,12 +53,15 @@ def guideline_text(citation, rules, edition):
 
 
 PASSAGE_CHARS = 1500  # the longest passage shown on hover
+EDINET_VIEWER = "https://disclosure2.edinet-fsa.go.jp/WZEK0040.aspx?"  # EDINET's public viewer by document ID (works, undocumented)
 
 
-def note(notes, text, passage, source, url=""):
+def note(notes, text, passage, source, url="", kind="document"):
     """Record the passage a reason line rests on (shown on hover in the dashboard)."""
     if notes is not None and passage:
-        notes[text] = {"passage": " ".join(str(passage).split())[:PASSAGE_CHARS], "source": source, "url": url}
+        # kind: "document" (a passage in a filing), "guideline" (NBIM's voting guidelines) or "history" (NBIM's own
+        # published rationale). The dashboard shows them differently.
+        notes[text] = {"passage": " ".join(str(passage).split())[:PASSAGE_CHARS], "source": source, "url": url, "kind": kind}
 
 
 def text_link(url, quote):
@@ -79,7 +82,7 @@ def history_reasons(row, history_index, notes=None):
         why = f": \"{short(p['nbim_rationale'])}\"" if p["nbim_rationale"] else ""
         section = f" ({p['nbim_guideline_section']})" if p["nbim_guideline_section"] else ""
         out.append(f"NBIM voted MOT on this same item on {p['meeting_date']}{section}{why}")
-        note(notes, out[-1], p["nbim_rationale"], f"NBIMs publiserte begrunnelse, {p['meeting_date']}")
+        note(notes, out[-1], p["nbim_rationale"], f"NBIMs publiserte begrunnelse, {p['meeting_date']}", kind="history")
         if counts["same_item_votes"] > counts["same_item_mot"]:
             out.append(f"NBIM opposed it at {counts['same_item_mot']} of {counts['same_item_votes']} earlier meetings")
     elif same:
@@ -91,7 +94,7 @@ def history_reasons(row, history_index, notes=None):
         out.append(f"NBIM voted MOT on another {row['proposal_type'].lower().replace('_', ' ')} item here on "
                    f"{p['meeting_date']}{section}: \"{short(p['proposal'], 80)}\"")
         note(notes, out[-1], f"Forslag: {p['proposal']}" + (f" — NBIMs begrunnelse: {p['nbim_rationale']}" if p["nbim_rationale"] else ""),
-             f"NBIMs stemme, {p['meeting_date']}")
+             f"NBIMs stemme, {p['meeting_date']}", kind="history")
     if not counts["company_votes"]:
         out.append("no earlier NBIM votes at this company in the data")
     elif not same and not others:
@@ -189,12 +192,34 @@ def fact_reasons(row, known, notes=None):
                + (" (board as proposed for this meeting)" if jp["proposed_board"] else "")]
         if jp["nominee_last_support"] is not None:
             out.append(f"the nominee got {jp['nominee_last_support']:.1f}% support at last year's meeting")
-        return out, ""
+        # Passages: what the annual report says about this nominee and the board, with a link to the report.
+        report_url = f"{EDINET_VIEWER}{jp['report_doc_id']}"
+        source = f"EDINET årsrapport {jp['report_doc_id']}, levert {jp['report_submitted']} (役員の状況)"
+        if jp["nominee_name"]:
+            note(notes, out[0], f"{jp['nominee_name']} — {jp['nominee_title']}" + (" · utenforstående (社外)" if
+                 jp["nominee_outside"] else "") + (" · uavhengig (独立役員)" if jp["nominee_independent"] else ""),
+                 source, report_url)
+        else:
+            note(notes, out[0], "Kandidaten ble ikke funnet blant styremedlemmene i rapporten. Styret i rapporten: "
+                 + "; ".join(f"{n} — {t}" for n, t, _, _ in jp["board_read"]), source, report_url)
+        note(notes, out[1], "; ".join(f"{n} — {t}" + (" (uavhengig)" if ind else " (utenforstående)" if outs else "")
+                                       for n, t, outs, ind in jp["board_read"]), source, report_url)
+        if jp["nominee_last_support"] is not None and jp["nominee_vote_line"]:
+            report = known.edinet_vote_report(row)
+            filed, item, support = jp["nominee_vote_line"]
+            note(notes, out[-1], f"{item}: {support} % for", f"EDINET stemmeresultat (臨時報告書) {report[0] if report else ''}, levert {filed}",
+                 f"{EDINET_VIEWER}{report[0]}" if report else "")
+        return out, report_url
     kr = known.korea_director(row)
     if kr and kr["found"]:
         out = [f"DART report filed {kr['filed']}: {kr['outside']} of {kr['board_size']} registered directors are outside directors"
                + ("; the CEO also chairs the board" if kr["ceo_chairs_board"] else ""),
                f"the ballot describes the nominee as {kr['nominee_role']}"]
+        # Passage: the registered directors as the report lists them, with a link to the report on DART.
+        note(notes, out[0], "; ".join(f"{name} — {position} ({registered})" + (f", {duties}" if duties and duties != "-" else "")
+                                      for name, position, registered, duties in kr["directors"]),
+             f"DART-rapport levert {kr['filed']} (임원 현황)", kr["url"])
+        note(notes, out[1], row["proposal_text"], "Stemmeseddelen (forslagsteksten)")
         return out, kr["url"]
     return [], ""
 
@@ -207,7 +232,8 @@ def decision_reasons(row, decision, signals=(), instruction_found=False, notes=N
         rule = edition_rules(edition).get(signal[0]) if edition else None
         if rule:
             note(notes, text, f"GVG {signal[0]}: {rule['tekst']}",
-                 f"NBIMs stemmeretningslinjer, {edition}-utgaven" + (f", side {rule['side']}" if rule.get("side") else ""))
+                 f"NBIMs stemmeretningslinjer, {edition}-utgaven" + (f", side {rule['side']}" if rule.get("side") else ""),
+                 kind="guideline")
     rule_mot = deciding_rule(signals)
     board = row["mgmt_rec"]
     if decision["vote"] != board and decision["vote"] != "AVSTÅ":

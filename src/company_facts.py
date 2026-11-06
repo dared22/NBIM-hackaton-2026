@@ -184,7 +184,9 @@ class CompanyFacts:
         ceo_chair = any("대표이사" in d["duties"] + d["position"] and "의장" in d["duties"] for d in board)
         return {"found": True, "source": f"DART report filed {filed} (receipt {rcept})", "filed": filed,
                 "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcept}", "board_size": len(board),
-                "outside": outside, "outside_share": outside / len(board), "ceo_chairs_board": ceo_chair, "nominee_role": role}
+                "outside": outside, "outside_share": outside / len(board), "ceo_chairs_board": ceo_chair, "nominee_role": role,
+                # For explanations only: the registered directors as listed in the report.
+                "directors": [(d["name"], d["position"], d["registered"], d["duties"]) for d in board]}
 
     # ------------------------------------------------------------------ outputs
     def features(self, row):
@@ -266,6 +268,13 @@ class CompanyFacts:
                    f"non-executive, independent {us['independent']}"
             out.append(f"US: {role}")
         return out
+
+    def edinet_vote_report(self, row):
+        """(doc id, submitted) of the latest EDINET vote-result report (type 180) within a year before the meeting."""
+        code = self.japan.code.get(row["company_id"]) if self.japan.ok else None
+        found = sorted(d for d in self.edinet_docs.get(code, []) if d[2] == "180" and d[0] < row["meeting_date"]
+                       and days_between(d[0], row["meeting_date"]) <= LAST_AGM_DAYS) if code else []
+        return (found[-1][1], found[-1][0]) if found else None
 
     def meeting_documents(self, row):
         """Every input document for this proposal's meeting, filed before the meeting date, the main one first.

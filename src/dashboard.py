@@ -53,6 +53,13 @@ DEFAULT_MIN_CONFIDENCE = 0.50  # below this, similar recommendations in earlier 
 BADGE = {"MOT": "red", "AVSTÅ": "orange", "FOR": "green"}
 
 st.set_page_config(page_title="Stemmegivningsagenten", page_icon="🗳️", layout="wide")
+# Key figures: scale with the window and wrap instead of being cut off with "…" in narrow boxes.
+st.html("""<style>
+[data-testid="stMetricValue"] { font-size: clamp(1.25rem, 2.1vw, 2.25rem); }
+[data-testid="stMetricValue"] *, [data-testid="stMetricDelta"], [data-testid="stMetricDelta"] *,
+[data-testid="stMetricLabel"] * {
+  white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+</style>""")
 
 
 def confidence_band(c):
@@ -181,28 +188,78 @@ def md_escape(text):
     return re.sub(r"([\\`*_{}\[\]<>#|~$])", r"\\\1", " ".join(str(text).split()))
 
 
+def passage_kind(found):
+    """document, guideline or history. Older data has no kind: tell it from the source."""
+    if found.get("kind"):
+        return found["kind"]
+    source = found.get("source", "")
+    if source.startswith("NBIMs stemmeretningslinjer"):
+        return "guideline"
+    if source.startswith(("NBIMs publiserte begrunnelse", "NBIMs stemme")):
+        return "history"
+    return "document"
+
+
 def show_reasons(reasons, passages):
-    """The reason lines. Where a line rests on a passage in a document, it gets Streamlit's own hover help (the
-    icon beside the line): the source, the passage and a link to the document, at the quoted sentence where the
-    browser supports text links. Plain markdown: no HTML, so it shows at once and in every browser."""
+    """The reason lines, with what each rests on, shown by kind:
+        🔎 a passage in a company document: hover help (the icon beside the line) with the source, the passage and a
+           link to the document, at the quoted sentence where the browser supports text links
+        🗳️ NBIM's own published rationale at an earlier meeting: hover help with the text, no document link
+        📘 NBIM's voting guidelines: the rule's own words shown under the line, not as a link to a document
+    Plain markdown, no HTML: it shows at once and in every browser."""
+    kinds = set()
     for line in reasons:
         found = passages.get(line)
         if not found:
             st.markdown(f"- {md_escape(line)}")
             continue
+        kind = passage_kind(found)
+        kinds.add(kind)
         shown = re.sub(r' \(proxy: ".*?"\)', "", line)  # the quote is in the hover text instead
         passage = found["passage"] if len(found["passage"]) <= HOVER_CHARS else found["passage"][:HOVER_CHARS] + " …"
-        tip = f"**{md_escape(found['source'])}**\n\n> {md_escape(passage)}"
-        if found.get("url"):
-            tip += f"\n\n[Åpne dokumentet ↗]({found['url']})"
-        st.markdown(f"- {md_escape(shown)} 🔎", help=tip)
-    if passages:
-        st.caption("Hold musepekeren over ⓘ ved linjene merket 🔎 for å se avsnittet de bygger på, med lenke til dokumentet. "
-                   "Avsnitt finnes der vi har tekst: proxysitater kontrollert mot dokumentet, 8-K, utdrag fra innkallingen, "
-                   "NBIMs begrunnelser og retningslinjene. For Japan og Sør-Korea er faktaene strukturerte felt uten tekstavsnitt.")
+        if kind == "guideline":
+            st.markdown(f"- {md_escape(shown)} 📘")
+            st.caption(f"📘 {md_escape(found['source'])}: «{md_escape(passage)}»")
+        elif kind == "history":
+            st.markdown(f"- {md_escape(shown)} 🗳️", help=f"**{md_escape(found['source'])}**\n\n> {md_escape(passage)}")
+        else:
+            tip = f"**{md_escape(found['source'])}**\n\n> {md_escape(passage)}"
+            if found.get("url"):
+                tip += f"\n\n[Åpne dokumentet ↗]({found['url']})"
+            st.markdown(f"- {md_escape(shown)} 🔎", help=tip)
+    legend = []
+    if "document" in kinds:
+        legend.append("🔎 avsnitt i et selskapsdokument: hold musepekeren over ⓘ for utdraget og lenke til dokumentet")
+    if "history" in kinds:
+        legend.append("🗳️ NBIMs egen begrunnelse fra et tidligere møte: hold over ⓘ for teksten")
+    if "guideline" in kinds:
+        legend.append("📘 retningslinjen: ordlyden står under linjen")
+    if legend:
+        st.caption(" · ".join(legend) + ". For Japan og Sør-Korea er utdragene felt lest fra rapportene, ikke løpende tekst.")
     else:
         st.caption("Ingen av linjene over bygger på et tekstavsnitt vi har (for eksempel bare strukturerte felt eller "
-                   "stemmehistorikk uten begrunnelse), så det er ingenting å vise ved hovring her.")
+                   "stemmehistorikk uten begrunnelse).")
+
+
+def navigation_position(view):
+    """The row the details show. Reset to the first row when the selection (filters, sorting) changes; follow a
+    new click in the table; otherwise keep the position Forrige/Neste moved to."""
+    s = st.session_state
+    signature = hash(tuple(view["meeting_id"] + "-" + view["item_no"]))
+    if s.get("nav_signature") != signature:
+        s["nav_signature"], s["nav_pos"], s["nav_last_pick"] = signature, 0, None
+    table_state = s.get("table")
+    picked = list(table_state["selection"]["rows"]) if table_state and table_state.get("selection") else []
+    if picked and picked != s.get("nav_last_pick"):
+        s["nav_pos"] = picked[0]
+    s["nav_last_pick"] = picked
+    s["nav_pos"] = min(max(int(s.get("nav_pos", 0)), 0), max(len(view) - 1, 0))
+    return s["nav_pos"]
+
+
+def move(step, n):
+    """Forrige/Neste: one row up or down, within the selection."""
+    st.session_state["nav_pos"] = min(max(st.session_state.get("nav_pos", 0) + step, 0), n - 1)
 
 
 def show_details(r, fasit, docs=None):
@@ -233,7 +290,7 @@ def show_details(r, fasit, docs=None):
     st.caption(f"Kilde for siteringen: {SOURCE.get(r['citation_source'], r['citation_source'])}")
     reasons = [x for x in str(r["reasons"]).split(" | ") if x]
     if reasons:
-        st.markdown("**Relevante retningslinjer for beslutning** (fakta og NBIMs historikk, fra datakildene)")
+        st.markdown("**Relevant informasjon og retningslinjer** (fakta og NBIMs historikk, fra datakildene)")
         passages = r.get("passages") or {}
         if isinstance(passages, str):
             passages = json.loads(passages or "{}")
@@ -264,7 +321,7 @@ with tab_overview:
             model = st.radio("Modell", list(available), help="Uten Jev: triagemodell, regler i kode og kodesiteringer. "
                                                            "Med Jev: i tillegg språkmodellen Jev (lagrede svar, ingen API-kall).")
             df = load(str(available[model]), available[model].stat().st_mtime)
-            fasit = st.toggle("Vis fasit (NBIMs faktiske stemme)", value=False)
+            fasit = st.toggle("Vis fasit (NBIMs faktiske stemme)", value=True)
             only_data = st.toggle("Bare forslag med data bak", value=True,
                                   help="Bare møter der vi har selskapsdokumenter levert før møtet: SEC for amerikanske "
                                        "noteringer, EDINET for Japan og DART for Sør-Korea. Uten dokumenter gir systemet "
@@ -272,7 +329,7 @@ with tab_overview:
             df_all = df
             if only_data:
                 df = df[df["document_url"] != ""]
-            years = st.multiselect("År", sorted(df["year"].unique(), reverse=True), default=[df["year"].max()])
+            years = st.multiselect("År", sorted(df["year"].unique(), reverse=True), default=[])
             votes = st.multiselect("Anbefaling", ["FOR", "MOT", "AVSTÅ"], default=[])
             route = st.radio("Rute", ["Alle", "Manuell vurdering", "Automatisk"], horizontal=True)
             types = st.multiselect("Forslagstype", sorted(df["Type"].unique()))
@@ -308,19 +365,30 @@ with tab_overview:
         view = view.sort_values([column, "meeting_date", "company", "item_no"], ascending=[not descending, False, True, True],
                                 kind="stable")
 
-        k = st.columns(5 if not fasit else 7)
+        # Two rows, one number per box, so no value is cut off: the selection first, then (with fasit) how it scored.
+        k = st.columns(5)
         k[0].metric("Forslag", f"{len(view):,}".replace(",", " "))
         k[1].metric("Anbefalt MOT", int((view["vote"] == "MOT").sum()))
         k[2].metric("Anbefalt AVSTÅ", int((view["vote"] == "AVSTÅ").sum()))
         n_review = int((view["route"] == "human_review").sum())
-        k[3].metric("Til manuell vurdering", f"{n_review} ({pct(n_review / len(view)) if len(view) else '–'})")
+        k[3].metric("Til manuell vurdering", n_review,
+                    delta=f"{pct(n_review / len(view))} av utvalget" if len(view) else None, delta_color="off", delta_arrow="off")
         k[4].metric("Gj.sn. sikkerhet", pct(view["confidence"].mean()) if len(view) else "–")
         if fasit and len(view):
             p, r, f1, reached, n_mot = metrics(view)
-            k[5].metric("Presisjon / recall på MOT", f"{pct(p)} / {pct(r)}", help=f"F1 {pct(f1)}. Måles mot NBIMs faktiske stemmer.")
-            k[6].metric("MOT som når en person", f"{reached} av {n_mot}")
+            f = st.columns(5)
+            f[0].metric("Presisjon på MOT", pct(p), help="Andelen av de anbefalte MOT-stemmene der NBIM faktisk stemte MOT.")
+            f[1].metric("Recall på MOT", pct(r), help="Andelen av NBIMs faktiske MOT-stemmer som systemet anbefalte MOT på.")
+            f[2].metric("F1 på MOT", pct(f1), help="Det harmoniske gjennomsnittet av presisjon og recall.")
+            f[3].metric("MOT som når en person", f"{reached} av {n_mot}",
+                        help="NBIMs faktiske MOT-stemmer som enten ble anbefalt MOT eller sendt til manuell vurdering.")
+            f[4].metric("NBIM stemte MOT", n_mot, help="Antall forslag i utvalget der NBIM faktisk stemte MOT.")
 
+        # Which row the details show: a click in the table, or Forrige/Neste (arrow keys). A new selection
+        # (filters or sorting) starts at the first row again.
+        pos = navigation_position(view)
         table = pd.DataFrame({
+            "▶": ["▶" if i == pos else "" for i in range(len(view))],
             "Dato": view["meeting_date"], "Selskap": view["company"], "Land": view["country"], "Forslag": view["proposal_text"],
             "Dokument": view["document_url"].replace("", None),
             "Type": view["Type"], "Styret": view["mgmt_rec"], "Anbefaling": view["vote"], "Sikkerhet": view["confidence"],
@@ -332,6 +400,7 @@ with tab_overview:
             table["NBIM stemte"] = view["nbim_vote"]
             table["Riktig"] = view["Riktig"]
         config = {
+            "▶": st.column_config.Column("", width=28, help="Raden som vises i detaljene under"),
             "Sikkerhet": st.column_config.Column("Sikkerhet", help="Andelen riktige blant lignende anbefalinger tidligere år"),
             "Anbefaling": st.column_config.Column("Anbefaling", help="Systemets forslag. En person avgjør alt som går til manuell vurdering."),
             "Risiko for MOT": st.column_config.ProgressColumn("Risiko for MOT", format="percent", min_value=0.0, max_value=1.0),
@@ -349,19 +418,22 @@ with tab_overview:
         if len(hidden):
             notes.append(f"«Minste sikkerhet» ({pct(min_conf)}) skjuler {len(hidden)} forslag, hvorav "
                          f"{int((hidden['vote'] == 'MOT').sum())} anbefalt MOT. Sett den til 0 for å se alle.")
-        st.caption(" ".join(notes + ["Klikk på en rad for å se hvorfor systemet anbefaler som det gjør."]))
-        event = st.dataframe(styled(table), column_config=config, hide_index=True, width="stretch", height=420,
-                             on_select="rerun", selection_mode="single-row", key="table")
+        st.caption(" ".join(notes + ["Klikk på en rad, eller bruk Forrige/Neste (pil opp/ned), for å se hvorfor "
+                                     "systemet anbefaler som det gjør."]))
+        st.dataframe(styled(table), column_config=config, hide_index=True, width="stretch", height=420,
+                     on_select="rerun", selection_mode="single-row", key="table")
         st.download_button("⬇️ Last ned utvalget som CSV", view.drop(columns=["_review_first"]).to_csv(index=False).encode("utf-8"),
                            file_name="anbefalinger.csv", mime="text/csv")
 
-        picked = event.selection.rows if event and event.selection else []
         st.divider()
-        if picked:
-            show_details(view.iloc[picked[0]].to_dict(), fasit)
-        elif len(view):
-            st.markdown("**Detaljer:** velg en rad i tabellen over. Viser den første raden i utvalget:")
-            show_details(view.iloc[0].to_dict(), fasit)
+        if len(view):
+            nav = st.columns([1, 3, 1], vertical_alignment="center")
+            nav[0].button("◀ Forrige", key="nav_prev", shortcut="left", on_click=move, args=(-1, len(view)),
+                          disabled=pos == 0, width="stretch", help="Forrige rad i tabellen. Tastatur: pil opp.")
+            nav[1].markdown(f"Forslag **{pos + 1}** av {len(view)} i utvalget", text_alignment="center")
+            nav[2].button("Neste ▶", key="nav_next", shortcut="right", on_click=move, args=(1, len(view)),
+                          disabled=pos == len(view) - 1, width="stretch", help="Neste rad i tabellen. Tastatur: pil ned.")
+            show_details(view.iloc[pos].to_dict(), fasit)
 
 with tab_new:
     st.subheader("Lim inn en saksliste")
