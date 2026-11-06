@@ -647,6 +647,30 @@ US director nominees 2021-2026 with proxy facts: 1337. Judged: 1335.
   2026      |      Combined model, acts alone only with support |                      34 |    26 |     8 |       76% |    39% |      379 (25%) |                     56/66 (85%)
   2026      |   + Japan and Korea facts bring in a person (now) |                      34 |    26 |     8 |       76% |    39% |      391 (25%) |                     56/66 (85%)
 
+4b. How sure are the 2026 numbers? (95% intervals, drawing whole meetings again; 2022-2025 next to them)
+  Years     |                                     Measure | Value | 95% interval
+  ----------+---------------------------------------------+-------+-------------
+  2026      | right when the tool acts alone on 'against' |   76% |   62% to 90%
+  2026      |          against-votes the tool finds alone |   39% |   28% to 51%
+  2026      |             against-votes suggested or seen |   85% |   75% to 94%
+  2026      |           share of proposals a person reads |   25% |   21% to 30%
+  2022-2025 | right when the tool acts alone on 'against' |   68% |   58% to 77%
+  2022-2025 |          against-votes the tool finds alone |   33% |   28% to 40%
+  2022-2025 |             against-votes suggested or seen |   80% |   71% to 87%
+  2022-2025 |           share of proposals a person reads |   23% |   20% to 25%
+   With 66 against-votes in 2026 the intervals are wide. A few votes either way move every 2026 number.
+
+4c. Is the combined probability honest? (2022-2026 together)
+  The tool says | Proposals | Average stated | Actually against the board
+  --------------+-----------+----------------+---------------------------
+  0% to 2%      |      4379 |           1.0% |                       1.0%
+  2% to 5%      |      2298 |           3.2% |                       2.6%
+  5% to 10%     |      1127 |           7.0% |                       6.2%
+  10% to 20%    |       532 |          13.4% |                      10.7%
+  20% to 40%    |       202 |          28.3% |                      20.3%
+  40% to 70%    |       180 |          53.9% |                      55.0%
+  70% to 100%   |       146 |          89.7% |                      66.4%
+
 5. What the combination learned (fitted on all years before 2026; positive = towards against)
    For every proposal except nominees the judge has answered:
    +0.43  history           the history model's probability

@@ -6,7 +6,7 @@ How to use this file: when you finish or start something, change the tables
 below and add one line to the log at the bottom. Keep it short. Write your
 name in the "Who" column so nobody builds the same thing twice.
 
-Last full update: Fri 02:48.
+Last full update: Fri 02:59.
 
 ## What must be delivered
 
@@ -156,3 +156,4 @@ Add newest at the bottom: day, time, name, what changed.
 - Fri 02:09 Iftikhar: Japan and Korea director facts (from Marie's EDINET and OpenDART data) used as reasons to bring in a person. Night work continues; Gemini's files in `min-agent/` were checked and not run (see the note in this file).
 - Fri 02:23 Iftikhar: tested 'more policy'. The rules we use are in every edition since 2020, so edition dates do not explain misfires. But NBIM's live guidelines page has softened rule 1.3.1 to 'may not', the rule where 2026 votes changed. Policy watch added; no effect on test numbers. Meeting-level signals and vote results from last year's AGM tested on 2022-2025: no gain, left out.
 - Fri 02:48 Iftikhar: tested 'AI gathers the facts, a judge decides' with Claude Haiku as judge (no Typesafe key for Jev). On US directors it ranks much better than the history model; in the pipeline it helps a little on 2022-2025 (suggested or seen 315 to 319 of 401) and is adopted. 2026 scored a third time: 33 automatic suggestions, 26 right. Cross-shareholdings in Japan tested: no clean rule, left out.
+- Fri 02:59 Iftikhar: judge model tested on pay votes (training seasons, 1,430 votes): worse than the pay model and no gain together, left out. Added 95% intervals and a confidence check for the combined pipeline: 2026 precision 76% (62-90%), suggested or seen 85% (75-94%).

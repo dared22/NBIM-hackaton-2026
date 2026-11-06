@@ -257,6 +257,32 @@ on 2026 is slightly lower with the judge (average precision 0.490 against
 more: they are chair-and-CEO nominees, which NBIM stopped opposing that year.
 The pipeline did not act on them, because that rule had lost its trust.
 
+The same judge idea was tested on pay votes and left out. On the training
+seasons, for 1,430 votes with CEO pay of 10 million dollars or more, the judge
+was given the pay figures, what the reader found about how the pay is built,
+NBIM's pay rules and NBIM's record. It ranked worse than the pay model
+(average precision 0.587 against 0.719), and the two together were no better
+than the pay model alone (141 hits in the top 220 against 138). The pay model
+is fitted on NBIM's own votes with the same figures, which a judge that only
+reads the rules cannot match. The test season was not judged.
+
+How sure the 2026 numbers are. They rest on 66 against-votes, so each has a
+wide interval (95%, drawing whole meetings again and again):
+
+| Full pipeline | 2026 | 95% interval | 2022-2025 | 95% interval |
+|---|---|---|---|---|
+| Right when the tool acts alone on "against" | 76% | 62% to 90% | 68% | 58% to 77% |
+| Against-votes the tool finds alone | 39% | 28% to 51% | 33% | 28% to 40% |
+| Against-votes suggested or seen | 85% | 75% to 94% | 80% | 71% to 87% |
+| Share of proposals a person reads | 25% | 21% to 30% | 23% | 20% to 25% |
+
+These are from `src/agent/combined_model.py`, which applies the routing
+without the pay-vote and security gates of `src/run.py`, so they differ by a
+vote or two from the pipeline's own summary (79%, 39%, 85%, 26%). The stated
+probability is honest up to about 70%: where the tool says 54% the share
+against was 55%. Above 70% it says 90% and the share was 66%, so its
+strongest suggestions are less certain than they sound.
+
 Cost: 0.32 dollars for 1,335 nominees. A judge reads only what the tool gives
 it, so it adds no new information. What it adds is weighing many facts at
 once, and a reason in words for the reviewer.

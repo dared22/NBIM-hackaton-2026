@@ -47,6 +47,7 @@ import collections
 import csv
 import math
 import os
+import random
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -204,6 +205,21 @@ def top(scores, ys, share):
     return sum(ys[i] for i in sorted(range(len(ys)), key=lambda i: -scores[i])[:k])
 
 
+def interval(groups, value, draws=2000, seed=5):
+    """95% interval for a number computed from proposals, by drawing whole meetings again and again.
+    Votes at one meeting hang together, so meetings are drawn, not single proposals."""
+    rng = random.Random(seed)
+    keys = list(groups)
+    out = []
+    for _ in range(draws):
+        sample = [r for k in rng.choices(keys, k=len(keys)) for r in groups[k]]
+        v = value(sample)
+        if v is not None:
+            out.append(v)
+    out.sort()
+    return out[int(0.025 * len(out))], out[int(0.975 * len(out)) - 1]
+
+
 def decide(r, p, level, need_support=False, country_facts=False):
     """(acts alone on "against", sent to a person) with the rules on top, as src/run.py does it.
 
@@ -295,6 +311,35 @@ def main():
                         f"{person} ({person / n:.0%})", f"{right + seen}/{against} ({(right + seen) / against:.0%})"])
     bm.table(["Years", "System", "Acts alone on 'against'", "Right", "Wrong", "Precision", "Recall", "A person reads",
               "Against-votes suggested or seen"], out)
+
+    print("\n4b. How sure are the 2026 numbers? (95% intervals, drawing whole meetings again; 2022-2025 next to them)")
+    out = []
+    for label, group in ((str(FINAL), (FINAL,)), (f"{DEVELOP[0]}-{DEVELOP[-1]}", DEVELOP)):
+        by_meeting = collections.defaultdict(list)
+        for y in group:
+            for r in data[y]:
+                r["now"] = decide(r, r["p_new"], r["level"], True, True)
+                by_meeting[(r["company_id"], r["meeting_date"])].append(r)
+        ratio = lambda num, den: (lambda rows: (sum(num(r) for r in rows) / sum(den(r) for r in rows)) if sum(den(r) for r in rows) else None)
+        measures = [("right when the tool acts alone on 'against'", ratio(lambda r: r["now"][0] and r["y"], lambda r: r["now"][0])),
+                    ("against-votes the tool finds alone", ratio(lambda r: r["now"][0] and r["y"], lambda r: r["y"])),
+                    ("against-votes suggested or seen", ratio(lambda r: (r["now"][0] or r["now"][1]) and r["y"], lambda r: r["y"])),
+                    ("share of proposals a person reads", ratio(lambda r: r["now"][1], lambda r: 1))]
+        everything = [r for rows_ in by_meeting.values() for r in rows_]
+        for name, f in measures:
+            lo, hi = interval(by_meeting, f)
+            out.append([label, name, f"{f(everything):.0%}", f"{lo:.0%} to {hi:.0%}"])
+    bm.table(["Years", "Measure", "Value", "95% interval"], out)
+    print("   With 66 against-votes in 2026 the intervals are wide. A few votes either way move every 2026 number.")
+
+    print("\n4c. Is the combined probability honest? (2022-2026 together)")
+    out = []
+    pooled = [r for y in years[1:] for r in data[y]]
+    for lo, hi in ((0, .02), (.02, .05), (.05, .10), (.10, .20), (.20, .40), (.40, .70), (.70, 1.01)):
+        b = [r for r in pooled if lo <= r["p_new"] < hi]
+        if b:
+            out.append([f"{lo:.0%} to {min(hi, 1):.0%}", len(b), f"{sum(r['p_new'] for r in b) / len(b):.1%}", f"{sum(r['y'] for r in b) / len(b):.1%}"])
+    bm.table(["The tool says", "Proposals", "Average stated", "Actually against the board"], out)
 
     print("\n5. What the combination learned (fitted on all years before 2026; positive = towards against)")
     fit = fit_on(data, years[:-1])
