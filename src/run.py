@@ -35,6 +35,8 @@ How a decision is made
        break the lookup of that item's history. Wording that does not read
        like a ballot item (words no earlier ballot used) also brings in a
        person, so a reworded instruction needs no trigger word to be caught.
+       A proxy statement that speaks to an automated reader sends every
+       nominee of that meeting to a person.
     2. The model gives the probability that NBIM votes against the board.
     3. Band. Below 5%: follow the board. At or above the model's cut-off:
        vote against the board. In between: a person decides.
@@ -96,6 +98,7 @@ SCRIPTS = [
     ("Pilot: does how the CEO's pay is built explain the pay against-votes?", ["src/agent/pay_structure_test.py"]),
     ("Resistance test and guardrail", ["src/agent/robustness.py"]),
     ("Resistance test 2: a reworded instruction against the whole pipeline", ["src/agent/paraphrase_test.py"]),
+    ("Resistance test 3: an instruction planted in the proxy the AI reader reads", ["src/agent/reader_injection_test.py"]),
 ]
 COLS = ["dataset", "key", "meeting_date", "company", "proposal", "board_recommendation", "suggested_vote",
         "probability_against_board", "band", "decided_by", "review_reason", "model", "reasons",
@@ -214,6 +217,11 @@ def general_decisions(rows=None, pay=None):
         if odd and not hits:
             flags.append("security flag: the wording does not read like a ballot item (words no earlier ballot used: "
                          + ", ".join(odd[:6]) + ")")
+        # Guardrail, part 4: the proxy the AI reader read speaks to an automated reader. The facts read
+        # from it are shown, and a person decides.
+        if directors.get(key, {}).get("proxy_alert"):
+            flags.append('security flag: the proxy statement holds wording addressed to an automated reader ("'
+                         + directors[key]["proxy_alert"][:120] + '")')
         # The tool acts alone on "against" only when the suggestion rests on something a person can
         # check: a rule with its fact, the pay figures, or NBIM's own against-vote on the item last time.
         if (comp and not by_pay and band == "likely AGAINST board" and not (d and d["rules"])

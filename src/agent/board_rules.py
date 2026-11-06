@@ -260,8 +260,11 @@ def load_scored():
     r["rule_state"] says per section whether the tool may act alone ("active") or not ("suspended")."""
     rows = dr.load_scored()          # brings the SEC-role facts and rules along as r["f"], r["rules"]
     cache = fb.load_cache()
-    by_name = {}
+    by_name, alerts = {}, {}
     for (company, date), rec in cache.items():
+        # A proxy that speaks to an automated reader (checked when it was read): its facts are shown,
+        # and a person decides.
+        alerts[(company, date)] = rec.get("reader_alert", "")
         count_women(rec["answers"]["board"], rec["answers"]["nominees"])
         for n in rec["answers"]["nominees"]:
             mark_founder(n, rec["company"])
@@ -276,6 +279,7 @@ def load_scored():
         n, b, proxy = by_name.get((r["company_id"], r["meeting_date"], dr.nominee_name(r["proposal_text"]).strip()), (None, None, None))
         earlier = sorted(p for p in pay[r["company_id"]] if p[0] < r["meeting_date"])
         r["n"], r["b"], r["proxy"] = n, b, proxy
+        r["proxy_alert"] = alerts.get((r["company_id"], r["meeting_date"]), "")
         r["all_rules"] = decide(n, b)
         r["notes"] = judgement_notes(n, b, bool(earlier) and earlier[-1][1] == 1)
         r["signals"] = signals_for(r)

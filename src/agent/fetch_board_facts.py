@@ -179,6 +179,35 @@ def passages_of(text, names):
     return "".join(parts)
 
 
+# Wording a proxy statement has no reason to hold: text that speaks to a machine reading it, or tells
+# the reader to drop its task. None of the 889 proxy texts stored in data/evidence/proxy_excerpts has it.
+TO_A_READER = [re.compile(rx, re.I) for rx in (
+    r"\b(note|notice|message|instruction)s? (to|for) (any |all |the )?(ai|a\.i\.|llm|language model|automated|machine|chatbot|assistant)",
+    r"\b(ignore|disregard|forget|override)\b[^.]{0,60}\b(questions? you (were|have been)|your (previous |prior |earlier )?instructions"
+    r"|(previous|prior|above|earlier|preceding) (instructions|prompts?)|system prompt|your guidelines)\b",
+    r"\b(ai|artificial intelligence|language model|automated) (system|tool|model|assistant|agent|reader)s? "
+    r"(reading|processing|analy[sz]ing|summari[sz]ing|reviewing) this\b",
+)]
+
+
+def addressed_to_a_reader(text):
+    """The first words in a proxy text that speak to an automated reader, or "" if there are none."""
+    for rx in TO_A_READER:
+        m = rx.search(text)
+        if m:
+            return re.sub(r"\s+", " ", text[m.start():m.end() + 60]).strip()
+    return ""
+
+
+def saved_passages(cik, meeting_date):
+    """The passages the reader was given for a meeting, from the local copy. None if there is none."""
+    path = os.path.join(PASSAGES, f"board_{cik}_{meeting_date}.json.gz")
+    if not os.path.exists(path):
+        return None
+    with gzip.open(path, "rt", encoding="utf-8") as f:
+        return json.load(f)["passages"]
+
+
 def request_body(passages, names, model=MODEL):
     listed = "\n".join(f"{i + 1}. {n}" for i, n in enumerate(names))
     # No sampling settings: the newest models reject them. Thinking is off for the first reader (this is
@@ -425,7 +454,8 @@ def main():
                 if answers:
                     rec = {"company_id": m["company_id"], "company": m["company"], "meeting_date": m["meeting_date"],
                            "cik": m["cik"], "proxy": proxy, "model": MODEL,
-                           "passages_sha256": hashlib.sha256(passages.encode("utf-8")).hexdigest(), "answers": answers}
+                           "passages_sha256": hashlib.sha256(passages.encode("utf-8")).hexdigest(), "answers": answers,
+                           "reader_alert": addressed_to_a_reader(passages)}
                     cache[(m["company_id"], m["meeting_date"])] = rec
                     with open(CACHE, "a", encoding="utf-8") as f:
                         f.write(json.dumps(rec, sort_keys=True, ensure_ascii=False) + "\n")
