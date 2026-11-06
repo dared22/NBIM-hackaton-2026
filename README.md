@@ -167,7 +167,7 @@ vote file for 2026 (combined model) and the US pay votes (pay model).
 
 ```bash
 python3 src/run.py                 # writes data/outputs/dashboard/predictions_main*.csv
-pip install streamlit pandas       # the dashboard's only requirements; the pipeline needs neither
+pip install -r requirements.txt    # streamlit and pandas, for the dashboard only; the pipeline needs neither
 streamlit run src/dashboard.py
 ```
 
