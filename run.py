@@ -29,11 +29,17 @@ def main() -> None:
     prediction = commands.add_parser("predict", help="Replay saved inputs without network access")
     prediction.add_argument("--output-dir", type=Path, default=Path(ROOT) / "data/outputs")
     commands.add_parser("dashboard", help="Open the Norwegian Streamlit dashboard")
+    comparison = commands.add_parser(
+        "compare-jev", help="Compare saved researched Jev answers offline"
+    )
+    comparison.add_argument("--year", type=int, default=2026)
+    comparison.add_argument("--output-dir", type=Path, default=Path(ROOT) / "data/outputs")
     refresh = commands.add_parser(
         "refresh", help="Refresh one source; may contact SEC or hosted models"
     )
     refresh.add_argument(
-        "target", choices=sorted([*COLLECTORS, "guidelines", "rule-checks", "judge"])
+        "target",
+        choices=sorted([*COLLECTORS, "guidelines", "rule-checks", "judge", "researched-jev"]),
     )
     refresh.add_argument(
         "arguments", nargs=argparse.REMAINDER, help="Collector options, such as --limit 8"
@@ -41,6 +47,10 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "predict":
         predict(args.output_dir)
+    elif args.command == "compare-jev":
+        from src.evidence.researched_jev import compare
+
+        compare(args.year, args.output_dir)
     elif args.command == "dashboard":
         script = Path(ROOT) / "src" / "dashboard.py"
         raise SystemExit(
@@ -51,6 +61,17 @@ def main() -> None:
 
 
 def refresh_source(target: str, arguments: list[str]) -> None:
+    if target == "researched-jev":
+        from src.evidence.researched_jev import refresh
+
+        parser = argparse.ArgumentParser(prog="refresh researched-jev")
+        parser.add_argument("--year", type=int, default=2026)
+        parser.add_argument("--limit-meetings", type=int, default=10)
+        options = parser.parse_args(arguments)
+        if options.limit_meetings < 1:
+            parser.error("--limit-meetings must be positive")
+        refresh(options.year, options.limit_meetings)
+        return
     if target in COLLECTORS:
         # Retain the collectors' existing limit options and parsing.
         module = importlib.import_module("src.evidence." + COLLECTORS[target])

@@ -1,0 +1,11 @@
+[
+  {
+    "edition": "2025",
+    "path": "data/policy/guidelines_2025.json",
+    "published_on": "2025-02-17",
+    "date_basis": "Official NBIM dated publication listing; latest verified available edition, not an assumed April effective date",
+    "publication_url": "https://www.nbim.no/en/responsible-investment/voting/our-voting-records/",
+    "source_url": "https://www.nbim.no/contentassets/cbee6983c7d044a6a6d2f286ed5fa3df/global-voting-guildeines_2025.pdf",
+    "sha256": "dfc4f8840e4bb212b1752376f64d0151f5527f6506c522c353f6255a234e9a56"
+  }
+]

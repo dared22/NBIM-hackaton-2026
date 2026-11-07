@@ -2,6 +2,9 @@
 streamlit>=1.55,<2
 pandas>=2.2.2,<3
 
+# Text extraction for archived PDF evidence during explicit research refresh
+pypdf>=5,<7
+
 # Development checks
 ruff
 vulture

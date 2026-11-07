@@ -251,6 +251,9 @@ NBIM's general voting principle `P.1`.
 
 ## Refresh evidence
 
+For the independent guideline Q&A experiment, follow
+[Compare researched Jev predictions](docs/howto/researched-jev.md).
+
 Refresh commands are explicit: they can download data, update evidence, and
 incur hosted-model charges. They do not run during prediction or dashboard use.
 The original vote file and imported general Jev scores remain supplied inputs;

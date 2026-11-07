@@ -37,3 +37,6 @@ data/evidence/proxy_excerpts/
 
 # Predictions and reports are rebuilt by the prediction command
 data/outputs/
+
+# Researched Jev source snapshots, requests, and predictions
+data/evidence/researched_jev/
